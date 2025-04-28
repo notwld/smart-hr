@@ -1,9 +1,61 @@
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { prisma } from "@/lib/prisma"
-import { compare } from "bcryptjs"
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { prisma } from "@/lib/prisma";
+import { compare } from "bcryptjs";
+import NextAuth from "next-auth";
 
+// Helper: Fetch full user data after login
+async function getFullUserData(email: string) {
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    return null;
+  }
+
+  // Fetch related data separately
+  const [attendance, leaves, tasks, skills, performance] = await Promise.all([
+    prisma.attendance.findMany({
+      where: { userId: user.id },
+      orderBy: { date: "desc" },
+      take: 30,
+    }),
+    prisma.leave.findMany({
+      where: { userId: user.id },
+      orderBy: { startDate: "desc" },
+      take: 5,
+    }),
+    prisma.task.findMany({
+      where: { assignedTo: user.id },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+    }),
+    prisma.skill.findMany({
+      where: { userId: user.id },
+    }),
+    prisma.performance.findMany({
+      where: { userId: user.id },
+      orderBy: [
+        { year: "desc" },
+        { month: "desc" }
+      ],
+      take: 6,
+    }),
+  ]);
+
+  return {
+    ...user,
+    attendance,
+    leaves,
+    tasks,
+    skills,
+    performance,
+  };
+}
+
+// Your NextAuth configuration
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
@@ -21,31 +73,28 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null
+          return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        })
+        // Fetch user
+        const userWithData = await getFullUserData(credentials.email);
 
-        if (!user) {
-          return null
+        if (!userWithData) {
+          return null;
         }
 
-        const isPasswordValid = await compare(credentials.password, user.password)
-
+        // Verify password
+        const isPasswordValid = await compare(credentials.password, userWithData.password);
         if (!isPasswordValid) {
-          return null
+          return null;
         }
 
         return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        }
+          id: userWithData.id,
+          email: userWithData.email,
+          name: userWithData.username,
+          role: userWithData.role,
+        };
       },
     }),
   ],
@@ -55,9 +104,9 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           role: user.role,
-        }
+        };
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
       return {
@@ -66,12 +115,10 @@ export const authOptions: NextAuthOptions = {
           ...session.user,
           role: token.role,
         },
-      }
+      };
     },
   },
-}
+};
 
-import NextAuth from "next-auth"
-
-const handler = NextAuth(authOptions)
-export { handler as GET, handler as POST } 
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
