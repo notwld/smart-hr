@@ -25,7 +25,11 @@ import {
     Users,
     X,
     ChevronUp,
+    LogOut,
 } from "lucide-react"
+import { Button } from "./ui/button"
+import { signOut } from "next-auth/react"
+
 export default function Sidebar() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
     const [theme, setTheme] = useState("light")
@@ -101,6 +105,14 @@ export default function Sidebar() {
                         >
                             {sidebarCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
                         </button>
+                        <Button
+                            onClick={() => signOut()}
+                            variant="outline"
+                            className="w-full flex items-center justify-center p-2 text-gray-700 hover:bg-gray-100 rounded-md"
+                        >
+                            <LogOut className="w-5 h-5" />
+                            {!sidebarCollapsed && <span className="ml-2">Logout</span>}
+                        </Button>
                     </div>
                 </div>
             </div>
