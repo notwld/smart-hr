@@ -1,6 +1,5 @@
 // prisma/seed.ts
 
-import { Prisma } from '@/lib/generated/prisma';  // your prisma output path
 import bcrypt from 'bcryptjs'; // because passwords should be hashed!
 import { prisma } from "@/lib/prisma"
 

@@ -138,10 +138,10 @@ export default function DashboardContent({ user }: DashboardContentProps) {
               <div className="bg-blue-900 text-white p-4">
                 <div className="flex items-center">
                   <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white text-xl font-bold">
-                    {user.name}
+                    {user.firstName} {user.lastName}
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-semibold">{user.name}</h3>
+                    <h3 className="text-lg font-semibold">{user.firstName} {user.lastName}</h3>
                     <p className="text-sm text-blue-200">{user.position} - {user.department}</p>
                   </div>
                 </div>
