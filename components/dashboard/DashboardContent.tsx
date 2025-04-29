@@ -312,101 +312,192 @@ export default function DashboardContent({ user }: DashboardContentProps) {
               </CardContent>
             </Card>
 
-            {/* Tasks Overview */}
-            <Card className="col-span-2">
-              <CardHeader>
-                <CardTitle className="text-base">Tasks Overview</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {user.tasks.map((task) => (
-                    <div key={task.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center">
-                        <div className={`w-2 h-2 rounded-full ${
-                          task.status === "COMPLETED" ? "bg-green-500" :
-                          task.status === "IN_PROGRESS" ? "bg-blue-500" :
-                          "bg-yellow-500"
-                        } mr-3`}></div>
-                        <span>{task.title}</span>
-                      </div>
-                      <Badge
-                        variant={
-                          task.status === "COMPLETED"
-                            ? "default"
-                            : task.status === "IN_PROGRESS"
-                              ? "secondary"
-                              : "outline"
-                        }
-                      >
-                        {task.status}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Performance Chart Card */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">Performance</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[150px]">
-                  <ChartContainer
-                    config={{
-                      performance: {
-                        label: "Performance",
-                        color: "#3b82f6",
-                      },
-                    }}
-                  >
-                    <LineChart data={performanceData}>
-                      <Line
-                        type="monotone"
-                        dataKey="performance"
-                        stroke="#3b82f6"
-                        strokeWidth={2}
-                        dot={{ r: 4 }}
-                        activeDot={{ r: 6 }}
-                      />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                    </LineChart>
-                  </ChartContainer>
-                </div>
-                <div className="flex items-center justify-center mt-2">
-                  <span className="text-2xl font-bold">
-                    {user.performance[0]?.score || 0}%
-                  </span>
-                  {user.performance.length > 1 && (
-                    <span className="ml-2 text-green-500 flex items-center text-sm">
-                      <ChevronUp className="w-4 h-4" /> 
-                      +{user.performance[0].score - user.performance[1].score}% vs last month
-                    </span>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* My Skills Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">My Skills</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {user.skills.map((skill) => (
-                  <div key={skill.id}>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>{skill.name}</span>
-                      <span className="text-gray-500 text-xs">
-                        Updated {new Date(skill.updatedAt).toLocaleDateString()}
-                      </span>
+           
+            {/* Attendance and Work Hours Side by Side */}
+            <div className="col-span-3 grid grid-cols-1 md:grid-cols-4 gap-6">
+              {/* Attendance Card */}
+              <Card className="md:col-span-1">
+                <CardHeader>
+                  <CardTitle className="text-base">Attendance</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col items-center">
+                  <div className="relative w-40 h-40 rounded-full border-8 border-gray-100 flex items-center justify-center mb-4">
+                    <div className="absolute inset-0 rounded-full border-t-8 border-orange-500"></div>
+                    <div className="text-center">
+                      <p className="text-xl font-bold">08:35 AM</p>
+                      <p className="text-xs text-gray-500">11 Mar 2025</p>
                     </div>
-                    <Progress value={skill.level} className="h-2" />
                   </div>
-                ))}
-              </CardContent>
-            </Card>
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-gray-500">Total Hours Today</p>
+                    <p className="text-xl font-bold">5:48:32</p>
+                  </div>
+                  <Button className="w-full bg-orange-500 hover:bg-orange-600">Punch Out</Button>
+                </CardContent>
+              </Card>
+
+              {/* Work Hours Tracker Card */}
+              <Card className="md:col-span-3">
+                <CardContent className="p-4">
+                   {/* Attendance and Work Hours Row */}
+            <div className="col-span-3 grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              {/* Hours Tracking Cards */}
+              <Card className="bg-white">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-8 h-8 rounded-md bg-orange-500 flex items-center justify-center text-white">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                  </div>
+                  <div className="flex items-baseline">
+                    <span className="text-2xl font-bold">8.36</span>
+                    <span className="text-gray-500 ml-1">/ 9</span>
+                  </div>
+                  <p className="text-sm text-gray-600">Total Hours Today</p>
+                  <div className="mt-3 flex items-center">
+                    <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
+                      <ChevronUp className="w-3 h-3" />
+                    </div>
+                    <span className="text-sm ml-1">5% This Week</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Total Hours Week */}
+              <Card className="bg-white">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-8 h-8 rounded-md bg-gray-900 flex items-center justify-center text-white">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                  </div>
+                  <div className="flex items-baseline">
+                    <span className="text-2xl font-bold">10</span>
+                    <span className="text-gray-500 ml-1">/ 40</span>
+                  </div>
+                  <p className="text-sm text-gray-600">Total Hours Week</p>
+                  <div className="mt-3 flex items-center">
+                    <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
+                      <ChevronUp className="w-3 h-3" />
+                    </div>
+                    <span className="text-sm ml-1">7% Last Week</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Total Hours Month */}
+              <Card className="bg-white">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-8 h-8 rounded-md bg-blue-500 flex items-center justify-center text-white">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                  </div>
+                  <div className="flex items-baseline">
+                    <span className="text-2xl font-bold">75</span>
+                    <span className="text-gray-500 ml-1">/ 98</span>
+                  </div>
+                  <p className="text-sm text-gray-600">Total Hours Month</p>
+                  <div className="mt-3 flex items-center">
+                    <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">
+                      <ChevronDown className="w-3 h-3" />
+                    </div>
+                    <span className="text-sm ml-1">8% Last Month</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Overtime this Month */}
+              <Card className="bg-white">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-8 h-8 rounded-md bg-pink-500 flex items-center justify-center text-white">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                  </div>
+                  <div className="flex items-baseline">
+                    <span className="text-2xl font-bold">16</span>
+                    <span className="text-gray-500 ml-1">/ 28</span>
+                  </div>
+                  <p className="text-sm text-gray-600">Overtime this Month</p>
+                  <div className="mt-3 flex items-center">
+                    <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">
+                      <ChevronDown className="w-3 h-3" />
+                    </div>
+                    <span className="text-sm ml-1">6% Last Month</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+                  <div className="grid grid-cols-4 gap-6 mb-4">
+                    <div>
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 rounded-full bg-gray-400 mr-2"></div>
+                        <span className="text-sm text-gray-600">Total Working hours</span>
+                      </div>
+                      <p className="text-xl font-medium mt-1">12h 36m</p>
+                    </div>
+                    <div>
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                        <span className="text-sm text-gray-600">Productive Hours</span>
+                      </div>
+                      <p className="text-xl font-medium mt-1">08h 36m</p>
+                    </div>
+                    <div>
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 rounded-full bg-yellow-400 mr-2"></div>
+                        <span className="text-sm text-gray-600">Break hours</span>
+                      </div>
+                      <p className="text-xl font-medium mt-1">22m 15s</p>
+                    </div>
+                    <div>
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                        <span className="text-sm text-gray-600">Overtime</span>
+                      </div>
+                      <p className="text-xl font-medium mt-1">02h 15m</p>
+                    </div>
+                  </div>
+
+                  <div className="relative h-8 w-full mt-6 mb-2">
+                    <div className="absolute top-0 left-[6%] h-full w-[14%] bg-green-500 rounded-l-md"></div>
+                    <div className="absolute top-0 left-[20%] h-full w-[5%] bg-yellow-400"></div>
+                    <div className="absolute top-0 left-[25%] h-full w-[20%] bg-green-500"></div>
+                    <div className="absolute top-0 left-[45%] h-full w-[15%] bg-yellow-400"></div>
+                    <div className="absolute top-0 left-[60%] h-full w-[20%] bg-green-500"></div>
+                    <div className="absolute top-0 left-[80%] h-full w-[5%] bg-yellow-400"></div>
+                    <div className="absolute top-0 left-[85%] h-full w-[10%] bg-blue-500 rounded-r-md"></div>
+                  </div>
+
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>06:00</span>
+                    <span>07:00</span>
+                    <span>08:00</span>
+                    <span>09:00</span>
+                    <span>10:00</span>
+                    <span>11:00</span>
+                    <span>12:00</span>
+                    <span>01:00</span>
+                    <span>02:00</span>
+                    <span>03:00</span>
+                    <span>04:00</span>
+                    <span>05:00</span>
+                    <span>06:00</span>
+                    <span>07:00</span>
+                    <span>08:00</span>
+                    <span>09:00</span>
+                    <span>10:00</span>
+                    <span>11:00</span>
+                  </div>
+                  
+                </CardContent>
+              </Card>
+            </div>
+
+           
           </div>
         </main>
       </div>
