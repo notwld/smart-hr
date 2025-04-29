@@ -37,15 +37,33 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { User } from "@/lib/generated/prisma"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import Link from "next/link"
+import { toast } from "sonner"
+
+interface DashboardUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  department: string;
+  position: string;
+  phone?: string;
+  joinDate: string;
+  reportsTo?: {
+    firstName: string;
+    lastName: string;
+  };
+  // ... other fields
+}
 
 interface DashboardContentProps {
-  user: User & {
-    attendance: any[]
-    leaves: any[]
-    tasks: any[]
-    skills: any[]
-    performance: any[]
-  }
+  user: DashboardUser & {
+    attendance: any[];
+    leaves: any[];
+    tasks: any[];
+    skills: any[];
+    performance: any[];
+  };
 }
 
 export default function DashboardContent({ user }: DashboardContentProps) {
@@ -148,8 +166,8 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     try {
       await axios.post("/api/attendance/checkout");
       await fetchTodayAttendance();
-    } catch (error) {
-      alert(error.response?.data?.message || "Check-out failed");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Check-out failed");
     }
     setLoading(false);
   };
@@ -261,7 +279,9 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                     <Users className="w-4 h-4 text-gray-500 mt-0.5 mr-3" />
                     <div>
                       <p className="text-sm text-gray-500">Report To</p>
-                      <p className="text-sm font-medium">{user.reportsTo?.name || "Not assigned"}</p>
+                      <p className="text-sm font-medium">
+                        {user.reportsTo ? `${user.reportsTo.firstName} ${user.reportsTo.lastName}` : "Not assigned"}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start">
@@ -402,7 +422,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                     <p className="text-xl font-medium">{20 - leaveStats.taken}</p>
                   </div>
                 </div>
-                <Button className="w-full bg-gray-900 hover:bg-black text-white">Apply New Leave</Button>
+                <Link href="/leaves/apply">
+                  <Button className="w-full bg-gray-900 hover:bg-black text-white">
+                    Apply for Leave
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
         
@@ -434,14 +458,14 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         <p className="text-xl font-bold">{elapsedTime}</p>
       </div>
 
-      <div className="text-center mb-4">
+      {/* <div className="text-center mb-4">
         <p className="text-sm text-gray-500">Total Hours Today</p>
         <p className="text-xl font-bold">
           {todayAttendance?.totalHours
             ? formatHours(todayAttendance.totalHours)
             : "0h 0m 0s"}
         </p>
-      </div>
+      </div> */}
 
       {!todayAttendance?.checkInTime && (
         <Button

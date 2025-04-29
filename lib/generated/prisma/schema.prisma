@@ -73,13 +73,16 @@ model User {
   documents        Document[]
   bankDetails      BankDetails?
   attendance       Attendance[]
-  leaves           Leave[]
+  leaves           Leave[]             @relation("UserLeaves")
   tasks            Task[]
   skills           Skill[]
   performance      Performance[]
   projects         ProjectAssignment[]
   notifications    Notification[]
   meetings         Meeting[]
+  image            String?
+  managerApprovals Leave[]             @relation("ManagerApproval")
+  adminApprovals   Leave[]             @relation("AdminApproval")
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
 }
@@ -163,16 +166,24 @@ model Attendance {
 }
 
 model Leave {
-  id        String      @id @default(cuid())
-  userId    String
-  user      User        @relation(fields: [userId], references: [id])
-  startDate DateTime
-  endDate   DateTime
-  type      LeaveType
-  status    LeaveStatus @default(PENDING)
-  reason    String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation("UserLeaves", fields: [userId], references: [id])
+  startDate      DateTime
+  endDate        DateTime
+  type           LeaveType
+  status         LeaveStatus @default(PENDING)
+  reason         String
+  managerId      String? // ID of the manager who needs to approve
+  manager        User?       @relation("ManagerApproval", fields: [managerId], references: [id])
+  adminId        String? // ID of the admin who needs to approve
+  admin          User?       @relation("AdminApproval", fields: [adminId], references: [id])
+  managerStatus  LeaveStatus @default(PENDING)
+  adminStatus    LeaveStatus @default(PENDING)
+  managerComment String?
+  adminComment   String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 }
 
 model Task {

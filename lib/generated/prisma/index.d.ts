@@ -2273,6 +2273,8 @@ export namespace Prisma {
     projects: number
     notifications: number
     meetings: number
+    managerApprovals: number
+    adminApprovals: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2288,6 +2290,8 @@ export namespace Prisma {
     projects?: boolean | UserCountOutputTypeCountProjectsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     meetings?: boolean | UserCountOutputTypeCountMeetingsArgs
+    managerApprovals?: boolean | UserCountOutputTypeCountManagerApprovalsArgs
+    adminApprovals?: boolean | UserCountOutputTypeCountAdminApprovalsArgs
   }
 
   // Custom InputTypes
@@ -2385,6 +2389,20 @@ export namespace Prisma {
     where?: MeetingWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountManagerApprovalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeaveWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdminApprovalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeaveWhereInput
+  }
+
 
   /**
    * Count Type ProjectCountOutputType
@@ -2462,6 +2480,7 @@ export namespace Prisma {
     gender: $Enums.Gender | null
     maritalStatus: $Enums.MaritalStatus | null
     reportsToId: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2487,6 +2506,7 @@ export namespace Prisma {
     gender: $Enums.Gender | null
     maritalStatus: $Enums.MaritalStatus | null
     reportsToId: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2512,6 +2532,7 @@ export namespace Prisma {
     gender: number
     maritalStatus: number
     reportsToId: number
+    image: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2547,6 +2568,7 @@ export namespace Prisma {
     gender?: true
     maritalStatus?: true
     reportsToId?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2572,6 +2594,7 @@ export namespace Prisma {
     gender?: true
     maritalStatus?: true
     reportsToId?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2597,6 +2620,7 @@ export namespace Prisma {
     gender?: true
     maritalStatus?: true
     reportsToId?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2709,6 +2733,7 @@ export namespace Prisma {
     gender: $Enums.Gender | null
     maritalStatus: $Enums.MaritalStatus | null
     reportsToId: string | null
+    image: string | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -2753,6 +2778,7 @@ export namespace Prisma {
     gender?: boolean
     maritalStatus?: boolean
     reportsToId?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     reportsTo?: boolean | User$reportsToArgs<ExtArgs>
@@ -2770,6 +2796,8 @@ export namespace Prisma {
     projects?: boolean | User$projectsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     meetings?: boolean | User$meetingsArgs<ExtArgs>
+    managerApprovals?: boolean | User$managerApprovalsArgs<ExtArgs>
+    adminApprovals?: boolean | User$adminApprovalsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2794,6 +2822,7 @@ export namespace Prisma {
     gender?: boolean
     maritalStatus?: boolean
     reportsToId?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     reportsTo?: boolean | User$reportsToArgs<ExtArgs>
@@ -2820,6 +2849,7 @@ export namespace Prisma {
     gender?: boolean
     maritalStatus?: boolean
     reportsToId?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     reportsTo?: boolean | User$reportsToArgs<ExtArgs>
@@ -2846,11 +2876,12 @@ export namespace Prisma {
     gender?: boolean
     maritalStatus?: boolean
     reportsToId?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firstName" | "lastName" | "email" | "cnic" | "pfp" | "password" | "salary" | "address" | "department" | "position" | "joinDate" | "phone" | "role" | "status" | "dateOfBirth" | "gender" | "maritalStatus" | "reportsToId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firstName" | "lastName" | "email" | "cnic" | "pfp" | "password" | "salary" | "address" | "department" | "position" | "joinDate" | "phone" | "role" | "status" | "dateOfBirth" | "gender" | "maritalStatus" | "reportsToId" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     reportsTo?: boolean | User$reportsToArgs<ExtArgs>
     subordinates?: boolean | User$subordinatesArgs<ExtArgs>
@@ -2867,6 +2898,8 @@ export namespace Prisma {
     projects?: boolean | User$projectsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     meetings?: boolean | User$meetingsArgs<ExtArgs>
+    managerApprovals?: boolean | User$managerApprovalsArgs<ExtArgs>
+    adminApprovals?: boolean | User$adminApprovalsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2894,6 +2927,8 @@ export namespace Prisma {
       projects: Prisma.$ProjectAssignmentPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       meetings: Prisma.$MeetingPayload<ExtArgs>[]
+      managerApprovals: Prisma.$LeavePayload<ExtArgs>[]
+      adminApprovals: Prisma.$LeavePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2916,6 +2951,7 @@ export namespace Prisma {
       gender: $Enums.Gender | null
       maritalStatus: $Enums.MaritalStatus | null
       reportsToId: string | null
+      image: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -3327,6 +3363,8 @@ export namespace Prisma {
     projects<T extends User$projectsArgs<ExtArgs> = {}>(args?: Subset<T, User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     meetings<T extends User$meetingsArgs<ExtArgs> = {}>(args?: Subset<T, User$meetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    managerApprovals<T extends User$managerApprovalsArgs<ExtArgs> = {}>(args?: Subset<T, User$managerApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adminApprovals<T extends User$adminApprovalsArgs<ExtArgs> = {}>(args?: Subset<T, User$adminApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3376,6 +3414,7 @@ export namespace Prisma {
     readonly gender: FieldRef<"User", 'Gender'>
     readonly maritalStatus: FieldRef<"User", 'MaritalStatus'>
     readonly reportsToId: FieldRef<"User", 'String'>
+    readonly image: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -4116,6 +4155,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
+  }
+
+  /**
+   * User.managerApprovals
+   */
+  export type User$managerApprovalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Leave
+     */
+    select?: LeaveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Leave
+     */
+    omit?: LeaveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeaveInclude<ExtArgs> | null
+    where?: LeaveWhereInput
+    orderBy?: LeaveOrderByWithRelationInput | LeaveOrderByWithRelationInput[]
+    cursor?: LeaveWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeaveScalarFieldEnum | LeaveScalarFieldEnum[]
+  }
+
+  /**
+   * User.adminApprovals
+   */
+  export type User$adminApprovalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Leave
+     */
+    select?: LeaveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Leave
+     */
+    omit?: LeaveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeaveInclude<ExtArgs> | null
+    where?: LeaveWhereInput
+    orderBy?: LeaveOrderByWithRelationInput | LeaveOrderByWithRelationInput[]
+    cursor?: LeaveWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeaveScalarFieldEnum | LeaveScalarFieldEnum[]
   }
 
   /**
@@ -10823,6 +10910,12 @@ export namespace Prisma {
     type: $Enums.LeaveType | null
     status: $Enums.LeaveStatus | null
     reason: string | null
+    managerId: string | null
+    adminId: string | null
+    managerStatus: $Enums.LeaveStatus | null
+    adminStatus: $Enums.LeaveStatus | null
+    managerComment: string | null
+    adminComment: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10835,6 +10928,12 @@ export namespace Prisma {
     type: $Enums.LeaveType | null
     status: $Enums.LeaveStatus | null
     reason: string | null
+    managerId: string | null
+    adminId: string | null
+    managerStatus: $Enums.LeaveStatus | null
+    adminStatus: $Enums.LeaveStatus | null
+    managerComment: string | null
+    adminComment: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10847,6 +10946,12 @@ export namespace Prisma {
     type: number
     status: number
     reason: number
+    managerId: number
+    adminId: number
+    managerStatus: number
+    adminStatus: number
+    managerComment: number
+    adminComment: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -10861,6 +10966,12 @@ export namespace Prisma {
     type?: true
     status?: true
     reason?: true
+    managerId?: true
+    adminId?: true
+    managerStatus?: true
+    adminStatus?: true
+    managerComment?: true
+    adminComment?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10873,6 +10984,12 @@ export namespace Prisma {
     type?: true
     status?: true
     reason?: true
+    managerId?: true
+    adminId?: true
+    managerStatus?: true
+    adminStatus?: true
+    managerComment?: true
+    adminComment?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10885,6 +11002,12 @@ export namespace Prisma {
     type?: true
     status?: true
     reason?: true
+    managerId?: true
+    adminId?: true
+    managerStatus?: true
+    adminStatus?: true
+    managerComment?: true
+    adminComment?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10970,6 +11093,12 @@ export namespace Prisma {
     type: $Enums.LeaveType
     status: $Enums.LeaveStatus
     reason: string
+    managerId: string | null
+    adminId: string | null
+    managerStatus: $Enums.LeaveStatus
+    adminStatus: $Enums.LeaveStatus
+    managerComment: string | null
+    adminComment: string | null
     createdAt: Date
     updatedAt: Date
     _count: LeaveCountAggregateOutputType | null
@@ -10999,9 +11128,17 @@ export namespace Prisma {
     type?: boolean
     status?: boolean
     reason?: boolean
+    managerId?: boolean
+    adminId?: boolean
+    managerStatus?: boolean
+    adminStatus?: boolean
+    managerComment?: boolean
+    adminComment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    manager?: boolean | Leave$managerArgs<ExtArgs>
+    admin?: boolean | Leave$adminArgs<ExtArgs>
   }, ExtArgs["result"]["leave"]>
 
   export type LeaveSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11012,9 +11149,17 @@ export namespace Prisma {
     type?: boolean
     status?: boolean
     reason?: boolean
+    managerId?: boolean
+    adminId?: boolean
+    managerStatus?: boolean
+    adminStatus?: boolean
+    managerComment?: boolean
+    adminComment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    manager?: boolean | Leave$managerArgs<ExtArgs>
+    admin?: boolean | Leave$adminArgs<ExtArgs>
   }, ExtArgs["result"]["leave"]>
 
   export type LeaveSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11025,9 +11170,17 @@ export namespace Prisma {
     type?: boolean
     status?: boolean
     reason?: boolean
+    managerId?: boolean
+    adminId?: boolean
+    managerStatus?: boolean
+    adminStatus?: boolean
+    managerComment?: boolean
+    adminComment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    manager?: boolean | Leave$managerArgs<ExtArgs>
+    admin?: boolean | Leave$adminArgs<ExtArgs>
   }, ExtArgs["result"]["leave"]>
 
   export type LeaveSelectScalar = {
@@ -11038,25 +11191,39 @@ export namespace Prisma {
     type?: boolean
     status?: boolean
     reason?: boolean
+    managerId?: boolean
+    adminId?: boolean
+    managerStatus?: boolean
+    adminStatus?: boolean
+    managerComment?: boolean
+    adminComment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LeaveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "startDate" | "endDate" | "type" | "status" | "reason" | "createdAt" | "updatedAt", ExtArgs["result"]["leave"]>
+  export type LeaveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "startDate" | "endDate" | "type" | "status" | "reason" | "managerId" | "adminId" | "managerStatus" | "adminStatus" | "managerComment" | "adminComment" | "createdAt" | "updatedAt", ExtArgs["result"]["leave"]>
   export type LeaveInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    manager?: boolean | Leave$managerArgs<ExtArgs>
+    admin?: boolean | Leave$adminArgs<ExtArgs>
   }
   export type LeaveIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    manager?: boolean | Leave$managerArgs<ExtArgs>
+    admin?: boolean | Leave$adminArgs<ExtArgs>
   }
   export type LeaveIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    manager?: boolean | Leave$managerArgs<ExtArgs>
+    admin?: boolean | Leave$adminArgs<ExtArgs>
   }
 
   export type $LeavePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Leave"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      manager: Prisma.$UserPayload<ExtArgs> | null
+      admin: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11066,6 +11233,12 @@ export namespace Prisma {
       type: $Enums.LeaveType
       status: $Enums.LeaveStatus
       reason: string
+      managerId: string | null
+      adminId: string | null
+      managerStatus: $Enums.LeaveStatus
+      adminStatus: $Enums.LeaveStatus
+      managerComment: string | null
+      adminComment: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["leave"]>
@@ -11463,6 +11636,8 @@ export namespace Prisma {
   export interface Prisma__LeaveClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    manager<T extends Leave$managerArgs<ExtArgs> = {}>(args?: Subset<T, Leave$managerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    admin<T extends Leave$adminArgs<ExtArgs> = {}>(args?: Subset<T, Leave$adminArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11499,6 +11674,12 @@ export namespace Prisma {
     readonly type: FieldRef<"Leave", 'LeaveType'>
     readonly status: FieldRef<"Leave", 'LeaveStatus'>
     readonly reason: FieldRef<"Leave", 'String'>
+    readonly managerId: FieldRef<"Leave", 'String'>
+    readonly adminId: FieldRef<"Leave", 'String'>
+    readonly managerStatus: FieldRef<"Leave", 'LeaveStatus'>
+    readonly adminStatus: FieldRef<"Leave", 'LeaveStatus'>
+    readonly managerComment: FieldRef<"Leave", 'String'>
+    readonly adminComment: FieldRef<"Leave", 'String'>
     readonly createdAt: FieldRef<"Leave", 'DateTime'>
     readonly updatedAt: FieldRef<"Leave", 'DateTime'>
   }
@@ -11894,6 +12075,44 @@ export namespace Prisma {
      * Limit how many Leaves to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Leave.manager
+   */
+  export type Leave$managerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Leave.admin
+   */
+  export type Leave$adminArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -19710,6 +19929,7 @@ export namespace Prisma {
     gender: 'gender',
     maritalStatus: 'maritalStatus',
     reportsToId: 'reportsToId',
+    image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -19813,6 +20033,12 @@ export namespace Prisma {
     type: 'type',
     status: 'status',
     reason: 'reason',
+    managerId: 'managerId',
+    adminId: 'adminId',
+    managerStatus: 'managerStatus',
+    adminStatus: 'adminStatus',
+    managerComment: 'managerComment',
+    adminComment: 'adminComment',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -20137,6 +20363,7 @@ export namespace Prisma {
     gender?: EnumGenderNullableFilter<"User"> | $Enums.Gender | null
     maritalStatus?: EnumMaritalStatusNullableFilter<"User"> | $Enums.MaritalStatus | null
     reportsToId?: StringNullableFilter<"User"> | string | null
+    image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     reportsTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -20154,6 +20381,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentListRelationFilter
     notifications?: NotificationListRelationFilter
     meetings?: MeetingListRelationFilter
+    managerApprovals?: LeaveListRelationFilter
+    adminApprovals?: LeaveListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -20177,6 +20406,7 @@ export namespace Prisma {
     gender?: SortOrderInput | SortOrder
     maritalStatus?: SortOrderInput | SortOrder
     reportsToId?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     reportsTo?: UserOrderByWithRelationInput
@@ -20194,6 +20424,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     meetings?: MeetingOrderByRelationAggregateInput
+    managerApprovals?: LeaveOrderByRelationAggregateInput
+    adminApprovals?: LeaveOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -20220,6 +20452,7 @@ export namespace Prisma {
     gender?: EnumGenderNullableFilter<"User"> | $Enums.Gender | null
     maritalStatus?: EnumMaritalStatusNullableFilter<"User"> | $Enums.MaritalStatus | null
     reportsToId?: StringNullableFilter<"User"> | string | null
+    image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     reportsTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -20237,6 +20470,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentListRelationFilter
     notifications?: NotificationListRelationFilter
     meetings?: MeetingListRelationFilter
+    managerApprovals?: LeaveListRelationFilter
+    adminApprovals?: LeaveListRelationFilter
   }, "id" | "username" | "email" | "cnic">
 
   export type UserOrderByWithAggregationInput = {
@@ -20260,6 +20495,7 @@ export namespace Prisma {
     gender?: SortOrderInput | SortOrder
     maritalStatus?: SortOrderInput | SortOrder
     reportsToId?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -20293,6 +20529,7 @@ export namespace Prisma {
     gender?: EnumGenderNullableWithAggregatesFilter<"User"> | $Enums.Gender | null
     maritalStatus?: EnumMaritalStatusNullableWithAggregatesFilter<"User"> | $Enums.MaritalStatus | null
     reportsToId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    image?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -20751,9 +20988,17 @@ export namespace Prisma {
     type?: EnumLeaveTypeFilter<"Leave"> | $Enums.LeaveType
     status?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
     reason?: StringFilter<"Leave"> | string
+    managerId?: StringNullableFilter<"Leave"> | string | null
+    adminId?: StringNullableFilter<"Leave"> | string | null
+    managerStatus?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
+    managerComment?: StringNullableFilter<"Leave"> | string | null
+    adminComment?: StringNullableFilter<"Leave"> | string | null
     createdAt?: DateTimeFilter<"Leave"> | Date | string
     updatedAt?: DateTimeFilter<"Leave"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    manager?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    admin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type LeaveOrderByWithRelationInput = {
@@ -20764,9 +21009,17 @@ export namespace Prisma {
     type?: SortOrder
     status?: SortOrder
     reason?: SortOrder
+    managerId?: SortOrderInput | SortOrder
+    adminId?: SortOrderInput | SortOrder
+    managerStatus?: SortOrder
+    adminStatus?: SortOrder
+    managerComment?: SortOrderInput | SortOrder
+    adminComment?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
+    manager?: UserOrderByWithRelationInput
+    admin?: UserOrderByWithRelationInput
   }
 
   export type LeaveWhereUniqueInput = Prisma.AtLeast<{
@@ -20780,9 +21033,17 @@ export namespace Prisma {
     type?: EnumLeaveTypeFilter<"Leave"> | $Enums.LeaveType
     status?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
     reason?: StringFilter<"Leave"> | string
+    managerId?: StringNullableFilter<"Leave"> | string | null
+    adminId?: StringNullableFilter<"Leave"> | string | null
+    managerStatus?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
+    managerComment?: StringNullableFilter<"Leave"> | string | null
+    adminComment?: StringNullableFilter<"Leave"> | string | null
     createdAt?: DateTimeFilter<"Leave"> | Date | string
     updatedAt?: DateTimeFilter<"Leave"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    manager?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    admin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type LeaveOrderByWithAggregationInput = {
@@ -20793,6 +21054,12 @@ export namespace Prisma {
     type?: SortOrder
     status?: SortOrder
     reason?: SortOrder
+    managerId?: SortOrderInput | SortOrder
+    adminId?: SortOrderInput | SortOrder
+    managerStatus?: SortOrder
+    adminStatus?: SortOrder
+    managerComment?: SortOrderInput | SortOrder
+    adminComment?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LeaveCountOrderByAggregateInput
@@ -20811,6 +21078,12 @@ export namespace Prisma {
     type?: EnumLeaveTypeWithAggregatesFilter<"Leave"> | $Enums.LeaveType
     status?: EnumLeaveStatusWithAggregatesFilter<"Leave"> | $Enums.LeaveStatus
     reason?: StringWithAggregatesFilter<"Leave"> | string
+    managerId?: StringNullableWithAggregatesFilter<"Leave"> | string | null
+    adminId?: StringNullableWithAggregatesFilter<"Leave"> | string | null
+    managerStatus?: EnumLeaveStatusWithAggregatesFilter<"Leave"> | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusWithAggregatesFilter<"Leave"> | $Enums.LeaveStatus
+    managerComment?: StringNullableWithAggregatesFilter<"Leave"> | string | null
+    adminComment?: StringNullableWithAggregatesFilter<"Leave"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Leave"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Leave"> | Date | string
   }
@@ -21309,6 +21582,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -21326,6 +21600,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -21349,6 +21625,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -21365,6 +21642,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserUpdateInput = {
@@ -21387,6 +21666,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -21404,6 +21684,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -21427,6 +21709,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -21443,6 +21726,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21466,6 +21751,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21490,6 +21776,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21515,6 +21802,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22010,9 +22298,15 @@ export namespace Prisma {
     type: $Enums.LeaveType
     status?: $Enums.LeaveStatus
     reason: string
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutLeavesInput
+    manager?: UserCreateNestedOneWithoutManagerApprovalsInput
+    admin?: UserCreateNestedOneWithoutAdminApprovalsInput
   }
 
   export type LeaveUncheckedCreateInput = {
@@ -22023,6 +22317,12 @@ export namespace Prisma {
     type: $Enums.LeaveType
     status?: $Enums.LeaveStatus
     reason: string
+    managerId?: string | null
+    adminId?: string | null
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22034,9 +22334,15 @@ export namespace Prisma {
     type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
     status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
     reason?: StringFieldUpdateOperationsInput | string
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutLeavesNestedInput
+    manager?: UserUpdateOneWithoutManagerApprovalsNestedInput
+    admin?: UserUpdateOneWithoutAdminApprovalsNestedInput
   }
 
   export type LeaveUncheckedUpdateInput = {
@@ -22047,6 +22353,12 @@ export namespace Prisma {
     type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
     status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
     reason?: StringFieldUpdateOperationsInput | string
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22059,6 +22371,12 @@ export namespace Prisma {
     type: $Enums.LeaveType
     status?: $Enums.LeaveStatus
     reason: string
+    managerId?: string | null
+    adminId?: string | null
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22070,6 +22388,10 @@ export namespace Prisma {
     type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
     status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
     reason?: StringFieldUpdateOperationsInput | string
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22082,6 +22404,12 @@ export namespace Prisma {
     type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
     status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
     reason?: StringFieldUpdateOperationsInput | string
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22832,6 +23160,7 @@ export namespace Prisma {
     gender?: SortOrder
     maritalStatus?: SortOrder
     reportsToId?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -22861,6 +23190,7 @@ export namespace Prisma {
     gender?: SortOrder
     maritalStatus?: SortOrder
     reportsToId?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -22886,6 +23216,7 @@ export namespace Prisma {
     gender?: SortOrder
     maritalStatus?: SortOrder
     reportsToId?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23298,6 +23629,12 @@ export namespace Prisma {
     type?: SortOrder
     status?: SortOrder
     reason?: SortOrder
+    managerId?: SortOrder
+    adminId?: SortOrder
+    managerStatus?: SortOrder
+    adminStatus?: SortOrder
+    managerComment?: SortOrder
+    adminComment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23310,6 +23647,12 @@ export namespace Prisma {
     type?: SortOrder
     status?: SortOrder
     reason?: SortOrder
+    managerId?: SortOrder
+    adminId?: SortOrder
+    managerStatus?: SortOrder
+    adminStatus?: SortOrder
+    managerComment?: SortOrder
+    adminComment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23322,6 +23665,12 @@ export namespace Prisma {
     type?: SortOrder
     status?: SortOrder
     reason?: SortOrder
+    managerId?: SortOrder
+    adminId?: SortOrder
+    managerStatus?: SortOrder
+    adminStatus?: SortOrder
+    managerComment?: SortOrder
+    adminComment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23766,6 +24115,20 @@ export namespace Prisma {
     connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
   }
 
+  export type LeaveCreateNestedManyWithoutManagerInput = {
+    create?: XOR<LeaveCreateWithoutManagerInput, LeaveUncheckedCreateWithoutManagerInput> | LeaveCreateWithoutManagerInput[] | LeaveUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: LeaveCreateOrConnectWithoutManagerInput | LeaveCreateOrConnectWithoutManagerInput[]
+    createMany?: LeaveCreateManyManagerInputEnvelope
+    connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+  }
+
+  export type LeaveCreateNestedManyWithoutAdminInput = {
+    create?: XOR<LeaveCreateWithoutAdminInput, LeaveUncheckedCreateWithoutAdminInput> | LeaveCreateWithoutAdminInput[] | LeaveUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: LeaveCreateOrConnectWithoutAdminInput | LeaveCreateOrConnectWithoutAdminInput[]
+    createMany?: LeaveCreateManyAdminInputEnvelope
+    connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutReportsToInput = {
     create?: XOR<UserCreateWithoutReportsToInput, UserUncheckedCreateWithoutReportsToInput> | UserCreateWithoutReportsToInput[] | UserUncheckedCreateWithoutReportsToInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportsToInput | UserCreateOrConnectWithoutReportsToInput[]
@@ -23860,6 +24223,20 @@ export namespace Prisma {
     connectOrCreate?: MeetingCreateOrConnectWithoutUserInput | MeetingCreateOrConnectWithoutUserInput[]
     createMany?: MeetingCreateManyUserInputEnvelope
     connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
+  export type LeaveUncheckedCreateNestedManyWithoutManagerInput = {
+    create?: XOR<LeaveCreateWithoutManagerInput, LeaveUncheckedCreateWithoutManagerInput> | LeaveCreateWithoutManagerInput[] | LeaveUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: LeaveCreateOrConnectWithoutManagerInput | LeaveCreateOrConnectWithoutManagerInput[]
+    createMany?: LeaveCreateManyManagerInputEnvelope
+    connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+  }
+
+  export type LeaveUncheckedCreateNestedManyWithoutAdminInput = {
+    create?: XOR<LeaveCreateWithoutAdminInput, LeaveUncheckedCreateWithoutAdminInput> | LeaveCreateWithoutAdminInput[] | LeaveUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: LeaveCreateOrConnectWithoutAdminInput | LeaveCreateOrConnectWithoutAdminInput[]
+    createMany?: LeaveCreateManyAdminInputEnvelope
+    connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -24096,6 +24473,34 @@ export namespace Prisma {
     deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
   }
 
+  export type LeaveUpdateManyWithoutManagerNestedInput = {
+    create?: XOR<LeaveCreateWithoutManagerInput, LeaveUncheckedCreateWithoutManagerInput> | LeaveCreateWithoutManagerInput[] | LeaveUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: LeaveCreateOrConnectWithoutManagerInput | LeaveCreateOrConnectWithoutManagerInput[]
+    upsert?: LeaveUpsertWithWhereUniqueWithoutManagerInput | LeaveUpsertWithWhereUniqueWithoutManagerInput[]
+    createMany?: LeaveCreateManyManagerInputEnvelope
+    set?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    disconnect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    delete?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    update?: LeaveUpdateWithWhereUniqueWithoutManagerInput | LeaveUpdateWithWhereUniqueWithoutManagerInput[]
+    updateMany?: LeaveUpdateManyWithWhereWithoutManagerInput | LeaveUpdateManyWithWhereWithoutManagerInput[]
+    deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
+  }
+
+  export type LeaveUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<LeaveCreateWithoutAdminInput, LeaveUncheckedCreateWithoutAdminInput> | LeaveCreateWithoutAdminInput[] | LeaveUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: LeaveCreateOrConnectWithoutAdminInput | LeaveCreateOrConnectWithoutAdminInput[]
+    upsert?: LeaveUpsertWithWhereUniqueWithoutAdminInput | LeaveUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: LeaveCreateManyAdminInputEnvelope
+    set?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    disconnect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    delete?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    update?: LeaveUpdateWithWhereUniqueWithoutAdminInput | LeaveUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: LeaveUpdateManyWithWhereWithoutAdminInput | LeaveUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutReportsToNestedInput = {
     create?: XOR<UserCreateWithoutReportsToInput, UserUncheckedCreateWithoutReportsToInput> | UserCreateWithoutReportsToInput[] | UserUncheckedCreateWithoutReportsToInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportsToInput | UserCreateOrConnectWithoutReportsToInput[]
@@ -24284,6 +24689,34 @@ export namespace Prisma {
     deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
   }
 
+  export type LeaveUncheckedUpdateManyWithoutManagerNestedInput = {
+    create?: XOR<LeaveCreateWithoutManagerInput, LeaveUncheckedCreateWithoutManagerInput> | LeaveCreateWithoutManagerInput[] | LeaveUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: LeaveCreateOrConnectWithoutManagerInput | LeaveCreateOrConnectWithoutManagerInput[]
+    upsert?: LeaveUpsertWithWhereUniqueWithoutManagerInput | LeaveUpsertWithWhereUniqueWithoutManagerInput[]
+    createMany?: LeaveCreateManyManagerInputEnvelope
+    set?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    disconnect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    delete?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    update?: LeaveUpdateWithWhereUniqueWithoutManagerInput | LeaveUpdateWithWhereUniqueWithoutManagerInput[]
+    updateMany?: LeaveUpdateManyWithWhereWithoutManagerInput | LeaveUpdateManyWithWhereWithoutManagerInput[]
+    deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
+  }
+
+  export type LeaveUncheckedUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<LeaveCreateWithoutAdminInput, LeaveUncheckedCreateWithoutAdminInput> | LeaveCreateWithoutAdminInput[] | LeaveUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: LeaveCreateOrConnectWithoutAdminInput | LeaveCreateOrConnectWithoutAdminInput[]
+    upsert?: LeaveUpsertWithWhereUniqueWithoutAdminInput | LeaveUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: LeaveCreateManyAdminInputEnvelope
+    set?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    disconnect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    delete?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+    update?: LeaveUpdateWithWhereUniqueWithoutAdminInput | LeaveUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: LeaveUpdateManyWithWhereWithoutAdminInput | LeaveUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutEmergencyContactInput = {
     create?: XOR<UserCreateWithoutEmergencyContactInput, UserUncheckedCreateWithoutEmergencyContactInput>
     connectOrCreate?: UserCreateOrConnectWithoutEmergencyContactInput
@@ -24386,6 +24819,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type UserCreateNestedOneWithoutManagerApprovalsInput = {
+    create?: XOR<UserCreateWithoutManagerApprovalsInput, UserUncheckedCreateWithoutManagerApprovalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutManagerApprovalsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAdminApprovalsInput = {
+    create?: XOR<UserCreateWithoutAdminApprovalsInput, UserUncheckedCreateWithoutAdminApprovalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminApprovalsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type EnumLeaveTypeFieldUpdateOperationsInput = {
     set?: $Enums.LeaveType
   }
@@ -24400,6 +24845,26 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutLeavesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeavesInput, UserUpdateWithoutLeavesInput>, UserUncheckedUpdateWithoutLeavesInput>
+  }
+
+  export type UserUpdateOneWithoutManagerApprovalsNestedInput = {
+    create?: XOR<UserCreateWithoutManagerApprovalsInput, UserUncheckedCreateWithoutManagerApprovalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutManagerApprovalsInput
+    upsert?: UserUpsertWithoutManagerApprovalsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutManagerApprovalsInput, UserUpdateWithoutManagerApprovalsInput>, UserUncheckedUpdateWithoutManagerApprovalsInput>
+  }
+
+  export type UserUpdateOneWithoutAdminApprovalsNestedInput = {
+    create?: XOR<UserCreateWithoutAdminApprovalsInput, UserUncheckedCreateWithoutAdminApprovalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminApprovalsInput
+    upsert?: UserUpsertWithoutAdminApprovalsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdminApprovalsInput, UserUpdateWithoutAdminApprovalsInput>, UserUncheckedUpdateWithoutAdminApprovalsInput>
   }
 
   export type UserCreateNestedOneWithoutTasksInput = {
@@ -24918,6 +25383,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -24934,6 +25400,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutSubordinatesInput = {
@@ -24957,6 +25425,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -24972,6 +25441,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutSubordinatesInput = {
@@ -24999,6 +25470,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -25015,6 +25487,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutReportsToInput = {
@@ -25037,6 +25511,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -25053,6 +25528,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutReportsToInput = {
@@ -25250,8 +25727,14 @@ export namespace Prisma {
     type: $Enums.LeaveType
     status?: $Enums.LeaveStatus
     reason: string
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    manager?: UserCreateNestedOneWithoutManagerApprovalsInput
+    admin?: UserCreateNestedOneWithoutAdminApprovalsInput
   }
 
   export type LeaveUncheckedCreateWithoutUserInput = {
@@ -25261,6 +25744,12 @@ export namespace Prisma {
     type: $Enums.LeaveType
     status?: $Enums.LeaveStatus
     reason: string
+    managerId?: string | null
+    adminId?: string | null
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -25437,6 +25926,94 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LeaveCreateWithoutManagerInput = {
+    id?: string
+    startDate: Date | string
+    endDate: Date | string
+    type: $Enums.LeaveType
+    status?: $Enums.LeaveStatus
+    reason: string
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutLeavesInput
+    admin?: UserCreateNestedOneWithoutAdminApprovalsInput
+  }
+
+  export type LeaveUncheckedCreateWithoutManagerInput = {
+    id?: string
+    userId: string
+    startDate: Date | string
+    endDate: Date | string
+    type: $Enums.LeaveType
+    status?: $Enums.LeaveStatus
+    reason: string
+    adminId?: string | null
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeaveCreateOrConnectWithoutManagerInput = {
+    where: LeaveWhereUniqueInput
+    create: XOR<LeaveCreateWithoutManagerInput, LeaveUncheckedCreateWithoutManagerInput>
+  }
+
+  export type LeaveCreateManyManagerInputEnvelope = {
+    data: LeaveCreateManyManagerInput | LeaveCreateManyManagerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeaveCreateWithoutAdminInput = {
+    id?: string
+    startDate: Date | string
+    endDate: Date | string
+    type: $Enums.LeaveType
+    status?: $Enums.LeaveStatus
+    reason: string
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutLeavesInput
+    manager?: UserCreateNestedOneWithoutManagerApprovalsInput
+  }
+
+  export type LeaveUncheckedCreateWithoutAdminInput = {
+    id?: string
+    userId: string
+    startDate: Date | string
+    endDate: Date | string
+    type: $Enums.LeaveType
+    status?: $Enums.LeaveStatus
+    reason: string
+    managerId?: string | null
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeaveCreateOrConnectWithoutAdminInput = {
+    where: LeaveWhereUniqueInput
+    create: XOR<LeaveCreateWithoutAdminInput, LeaveUncheckedCreateWithoutAdminInput>
+  }
+
+  export type LeaveCreateManyAdminInputEnvelope = {
+    data: LeaveCreateManyAdminInput | LeaveCreateManyAdminInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutSubordinatesInput = {
     update: XOR<UserUpdateWithoutSubordinatesInput, UserUncheckedUpdateWithoutSubordinatesInput>
     create: XOR<UserCreateWithoutSubordinatesInput, UserUncheckedCreateWithoutSubordinatesInput>
@@ -25468,6 +26045,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -25484,6 +26062,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubordinatesInput = {
@@ -25507,6 +26087,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -25522,6 +26103,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutReportsToInput = {
@@ -25564,6 +26147,7 @@ export namespace Prisma {
     gender?: EnumGenderNullableFilter<"User"> | $Enums.Gender | null
     maritalStatus?: EnumMaritalStatusNullableFilter<"User"> | $Enums.MaritalStatus | null
     reportsToId?: StringNullableFilter<"User"> | string | null
+    image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
@@ -25781,6 +26365,12 @@ export namespace Prisma {
     type?: EnumLeaveTypeFilter<"Leave"> | $Enums.LeaveType
     status?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
     reason?: StringFilter<"Leave"> | string
+    managerId?: StringNullableFilter<"Leave"> | string | null
+    adminId?: StringNullableFilter<"Leave"> | string | null
+    managerStatus?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFilter<"Leave"> | $Enums.LeaveStatus
+    managerComment?: StringNullableFilter<"Leave"> | string | null
+    adminComment?: StringNullableFilter<"Leave"> | string | null
     createdAt?: DateTimeFilter<"Leave"> | Date | string
     updatedAt?: DateTimeFilter<"Leave"> | Date | string
   }
@@ -25956,6 +26546,38 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
   }
 
+  export type LeaveUpsertWithWhereUniqueWithoutManagerInput = {
+    where: LeaveWhereUniqueInput
+    update: XOR<LeaveUpdateWithoutManagerInput, LeaveUncheckedUpdateWithoutManagerInput>
+    create: XOR<LeaveCreateWithoutManagerInput, LeaveUncheckedCreateWithoutManagerInput>
+  }
+
+  export type LeaveUpdateWithWhereUniqueWithoutManagerInput = {
+    where: LeaveWhereUniqueInput
+    data: XOR<LeaveUpdateWithoutManagerInput, LeaveUncheckedUpdateWithoutManagerInput>
+  }
+
+  export type LeaveUpdateManyWithWhereWithoutManagerInput = {
+    where: LeaveScalarWhereInput
+    data: XOR<LeaveUpdateManyMutationInput, LeaveUncheckedUpdateManyWithoutManagerInput>
+  }
+
+  export type LeaveUpsertWithWhereUniqueWithoutAdminInput = {
+    where: LeaveWhereUniqueInput
+    update: XOR<LeaveUpdateWithoutAdminInput, LeaveUncheckedUpdateWithoutAdminInput>
+    create: XOR<LeaveCreateWithoutAdminInput, LeaveUncheckedCreateWithoutAdminInput>
+  }
+
+  export type LeaveUpdateWithWhereUniqueWithoutAdminInput = {
+    where: LeaveWhereUniqueInput
+    data: XOR<LeaveUpdateWithoutAdminInput, LeaveUncheckedUpdateWithoutAdminInput>
+  }
+
+  export type LeaveUpdateManyWithWhereWithoutAdminInput = {
+    where: LeaveScalarWhereInput
+    data: XOR<LeaveUpdateManyMutationInput, LeaveUncheckedUpdateManyWithoutAdminInput>
+  }
+
   export type UserCreateWithoutEmergencyContactInput = {
     id?: string
     username: string
@@ -25976,6 +26598,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -25992,6 +26615,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutEmergencyContactInput = {
@@ -26015,6 +26640,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -26030,6 +26656,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutEmergencyContactInput = {
@@ -26068,6 +26696,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -26084,6 +26713,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmergencyContactInput = {
@@ -26107,6 +26738,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -26122,6 +26754,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutEducationInput = {
@@ -26144,6 +26778,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -26160,6 +26795,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutEducationInput = {
@@ -26183,6 +26820,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -26198,6 +26836,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutEducationInput = {
@@ -26236,6 +26876,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -26252,6 +26893,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEducationInput = {
@@ -26275,6 +26918,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -26290,6 +26934,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutExperienceInput = {
@@ -26312,6 +26958,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -26328,6 +26975,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutExperienceInput = {
@@ -26351,6 +27000,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -26366,6 +27016,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutExperienceInput = {
@@ -26404,6 +27056,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -26420,6 +27073,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExperienceInput = {
@@ -26443,6 +27098,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -26458,6 +27114,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutDocumentsInput = {
@@ -26480,6 +27138,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -26496,6 +27155,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -26519,6 +27180,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -26534,6 +27196,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -26572,6 +27236,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -26588,6 +27253,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -26611,6 +27278,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -26626,6 +27294,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutBankDetailsInput = {
@@ -26648,6 +27318,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -26664,6 +27335,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutBankDetailsInput = {
@@ -26687,6 +27360,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -26702,6 +27376,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutBankDetailsInput = {
@@ -26740,6 +27416,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -26756,6 +27433,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBankDetailsInput = {
@@ -26779,6 +27458,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -26794,6 +27474,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutAttendanceInput = {
@@ -26816,6 +27498,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -26832,6 +27515,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutAttendanceInput = {
@@ -26855,6 +27540,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -26870,6 +27556,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutAttendanceInput = {
@@ -26908,6 +27596,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -26924,6 +27613,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAttendanceInput = {
@@ -26947,6 +27638,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -26962,6 +27654,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutLeavesInput = {
@@ -26984,6 +27678,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -27000,6 +27695,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutLeavesInput = {
@@ -27023,6 +27720,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -27038,11 +27736,187 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutLeavesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutLeavesInput, UserUncheckedCreateWithoutLeavesInput>
+  }
+
+  export type UserCreateWithoutManagerApprovalsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    role?: $Enums.Role
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+  }
+
+  export type UserUncheckedCreateWithoutManagerApprovalsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    role?: $Enums.Role
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+  }
+
+  export type UserCreateOrConnectWithoutManagerApprovalsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutManagerApprovalsInput, UserUncheckedCreateWithoutManagerApprovalsInput>
+  }
+
+  export type UserCreateWithoutAdminApprovalsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    role?: $Enums.Role
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+  }
+
+  export type UserUncheckedCreateWithoutAdminApprovalsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    role?: $Enums.Role
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+  }
+
+  export type UserCreateOrConnectWithoutAdminApprovalsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdminApprovalsInput, UserUncheckedCreateWithoutAdminApprovalsInput>
   }
 
   export type UserUpsertWithoutLeavesInput = {
@@ -27076,6 +27950,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -27092,6 +27967,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeavesInput = {
@@ -27115,6 +27992,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -27130,6 +28008,194 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+  }
+
+  export type UserUpsertWithoutManagerApprovalsInput = {
+    update: XOR<UserUpdateWithoutManagerApprovalsInput, UserUncheckedUpdateWithoutManagerApprovalsInput>
+    create: XOR<UserCreateWithoutManagerApprovalsInput, UserUncheckedCreateWithoutManagerApprovalsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutManagerApprovalsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutManagerApprovalsInput, UserUncheckedUpdateWithoutManagerApprovalsInput>
+  }
+
+  export type UserUpdateWithoutManagerApprovalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutManagerApprovalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+  }
+
+  export type UserUpsertWithoutAdminApprovalsInput = {
+    update: XOR<UserUpdateWithoutAdminApprovalsInput, UserUncheckedUpdateWithoutAdminApprovalsInput>
+    create: XOR<UserCreateWithoutAdminApprovalsInput, UserUncheckedCreateWithoutAdminApprovalsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdminApprovalsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdminApprovalsInput, UserUncheckedUpdateWithoutAdminApprovalsInput>
+  }
+
+  export type UserUpdateWithoutAdminApprovalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdminApprovalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
   }
 
   export type UserCreateWithoutTasksInput = {
@@ -27152,6 +28218,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -27168,6 +28235,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -27191,6 +28260,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -27206,6 +28276,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -27244,6 +28316,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -27260,6 +28333,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -27283,6 +28358,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -27298,6 +28374,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutSkillsInput = {
@@ -27320,6 +28398,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -27336,6 +28415,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutSkillsInput = {
@@ -27359,6 +28440,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -27374,6 +28456,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutSkillsInput = {
@@ -27412,6 +28496,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -27428,6 +28513,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSkillsInput = {
@@ -27451,6 +28538,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -27466,6 +28554,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutPerformanceInput = {
@@ -27488,6 +28578,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -27504,6 +28595,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutPerformanceInput = {
@@ -27527,6 +28620,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -27542,6 +28636,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutPerformanceInput = {
@@ -27580,6 +28676,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -27596,6 +28693,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPerformanceInput = {
@@ -27619,6 +28718,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -27634,6 +28734,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type ProjectAssignmentCreateWithoutProjectInput = {
@@ -27729,6 +28831,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -27745,6 +28848,8 @@ export namespace Prisma {
     performance?: PerformanceCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutProjectsInput = {
@@ -27768,6 +28873,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -27783,6 +28889,8 @@ export namespace Prisma {
     performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutProjectsInput = {
@@ -27862,6 +28970,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -27878,6 +28987,8 @@ export namespace Prisma {
     performance?: PerformanceUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -27901,6 +29012,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -27916,6 +29028,8 @@ export namespace Prisma {
     performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -27938,6 +29052,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -27954,6 +29069,8 @@ export namespace Prisma {
     performance?: PerformanceCreateNestedManyWithoutUserInput
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -27977,6 +29094,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -27992,6 +29110,8 @@ export namespace Prisma {
     performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -28030,6 +29150,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -28046,6 +29167,8 @@ export namespace Prisma {
     performance?: PerformanceUpdateManyWithoutUserNestedInput
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -28069,6 +29192,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -28084,6 +29208,8 @@ export namespace Prisma {
     performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateWithoutMeetingsInput = {
@@ -28106,6 +29232,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
@@ -28122,6 +29249,8 @@ export namespace Prisma {
     performance?: PerformanceCreateNestedManyWithoutUserInput
     projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
   }
 
   export type UserUncheckedCreateWithoutMeetingsInput = {
@@ -28145,6 +29274,7 @@ export namespace Prisma {
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
     reportsToId?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
@@ -28160,6 +29290,8 @@ export namespace Prisma {
     performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
     projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type UserCreateOrConnectWithoutMeetingsInput = {
@@ -28198,6 +29330,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
@@ -28214,6 +29347,8 @@ export namespace Prisma {
     performance?: PerformanceUpdateManyWithoutUserNestedInput
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMeetingsInput = {
@@ -28237,6 +29372,7 @@ export namespace Prisma {
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
     reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -28252,6 +29388,8 @@ export namespace Prisma {
     performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserCreateManyReportsToInput = {
@@ -28274,6 +29412,7 @@ export namespace Prisma {
     dateOfBirth?: Date | string | null
     gender?: $Enums.Gender | null
     maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28329,6 +29468,12 @@ export namespace Prisma {
     type: $Enums.LeaveType
     status?: $Enums.LeaveStatus
     reason: string
+    managerId?: string | null
+    adminId?: string | null
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28384,6 +29529,40 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type LeaveCreateManyManagerInput = {
+    id?: string
+    userId: string
+    startDate: Date | string
+    endDate: Date | string
+    type: $Enums.LeaveType
+    status?: $Enums.LeaveStatus
+    reason: string
+    adminId?: string | null
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeaveCreateManyAdminInput = {
+    id?: string
+    userId: string
+    startDate: Date | string
+    endDate: Date | string
+    type: $Enums.LeaveType
+    status?: $Enums.LeaveStatus
+    reason: string
+    managerId?: string | null
+    managerStatus?: $Enums.LeaveStatus
+    adminStatus?: $Enums.LeaveStatus
+    managerComment?: string | null
+    adminComment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutReportsToInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
@@ -28404,6 +29583,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -28420,6 +29600,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsToInput = {
@@ -28442,6 +29624,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
@@ -28458,6 +29641,8 @@ export namespace Prisma {
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutReportsToInput = {
@@ -28480,6 +29665,7 @@ export namespace Prisma {
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
     maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28623,8 +29809,14 @@ export namespace Prisma {
     type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
     status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
     reason?: StringFieldUpdateOperationsInput | string
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    manager?: UserUpdateOneWithoutManagerApprovalsNestedInput
+    admin?: UserUpdateOneWithoutAdminApprovalsNestedInput
   }
 
   export type LeaveUncheckedUpdateWithoutUserInput = {
@@ -28634,6 +29826,12 @@ export namespace Prisma {
     type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
     status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
     reason?: StringFieldUpdateOperationsInput | string
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28645,6 +29843,12 @@ export namespace Prisma {
     type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
     status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
     reason?: StringFieldUpdateOperationsInput | string
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28798,6 +30002,108 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     color?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeaveUpdateWithoutManagerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
+    status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    reason?: StringFieldUpdateOperationsInput | string
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutLeavesNestedInput
+    admin?: UserUpdateOneWithoutAdminApprovalsNestedInput
+  }
+
+  export type LeaveUncheckedUpdateWithoutManagerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
+    status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    reason?: StringFieldUpdateOperationsInput | string
+    adminId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeaveUncheckedUpdateManyWithoutManagerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
+    status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    reason?: StringFieldUpdateOperationsInput | string
+    adminId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeaveUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
+    status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    reason?: StringFieldUpdateOperationsInput | string
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutLeavesNestedInput
+    manager?: UserUpdateOneWithoutManagerApprovalsNestedInput
+  }
+
+  export type LeaveUncheckedUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
+    status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    reason?: StringFieldUpdateOperationsInput | string
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeaveUncheckedUpdateManyWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: EnumLeaveTypeFieldUpdateOperationsInput | $Enums.LeaveType
+    status?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    reason?: StringFieldUpdateOperationsInput | string
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
+    managerComment?: NullableStringFieldUpdateOperationsInput | string | null
+    adminComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
