@@ -74,13 +74,40 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const [todayAttendance, setTodayAttendance] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<any>(null);
+  const [elapsedTime, setElapsedTime] = useState<string>("00:00:00");
 
   useEffect(() => {
     fetchTodayAttendance();
     fetchStats();
     // Set up interval to update stats every minute
     const interval = setInterval(fetchStats, 60000);
-    return () => clearInterval(interval);
+
+    let elapsedInterval: NodeJS.Timeout;
+
+    if (todayAttendance?.checkInTime && !todayAttendance?.checkOutTime) {
+      // Update elapsed time every second
+      elapsedInterval = setInterval(() => {
+        const checkInTime = new Date(todayAttendance.checkInTime);
+        const now = new Date();
+        const diff = now.getTime() - checkInTime.getTime();
+        
+        // Calculate hours, minutes, seconds
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        // Format time as HH:MM:SS
+        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        setElapsedTime(formattedTime);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(interval);
+      if (elapsedInterval) {
+        clearInterval(elapsedInterval);
+      }
+    };
   }, []);
 
   const fetchTodayAttendance = async () => {
@@ -400,6 +427,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
             {format(new Date(), "dd MMM yyyy")}
           </p>
         </div>
+      </div>
+
+      <div className="text-center mb-4">
+        <p className="text-sm text-gray-500">Time Elapsed</p>
+        <p className="text-xl font-bold">{elapsedTime}</p>
       </div>
 
       <div className="text-center mb-4">
