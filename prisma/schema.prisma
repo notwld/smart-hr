@@ -5,10 +5,10 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../lib/generated/prisma"
+  provider        = "prisma-client-js"
+  output          = "../lib/generated/prisma"
   previewFeatures = ["orderByRelation"]
-  binaryTargets = ["native", "rhel-openssl-3.0.x", "windows"]
+  binaryTargets   = ["native", "rhel-openssl-3.0.x", "windows"]
 }
 
 datasource db {
@@ -16,61 +16,164 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+enum DocumentType {
+  CNIC
+  PASSPORT
+  DEGREE
+  CERTIFICATE
+  CONTRACT
+  OTHER
+}
+
 model User {
-  id            String    @id @default(cuid())
-  username      String    @unique
-  firstName     String
-  lastName      String
-  email         String    @unique
-  cnic          String    @unique
-  pfp           String?   // profile picture
-  password      String
-  salary        Float
-  address       String
-  department    String
-  position      String
-  joinDate      DateTime
-  phone         String?
-  role          Role      @default(EMPLOYEE)
-  reportsTo     User?     @relation("ReportsTo", fields: [reportsToId], references: [id])
-  reportsToId   String?
-  subordinates  User[]    @relation("ReportsTo")
-  attendance    Attendance[]
-  leaves        Leave[]
-  tasks         Task[]
-  skills        Skill[]
-  performance   Performance[]
-  projects      ProjectAssignment[]
-  notifications Notification[]
-  meetings      Meeting[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id               String              @id @default(cuid())
+  username         String              @unique
+  firstName        String
+  lastName         String
+  email            String              @unique
+  cnic             String              @unique
+  pfp              String? // profile picture
+  password         String
+  salary           Float
+  address          String
+  department       String
+  position         String
+  joinDate         DateTime
+  phone            String?
+  role             Role                @default(EMPLOYEE)
+  status           String              @default("ACTIVE")
+  dateOfBirth      DateTime?           // Made optional
+  gender           Gender?             // Made optional
+  maritalStatus    MaritalStatus?      // Made optional
+  reportsTo        User?               @relation("ReportsTo", fields: [reportsToId], references: [id])
+  reportsToId      String?
+  subordinates     User[]              @relation("ReportsTo")
+  emergencyContact EmergencyContact?
+  education        Education[]
+  experience       Experience[]
+  documents        Document[]
+  bankDetails      BankDetails?
+  attendance       Attendance[]
+  leaves           Leave[]
+  tasks            Task[]
+  skills           Skill[]
+  performance      Performance[]
+  projects         ProjectAssignment[]
+  notifications    Notification[]
+  meetings         Meeting[]
+  image            String?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+}
+
+model EmergencyContact {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
+  name         String
+  relationship String
+  phone        String
+  address      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Education {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  degree      String
+  institution String
+  field       String
+  startDate   DateTime
+  endDate     DateTime?
+  grade       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Experience {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  company     String
+  position    String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Document {
+  id         String       @id @default(cuid())
+  userId     String
+  user       User         @relation(fields: [userId], references: [id])
+  type       DocumentType
+  name       String
+  url        String
+  uploadedAt DateTime     @default(now())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model BankDetails {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  bankName      String
+  accountNumber String
+  accountTitle  String
+  branchCode    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Attendance {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  date      DateTime
-  checkIn   DateTime
-  checkOut  DateTime?
-  status    AttendanceStatus
-  totalHoursToday String? // example: "5:48:32"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id])
+  checkInTime  DateTime?
+  checkOutTime DateTime?
+  totalHours   Float?
+  date         DateTime  @default(now())
+  status       String    @default("PRESENT")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([userId, date])
 }
 
 model Leave {
-  id          String     @id @default(cuid())
-  userId      String
-  user        User       @relation(fields: [userId], references: [id])
-  startDate   DateTime
-  endDate     DateTime
-  type        LeaveType
-  status      LeaveStatus @default(PENDING)
-  reason      String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  startDate DateTime
+  endDate   DateTime
+  type      LeaveType
+  status    LeaveStatus @default(PENDING)
+  reason    String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model Task {
@@ -108,19 +211,19 @@ model Performance {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  managerName String
-  joinDate    DateTime
-  tasksDone   Int
-  totalTasks  Int
+  id             String              @id @default(cuid())
+  name           String
+  description    String?
+  managerName    String
+  joinDate       DateTime
+  tasksDone      Int
+  totalTasks     Int
   timeSpentHours Int
-  totalHours  Int
-  progress    Int // in percentage
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  assignments ProjectAssignment[]
+  totalHours     Int
+  progress       Int // in percentage
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  assignments    ProjectAssignment[]
 }
 
 model ProjectAssignment {
@@ -133,13 +236,13 @@ model ProjectAssignment {
 }
 
 model Notification {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  message     String
-  timestamp   DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  message   String
+  timestamp DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Meeting {
@@ -148,23 +251,9 @@ model Meeting {
   user        User     @relation(fields: [userId], references: [id])
   title       String
   scheduledAt DateTime
-  color       String   // e.g., "blue", "green", "purple"
+  color       String // e.g., "blue", "green", "purple"
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-}
-
-enum Role {
-  ADMIN
-  MANAGER
-  EMPLOYEE
-}
-
-enum AttendanceStatus {
-  PRESENT
-  ABSENT
-  LATE
-  HALF_DAY
-  WORK_FROM_HOME
 }
 
 enum LeaveType {

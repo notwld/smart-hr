@@ -1,63 +1,42 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, DefaultSession, DefaultUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import { compare } from "bcryptjs";
-import NextAuth from "next-auth";
+import { JWT } from "next-auth/jwt";
 
-// Helper: Fetch full user data after login
+// Extend session types
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      role: string;
+    } & DefaultSession["user"];
+  }
+
+  interface User extends DefaultUser {
+    id: string;
+    role: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    role: string;
+  }
+}
+
+// Fetch user
 async function getFullUserData(email: string) {
   const user = await prisma.user.findUnique({
     where: { email },
   });
 
-  if (!user) {
-    return null;
-  }
-
-  // Fetch related data separately
-  const [attendance, leaves, tasks, skills, performance] = await Promise.all([
-    prisma.attendance.findMany({
-      where: { userId: user.id },
-      orderBy: { date: "desc" },
-      take: 30,
-    }),
-    prisma.leave.findMany({
-      where: { userId: user.id },
-      orderBy: { startDate: "desc" },
-      take: 5,
-    }),
-    prisma.task.findMany({
-      where: { assignedTo: user.id },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-    prisma.skill.findMany({
-      where: { userId: user.id },
-    }),
-    prisma.performance.findMany({
-      where: { userId: user.id },
-      orderBy: [
-        { year: "desc" },
-        { month: "desc" }
-      ],
-      take: 6,
-    }),
-  ]);
-
-  return {
-    ...user,
-    attendance,
-    leaves,
-    tasks,
-    skills,
-    performance,
-  };
+  return user;
 }
 
-// Your NextAuth configuration
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
   },
@@ -73,27 +52,25 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error("Missing credentials");
         }
 
-        // Fetch user
-        const userWithData = await getFullUserData(credentials.email);
+        const user = await getFullUserData(credentials.email);
 
-        if (!userWithData) {
-          return null;
+        if (!user) {
+          throw new Error("User not found");
         }
 
-        // Verify password
-        const isPasswordValid = await compare(credentials.password, userWithData.password);
+        const isPasswordValid = await compare(credentials.password, user.password);
         if (!isPasswordValid) {
-          return null;
+          throw new Error("Invalid credentials");
         }
 
         return {
-          id: userWithData.id,
-          email: userWithData.email,
-          name: userWithData.username,
-          role: userWithData.role,
+          id: user.id,
+          email: user.email,
+          name: user.username,
+          role: user.role,
         };
       },
     }),
@@ -101,21 +78,17 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        return {
-          ...token,
-          role: user.role,
-        };
+        token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          role: token.role,
-        },
-      };
+      if (token && session.user) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+      }
+      return session;
     },
   },
 };
