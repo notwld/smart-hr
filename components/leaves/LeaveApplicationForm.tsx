@@ -71,7 +71,7 @@ export default function LeaveApplicationForm() {
       }
 
       toast.success("Leave request submitted successfully");
-      router.push("/dashboard");
+      router.push("/");
       router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Error submitting leave request");
