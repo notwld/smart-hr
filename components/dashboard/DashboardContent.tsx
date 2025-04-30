@@ -93,6 +93,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<any>(null);
   const [elapsedTime, setElapsedTime] = useState<string>("00:00:00");
+  const [showLeaveBanner, setShowLeaveBanner] = useState(true);
 
   useEffect(() => {
     fetchTodayAttendance();
@@ -102,9 +103,8 @@ export default function DashboardContent({ user }: DashboardContentProps) {
 
     let elapsedInterval: NodeJS.Timeout;
 
-    if (todayAttendance?.checkInTime && !todayAttendance?.checkOutTime) {
-      // Update elapsed time every second
-      elapsedInterval = setInterval(() => {
+    const updateElapsedTime = () => {
+      if (todayAttendance?.checkInTime && !todayAttendance?.checkOutTime) {
         const checkInTime = new Date(todayAttendance.checkInTime);
         const now = new Date();
         const diff = now.getTime() - checkInTime.getTime();
@@ -117,7 +117,15 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         // Format time as HH:MM:SS
         const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         setElapsedTime(formattedTime);
-      }, 1000);
+      }
+    };
+
+    // Initial update
+    updateElapsedTime();
+
+    // Set up interval for updates
+    if (todayAttendance?.checkInTime && !todayAttendance?.checkOutTime) {
+      elapsedInterval = setInterval(updateElapsedTime, 1000);
     }
 
     return () => {
@@ -126,8 +134,8 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         clearInterval(elapsedInterval);
       }
     };
-  }, []);
-
+  }, [todayAttendance]);
+ 
   const fetchTodayAttendance = async () => {
     try {
       const res = await axios.get("/api/attendance/today");
@@ -152,10 +160,14 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       const response = await axios.post("/api/attendance/checkin");
       if (response.status === 200) {
         await fetchTodayAttendance();
+        toast.success("Successfully checked in!");
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Check-in failed. Please try again.";
-      alert(errorMessage);
+      console.error("Check-in error:", error);
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.error || 
+                          "Failed to check in. Please try again.";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -164,12 +176,20 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const handleCheckOut = async () => {
     setLoading(true);
     try {
-      await axios.post("/api/attendance/checkout");
-      await fetchTodayAttendance();
+      const response = await axios.post("/api/attendance/checkout");
+      if (response.status === 200) {
+        await fetchTodayAttendance();
+        toast.success("Successfully checked out!");
+      }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Check-out failed");
+      console.error("Check-out error:", error);
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.error || 
+                          "Failed to check out. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   // Helper function to format total hours
@@ -193,7 +213,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
               <AlertCircle className="w-4 h-4 mr-2" />
               <span>Your Leave Request has been Approved!</span>
               <button className="ml-auto">
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" onClick={() => setShowLeaveBanner(false)} />
               </button>
             </div>
           )}
