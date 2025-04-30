@@ -209,7 +209,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         <header className="bg-white border-b border-gray-200">
           {/* Notification Banner */}
           {user.leaves.some(l => l.status === "APPROVED" && new Date(l.startDate) > new Date()) && (
-            <div className="bg-blue-50 text-blue-700 px-4 py-2 text-sm flex items-center">
+            <div className="bg-[#FF7B3D] text-white px-4 py-2 text-sm flex items-center">
               <AlertCircle className="w-4 h-4 mr-2" />
               <span>Your Leave Request has been Approved!</span>
               <button className="ml-auto">
@@ -263,18 +263,18 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-auto p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Employee Profile Card */}
             <Card className="overflow-hidden">
-              <div className="bg-blue-900 text-white p-4">
+              <div className="bg-[#FF7B3D] text-white p-4">
                 <div className="flex items-center">
                   <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white text-xl font-bold">
                     {user.firstName[0]} {user.lastName[0]}
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold">{user.firstName} {user.lastName}</h3>
-                    <p className="text-sm text-blue-200">{user.position} - {user.department}</p>
+                    <p className="text-sm text-white">{user.position} - {user.department}</p>
                   </div>
                 </div>
               </div>
