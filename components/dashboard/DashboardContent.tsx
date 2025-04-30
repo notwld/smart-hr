@@ -690,8 +690,230 @@ export default function DashboardContent({ user }: DashboardContentProps) {
 
            
           </div>
+
+          {/* Attendance History and Leave History Cards */}
+          <div className="col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            {/* Attendance History Card */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Attendance History</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <AttendanceHistoryTable />
+              </CardContent>
+            </Card>
+
+            {/* Leave History Card */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Leave History</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <LeaveHistoryTable />
+              </CardContent>
+            </Card>
+          </div>
         </main>
       </div>
     </div>
   )
+} 
+
+// Attendance History Table Component
+function AttendanceHistoryTable() {
+  const [attendanceHistory, setAttendanceHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAttendanceHistory = async () => {
+      try {
+        const response = await axios.get('/api/attendance/history?limit=5');
+        setAttendanceHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching attendance history:', error);
+        toast.error('Failed to load attendance history');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAttendanceHistory();
+  }, []);
+
+  // Function to get status badge color
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'PRESENT': return 'bg-green-100 text-green-800';
+      case 'LATE': return 'bg-yellow-100 text-yellow-800';
+      case 'ABSENT': return 'bg-red-100 text-red-800';
+      case 'WORK_FROM_HOME': return 'bg-blue-100 text-blue-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  // Function to format date
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), 'MMM dd, yyyy');
+  };
+
+  // Function to format time
+  const formatTime = (timeString: string | null) => {
+    if (!timeString) return '--:--';
+    return format(new Date(timeString), 'hh:mm a');
+  };
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-gray-50">
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Date</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Clock In</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Clock Out</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Hours</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Status</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {loading ? (
+            <tr>
+              <td colSpan={5} className="px-4 py-3 text-center">Loading...</td>
+            </tr>
+          ) : attendanceHistory.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-4 py-3 text-center">No attendance records found</td>
+            </tr>
+          ) : (
+            attendanceHistory.map((record) => (
+              <tr key={record.id} className="hover:bg-gray-50">
+                <td className="px-4 py-3">{formatDate(record.date)}</td>
+                <td className="px-4 py-3">{formatTime(record.checkInTime)}</td>
+                <td className="px-4 py-3">{formatTime(record.checkOutTime)}</td>
+                <td className="px-4 py-3">{record.totalHours ? record.totalHours.toFixed(2) : '--'}</td>
+                <td className="px-4 py-3">
+                  <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(record.status)}`}>
+                    {record.status}
+                  </span>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+      <div className="p-4 border-t border-gray-200 text-center">
+        <Link href="/attendance" className="text-sm text-blue-600 hover:text-blue-800">
+          View All Attendance Records →
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+// Leave History Table Component
+function LeaveHistoryTable() {
+  const [leaveHistory, setLeaveHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaveHistory = async () => {
+      try {
+        const response = await axios.get('/api/leaves/history?limit=5');
+        setLeaveHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching leave history:', error);
+        toast.error('Failed to load leave history');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaveHistory();
+  }, []);
+
+  // Function to get status badge color
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'APPROVED': return 'bg-green-100 text-green-800';
+      case 'PENDING': return 'bg-yellow-100 text-yellow-800';
+      case 'REJECTED': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  // Function to get leave type badge color
+  const getLeaveTypeColor = (type: string) => {
+    switch (type) {
+      case 'SICK': return 'bg-purple-100 text-purple-800';
+      case 'VACATION': return 'bg-blue-100 text-blue-800';
+      case 'PERSONAL': return 'bg-indigo-100 text-indigo-800';
+      case 'MATERNITY': return 'bg-pink-100 text-pink-800';
+      case 'PATERNITY': return 'bg-cyan-100 text-cyan-800';
+      case 'UNPAID': return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  // Function to format date
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), 'MMM dd, yyyy');
+  };
+
+  // Function to calculate leave duration in days
+  const getLeaveDuration = (startDate: string, endDate: string) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays + (diffDays === 1 ? ' day' : ' days');
+  };
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-gray-50">
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Type</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">From</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">To</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Duration</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Status</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {loading ? (
+            <tr>
+              <td colSpan={5} className="px-4 py-3 text-center">Loading...</td>
+            </tr>
+          ) : leaveHistory.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-4 py-3 text-center">No leave records found</td>
+            </tr>
+          ) : (
+            leaveHistory.map((record) => (
+              <tr key={record.id} className="hover:bg-gray-50">
+                <td className="px-4 py-3">
+                  <span className={`px-2 py-1 rounded-full text-xs ${getLeaveTypeColor(record.type)}`}>
+                    {record.type}
+                  </span>
+                </td>
+                <td className="px-4 py-3">{formatDate(record.startDate)}</td>
+                <td className="px-4 py-3">{formatDate(record.endDate)}</td>
+                <td className="px-4 py-3">{getLeaveDuration(record.startDate, record.endDate)}</td>
+                <td className="px-4 py-3">
+                  <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(record.status)}`}>
+                    {record.status}
+                  </span>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+      <div className="p-4 border-t border-gray-200 text-center">
+        <Link href="/leaves" className="text-sm text-blue-600 hover:text-blue-800">
+          View All Leave Records →
+        </Link>
+      </div>
+    </div>
+  );
 } 

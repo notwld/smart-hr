@@ -26,6 +26,7 @@ import {
     X,
     ChevronUp,
     LogOut,
+    UserPlus,
 } from "lucide-react"
 import { Button } from "./ui/button"
 import { signOut } from "next-auth/react"
@@ -52,6 +53,7 @@ export default function Sidebar() {
                         { icon: <Activity className="w-5 h-5" />, label: "Your Dashboard", active: true, href: "/" },
                         { icon: <FileText className="w-5 h-5" />, label: "Admin Dashboard", href: "/admin" },
                         { icon: <FileText className="w-5 h-5" />, label: "Employees", href: "/admin/employees" },
+                        { icon: <Users className="w-5 h-5" />, label: "Teams", href: "/teams" },
                         { icon: <FileText className="w-5 h-5" />, label: "Leaves", href: "/leaves" },
                     ].map((item, index) => (
                         <li key={index}>
