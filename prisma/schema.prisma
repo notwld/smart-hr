@@ -7,7 +7,6 @@
 generator client {
   provider        = "prisma-client-js"
   output          = "../lib/generated/prisma"
-  previewFeatures = ["orderByRelation"]
   binaryTargets   = ["native", "rhel-openssl-3.0.x", "windows"]
 }
 
@@ -16,7 +15,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
+// Legacy role enum - keeping for backward compatibility during migration
+enum LegacyRole {
   ADMIN
   MANAGER
   EMPLOYEE
@@ -59,7 +59,8 @@ model User {
   position         String
   joinDate         DateTime
   phone            String?
-  role             Role                @default(EMPLOYEE)
+  legacyRole       LegacyRole          @default(EMPLOYEE) @map("role") // Renamed for backward compatibility
+  userRoles        UserRole[]          // New relationship to roles
   status           String              @default("ACTIVE")
   dateOfBirth      DateTime?           // Made optional
   gender           Gender?             // Made optional
@@ -87,6 +88,55 @@ model User {
   adminApprovals   Leave[]             @relation("AdminApproval")
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
+}
+
+// New models for the roles and permissions system
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  description String?
+  isDefault   Boolean          @default(false)
+  userRoles   UserRole[]
+  permissions RolePermission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, roleId])
+}
+
+model Permission {
+  id           String           @id @default(cuid())
+  name         String           @unique
+  description  String?
+  resource     String           // The resource this permission applies to (e.g., "users", "leaves", "attendance")
+  action       String           // The action permitted (e.g., "read", "create", "update", "delete", "approve", "reject")
+  rolePermissions RolePermission[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@unique([resource, action])
+}
+
+model RolePermission {
+  id           String     @id @default(cuid())
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([roleId, permissionId])
 }
 
 model EmergencyContact {

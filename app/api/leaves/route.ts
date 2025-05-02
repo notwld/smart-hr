@@ -25,10 +25,20 @@ export async function POST(req: Request) {
       );
     }
 
-    // Get the user's manager
+    // Find the user's team and team leader
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      include: { reportsTo: true },
+      include: {
+        teams: {
+          include: {
+            team: {
+              include: {
+                leader: true
+              }
+            }
+          }
+        }
+      }
     });
 
     if (!user) {
@@ -38,7 +48,30 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create leave request
+    // Check if user has a team leader
+    const teamMembership = user.teams.length > 0 ? user.teams[0] : null;
+    const teamLeader = teamMembership?.team?.leader;
+    
+    if (!teamLeader) {
+      return NextResponse.json(
+        { message: "You need to be part of a team with a team leader to apply for leave" },
+        { status: 400 }
+      );
+    }
+
+    // Get an admin for approval (first admin found)
+    const admin = await prisma.user.findFirst({
+      where: { role: "ADMIN" },
+    });
+
+    if (!admin) {
+      return NextResponse.json(
+        { message: "No admin found in the system to approve leave requests" },
+        { status: 400 }
+      );
+    }
+
+    // Create leave request with both team leader and admin approval flow
     const leave = await prisma.leave.create({
       data: {
         userId: session.user.id,
@@ -46,7 +79,8 @@ export async function POST(req: Request) {
         endDate: new Date(endDate),
         type,
         reason,
-        managerId: user.reportsTo?.id,
+        managerId: teamLeader.id,
+        adminId: admin.id,
         status: "PENDING",
         managerStatus: "PENDING",
         adminStatus: "PENDING",

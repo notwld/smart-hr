@@ -47,33 +47,54 @@ export async function PUT(
 
     let updateData: any = {};
 
-    if (user.role === "MANAGER" && leave.managerId === user.id) {
-      // Manager approval
+    // Handle team leader approval
+    if (leave.managerId === user.id && leave.managerStatus === "PENDING") {
       updateData = {
         managerStatus: status,
         managerComment: comment,
       };
 
-      // If manager approves, set admin status to pending
-      if (status === "APPROVED") {
-        updateData.adminStatus = "PENDING";
-      } else if (status === "REJECTED") {
+      // If team leader rejects, the overall status becomes rejected
+      if (status === "REJECTED") {
         updateData.status = "REJECTED";
+        updateData.adminStatus = "REJECTED"; // Auto-reject for admin as well
       }
-    } else if (user.role === "ADMIN") {
-      // Admin approval
+
+      // If team leader approves, we keep overall status as pending and wait for admin
+    } 
+    // Handle admin approval
+    else if (user.role === "ADMIN" && leave.adminId === user.id) {
+      // Check if team leader has already approved this leave
+      if (leave.managerStatus !== "APPROVED" && status === "APPROVED") {
+        return NextResponse.json(
+          { message: "Team leader approval is required before admin can approve" },
+          { status: 400 }
+        );
+      }
+
+      // Check if this leave is still pending admin approval
+      if (leave.adminStatus !== "PENDING") {
+        return NextResponse.json(
+          { message: "This leave request has already been processed by you" },
+          { status: 400 }
+        );
+      }
+
       updateData = {
         adminStatus: status,
         adminComment: comment,
       };
 
-      // If admin approves, set final status to approved
-      if (status === "APPROVED") {
+      // If admin approves and team leader has already approved, the overall status becomes approved
+      if (status === "APPROVED" && leave.managerStatus === "APPROVED") {
         updateData.status = "APPROVED";
-      } else if (status === "REJECTED") {
+      } 
+      // If admin rejects, the overall status becomes rejected
+      else if (status === "REJECTED") {
         updateData.status = "REJECTED";
       }
-    } else {
+    } 
+    else {
       return NextResponse.json(
         { message: "Unauthorized to approve this request" },
         { status: 403 }

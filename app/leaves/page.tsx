@@ -29,6 +29,8 @@ interface Leave {
   adminStatus: string;
   managerComment?: string;
   adminComment?: string;
+  managerId?: string;
+  adminId?: string;
   user: {
     firstName: string;
     lastName: string;
@@ -83,12 +85,26 @@ export default function LeavesPage() {
         body: JSON.stringify({ status, comment }),
       });
 
-      if (!response.ok) throw new Error("Failed to update leave request");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update leave request");
+      }
 
-      toast.success("Leave request updated successfully");
+      const updatedLeave = await response.json();
+      
+      if (status === "APPROVED") {
+        if (updatedLeave.managerStatus === "APPROVED" && updatedLeave.adminStatus !== "APPROVED") {
+          toast.success("Leave request approved by team leader. Waiting for admin approval.");
+        } else if (updatedLeave.managerStatus === "APPROVED" && updatedLeave.adminStatus === "APPROVED") {
+          toast.success("Leave request fully approved!");
+        }
+      } else if (status === "REJECTED") {
+        toast.success("Leave request rejected");
+      }
+      
       fetchLeaves();
-    } catch (error) {
-      toast.error("Error updating leave request");
+    } catch (error: any) {
+      toast.error(error.message || "Error updating leave request");
     }
   };
 
@@ -249,11 +265,70 @@ export default function LeavesPage() {
   );
 }
 
+// Completely separate LeaveCard component
 function LeaveCard({ leave, onApprove, getStatusColor }: { 
   leave: Leave; 
   onApprove: (id: string, status: string, comment: string) => void;
   getStatusColor: (status: string) => string;
 }) {
+  const [comment, setComment] = useState("");
+  const [showCommentInput, setShowCommentInput] = useState(false);
+  const [actionType, setActionType] = useState<"APPROVED" | "REJECTED" | null>(null);
+  
+  // Get session to determine if the current user is team leader or admin
+  const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [isTeamLeader, setIsTeamLeader] = useState<boolean>(false);
+  
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await fetch("/api/users/me");
+        if (response.ok) {
+          const userData = await response.json();
+          setCurrentUserRole(userData.role);
+          setCurrentUserId(userData.id);
+          
+          // Check if user is a team leader by fetching teams they lead
+          const teamsResponse = await fetch("/api/teams/leading");
+          if (teamsResponse.ok) {
+            const teamsData = await teamsResponse.json();
+            setIsTeamLeader(teamsData.length > 0);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+      }
+    };
+    
+    fetchUserRole();
+  }, []);
+  
+  const handleApproveClick = (status: "APPROVED" | "REJECTED") => {
+    setActionType(status);
+    setShowCommentInput(true);
+  };
+  
+  const handleSubmitAction = () => {
+    if (actionType) {
+      onApprove(leave.id, actionType, comment);
+      setShowCommentInput(false);
+      setComment("");
+      setActionType(null);
+    }
+  };
+  
+  const canApproveAsTeamLeader = 
+    (currentUserRole === "ADMIN" || isTeamLeader) && 
+    leave.managerId === currentUserId && 
+    leave.managerStatus === "PENDING";
+                              
+  const canApproveAsAdmin = 
+    currentUserRole === "ADMIN" && 
+    leave.adminId === currentUserId && 
+    leave.managerStatus === "APPROVED" && 
+    leave.adminStatus === "PENDING";
+
   return (
     <Card>
       <CardContent className="p-6">
@@ -289,9 +364,9 @@ function LeaveCard({ leave, onApprove, getStatusColor }: {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <p className="text-sm text-gray-500">Manager Status</p>
+            <p className="text-sm text-gray-500">Team Leader Status</p>
             <div className="flex items-center space-x-2">
               <Badge className={getStatusColor(leave.managerStatus)}>
                 {leave.managerStatus}
@@ -302,6 +377,11 @@ function LeaveCard({ leave, onApprove, getStatusColor }: {
                 </p>
               )}
             </div>
+            {leave.manager && (
+              <p className="text-xs text-gray-500 mt-1">
+                Team Leader: {leave.manager.firstName} {leave.manager.lastName}
+              </p>
+            )}
           </div>
           <div>
             <p className="text-sm text-gray-500">Admin Status</p>
@@ -315,25 +395,100 @@ function LeaveCard({ leave, onApprove, getStatusColor }: {
                 </p>
               )}
             </div>
+            {leave.admin && (
+              <p className="text-xs text-gray-500 mt-1">
+                Admin: {leave.admin.firstName} {leave.admin.lastName}
+              </p>
+            )}
           </div>
         </div>
 
-        {(leave.managerStatus === "PENDING" || leave.adminStatus === "PENDING") && (
-          <div className="mt-4 flex space-x-2">
-            <Button
-              variant="outline"
-              onClick={() => onApprove(leave.id, "APPROVED", "Approved")}
-            >
-              Approve
-            </Button>
-            <Button
-              variant="outline"
-              className="text-red-500"
-              onClick={() => onApprove(leave.id, "REJECTED", "Rejected")}
-            >
-              Reject
-            </Button>
+        {/* Approval workflow */}
+        {showCommentInput ? (
+          <div className="mt-4">
+            <div className="mb-3">
+              <p className="text-sm mb-2">Add a comment (optional):</p>
+              <textarea 
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md"
+                rows={2}
+              />
+            </div>
+            <div className="flex space-x-2">
+              <Button
+                onClick={handleSubmitAction}
+                variant="default"
+              >
+                Submit
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowCommentInput(false);
+                  setComment("");
+                  setActionType(null);
+                }}
+                variant="outline"
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
+        ) : (
+          <>
+            {canApproveAsTeamLeader && (
+              <div className="mt-4 flex space-x-2">
+                <Button
+                  variant="outline"
+                  className="bg-green-50 text-green-600 hover:bg-green-100"
+                  onClick={() => handleApproveClick("APPROVED")}
+                >
+                  Approve as Team Leader
+                </Button>
+                <Button
+                  variant="outline"
+                  className="bg-red-50 text-red-600 hover:bg-red-100"
+                  onClick={() => handleApproveClick("REJECTED")}
+                >
+                  Reject as Team Leader
+                </Button>
+              </div>
+            )}
+            
+            {canApproveAsAdmin && (
+              <div className="mt-4 flex space-x-2">
+                <Button
+                  variant="outline"
+                  className="bg-green-50 text-green-600 hover:bg-green-100"
+                  onClick={() => handleApproveClick("APPROVED")}
+                >
+                  Approve as Admin
+                </Button>
+                <Button
+                  variant="outline"
+                  className="bg-red-50 text-red-600 hover:bg-red-100"
+                  onClick={() => handleApproveClick("REJECTED")}
+                >
+                  Reject as Admin
+                </Button>
+              </div>
+            )}
+            
+            {/* Show approval flow message */}
+            {leave.status === "PENDING" && (
+              <div className="mt-4 text-sm text-gray-500 border-t pt-3">
+                <p className="font-medium mb-1">Approval Flow:</p>
+                <ol className="list-decimal pl-5">
+                  <li className={leave.managerStatus === "APPROVED" ? "text-green-600" : leave.managerStatus === "REJECTED" ? "text-red-600" : ""}>
+                    Team Leader Approval {leave.managerStatus === "APPROVED" ? "✓" : leave.managerStatus === "REJECTED" ? "✗" : "(Pending)"}
+                  </li>
+                  <li className={leave.adminStatus === "APPROVED" ? "text-green-600" : leave.adminStatus === "REJECTED" ? "text-red-600" : ""}>
+                    Admin Approval {leave.adminStatus === "APPROVED" ? "✓" : leave.adminStatus === "REJECTED" ? "✗" : "(Pending)"}
+                  </li>
+                </ol>
+              </div>
+            )}
+          </>
         )}
       </CardContent>
     </Card>

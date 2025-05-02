@@ -4,26 +4,58 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-
   try {
-    const url = new URL(req.url);
-    const limit = parseInt(url.searchParams.get("limit") || "10");
-    
-    const leavesHistory = await prisma.leave.findMany({
-      where: { 
-        userId: session.user.id 
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(req.url);
+    const limitParam = searchParams.get("limit");
+    const limit = limitParam ? parseInt(limitParam) : 10;
+
+    const leaves = await prisma.leave.findMany({
+      where: {
+        userId: session.user.id,
       },
-      orderBy: {
-        startDate: 'desc'
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+            department: true,
+          },
+        },
+        manager: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        admin: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
       },
-      take: limit
+      orderBy: { createdAt: "desc" },
+      take: limit,
     });
 
-    return NextResponse.json(leavesHistory, { status: 200 });
+    return NextResponse.json(leaves);
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Error fetching leave history" }, { status: 500 });
+    console.error("Error fetching leave history:", error);
+    return NextResponse.json(
+      { message: "Error fetching leave history" },
+      { status: 500 }
+    );
   }
 } 

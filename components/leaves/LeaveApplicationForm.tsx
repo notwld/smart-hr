@@ -67,11 +67,15 @@ export default function LeaveApplicationForm() {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Failed to submit leave request");
+        if (error.message.includes("team")) {
+          throw new Error(error.message);
+        } else {
+          throw new Error(error.message || "Failed to submit leave request");
+        }
       }
 
-      toast.success("Leave request submitted successfully");
-      router.push("/");
+      toast.success("Leave request submitted successfully! Awaiting team leader and admin approval.");
+      router.push("/leaves");
       router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Error submitting leave request");

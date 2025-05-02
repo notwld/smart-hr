@@ -53,6 +53,14 @@ interface DashboardUser {
     firstName: string;
     lastName: string;
   };
+  teams?: {
+    team: {
+      leader: {
+        firstName: string;
+        lastName: string;
+      }
+    }
+  }[];
   // ... other fields
 }
 
@@ -94,6 +102,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const [stats, setStats] = useState<any>(null);
   const [elapsedTime, setElapsedTime] = useState<string>("00:00:00");
   const [showLeaveBanner, setShowLeaveBanner] = useState(true);
+  const [teamLeader, setTeamLeader] = useState<{firstName: string; lastName: string} | null>(null);
 
   useEffect(() => {
     fetchTodayAttendance();
@@ -128,13 +137,31 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       elapsedInterval = setInterval(updateElapsedTime, 1000);
     }
 
+    // If user doesn't have reportsTo but has a team, fetch team leader
+    if (!user.reportsTo && (!user.teams || user.teams.length === 0)) {
+      const fetchTeamLeader = async () => {
+        try {
+          const response = await axios.get(`/api/users/${user.id}/team-leader`);
+          if (response.data && response.data.leader) {
+            setTeamLeader(response.data.leader);
+          }
+        } catch (error) {
+          console.error("Error fetching team leader:", error);
+        }
+      };
+      
+      fetchTeamLeader();
+    } else if (user.teams && user.teams.length > 0 && user.teams[0].team.leader) {
+      setTeamLeader(user.teams[0].team.leader);
+    }
+
     return () => {
       clearInterval(interval);
       if (elapsedInterval) {
         clearInterval(elapsedInterval);
       }
     };
-  }, [todayAttendance]);
+  }, [todayAttendance, user]);
  
   const fetchTodayAttendance = async () => {
     try {
@@ -300,7 +327,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                     <div>
                       <p className="text-sm text-gray-500">Report To</p>
                       <p className="text-sm font-medium">
-                        {user.reportsTo ? `${user.reportsTo.firstName} ${user.reportsTo.lastName}` : "Not assigned"}
+                        {user.reportsTo 
+                          ? `${user.reportsTo.firstName} ${user.reportsTo.lastName}` 
+                          : teamLeader 
+                            ? `${teamLeader.firstName} ${teamLeader.lastName} (Team Leader)`
+                            : "Not assigned"}
                       </p>
                     </div>
                   </div>
