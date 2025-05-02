@@ -21,7 +21,7 @@ export async function GET(req: Request) {
         firstName: true,
         lastName: true,
         email: true,
-        role: true,
+        legacyRole: true,
         department: true,
         position: true,
       }

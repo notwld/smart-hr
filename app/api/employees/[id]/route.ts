@@ -53,7 +53,20 @@ export async function PUT(
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session?.user?.id || session.user.role !== "ADMIN") {
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { message: "Unauthorized - Admin access required" },
+        { status: 401 }
+      );
+    }
+
+    // Fetch the user's role from the database
+    const currentUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { legacyRole: true }
+    });
+
+    if (!currentUser || currentUser.legacyRole !== "ADMIN") {
       return NextResponse.json(
         { message: "Unauthorized - Admin access required" },
         { status: 401 }
@@ -184,7 +197,20 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session?.user?.id || session.user.role !== "ADMIN") {
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { message: "Unauthorized - Admin access required" },
+        { status: 401 }
+      );
+    }
+
+    // Fetch the user's role from the database
+    const currentUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { legacyRole: true }
+    });
+
+    if (!currentUser || currentUser.legacyRole !== "ADMIN") {
       return NextResponse.json(
         { message: "Unauthorized - Admin access required" },
         { status: 401 }

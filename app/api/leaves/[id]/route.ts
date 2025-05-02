@@ -63,7 +63,7 @@ export async function PUT(
       // If team leader approves, we keep overall status as pending and wait for admin
     } 
     // Handle admin approval
-    else if (user.role === "ADMIN" && leave.adminId === user.id) {
+    else if (user.legacyRole === "ADMIN" && leave.adminId === user.id) {
       // Check if team leader has already approved this leave
       if (leave.managerStatus !== "APPROVED" && status === "APPROVED") {
         return NextResponse.json(

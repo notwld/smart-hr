@@ -276,7 +276,7 @@ function LeaveCard({ leave, onApprove, getStatusColor }: {
   const [actionType, setActionType] = useState<"APPROVED" | "REJECTED" | null>(null);
   
   // Get session to determine if the current user is team leader or admin
-  const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
+  const [currentUserLegacyRole, setCurrentUserLegacyRole] = useState<string | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isTeamLeader, setIsTeamLeader] = useState<boolean>(false);
   
@@ -286,7 +286,8 @@ function LeaveCard({ leave, onApprove, getStatusColor }: {
         const response = await fetch("/api/users/me");
         if (response.ok) {
           const userData = await response.json();
-          setCurrentUserRole(userData.role);
+          // Use legacyRole if available, fallback to role for compatibility
+          setCurrentUserLegacyRole(userData.legacyRole || userData.role);
           setCurrentUserId(userData.id);
           
           // Check if user is a team leader by fetching teams they lead
@@ -319,12 +320,12 @@ function LeaveCard({ leave, onApprove, getStatusColor }: {
   };
   
   const canApproveAsTeamLeader = 
-    (currentUserRole === "ADMIN" || isTeamLeader) && 
+    (currentUserLegacyRole === "ADMIN" || isTeamLeader) && 
     leave.managerId === currentUserId && 
     leave.managerStatus === "PENDING";
                               
   const canApproveAsAdmin = 
-    currentUserRole === "ADMIN" && 
+    currentUserLegacyRole === "ADMIN" && 
     leave.adminId === currentUserId && 
     leave.managerStatus === "APPROVED" && 
     leave.adminStatus === "PENDING";

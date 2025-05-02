@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 
     // Get an admin for approval (first admin found)
     const admin = await prisma.user.findFirst({
-      where: { role: "ADMIN" },
+      where: { legacyRole: "ADMIN" },
     });
 
     if (!admin) {

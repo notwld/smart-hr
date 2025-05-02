@@ -11,6 +11,7 @@ declare module "next-auth" {
     user: {
       id: string;
       role: string;
+      legacyRole?: string;
     } & DefaultSession["user"];
   }
 
@@ -144,6 +145,7 @@ export const authOptions: NextAuthOptions = {
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
+        session.user.legacyRole = token.legacyRole as string;
         
         // Ensure the role is never undefined
         if (!session.user.role) {
