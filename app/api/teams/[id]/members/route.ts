@@ -34,11 +34,11 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     // Check if user has permission to add members
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { legacyRole: true }
     });
 
     const isTeamLeader = team.leaderId === session.user.id;
-    const isAdminOrManager = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+    const isAdminOrManager = user?.legacyRole === 'ADMIN' || user?.legacyRole === 'MANAGER';
 
     if (!isTeamLeader && !isAdminOrManager) {
       return NextResponse.json({ message: "Unauthorized to add members to this team" }, { status: 403 });
@@ -153,11 +153,11 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     // Check if user has permission to remove members
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { legacyRole: true }
     });
 
     const isTeamLeader = team.leaderId === session.user.id;
-    const isAdminOrManager = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+    const isAdminOrManager = user?.legacyRole === 'ADMIN' || user?.legacyRole === 'MANAGER';
 
     if (!isTeamLeader && !isAdminOrManager) {
       return NextResponse.json({ message: "Unauthorized to remove members from this team" }, { status: 403 });

@@ -12,13 +12,13 @@ export async function GET(req: Request) {
     // Check if the user is an admin or manager, who can see all teams
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { legacyRole: true }
     });
     
     let teams;
     
     // Admins and managers can see all teams
-    if (user?.role === 'ADMIN' || user?.role === 'MANAGER') {
+    if (user?.legacyRole === 'ADMIN' || user?.legacyRole === 'MANAGER') {
       teams = await prisma.team.findMany({
         include: {
           leader: {
@@ -105,10 +105,10 @@ export async function POST(req: Request) {
     // Check if the user is an admin or manager who can create teams
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { legacyRole: true }
     });
 
-    if (user?.role !== 'ADMIN' && user?.role !== 'MANAGER') {
+    if (user?.legacyRole !== 'ADMIN' && user?.legacyRole !== 'MANAGER') {
       return NextResponse.json({ message: "Unauthorized - Only admins and managers can create teams" }, { status: 403 });
     }
 

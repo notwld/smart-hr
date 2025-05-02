@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
     Activity,
     AlertCircle,
@@ -27,13 +27,29 @@ import {
     ChevronUp,
     LogOut,
     UserPlus,
+    Shield,
+    Key,
 } from "lucide-react"
 import { Button } from "./ui/button"
-import { signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import Image from "next/image"
+import { usePermissions } from "@/contexts/PermissionContext"
 
 export default function Sidebar() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+    const { data: session } = useSession()
+    
+    // All navigation items - permissions checks removed
+    const navItems = [
+        { icon: <Activity className="w-5 h-5" />, label: "Your Dashboard", href: "/" },
+        { icon: <FileText className="w-5 h-5" />, label: "Admin Dashboard", href: "/admin" },
+        { icon: <FileText className="w-5 h-5" />, label: "Employees", href: "/admin/employees" },
+        { icon: <Shield className="w-5 h-5" />, label: "Roles", href: "/admin/roles" },
+        { icon: <Key className="w-5 h-5" />, label: "Permissions", href: "/admin/permissions" },
+        { icon: <Users className="w-5 h-5" />, label: "Teams", href: "/teams" },
+        { icon: <FileText className="w-5 h-5" />, label: "Leaves", href: "/leaves" },
+    ];
+    
     return (
         <aside
             className={`bg-[#FF7B3D] transition-all duration-300 h-screen ${sidebarCollapsed ? "w-20" : "w-64"} flex flex-col`}
@@ -49,18 +65,12 @@ export default function Sidebar() {
             {/* Navigation */}
             <nav className="flex-1 py-4 overflow-y-auto">
                 <ul className="space-y-1 px-2">
-                    {[
-                        { icon: <Activity className="w-5 h-5" />, label: "Your Dashboard", active: true, href: "/" },
-                        { icon: <FileText className="w-5 h-5" />, label: "Admin Dashboard", href: "/admin" },
-                        { icon: <FileText className="w-5 h-5" />, label: "Employees", href: "/admin/employees" },
-                        { icon: <Users className="w-5 h-5" />, label: "Teams", href: "/teams" },
-                        { icon: <FileText className="w-5 h-5" />, label: "Leaves", href: "/leaves" },
-                    ].map((item, index) => (
+                    {navItems.map((item, index) => (
                         <li key={index}>
                             <a
                                 href={item.href}
                                 className={`flex items-center px-3 py-2 rounded-lg transition-all duration-150 font-medium gap-2
-                                    ${item.active ? "bg-white/90 text-[#FF7B3D] shadow" : "text-white hover:bg-white/10 hover:text-white"}
+                                    ${item.href === "/" ? "bg-white/90 text-[#FF7B3D] shadow" : "text-white hover:bg-white/10 hover:text-white"}
                                 `}
                             >
                                 {item.icon}

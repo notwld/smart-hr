@@ -170,13 +170,13 @@ async function main() {
   // Create a default admin user if it doesn't exist
   const adminPassword = await hash("admin123", 12);
   const admin = await prisma.user.upsert({
-    where: { email: "admin@smarthr.com" },
+    where: { email: "admin@company.com" },
     update: {},
     create: {
       username: "admin",
       firstName: "Admin",
       lastName: "User",
-      email: "admin@smarthr.com",
+      email: "admin@company.com",
       cnic: "00000-0000000-0",
       password: adminPassword,
       salary: 100000,

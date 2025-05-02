@@ -23,7 +23,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
             email: true,
             position: true,
             department: true,
-            role: true,
+            legacyRole: true,
             image: true,
           }
         },
@@ -37,7 +37,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
                 email: true,
                 position: true,
                 department: true,
-                role: true,
+                legacyRole: true,
                 image: true,
               }
             }
@@ -56,12 +56,12 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     // Check access permissions
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { legacyRole: true }
     });
 
     const isTeamLeader = team.leaderId === session.user.id;
     const isTeamMember = team.members.some(member => member.userId === session.user.id);
-    const isAdminOrManager = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+    const isAdminOrManager = user?.legacyRole === 'ADMIN' || user?.legacyRole === 'MANAGER';
 
     if (!isTeamLeader && !isTeamMember && !isAdminOrManager) {
       return NextResponse.json({ message: "Unauthorized to view this team" }, { status: 403 });
@@ -104,11 +104,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     // Check if user has permission to update the team
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { legacyRole: true }
     });
 
     const isTeamLeader = team.leaderId === session.user.id;
-    const isAdminOrManager = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+    const isAdminOrManager = user?.legacyRole === 'ADMIN' || user?.legacyRole === 'MANAGER';
 
     if (!isTeamLeader && !isAdminOrManager) {
       return NextResponse.json({ message: "Unauthorized to update this team" }, { status: 403 });
@@ -204,10 +204,10 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     // Check if user has permission to delete the team
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { legacyRole: true }
     });
 
-    const isAdminOrManager = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+    const isAdminOrManager = user?.legacyRole === 'ADMIN' || user?.legacyRole === 'MANAGER';
 
     if (!isAdminOrManager) {
       return NextResponse.json({ message: "Unauthorized to delete this team" }, { status: 403 });

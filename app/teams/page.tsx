@@ -190,11 +190,8 @@ export default function TeamsPage() {
       return [];
     }
     
-    return availableEmployees.filter(
-      (employee) => employee?.position?.toLowerCase?.().includes("manager") || 
-                   employee?.position?.toLowerCase?.().includes("lead") ||
-                   employee?.position?.toLowerCase?.().includes("senior")
-    );
+    // Return all employees without filtering by position
+    return availableEmployees;
   };
 
   const filteredTeams = teams.filter((team) =>

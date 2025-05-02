@@ -285,7 +285,7 @@ export default function RolesPage() {
             <p className="text-gray-500 mt-1">Create and manage roles and their permissions</p>
           </div>
           <PermissionGuard permissions="roles.create">
-            <Button onClick={() => setShowNewRoleDialog(true)}>
+            <Button onClick={() => router.push("/admin/roles/create")}>
               <PlusCircle className="w-4 h-4 mr-2" /> Create Role
             </Button>
           </PermissionGuard>
@@ -324,8 +324,7 @@ export default function RolesPage() {
                           size="icon"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setEditingRole(role);
-                            setShowEditRoleDialog(true);
+                            router.push(`/admin/roles/edit/${role.id}`);
                           }}
                         >
                           <Edit2 className="w-4 h-4" />

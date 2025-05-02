@@ -3,18 +3,16 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { hash } from "bcryptjs";
+import { isUserAdmin } from "@/lib/auth";
 
 const ITEMS_PER_PAGE = 10;
 
 export async function GET(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user?.id || session.user.role !== "ADMIN") {
-      return NextResponse.json(
-        { message: "Unauthorized - Admin access required" },
-        { status: 401 }
-      );
+    // Check if user is admin
+    const adminCheck = await isUserAdmin(req);
+    if (!adminCheck.isAdmin) {
+      return adminCheck.response;
     }
 
     const { searchParams } = new URL(req.url);
@@ -24,8 +22,8 @@ export async function GET(req: Request) {
     const status = searchParams.get("status") || "";
 
     // Build where clause
-    const where = {
-      role: "EMPLOYEE",
+    const where: any = {
+      legacyRole: "EMPLOYEE",
       ...(search && {
         OR: [
           { firstName: { contains: search, mode: "insensitive" } },
@@ -62,7 +60,7 @@ export async function GET(req: Request) {
 
     // Get unique departments for filter
     const departments = await prisma.user.findMany({
-      where: { role: "EMPLOYEE" },
+      where: { legacyRole: "EMPLOYEE" },
       select: { department: true },
       distinct: ["department"],
     });
@@ -84,15 +82,10 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   console.log("Received POST request to /api/employees");
   try {
-    const session = await getServerSession(authOptions);
-    console.log("Session:", session);
-
-    if (!session?.user?.id || session.user.role !== "ADMIN") {
-      console.log("Unauthorized access attempt");
-      return NextResponse.json(
-        { message: "Unauthorized - Admin access required" },
-        { status: 401 }
-      );
+    // Check if user is admin
+    const adminCheck = await isUserAdmin(req);
+    if (!adminCheck.isAdmin) {
+      return adminCheck.response;
     }
 
     const data = await req.json();
@@ -170,7 +163,7 @@ export async function POST(req: Request) {
         dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
         gender,
         maritalStatus,
-        role: "EMPLOYEE",
+        legacyRole: "EMPLOYEE",
         emergencyContact: emergencyContact ? {
           create: emergencyContact,
         } : undefined,

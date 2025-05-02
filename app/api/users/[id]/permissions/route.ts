@@ -9,9 +9,12 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    console.log("Permissions API called for user ID:", params.id);
     const session = await getServerSession(authOptions);
+    console.log("Session in permissions API:", session);
 
     if (!session?.user?.id) {
+      console.log("No session found, returning 401");
       return NextResponse.json(
         { message: "Unauthorized" },
         { status: 401 }
@@ -30,7 +33,10 @@ export async function GET(
         },
       });
       
+      console.log("Admin check result:", isAdmin);
+      
       if (!isAdmin) {
+        console.log("User is not an admin and trying to access another user's permissions");
         return NextResponse.json(
           { message: "Forbidden: You don't have permission to access this resource" },
           { status: 403 }
@@ -40,11 +46,13 @@ export async function GET(
 
     // Get user permissions
     const permissions = await getUserPermissions(params.id);
+    console.log("Retrieved permissions:", permissions);
     
     // Get user roles
     const roles = await getUserRoles(params.id);
     // Use type assertion to avoid TypeScript errors since we know the shape of the data
     const roleNames = roles.map((role: any) => role.name);
+    console.log("Retrieved roles:", roleNames);
 
     return NextResponse.json({
       userId: params.id,
