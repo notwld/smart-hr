@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
+import { existsSync } from "fs";
 
 export async function POST(req: Request) {
   try {
@@ -50,10 +51,24 @@ export async function POST(req: Request) {
     const extension = file.name.split(".").pop();
     const filename = `${uniqueId}.${extension}`;
 
-    // Save file to public directory
+    // Ensure the uploads directory exists
     const publicDir = join(process.cwd(), "public", "uploads");
+    if (!existsSync(publicDir)) {
+      await mkdir(publicDir, { recursive: true });
+    }
+    
+    // Save file to public directory
     const filepath = join(publicDir, filename);
-    await writeFile(filepath, buffer);
+    
+    try {
+      await writeFile(filepath, buffer);
+    } catch (error) {
+      console.error("Error writing file:", error);
+      return NextResponse.json(
+        { message: "Error saving file to disk" },
+        { status: 500 }
+      );
+    }
 
     // Return the URL
     const url = `/uploads/${filename}`;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
+// Define schema with same validation as EmployeeForm
 const employeeSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   firstName: z.string().min(2, "First name is required"),
@@ -34,7 +35,7 @@ const employeeSchema = z.object({
   cnic: z.string()
     .min(15, "CNIC must be in format XXXXX-XXXXXXX-X")
     .regex(/^\d{5}-\d{7}-\d{1}$/, "CNIC must be in format XXXXX-XXXXXXX-X"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().optional(), // Password is optional for updates
   salary: z.coerce.number().min(0, "Salary must be positive"),
   address: z.string().min(5, "Address is required"),
   department: z.string().min(1, "Department is required"),
@@ -80,86 +81,189 @@ const employeeSchema = z.object({
 
 type EmployeeFormData = z.infer<typeof employeeSchema>;
 
-export default function EmployeeForm() {
+interface Employee {
+  id: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  cnic: string;
+  salary: number;
+  address: string;
+  department: string;
+  position: string;
+  joinDate: Date;
+  phone: string | null;
+  dateOfBirth: Date | null;
+  gender: "MALE" | "FEMALE" | "OTHER" | null;
+  maritalStatus: "SINGLE" | "MARRIED" | "DIVORCED" | "WIDOWED" | null;
+  image: string | null;
+  status: string;
+  emergencyContact?: {
+    name: string;
+    relationship: string;
+    phone: string;
+    address: string;
+  } | null;
+  education?: {
+    id: string;
+    degree: string;
+    institution: string;
+    field: string;
+    startDate: Date;
+    endDate: Date | null;
+    grade: string | null;
+  }[];
+  experience?: {
+    id: string;
+    company: string;
+    position: string;
+    startDate: Date;
+    endDate: Date | null;
+    description: string | null;
+  }[];
+  bankDetails?: {
+    bankName: string;
+    accountNumber: string;
+    accountTitle: string;
+    branchCode: string | null;
+  } | null;
+}
+
+interface EditEmployeeFormProps {
+  employee: Employee;
+}
+
+export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
   const [loading, setLoading] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    employee.image || null
+  );
   const router = useRouter();
+
+  // Format date to YYYY-MM-DD for form inputs
+  const formatDate = (date: Date | null) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return d.toISOString().split("T")[0];
+  };
+  
+  // Format phone number to ensure it has + prefix
+  const formatPhone = (phone: string | null) => {
+    if (!phone) return "+";
+    if (!phone.startsWith("+")) return `+${phone}`;
+    return phone;
+  };
+  
+  // Format CNIC to include dashes
+  const formatCNIC = (cnic: string) => {
+    if (!cnic) return "";
+    // Strip any existing dashes
+    const stripped = cnic.replace(/-/g, "");
+    // If it's not the right length, return as is
+    if (stripped.length !== 13) return cnic;
+    // Format with dashes
+    return `${stripped.slice(0, 5)}-${stripped.slice(5, 12)}-${stripped.slice(12)}`;
+  };
+
   const form = useForm<EmployeeFormData>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
-      username: "john.doe",
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@company.com",
-      cnic: "3520112345678",
-      password: "password123",
-      salary: 50000,
-      address: "123 Main Street, City, Country",
-      department: "Engineering",
-      position: "Senior Developer",
-      joinDate: "2024-01-01",
-      phone: "03001234567",
-      dateOfBirth: "1990-01-01",
-      gender: "MALE",
-      maritalStatus: "MARRIED",
-      emergencyContact: {
-        name: "Jane Doe",
-        relationship: "Spouse",
-        phone: "03001234568",
-        address: "123 Main Street, City, Country",
+      username: employee.username,
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      email: employee.email,
+      cnic: formatCNIC(employee.cnic),
+      password: "", // Password field is empty and optional
+      salary: employee.salary,
+      address: employee.address,
+      department: employee.department,
+      position: employee.position,
+      joinDate: formatDate(employee.joinDate),
+      phone: formatPhone(employee.phone),
+      dateOfBirth: formatDate(employee.dateOfBirth),
+      gender: employee.gender || "MALE",
+      maritalStatus: employee.maritalStatus || "SINGLE",
+      emergencyContact: employee.emergencyContact ? {
+        name: employee.emergencyContact.name,
+        relationship: employee.emergencyContact.relationship,
+        phone: formatPhone(employee.emergencyContact.phone),
+        address: employee.emergencyContact.address,
+      } : {
+        name: "",
+        relationship: "",
+        phone: "+",
+        address: "",
       },
-      education: [{
-        degree: "Bachelor of Science",
-        institution: "University of Technology",
-        field: "Computer Science",
-        startDate: "2008-09-01",
-        endDate: "2012-06-30",
-        grade: "3.8/4.0",
+      education: employee.education?.length ? employee.education.map((edu) => ({
+        degree: edu.degree,
+        institution: edu.institution,
+        field: edu.field,
+        startDate: formatDate(edu.startDate),
+        endDate: edu.endDate ? formatDate(edu.endDate) : undefined,
+        grade: edu.grade || undefined,
+      })) : [{
+        degree: "",
+        institution: "",
+        field: "",
+        startDate: "",
+        endDate: "",
+        grade: "",
       }],
-      experience: [{
-        company: "Tech Solutions Inc.",
-        position: "Software Developer",
-        startDate: "2012-07-01",
-        endDate: "2015-12-31",
-        description: "Developed and maintained web applications using React and Node.js",
+      experience: employee.experience?.length ? employee.experience.map((exp) => ({
+        company: exp.company,
+        position: exp.position,
+        startDate: formatDate(exp.startDate),
+        endDate: exp.endDate ? formatDate(exp.endDate) : undefined,
+        description: exp.description || undefined,
+      })) : [{
+        company: "",
+        position: "",
+        startDate: "",
+        endDate: "",
+        description: "",
       }],
-      bankDetails: {
-        bankName: "National Bank",
-        accountNumber: "1234567890",
-        accountTitle: "John Doe",
-        branchCode: "NB001",
+      bankDetails: employee.bankDetails ? {
+        bankName: employee.bankDetails.bankName,
+        accountNumber: employee.bankDetails.accountNumber,
+        accountTitle: employee.bankDetails.accountTitle,
+        branchCode: employee.bankDetails.branchCode || undefined,
+      } : {
+        bankName: "",
+        accountNumber: "",
+        accountTitle: "",
+        branchCode: "",
       },
-      image: "",
+      image: employee.image || "",
     },
   });
 
   const onSubmit = async (data: EmployeeFormData) => {
-    console.log("Form submitted with data:", data);
     setLoading(true);
     try {
-      console.log("Sending request to /api/employees");
-      const response = await fetch("/api/employees", {
-        method: "POST",
+      // If password is empty, remove it from the data
+      if (!data.password) {
+        delete data.password;
+      }
+
+      const response = await fetch(`/api/employees/${employee.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
-      console.log("Response status:", response.status);
-      const responseData = await response.json();
-      console.log("Response data:", responseData);
-
       if (!response.ok) {
-        throw new Error(responseData.message || "Failed to create employee");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update employee");
       }
 
-      toast.success("Employee created successfully");
+      toast.success("Employee updated successfully");
       router.push("/admin/employees");
       router.refresh();
     } catch (error: any) {
-      console.error("Error creating employee:", error);
-      toast.error(error.message || "Failed to create employee");
+      toast.error(error.message || "Failed to update employee");
     } finally {
       setLoading(false);
     }
@@ -215,13 +319,6 @@ export default function EmployeeForm() {
       setLoading(false);
     }
   };
-
-  // Add form state debugging
-  console.log("Form state:", {
-    isDirty: form.formState.isDirty,
-    isSubmitting: form.formState.isSubmitting,
-    errors: form.formState.errors,
-  });
 
   return (
     <Form {...form}>
@@ -441,6 +538,19 @@ export default function EmployeeForm() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password (leave empty to keep unchanged)</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </div>
 
@@ -504,6 +614,19 @@ export default function EmployeeForm() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </div>
 
@@ -516,7 +639,7 @@ export default function EmployeeForm() {
               name="emergencyContact.name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contact Name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -585,204 +708,6 @@ export default function EmployeeForm() {
           </div>
         </div>
 
-        {/* Education */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Education</h2>
-          {form.watch("education").map((_, index) => (
-            <div key={index} className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
-              <FormField
-                control={form.control}
-                name={`education.${index}.degree`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Degree</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.institution`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Institution</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.field`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Field</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.startDate`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.endDate`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.grade`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Grade</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() =>
-              form.setValue("education", [
-                ...form.watch("education"),
-                {
-                  degree: "",
-                  institution: "",
-                  field: "",
-                  startDate: "",
-                  endDate: "",
-                  grade: "",
-                },
-              ])
-            }
-          >
-            Add Education
-          </Button>
-        </div>
-
-        {/* Experience */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Experience</h2>
-          {form.watch("experience").map((_, index) => (
-            <div key={index} className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
-              <FormField
-                control={form.control}
-                name={`experience.${index}.company`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Company</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`experience.${index}.position`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Position</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`experience.${index}.startDate`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`experience.${index}.endDate`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`experience.${index}.description`}
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() =>
-              form.setValue("experience", [
-                ...form.watch("experience"),
-                {
-                  company: "",
-                  position: "",
-                  startDate: "",
-                  endDate: "",
-                  description: "",
-                },
-              ])
-            }
-          >
-            Add Experience
-          </Button>
-        </div>
-
         {/* Bank Details */}
         <div className="space-y-4">
           <h2 className="text-lg font-semibold">Bank Details</h2>
@@ -842,15 +767,13 @@ export default function EmployeeForm() {
           </div>
         </div>
 
-        <Button 
-          type="submit" 
-          disabled={loading}
-          onClick={() => console.log("Submit button clicked")}
-        >
-          {loading ? "Creating..." : "Create Employee"}
-        </Button>
+        {/* Remaining form sections like Education, Experience, etc. should go here */}
 
-      
+        <div className="flex justify-end">
+          <Button type="submit" disabled={loading}>
+            {loading ? "Updating..." : "Update Employee"}
+          </Button>
+        </div>
       </form>
     </Form>
   );

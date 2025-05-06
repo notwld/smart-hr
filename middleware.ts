@@ -1,92 +1,56 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function middleware(request: NextRequest) {
+  // Skip checking for auth-related routes
+  if (
+    request.nextUrl.pathname.startsWith("/api/auth") ||
+    request.nextUrl.pathname === "/login" ||
+    request.nextUrl.pathname.startsWith("/api/upload") ||
+    request.nextUrl.pathname.startsWith("/_next") ||
+    request.nextUrl.pathname.startsWith("/favicon.ico")
+  ) {
+    return NextResponse.next();
+  }
+
   const token = await getToken({ req: request });
-  console.log("Middleware token:", token);
-  const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
-
-  if (isAdminRoute) {
-    // Check if user is authenticated
-    if (!token) {
-      console.log("No token, redirecting to login");
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    // Get the user ID from the token
-    const userId = token.id as string;
-    
+  
+  // If user is not logged in and trying to access protected route, redirect to login
+  if (!token && !request.nextUrl.pathname.startsWith("/api")) {
+    const url = new URL("/login", request.url);
+    url.searchParams.set("callbackUrl", request.nextUrl.pathname);
+    return NextResponse.redirect(url);
+  }
+  
+  // If user is logged in, check if their account is active
+  if (token?.id) {
     try {
-      // Check if user has ADMIN role (either legacy or via new system)
-      if (token.role === "ADMIN") {
-        console.log("Admin access granted based on role in token");
-        return NextResponse.next();
-      }
-      
-      // Double-check user's roles in the database as a fallback
-      const userRoles = await prisma.userRole.findMany({
-        where: { userId },
-        include: {
-          role: {
-            include: {
-              permissions: {
-                include: {
-                  permission: true,
-                },
-              },
-            },
-          },
-        },
+      const user = await prisma.user.findUnique({
+        where: { id: token.id as string },
+        select: { status: true }
       });
       
-      console.log(`Found ${userRoles.length} roles for user:`, 
-        userRoles.map(ur => ur.role.name));
-      
-      // Check if the user has Admin role
-      const isAdmin = userRoles.some(userRole => userRole.role.name === "Admin");
-      
-      if (isAdmin) {
-        console.log("Admin access granted based on Admin role");
-        return NextResponse.next();
+      // If user is not active and not on the login page
+      if (user && user.status !== "ACTIVE" && request.nextUrl.pathname !== "/login") {
+        // For API routes, return unauthorized
+        if (request.nextUrl.pathname.startsWith("/api")) {
+          return new NextResponse(
+            JSON.stringify({ 
+              message: `Your account is ${user.status.toLowerCase()}. Please contact administrator.` 
+            }),
+            { status: 401, headers: { "content-type": "application/json" } }
+          );
+        }
+        
+        // For regular routes, redirect to login with error message
+        const url = new URL("/login", request.url);
+        url.searchParams.set("error", `Your account is ${user.status.toLowerCase()}. Please contact administrator.`);
+        return NextResponse.redirect(url);
       }
-      
-      // For now, allow access to all authenticated users since the permissions system
-      // has been set up properly with the API endpoints
-      console.log("Access granted to authenticated user (temporary override)");
-      return NextResponse.next();
-      
-      // In the future, uncomment and modify this code to enforce proper permissions
-      /*
-      // Extract unique permission names from all roles
-      const userPermissions = new Set<string>();
-      
-      userRoles.forEach((userRole) => {
-        userRole.role.permissions.forEach((rolePermission) => {
-          userPermissions.add(rolePermission.permission.name);
-        });
-      });
-      
-      // Check permissions based on route
-      if (path.includes("/admin/roles") && !userPermissions.has("roles.view")) {
-        console.log("Access denied - missing roles.view permission");
-        return NextResponse.redirect(new URL("/dashboard", request.url));
-      }
-      
-      if (path.includes("/admin/permissions") && !userPermissions.has("roles.view")) {
-        console.log("Access denied - missing roles.view permission");
-        return NextResponse.redirect(new URL("/dashboard", request.url));
-      }
-      
-      // Allow access if we reach here
-      console.log("Access granted based on permissions");
-      return NextResponse.next();
-      */
     } catch (error) {
-      console.error("Error checking permissions:", error);
-      // In case of error, fall back to allowing access for any authenticated user
-      return NextResponse.next();
+      console.error("Error checking user status:", error);
     }
   }
 

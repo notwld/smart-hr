@@ -52,6 +52,16 @@ export async function GET(req: Request) {
         joinDate: true,
         phone: true,
         status: true,
+        legacyRole: true,
+        userRoles: {
+          select: {
+            role: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
       },
       skip: (page - 1) * ITEMS_PER_PAGE,
       take: ITEMS_PER_PAGE,

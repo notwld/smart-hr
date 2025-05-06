@@ -37,7 +37,9 @@ interface Employee {
   position: string;
   joinDate: string;
   phone: string;
-  status: "ACTIVE" | "INACTIVE";
+  status: string;
+  legacyRole: "ADMIN" | "MANAGER" | "EMPLOYEE";
+  userRoles?: { role: { name: string } }[];
 }
 
 export default function EmployeeList() {
@@ -96,6 +98,46 @@ export default function EmployeeList() {
     }
   };
 
+  const updateEmployeeStatus = async (id: string, newStatus: string) => {
+    try {
+      const response = await fetch(`/api/employees/${id}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update employee status");
+
+      toast.success(`Employee status updated to ${newStatus}`);
+      fetchEmployees();
+    } catch (error) {
+      toast.error("Failed to update employee status");
+      console.error(error);
+    }
+  };
+
+  const updateEmployeeRole = async (id: string, newRole: string) => {
+    try {
+      const response = await fetch(`/api/employees/${id}/role`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ role: newRole }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update employee role");
+
+      toast.success(`Employee role updated to ${newRole}`);
+      fetchEmployees();
+    } catch (error) {
+      toast.error("Failed to update employee role");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="space-y-4">
       {/* Search and Filter */}
@@ -146,6 +188,7 @@ export default function EmployeeList() {
               <TableHead>Email</TableHead>
               <TableHead>Department</TableHead>
               <TableHead>Position</TableHead>
+              <TableHead>Role</TableHead>
               <TableHead>Join Date</TableHead>
               <TableHead>Phone</TableHead>
               <TableHead>Status</TableHead>
@@ -155,13 +198,13 @@ export default function EmployeeList() {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-4">
+                <TableCell colSpan={9} className="text-center py-4">
                   Loading...
                 </TableCell>
               </TableRow>
             ) : employees.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-4">
+                <TableCell colSpan={9} className="text-center py-4">
                   No employees found
                 </TableCell>
               </TableRow>
@@ -175,6 +218,11 @@ export default function EmployeeList() {
                   <TableCell>{employee.department}</TableCell>
                   <TableCell>{employee.position}</TableCell>
                   <TableCell>
+                    {employee.userRoles && employee.userRoles.length > 0 
+                      ? employee.userRoles.map(ur => ur.role.name).join(", ") 
+                      : employee.legacyRole}
+                  </TableCell>
+                  <TableCell>
                     {new Date(employee.joinDate).toLocaleDateString()}
                   </TableCell>
                   <TableCell>{employee.phone}</TableCell>
@@ -183,7 +231,9 @@ export default function EmployeeList() {
                       className={`px-2 py-1 rounded-full text-xs ${
                         employee.status === "ACTIVE"
                           ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                          : employee.status === "TERMINATED"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
                       {employee.status}
@@ -207,6 +257,61 @@ export default function EmployeeList() {
                             Edit
                           </Link>
                         </DropdownMenuItem>
+                        
+                        {/* Status SubMenu */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger className="w-full text-left px-2 py-1.5 text-sm">
+                            Update Status
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem 
+                              onClick={() => updateEmployeeStatus(employee.id, "ACTIVE")}
+                              disabled={employee.status === "ACTIVE"}
+                            >
+                              Active
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => updateEmployeeStatus(employee.id, "SUSPENDED")}
+                              disabled={employee.status === "SUSPENDED"}
+                            >
+                              Suspended
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => updateEmployeeStatus(employee.id, "TERMINATED")}
+                              disabled={employee.status === "TERMINATED"}
+                            >
+                              Terminated
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                        
+                        {/* Role SubMenu */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger className="w-full text-left px-2 py-1.5 text-sm">
+                            Update Role
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem 
+                              onClick={() => updateEmployeeRole(employee.id, "ADMIN")}
+                              disabled={employee.legacyRole === "ADMIN"}
+                            >
+                              Admin
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => updateEmployeeRole(employee.id, "MANAGER")}
+                              disabled={employee.legacyRole === "MANAGER"}
+                            >
+                              Manager
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => updateEmployeeRole(employee.id, "EMPLOYEE")}
+                              disabled={employee.legacyRole === "EMPLOYEE"}
+                            >
+                              Employee
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                        
                         <DropdownMenuItem
                           className="text-red-600"
                           onClick={() => handleDelete(employee.id)}
