@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -83,61 +83,69 @@ type EmployeeFormData = z.infer<typeof employeeSchema>;
 export default function EmployeeForm() {
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [usernameError, setUsernameError] = useState<string | null>(null);
   const router = useRouter();
+  
   const form = useForm<EmployeeFormData>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
-      username: "john.doe",
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@company.com",
-      cnic: "3520112345678",
-      password: "password123",
-      salary: 50000,
-      address: "123 Main Street, City, Country",
-      department: "Engineering",
-      position: "Senior Developer",
-      joinDate: "2024-01-01",
-      phone: "03001234567",
-      dateOfBirth: "1990-01-01",
+      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      cnic: "",
+      password: "",
+      salary: 0,
+      address: "",
+      department: "",
+      position: "",
+      joinDate: "",
+      phone: "",
+      dateOfBirth: "",
       gender: "MALE",
-      maritalStatus: "MARRIED",
+      maritalStatus: "SINGLE",
       emergencyContact: {
-        name: "Jane Doe",
-        relationship: "Spouse",
-        phone: "03001234568",
-        address: "123 Main Street, City, Country",
+        name: "",
+        relationship: "",
+        phone: "",
+        address: "",
       },
       education: [{
-        degree: "Bachelor of Science",
-        institution: "University of Technology",
-        field: "Computer Science",
-        startDate: "2008-09-01",
-        endDate: "2012-06-30",
-        grade: "3.8/4.0",
+        degree: "",
+        institution: "",
+        field: "",
+        startDate: "",
+        endDate: "",
+        grade: "",
       }],
       experience: [{
-        company: "Tech Solutions Inc.",
-        position: "Software Developer",
-        startDate: "2012-07-01",
-        endDate: "2015-12-31",
-        description: "Developed and maintained web applications using React and Node.js",
+        company: "",
+        position: "",
+        startDate: "",
+        endDate: "",
+        description: "",
       }],
       bankDetails: {
-        bankName: "National Bank",
-        accountNumber: "1234567890",
-        accountTitle: "John Doe",
-        branchCode: "NB001",
+        bankName: "",
+        accountNumber: "",
+        accountTitle: "",
+        branchCode: "",
       },
       image: "",
     },
   });
 
   const onSubmit = async (data: EmployeeFormData) => {
-    console.log("Form submitted with data:", data);
     setLoading(true);
     try {
-      console.log("Sending request to /api/employees");
+      // Upload image if exists
+      if (imageFile) {
+        const imageUrl = await uploadImage(imageFile);
+        data.image = imageUrl;
+      }
+
+      // Proceed with employee creation
       const response = await fetch("/api/employees", {
         method: "POST",
         headers: {
@@ -146,11 +154,18 @@ export default function EmployeeForm() {
         body: JSON.stringify(data),
       });
 
-      console.log("Response status:", response.status);
       const responseData = await response.json();
-      console.log("Response data:", responseData);
 
       if (!response.ok) {
+        // Handle username unique constraint error
+        if (response.status === 400 && responseData.message?.includes("username")) {
+          setUsernameError("Username already exists. Please choose another one.");
+          form.setError("username", { 
+            type: "manual", 
+            message: "Username already exists. Please choose another one." 
+          });
+          throw new Error("Username already exists");
+        }
         throw new Error(responseData.message || "Failed to create employee");
       }
 
@@ -159,13 +174,34 @@ export default function EmployeeForm() {
       router.refresh();
     } catch (error: any) {
       console.error("Error creating employee:", error);
-      toast.error(error.message || "Failed to create employee");
+      if (!error.message.includes("Username already exists")) {
+        toast.error(error.message || "Failed to create employee");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Upload image without form submission
+  const uploadImage = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to upload image');
+    }
+
+    const data = await response.json();
+    return data.url;
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -181,47 +217,29 @@ export default function EmployeeForm() {
       return;
     }
 
+    // Store the file for later upload during form submission
+    setImageFile(file);
+
     // Create preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result as string);
     };
     reader.readAsDataURL(file);
-
-    // Upload image to server
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to upload image');
-      }
-
-      const data = await response.json();
-      form.setValue('image', data.url);
-      toast.success('Image uploaded successfully');
-    } catch (error: any) {
-      console.error('Error uploading image:', error);
-      toast.error(error.message || 'Error uploading image');
-      setImagePreview(null);
-    } finally {
-      setLoading(false);
-    }
   };
 
-  // Add form state debugging
-  console.log("Form state:", {
-    isDirty: form.formState.isDirty,
-    isSubmitting: form.formState.isSubmitting,
-    errors: form.formState.errors,
-  });
+  // Generate username from first and last name
+  const generateUsername = () => {
+    const firstName = form.getValues("firstName").toLowerCase();
+    const lastName = form.getValues("lastName").toLowerCase();
+    
+    if (firstName && lastName) {
+      const timestamp = new Date().getTime().toString().slice(-4);
+      const username = `${firstName}.${lastName}${timestamp}`;
+      form.setValue("username", username);
+      setUsernameError(null);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -264,13 +282,68 @@ export default function EmployeeForm() {
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field} 
+                      onChange={(e) => {
+                        field.onChange(e);
+                        // Clear the username error when first name changes
+                        setUsernameError(null);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field} 
+                      onChange={(e) => {
+                        field.onChange(e);
+                        // Clear the username error when last name changes
+                        setUsernameError(null);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
+                  <div className="flex space-x-2">
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        className={usernameError ? "border-red-500" : ""}
+                      />
+                    </FormControl>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={generateUsername}
+                    >
+                      Generate
+                    </Button>
+                  </div>
+                  {usernameError && (
+                    <p className="text-sm font-medium text-red-500">{usernameError}</p>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -290,12 +363,12 @@ export default function EmployeeForm() {
             />
             <FormField
               control={form.control}
-              name="firstName"
+              name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -303,12 +376,12 @@ export default function EmployeeForm() {
             />
             <FormField
               control={form.control}
-              name="lastName"
+              name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -845,12 +918,9 @@ export default function EmployeeForm() {
         <Button 
           type="submit" 
           disabled={loading}
-          onClick={() => console.log("Submit button clicked")}
         >
           {loading ? "Creating..." : "Create Employee"}
         </Button>
-
-      
       </form>
     </Form>
   );

@@ -4,6 +4,7 @@ import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { hash } from "bcryptjs";
 import { isUserAdmin } from "@/lib/auth";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -122,6 +123,7 @@ export async function POST(req: Request) {
       experience,
       documents,
       bankDetails,
+      image,
     } = data;
 
     // Validate required fields
@@ -155,61 +157,94 @@ export async function POST(req: Request) {
     // Hash password
     const hashedPassword = await hash(password, 12);
 
-    // Create employee with all related data
-    const employee = await prisma.user.create({
-      data: {
-        username,
-        firstName,
-        lastName,
-        email,
-        cnic,
-        password: hashedPassword,
-        salary: Number(salary),
-        address,
-        department,
-        position,
-        joinDate: new Date(joinDate),
-        phone,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
-        gender,
-        maritalStatus,
-        legacyRole: "EMPLOYEE",
-        emergencyContact: emergencyContact ? {
-          create: emergencyContact,
-        } : undefined,
-        education: education ? {
-          create: education.map((edu: any) => ({
-            ...edu,
-            startDate: new Date(edu.startDate),
-            endDate: edu.endDate ? new Date(edu.endDate) : undefined,
-          })),
-        } : undefined,
-        experience: experience ? {
-          create: experience.map((exp: any) => ({
-            ...exp,
-            startDate: new Date(exp.startDate),
-            endDate: exp.endDate ? new Date(exp.endDate) : undefined,
-          })),
-        } : undefined,
-        documents: documents ? {
-          create: documents,
-        } : undefined,
-        bankDetails: bankDetails ? {
-          create: bankDetails,
-        } : undefined,
-      },
-      include: {
-        emergencyContact: true,
-        education: true,
-        experience: true,
-        documents: true,
-        bankDetails: true,
-      },
-    });
+    try {
+      // Create employee with all related data
+      const employee = await prisma.user.create({
+        data: {
+          username,
+          firstName,
+          lastName,
+          email,
+          cnic,
+          password: hashedPassword,
+          salary: Number(salary),
+          address,
+          department,
+          position,
+          joinDate: new Date(joinDate),
+          phone,
+          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
+          gender,
+          maritalStatus,
+          legacyRole: "EMPLOYEE",
+          emergencyContact: emergencyContact ? {
+            create: emergencyContact,
+          } : undefined,
+          education: education ? {
+            create: education.map((edu: any) => ({
+              ...edu,
+              startDate: new Date(edu.startDate),
+              endDate: edu.endDate ? new Date(edu.endDate) : undefined,
+            })),
+          } : undefined,
+          experience: experience ? {
+            create: experience.map((exp: any) => ({
+              ...exp,
+              startDate: new Date(exp.startDate),
+              endDate: exp.endDate ? new Date(exp.endDate) : undefined,
+            })),
+          } : undefined,
+          documents: documents ? {
+            create: documents,
+          } : undefined,
+          bankDetails: bankDetails ? {
+            create: bankDetails,
+          } : undefined,
+          image: image ? image : undefined,
+        },
+        include: {
+          emergencyContact: true,
+          education: true,
+          experience: true,
+          documents: true,
+          bankDetails: true,
+        },
+      });
 
-    console.log("Employee created successfully:", employee);
-    return NextResponse.json(employee, { status: 201 });
-  } catch (error) {
+      console.log("Employee created successfully:", employee);
+      return NextResponse.json(employee, { status: 201 });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        // Handle uniqueness violations
+        if (error.code === 'P2002') {
+          const target = error.meta?.target as string[];
+          if (target?.includes('username')) {
+            return NextResponse.json(
+              { message: "Username already exists" },
+              { status: 400 }
+            );
+          }
+          if (target?.includes('email')) {
+            return NextResponse.json(
+              { message: "Email already exists" },
+              { status: 400 }
+            );
+          }
+          if (target?.includes('cnic')) {
+            return NextResponse.json(
+              { message: "CNIC already exists" },
+              { status: 400 }
+            );
+          }
+          return NextResponse.json(
+            { message: `Unique constraint failed on: ${target?.join(', ')}` },
+            { status: 400 }
+          );
+        }
+      }
+      throw error; // Re-throw for general error handling
+    }
+  } catch (error: any) {
     console.error("Error creating employee:", error);
     return NextResponse.json(
       { message: "Error creating employee" },
