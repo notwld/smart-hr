@@ -111,13 +111,13 @@ export default function LeavesPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "APPROVED":
-        return "bg-green-500";
+        return "bg-accent text-accent-foreground";
       case "REJECTED":
-        return "bg-red-500";
+        return "bg-destructive text-destructive-foreground";
       case "PENDING":
-        return "bg-yellow-500";
+        return "bg-muted text-muted-foreground";
       default:
-        return "bg-gray-500";
+        return "bg-muted text-muted-foreground";
     }
   };
 

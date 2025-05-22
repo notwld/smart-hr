@@ -281,50 +281,50 @@ export default function AdminDashboard() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               icon={
-                <div className="rounded-full bg-orange-100 p-3 text-[#FF6A00]">
+                <div className="rounded-full bg-accent/20 p-3 text-accent">
                   <Activity className="h-5 w-5" />
                 </div>
               }
               title="Attendance Overview"
               value="120/154"
               change="+8.1%"
-              color="text-[#FF6A00]"
+              color="text-accent"
               viewAll={true}
             />
             <StatCard
               icon={
-                <div className="rounded-full bg-blue-100 p-3 text-blue-500">
+                <div className="rounded-full bg-accent p-3 text-accent-foreground">
                   <FileText className="h-5 w-5" />
                 </div>
               }
               title="Total No.of Projects"
               value="90/125"
               change="+2.1%"
-              color="text-blue-500"
+              color="text-accent-foreground"
               viewAll={true}
             />
             <StatCard
               icon={
-                <div className="rounded-full bg-cyan-100 p-3 text-cyan-500">
+                <div className="rounded-full bg-accent p-3 text-accent">
                   <Users className="h-5 w-5" />
                 </div>
               }
               title="Total No.of Clients"
               value="69/86"
               change="+12.1%"
-              color="text-cyan-500"
+              color="text-accent"
               viewAll={true}
             />
             <StatCard
               icon={
-                <div className="rounded-full bg-pink-100 p-3 text-pink-500">
+                <div className="rounded-full bg-accent p-3 text-accent-foreground">
                   <FileText className="h-5 w-5" />
                 </div>
               }
               title="Total No.of Tasks"
               value="225/28"
               change="+16.5%"
-              color="text-pink-500"
+              color="text-accent-foreground"
               viewAll={true}
             />
           </div>
@@ -332,50 +332,50 @@ export default function AdminDashboard() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               icon={
-                <div className="rounded-full bg-purple-100 p-3 text-purple-500">
+                <div className="rounded-full bg-accent p-3 text-accent">
                   <CreditCard className="h-5 w-5" />
                 </div>
               }
               title="Earnings"
               value="$21445"
               change="+18.2%"
-              color="text-purple-500"
+              color="text-accent"
               viewAll={true}
             />
             <StatCard
               icon={
-                <div className="rounded-full bg-red-100 p-3 text-red-500">
+                <div className="rounded-full bg-accent p-3 text-accent">
                   <BarChart3 className="h-5 w-5" />
                 </div>
               }
               title="Profit This Week"
               value="$5,944"
               change="+12.5%"
-              color="text-red-500"
+              color="text-accent"
               viewAll={true}
             />
             <StatCard
               icon={
-                <div className="rounded-full bg-green-100 p-3 text-green-500">
+                <div className="rounded-full bg-accent p-3 text-accent">
                   <Inbox className="h-5 w-5" />
                 </div>
               }
               title="Job Applicants"
               value="98"
               change="+5.1%"
-              color="text-green-500"
+              color="text-accent"
               viewAll={true}
             />
             <StatCard
               icon={
-                <div className="rounded-full bg-gray-100 p-3 text-gray-500">
+                <div className="rounded-full bg-muted p-3 text-muted-foreground">
                   <Users className="h-5 w-5" />
                 </div>
               }
               title="New Hire"
               value="45/48"
               change="+11.2%"
-              color="text-gray-500"
+              color="text-muted-foreground"
               viewAll={true}
             />
           </div>
@@ -399,7 +399,7 @@ export default function AdminDashboard() {
                         <span>{dept.name}</span>
                         <span className="font-medium">{dept.count}</span>
                       </div>
-                      <div className="relative h-2 w-full overflow-hidden rounded-full bg-gray-100">
+                      <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -428,39 +428,39 @@ export default function AdminDashboard() {
                   <div className="space-y-2">
                     <div className="text-sm font-medium">Total Employees</div>
                     <div className="text-2xl font-bold">154</div>
-                    <div className="h-2 w-full rounded-full bg-gray-100">
+                    <div className="h-2 w-full rounded-full bg-muted">
                       <div className="flex h-full rounded-full">
-                        <div className="h-full w-[48%] rounded-l-full bg-red-500"></div>
-                        <div className="h-full w-[20%] bg-green-500"></div>
-                        <div className="h-full w-[22%] bg-blue-500"></div>
-                        <div className="h-full w-[10%] rounded-r-full bg-yellow-500"></div>
+                        <div className="h-full w-[48%] rounded-l-full bg-destructive"></div>
+                        <div className="h-full w-[20%] bg-accent"></div>
+                        <div className="h-full w-[22%] bg-primary"></div>
+                        <div className="h-full w-[10%] rounded-r-full bg-accent"></div>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
                         <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-sm bg-red-500"></div>
+                          <div className="h-3 w-3 rounded-sm bg-destructive"></div>
                           <span className="text-xs">Fulltime (48%)</span>
                         </div>
                         <div className="text-lg font-bold">112</div>
                       </div>
                       <div>
                         <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-sm bg-green-500"></div>
+                          <div className="h-3 w-3 rounded-sm bg-accent"></div>
                           <span className="text-xs">Contract (20%)</span>
                         </div>
                         <div className="text-lg font-bold">112</div>
                       </div>
                       <div>
                         <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-sm bg-blue-500"></div>
+                          <div className="h-3 w-3 rounded-sm bg-primary"></div>
                           <span className="text-xs">Probation (22%)</span>
                         </div>
                         <div className="text-lg font-bold">12</div>
                       </div>
                       <div>
                         <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-sm bg-yellow-500"></div>
+                          <div className="h-3 w-3 rounded-sm bg-accent"></div>
                           <span className="text-xs">Intern (10%)</span>
                         </div>
                         <div className="text-lg font-bold">04</div>
@@ -518,7 +518,7 @@ export default function AdminDashboard() {
                 </div>
               </CardContent>
               <CardFooter className="justify-center pt-0">
-                <Button variant="link" size="sm" className="text-[#FF6A00]">
+                <Button variant="link" size="sm" className="text-accent">
                   View Details
                 </Button>
               </CardFooter>
@@ -552,7 +552,7 @@ export default function AdminDashboard() {
                     <div className="text-right">
                       <Badge
                         className={`rounded-md ${
-                          item.status === "On Time" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                          item.status === "On Time" ? "bg-accent text-accent-foreground" : "bg-destructive text-destructive-foreground"
                         }`}
                       >
                         {item.status}
@@ -580,7 +580,7 @@ export default function AdminDashboard() {
                 ))}
               </CardContent>
               <CardFooter className="justify-center pt-0">
-                <Button variant="link" size="sm" className="text-[#FF6A00]">
+                <Button variant="link" size="sm" className="text-accent">
                   View All Attendance
                 </Button>
               </CardFooter>
@@ -610,10 +610,10 @@ export default function AdminDashboard() {
                 ))}
               </CardContent>
               <CardFooter className="justify-between pt-0">
-                <Button variant="link" size="sm" className="text-[#FF6A00]">
+                <Button variant="link" size="sm" className="text-accent">
                   View All
                 </Button>
-                <Button size="sm" className="h-8 rounded-full bg-[#FF6A00] hover:bg-[#FF6A00]/90">
+                <Button size="sm" className="h-8 rounded-full bg-accent hover:bg-accent/90">
                   <Plus className="h-4 w-4" />
                 </Button>
               </CardFooter>
@@ -626,7 +626,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base font-medium">Jobs Applicants</CardTitle>
-                <Button variant="link" size="sm" className="text-[#FF6A00]">
+                <Button variant="link" size="sm" className="text-accent">
                   View All
                 </Button>
               </CardHeader>
@@ -657,12 +657,12 @@ export default function AdminDashboard() {
                         <Badge
                           className={`rounded-md ${
                             applicant.status === "Video Interview"
-                              ? "bg-blue-100 text-blue-800"
+                              ? "bg-primary text-primary-foreground"
                               : applicant.status === "Phone Interview"
-                                ? "bg-purple-100 text-purple-800"
+                                ? "bg-accent text-accent-foreground"
                                 : applicant.status === "On-site Interview"
-                                  ? "bg-pink-100 text-pink-800"
-                                  : "bg-green-100 text-green-800"
+                                  ? "bg-accent text-accent-foreground"
+                                  : "bg-accent text-accent-foreground"
                           }`}
                         >
                           {applicant.status}
@@ -678,7 +678,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base font-medium">Employees</CardTitle>
-                <Button variant="link" size="sm" className="text-[#FF6A00]">
+                <Button variant="link" size="sm" className="text-accent">
                   View All
                 </Button>
               </CardHeader>
@@ -707,14 +707,14 @@ export default function AdminDashboard() {
                         <Badge
                           className={`rounded-md ${
                             employee.department === "Finance"
-                              ? "bg-orange-100 text-orange-800"
+                              ? "bg-accent text-accent-foreground"
                               : employee.department === "Development"
-                                ? "bg-blue-100 text-blue-800"
+                                ? "bg-primary text-primary-foreground"
                                 : employee.department === "Marketing"
-                                  ? "bg-purple-100 text-purple-800"
+                                  ? "bg-accent text-accent-foreground"
                                   : employee.department === "Manager"
-                                    ? "bg-pink-100 text-pink-800"
-                                    : "bg-green-100 text-green-800"
+                                    ? "bg-accent text-accent-foreground"
+                                    : "bg-accent text-accent-foreground"
                           }`}
                         >
                           {employee.department}
@@ -733,11 +733,11 @@ export default function AdminDashboard() {
               <CardTitle className="text-base font-medium">Sales Overview</CardTitle>
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <div className="h-2 w-2 rounded-full bg-[#FF6A00]"></div>
+                  <div className="h-2 w-2 rounded-full bg-accent"></div>
                   Income
                 </Badge>
                 <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                  <div className="h-2 w-2 rounded-full bg-primary"></div>
                   Expenses
                 </Badge>
                 <Badge variant="outline" className="gap-1 rounded-md font-normal">
@@ -800,10 +800,10 @@ export default function AdminDashboard() {
                         <Badge
                           className={`rounded-md ${
                             project.priority === "High"
-                              ? "bg-red-100 text-red-800"
+                              ? "bg-destructive text-destructive-foreground"
                               : project.priority === "Medium"
-                                ? "bg-orange-100 text-orange-800"
-                                : "bg-green-100 text-green-800"
+                                ? "bg-accent text-accent-foreground"
+                                : "bg-accent text-accent-foreground"
                           }`}
                         >
                           {project.priority}
@@ -844,7 +844,7 @@ export default function AdminDashboard() {
                   </div>
                 ))}
               </div>
-              <div className="mt-4 w-full rounded-md bg-gray-50 p-2 text-center text-sm">
+              <div className="mt-4 w-full rounded-md bg-muted p-2 text-center text-sm">
                 <span className="font-medium">379,689 hrs</span>
                 <span className="text-muted-foreground"> Spent on Overall Tasks This Week</span>
               </div>
@@ -857,14 +857,14 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base font-medium">Schedules</CardTitle>
-                <Button variant="link" size="sm" className="text-[#FF6A00]">
+                <Button variant="link" size="sm" className="text-accent">
                   View All
                 </Button>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="rounded-md bg-blue-50 p-2">
-                  <div className="text-sm font-medium text-blue-800">Interview Candidates - UI/UX Designer</div>
-                  <div className="mt-1 flex items-center gap-2 text-xs text-blue-600">
+                <div className="rounded-md bg-primary p-2">
+                  <div className="text-sm font-medium text-primary">Interview Candidates - UI/UX Designer</div>
+                  <div className="mt-1 flex items-center gap-2 text-xs text-primary">
                     <Calendar className="h-3 w-3" />
                     <span>Thu, 13 Feb 2023</span>
                     <Clock className="h-3 w-3 ml-2" />
@@ -879,7 +879,7 @@ export default function AdminDashboard() {
                     ))}
                   </div>
                 </div>
-                <div className="rounded-md bg-gray-50 p-2">
+                <div className="rounded-md bg-muted p-2">
                   <div className="text-sm font-medium">Interview Candidates - iOS Developer</div>
                   <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                     <Calendar className="h-3 w-3" />
@@ -903,7 +903,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base font-medium">Recent Activities</CardTitle>
-                <Button variant="link" size="sm" className="text-[#FF6A00]">
+                <Button variant="link" size="sm" className="text-accent">
                   View All
                 </Button>
               </CardHeader>
@@ -935,7 +935,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base font-medium">Birthdays</CardTitle>
-                <Button variant="link" size="sm" className="text-[#FF6A00]">
+                <Button variant="link" size="sm" className="text-accent">
                   View All
                 </Button>
               </CardHeader>
@@ -952,7 +952,7 @@ export default function AdminDashboard() {
                         <div className="text-sm font-medium">Andrew James</div>
                         <div className="text-xs text-muted-foreground">iOS Developer</div>
                       </div>
-                      <Button size="sm" className="ml-auto h-7 rounded-full bg-[#FF6A00] hover:bg-[#FF6A00]/90">
+                      <Button size="sm" className="ml-auto h-7 rounded-full bg-accent hover:bg-accent/90">
                         Wish
                       </Button>
                     </div>
@@ -968,7 +968,7 @@ export default function AdminDashboard() {
                         <div className="text-sm font-medium">Mary Zenn</div>
                         <div className="text-xs text-muted-foreground">UI/UX Designer</div>
                       </div>
-                      <Button size="sm" className="ml-auto h-7 rounded-full bg-[#FF6A00] hover:bg-[#FF6A00]/90">
+                      <Button size="sm" className="ml-auto h-7 rounded-full bg-accent hover:bg-accent/90">
                         Wish
                       </Button>
                     </div>
@@ -984,7 +984,7 @@ export default function AdminDashboard() {
                         <div className="text-sm font-medium">Anthony Lewis</div>
                         <div className="text-xs text-muted-foreground">Android Developer</div>
                       </div>
-                      <Button size="sm" className="ml-auto h-7 rounded-full bg-[#FF6A00] hover:bg-[#FF6A00]/90">
+                      <Button size="sm" className="ml-auto h-7 rounded-full bg-accent hover:bg-accent/90">
                         Wish
                       </Button>
                     </div>
@@ -1000,7 +1000,7 @@ export default function AdminDashboard() {
                         <div className="text-sm font-medium">Delphin Martini</div>
                         <div className="text-xs text-muted-foreground">iOS Developer</div>
                       </div>
-                      <Button size="sm" className="ml-auto h-7 rounded-full bg-[#FF6A00] hover:bg-[#FF6A00]/90">
+                      <Button size="sm" className="ml-auto h-7 rounded-full bg-accent hover:bg-accent/90">
                         Wish
                       </Button>
                     </div>
@@ -1041,7 +1041,7 @@ export default function AdminDashboard() {
                       </div>
                       <div className="text-right">
                         <div className="text-sm font-medium">${invoice.amount}</div>
-                        <Badge className="bg-red-100 text-red-800">Unpaid</Badge>
+                        <Badge className="bg-destructive text-destructive-foreground">Unpaid</Badge>
                       </div>
                     </div>
                   ))}

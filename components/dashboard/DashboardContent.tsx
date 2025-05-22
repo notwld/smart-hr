@@ -35,7 +35,7 @@ import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { User } from "@/lib/generated/prisma"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import axios from "axios"
 import Link from "next/link"
 import { toast } from "sonner"
@@ -74,6 +74,15 @@ interface DashboardContentProps {
   };
 }
 
+// Custom debounce implementation
+function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
+  let timeout: ReturnType<typeof setTimeout> | null;
+  return (...args: Parameters<T>) => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}
+
 export default function DashboardContent({ user }: DashboardContentProps) {
   // Calculate attendance statistics
   const attendanceStats = {
@@ -103,12 +112,87 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const [elapsedTime, setElapsedTime] = useState<string>("00:00:00");
   const [showLeaveBanner, setShowLeaveBanner] = useState(true);
   const [teamLeader, setTeamLeader] = useState<{firstName: string; lastName: string} | null>(null);
+  const [timeLabels, setTimeLabels] = useState<string[]>([]);
+
+  // Function to generate time labels
+  const generateTimeLabels = useCallback(() => {
+    const labels: string[] = [];
+    
+    if (todayAttendance?.checkInTime) {
+      // Start from check-in time
+      const startTime = new Date(todayAttendance.checkInTime);
+      // Round to nearest hour for cleaner display
+      
+      
+      // Generate 10 labels (including start time and next 9 hours)
+      for (let i = 0; i < 10; i++) {
+        const time = new Date(startTime);
+        time.setHours(startTime.getHours() + i);
+        labels.push(format(time, 'hh:mm a'));
+      }
+    } else {
+      // If no check-in, show default labels starting from current time
+      const now = new Date();
+      // Round to nearest hour
+      now.setMinutes(0, 0, 0);
+      
+      // Generate 10 labels starting from current time
+      for (let i = 0; i < 10; i++) {
+        const time = new Date(now);
+        time.setHours(now.getHours() + i);
+        labels.push(format(time, 'hh:mm a'));
+      }
+    }
+    
+    setTimeLabels(labels);
+  }, [todayAttendance?.checkInTime]);
+
+  // Update the progress bar calculation to be dynamic based on check-in time
+  const calculateProgress = useCallback(() => {
+    if (!todayAttendance?.checkInTime) return 0;
+    
+    const now = new Date();
+    const checkInTime = new Date(todayAttendance.checkInTime);
+    const elapsedHours = (now.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
+    const progress = Math.min((elapsedHours / 9) * 100, 100); // 9 hours shift
+    return progress;
+  }, [todayAttendance?.checkInTime]);
+
+  // Debounced fetch functions
+  const debouncedFetchTodayAttendance = useCallback(
+    debounce(async () => {
+      try {
+        const res = await axios.get("/api/attendance/today");
+        setTodayAttendance(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }, 1000),
+    []
+  );
+
+  const debouncedFetchStats = useCallback(
+    debounce(async () => {
+      try {
+        const response = await axios.get("/api/attendance/stats");
+        setStats(response.data);
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    }, 1000),
+    []
+  );
 
   useEffect(() => {
-    fetchTodayAttendance();
-    fetchStats();
+    generateTimeLabels();
+    debouncedFetchTodayAttendance();
+    debouncedFetchStats();
+    
+    // Set up interval to update time labels every minute
+    const timeLabelInterval = setInterval(generateTimeLabels, 60000);
+    
     // Set up interval to update stats every minute
-    const interval = setInterval(fetchStats, 60000);
+    const statsInterval = setInterval(debouncedFetchStats, 60000);
 
     let elapsedInterval: NodeJS.Timeout;
 
@@ -118,21 +202,17 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         const now = new Date();
         const diff = now.getTime() - checkInTime.getTime();
         
-        // Calculate hours, minutes, seconds
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
         
-        // Format time as HH:MM:SS
         const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         setElapsedTime(formattedTime);
       }
     };
 
-    // Initial update
     updateElapsedTime();
 
-    // Set up interval for updates
     if (todayAttendance?.checkInTime && !todayAttendance?.checkOutTime) {
       elapsedInterval = setInterval(updateElapsedTime, 1000);
     }
@@ -156,30 +236,17 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     }
 
     return () => {
-      clearInterval(interval);
+      clearInterval(timeLabelInterval);
+      clearInterval(statsInterval);
       if (elapsedInterval) {
         clearInterval(elapsedInterval);
       }
     };
-  }, [todayAttendance, user]);
+  }, [todayAttendance, user, generateTimeLabels, debouncedFetchTodayAttendance, debouncedFetchStats, calculateProgress]);
  
-  const fetchTodayAttendance = async () => {
-    try {
-      const res = await axios.get("/api/attendance/today");
-      setTodayAttendance(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const fetchStats = async () => {
-    try {
-      const response = await axios.get("/api/attendance/stats");
-      setStats(response.data);
-    } catch (error) {
-      console.error("Error fetching stats:", error);
-    }
-  };
+  // Replace the fetchTodayAttendance and fetchStats functions with their debounced versions
+  const fetchTodayAttendance = () => debouncedFetchTodayAttendance();
+  const fetchStats = () => debouncedFetchStats();
 
   const handleCheckIn = async () => {
     setLoading(true);
@@ -267,25 +334,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                 </ul>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="flex items-center">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                    <ChevronDown className="w-4 h-4 ml-2" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Export as PDF</DropdownMenuItem>
-                  <DropdownMenuItem>Export as Excel</DropdownMenuItem>
-                  <DropdownMenuItem>Print</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Button variant="ghost" size="icon">
-                <Settings className="w-5 h-5" />
-              </Button>
-            </div>
+            
           </div>
         </header>
 
@@ -294,7 +343,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Employee Profile Card */}
             <Card className="overflow-hidden">
-              <div className="bg-[#FF7B3D] text-white p-4">
+              <div className="bg-primary text-white p-4">
                 <div className="flex items-center">
                   <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white text-xl font-bold">
                     {user.firstName[0]} {user.lastName[0]}
@@ -491,7 +540,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     </CardHeader>
     <CardContent className="flex flex-col items-center">
       <div className="relative w-40 h-40 rounded-full border-8 border-gray-100 flex items-center justify-center mb-4">
-        <div className="absolute inset-0 rounded-full border-t-8 border-orange-500"></div>
+        <div className="absolute inset-0 rounded-full border-t-8 border-primary"></div>
         <div className="text-center">
           <p className="text-xl font-bold">
             {todayAttendance?.checkInTime
@@ -520,7 +569,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
 
       {!todayAttendance?.checkInTime && (
         <Button
-          className="w-full bg-orange-500 hover:bg-orange-600"
+          className="w-full bg-primary hover:bg-primary/80"
           onClick={handleCheckIn}
           disabled={loading}
         >
@@ -530,7 +579,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
 
       {todayAttendance?.checkInTime && !todayAttendance?.checkOutTime && (
         <Button
-          className="w-full bg-orange-500 hover:bg-orange-600"
+          className="w-full bg-primary hover:bg-primary/80"
           onClick={handleCheckOut}
           disabled={loading}
         >
@@ -608,7 +657,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
               <Card className="bg-white">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-8 h-8 rounded-md bg-blue-500 flex items-center justify-center text-white">
+                    <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white">
                       <Clock className="w-5 h-5" />
                     </div>
                   </div>
@@ -618,7 +667,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                   </div>
                   <p className="text-sm text-gray-600">Total Hours Month</p>
                   <div className="mt-3 flex items-center">
-                    <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">
+                    <div className="w-5 h-5 rounded-full bg-destructive flex items-center justify-center text-white text-xs">
                       <ChevronDown className="w-3 h-3" />
                     </div>
                     <span className="text-sm ml-1">8% Last Month</span>
@@ -635,7 +684,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
               <Card className="bg-white">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-8 h-8 rounded-md bg-pink-500 flex items-center justify-center text-white">
+                    <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center text-white">
                       <Clock className="w-5 h-5" />
                     </div>
                   </div>
@@ -645,7 +694,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                   </div>
                   <p className="text-sm text-gray-600">Overtime this Month</p>
                   <div className="mt-3 flex items-center">
-                    <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">
+                    <div className="w-5 h-5 rounded-full bg-destructive flex items-center justify-center text-white text-xs">
                       <ChevronDown className="w-3 h-3" />
                     </div>
                     <span className="text-sm ml-1">6% Last Month</span>
@@ -678,7 +727,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                     </div>
                     <div>
                       <div className="flex items-center">
-                        <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                        <div className="w-2 h-2 rounded-full bg-primary mr-2"></div>
                         <span className="text-sm text-gray-600">Overtime</span>
                       </div>
                       <p className="text-xl font-medium mt-1">{formatHours(stats?.today?.overtime || 0)}</p>
@@ -695,24 +744,17 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                   <div className="relative h-8 w-full mt-6 mb-2">
                     <div 
                       className="absolute top-0 left-0 h-full bg-green-500 rounded-l-md transition-all duration-1000"
-                      style={{ width: `${stats?.today?.progress || 0}%` }}
+                      style={{ width: `${calculateProgress()}%` }}
                     ></div>
                     <div className="absolute top-0 left-0 h-full w-full flex items-center justify-center text-white font-medium">
-                      {stats?.today?.progress.toFixed(1)}% Complete
+                      {calculateProgress().toFixed(1)}% Complete
                     </div>
                   </div>
 
                   <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>06:00 PM</span>
-                    <span>07:00 PM</span>
-                    <span>08:00 PM</span>
-                    <span>09:00 PM</span>
-                    <span>10:00 PM</span>
-                    <span>11:00 PM</span>
-                    <span>12:00 AM</span>
-                    <span>01:00 AM</span>
-                    <span>02:00 AM</span>
-                    <span>03:00 AM</span>
+                    {timeLabels.map((label, index) => (
+                      <span key={index}>{label}</span>
+                    ))}
                   </div>
                   
                 </CardContent>

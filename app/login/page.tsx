@@ -45,7 +45,7 @@ export default function LoginPage() {
   return (
     <section className="min-h-screen w-full flex">
       {/* Left Section */}
-      <div className="w-1/2 relative flex flex-col justify-between bg-gradient-to-b from-[#FF7B3D] to-[#5C260C]">
+      <div className="w-1/2 relative flex flex-col justify-between bg-gradient-to-b from-primary to-primary-dark">
         <Image
           src="/authentication-bg-01.png"
           alt="Background"
@@ -85,7 +85,7 @@ export default function LoginPage() {
               <a href="#" className="text-orange-500 hover:underline">Forgot Password?</a>
             </div>
             {error && <div className="text-red-500 text-sm text-center">{error}</div>}
-            <Button type="submit" className="w-full bg-[#FF7B3D] hover:bg-[#e86a2a] text-white" disabled={loading}>
+            <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={loading}>
               {loading ? "Signing In..." : "Sign In"}
             </Button>
           </form>
