@@ -88,6 +88,7 @@ model User {
   adminApprovals   Leave[]             @relation("AdminApproval")
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
+  Hosting          Hosting[]
 }
 
 // New models for the roles and permissions system
@@ -367,4 +368,24 @@ enum Priority {
   MEDIUM
   HIGH
   URGENT
+}
+
+model Hosting {
+  id           String       @id @default(cuid())
+  clientId     String
+  client       User         @relation(fields: [clientId], references: [id])
+  domain       String
+  cost         Float
+  startDate    DateTime
+  expiryDate   DateTime
+  durationType DurationType // MONTHLY, YEARLY, etc.
+  notes        String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+enum DurationType {
+  MONTHLY
+  YEARLY
+  CUSTOM
 }

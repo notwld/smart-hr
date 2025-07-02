@@ -5,9 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../lib/generated/prisma"
-  binaryTargets   = ["native", "rhel-openssl-3.0.x", "windows"]
+  provider      = "prisma-client-js"
+  output        = "../lib/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "windows"]
 }
 
 datasource db {
@@ -51,7 +51,7 @@ model User {
   lastName         String
   email            String              @unique
   cnic             String              @unique
-  pfp              String?             // profile picture
+  pfp              String? // profile picture
   password         String
   salary           Float
   address          String
@@ -60,11 +60,11 @@ model User {
   joinDate         DateTime
   phone            String?
   legacyRole       LegacyRole          @default(EMPLOYEE) @map("role") // Renamed for backward compatibility
-  userRoles        UserRole[]          // New relationship to roles
+  userRoles        UserRole[] // New relationship to roles
   status           String              @default("ACTIVE")
-  dateOfBirth      DateTime?           // Made optional
-  gender           Gender?             // Made optional
-  maritalStatus    MaritalStatus?      // Made optional
+  dateOfBirth      DateTime? // Made optional
+  gender           Gender? // Made optional
+  maritalStatus    MaritalStatus? // Made optional
   reportsTo        User?               @relation("ReportsTo", fields: [reportsToId], references: [id])
   reportsToId      String?
   subordinates     User[]              @relation("ReportsTo")
@@ -79,7 +79,7 @@ model User {
   skills           Skill[]
   performance      Performance[]
   projects         ProjectAssignment[]
-  teams            TeamMember[]        // Team memberships
+  teams            TeamMember[] // Team memberships
   leadingTeams     Team[]              @relation("TeamLeader") // Teams this user leads
   notifications    Notification[]
   meetings         Meeting[]
@@ -88,6 +88,7 @@ model User {
   adminApprovals   Leave[]             @relation("AdminApproval")
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
+  Hosting          Hosting[]
 }
 
 // New models for the roles and permissions system
@@ -115,14 +116,14 @@ model UserRole {
 }
 
 model Permission {
-  id           String           @id @default(cuid())
-  name         String           @unique
-  description  String?
-  resource     String           // The resource this permission applies to (e.g., "users", "leaves", "attendance")
-  action       String           // The action permitted (e.g., "read", "create", "update", "delete", "approve", "reject")
+  id              String           @id @default(cuid())
+  name            String           @unique
+  description     String?
+  resource        String // The resource this permission applies to (e.g., "users", "leaves", "attendance")
+  action          String // The action permitted (e.g., "read", "create", "update", "delete", "approve", "reject")
   rolePermissions RolePermission[]
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 
   @@unique([resource, action])
 }
@@ -218,24 +219,24 @@ model Attendance {
 }
 
 model Leave {
-  id            String      @id @default(cuid())
-  userId        String
-  user          User        @relation("UserLeaves", fields: [userId], references: [id])
-  startDate     DateTime
-  endDate       DateTime
-  type          LeaveType
-  status        LeaveStatus @default(PENDING)
-  reason        String
-  managerId     String?     // ID of the manager who needs to approve
-  manager       User?       @relation("ManagerApproval", fields: [managerId], references: [id])
-  adminId       String?     // ID of the admin who needs to approve
-  admin         User?       @relation("AdminApproval", fields: [adminId], references: [id])
-  managerStatus LeaveStatus @default(PENDING)
-  adminStatus   LeaveStatus @default(PENDING)
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation("UserLeaves", fields: [userId], references: [id])
+  startDate      DateTime
+  endDate        DateTime
+  type           LeaveType
+  status         LeaveStatus @default(PENDING)
+  reason         String
+  managerId      String? // ID of the manager who needs to approve
+  manager        User?       @relation("ManagerApproval", fields: [managerId], references: [id])
+  adminId        String? // ID of the admin who needs to approve
+  admin          User?       @relation("AdminApproval", fields: [adminId], references: [id])
+  managerStatus  LeaveStatus @default(PENDING)
+  adminStatus    LeaveStatus @default(PENDING)
   managerComment String?
   adminComment   String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 }
 
 model Task {
@@ -330,13 +331,13 @@ model Team {
 }
 
 model TeamMember {
-  id        String   @id @default(cuid())
-  teamId    String
-  userId    String
-  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id])
-  joinedAt  DateTime @default(now())
-  
+  id       String   @id @default(cuid())
+  teamId   String
+  userId   String
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id])
+  joinedAt DateTime @default(now())
+
   @@unique([teamId, userId])
 }
 
@@ -367,4 +368,24 @@ enum Priority {
   MEDIUM
   HIGH
   URGENT
+}
+
+model Hosting {
+  id           String       @id @default(cuid())
+  clientId     String
+  client       User         @relation(fields: [clientId], references: [id])
+  domain       String
+  cost         Float
+  startDate    DateTime
+  expiryDate   DateTime
+  durationType DurationType // MONTHLY, YEARLY, etc.
+  notes        String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+enum DurationType {
+  MONTHLY
+  YEARLY
+  CUSTOM
 }

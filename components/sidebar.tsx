@@ -30,6 +30,7 @@ import {
     UserPlus,
     Shield,
     Key,
+    Server,
 } from "lucide-react"
 import { Button } from "./ui/button"
 import { signOut, useSession } from "next-auth/react"
@@ -48,7 +49,9 @@ export default function Sidebar() {
         { icon: <FileText className="w-5 h-5" />, label: "Employees", href: "/admin/employees" },
         { icon: <Shield className="w-5 h-5" />, label: "Roles", href: "/admin/roles" },
         { icon: <Key className="w-5 h-5" />, label: "Permissions", href: "/admin/permissions" },
+        { icon: <Server className="w-5 h-5" />, label: "Hosting", href: "/admin/hosting" },
         { icon: <Users className="w-5 h-5" />, label: "Teams", href: "/teams" },
+        { icon: <MessageSquare className="w-5 h-5" />, label: "Chat", href: "/chat" },
         { icon: <FileText className="w-5 h-5" />, label: "Leaves", href: "/leaves" },
     ];
     

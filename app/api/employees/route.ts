@@ -10,10 +10,10 @@ const ITEMS_PER_PAGE = 10;
 
 export async function GET(req: Request) {
   try {
-    // Check if user is admin
-    const adminCheck = await isUserAdmin(req);
-    if (!adminCheck.isAdmin) {
-      return adminCheck.response;
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { searchParams } = new URL(req.url);
@@ -62,7 +62,8 @@ export async function GET(req: Request) {
               }
             }
           }
-        }
+        },
+        pfp: true,
       },
       skip: (page - 1) * ITEMS_PER_PAGE,
       take: ITEMS_PER_PAGE,
@@ -84,7 +85,7 @@ export async function GET(req: Request) {
   } catch (error) {
     console.error("Error fetching employees:", error);
     return NextResponse.json(
-      { message: "Error fetching employees" },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

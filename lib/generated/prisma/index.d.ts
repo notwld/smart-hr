@@ -118,6 +118,11 @@ export type Team = $Result.DefaultSelection<Prisma.$TeamPayload>
  * 
  */
 export type TeamMember = $Result.DefaultSelection<Prisma.$TeamMemberPayload>
+/**
+ * Model Hosting
+ * 
+ */
+export type Hosting = $Result.DefaultSelection<Prisma.$HostingPayload>
 
 /**
  * Enums
@@ -203,6 +208,15 @@ export const Priority: {
 
 export type Priority = (typeof Priority)[keyof typeof Priority]
 
+
+export const DurationType: {
+  MONTHLY: 'MONTHLY',
+  YEARLY: 'YEARLY',
+  CUSTOM: 'CUSTOM'
+};
+
+export type DurationType = (typeof DurationType)[keyof typeof DurationType]
+
 }
 
 export type LegacyRole = $Enums.LegacyRole
@@ -236,6 +250,10 @@ export const TaskStatus: typeof $Enums.TaskStatus
 export type Priority = $Enums.Priority
 
 export const Priority: typeof $Enums.Priority
+
+export type DurationType = $Enums.DurationType
+
+export const DurationType: typeof $Enums.DurationType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -571,6 +589,16 @@ export class PrismaClient<
     * ```
     */
   get teamMember(): Prisma.TeamMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hosting`: Exposes CRUD operations for the **Hosting** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Hostings
+    * const hostings = await prisma.hosting.findMany()
+    * ```
+    */
+  get hosting(): Prisma.HostingDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1031,7 +1059,8 @@ export namespace Prisma {
     Notification: 'Notification',
     Meeting: 'Meeting',
     Team: 'Team',
-    TeamMember: 'TeamMember'
+    TeamMember: 'TeamMember',
+    Hosting: 'Hosting'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1050,7 +1079,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "emergencyContact" | "education" | "experience" | "document" | "bankDetails" | "attendance" | "leave" | "task" | "skill" | "performance" | "project" | "projectAssignment" | "notification" | "meeting" | "team" | "teamMember"
+      modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "emergencyContact" | "education" | "experience" | "document" | "bankDetails" | "attendance" | "leave" | "task" | "skill" | "performance" | "project" | "projectAssignment" | "notification" | "meeting" | "team" | "teamMember" | "hosting"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2608,6 +2637,80 @@ export namespace Prisma {
           }
         }
       }
+      Hosting: {
+        payload: Prisma.$HostingPayload<ExtArgs>
+        fields: Prisma.HostingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HostingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HostingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>
+          }
+          findFirst: {
+            args: Prisma.HostingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HostingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>
+          }
+          findMany: {
+            args: Prisma.HostingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>[]
+          }
+          create: {
+            args: Prisma.HostingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>
+          }
+          createMany: {
+            args: Prisma.HostingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.HostingCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>[]
+          }
+          delete: {
+            args: Prisma.HostingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>
+          }
+          update: {
+            args: Prisma.HostingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>
+          }
+          deleteMany: {
+            args: Prisma.HostingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HostingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.HostingUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>[]
+          }
+          upsert: {
+            args: Prisma.HostingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HostingPayload>
+          }
+          aggregate: {
+            args: Prisma.HostingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHosting>
+          }
+          groupBy: {
+            args: Prisma.HostingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HostingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HostingCountArgs<ExtArgs>
+            result: $Utils.Optional<HostingCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2713,6 +2816,7 @@ export namespace Prisma {
     meeting?: MeetingOmit
     team?: TeamOmit
     teamMember?: TeamMemberOmit
+    hosting?: HostingOmit
   }
 
   /* Types for Logging */
@@ -2824,6 +2928,7 @@ export namespace Prisma {
     meetings: number
     managerApprovals: number
     adminApprovals: number
+    Hosting: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2844,6 +2949,7 @@ export namespace Prisma {
     meetings?: boolean | UserCountOutputTypeCountMeetingsArgs
     managerApprovals?: boolean | UserCountOutputTypeCountManagerApprovalsArgs
     adminApprovals?: boolean | UserCountOutputTypeCountAdminApprovalsArgs
+    Hosting?: boolean | UserCountOutputTypeCountHostingArgs
   }
 
   // Custom InputTypes
@@ -2974,6 +3080,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAdminApprovalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LeaveWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountHostingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HostingWhereInput
   }
 
 
@@ -3476,6 +3589,7 @@ export namespace Prisma {
     meetings?: boolean | User$meetingsArgs<ExtArgs>
     managerApprovals?: boolean | User$managerApprovalsArgs<ExtArgs>
     adminApprovals?: boolean | User$adminApprovalsArgs<ExtArgs>
+    Hosting?: boolean | User$HostingArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3581,6 +3695,7 @@ export namespace Prisma {
     meetings?: boolean | User$meetingsArgs<ExtArgs>
     managerApprovals?: boolean | User$managerApprovalsArgs<ExtArgs>
     adminApprovals?: boolean | User$adminApprovalsArgs<ExtArgs>
+    Hosting?: boolean | User$HostingArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3613,6 +3728,7 @@ export namespace Prisma {
       meetings: Prisma.$MeetingPayload<ExtArgs>[]
       managerApprovals: Prisma.$LeavePayload<ExtArgs>[]
       adminApprovals: Prisma.$LeavePayload<ExtArgs>[]
+      Hosting: Prisma.$HostingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4052,6 +4168,7 @@ export namespace Prisma {
     meetings<T extends User$meetingsArgs<ExtArgs> = {}>(args?: Subset<T, User$meetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     managerApprovals<T extends User$managerApprovalsArgs<ExtArgs> = {}>(args?: Subset<T, User$managerApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     adminApprovals<T extends User$adminApprovalsArgs<ExtArgs> = {}>(args?: Subset<T, User$adminApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Hosting<T extends User$HostingArgs<ExtArgs> = {}>(args?: Subset<T, User$HostingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4962,6 +5079,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeaveScalarFieldEnum | LeaveScalarFieldEnum[]
+  }
+
+  /**
+   * User.Hosting
+   */
+  export type User$HostingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    where?: HostingWhereInput
+    orderBy?: HostingOrderByWithRelationInput | HostingOrderByWithRelationInput[]
+    cursor?: HostingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HostingScalarFieldEnum | HostingScalarFieldEnum[]
   }
 
   /**
@@ -27147,6 +27288,1163 @@ export namespace Prisma {
 
 
   /**
+   * Model Hosting
+   */
+
+  export type AggregateHosting = {
+    _count: HostingCountAggregateOutputType | null
+    _avg: HostingAvgAggregateOutputType | null
+    _sum: HostingSumAggregateOutputType | null
+    _min: HostingMinAggregateOutputType | null
+    _max: HostingMaxAggregateOutputType | null
+  }
+
+  export type HostingAvgAggregateOutputType = {
+    cost: number | null
+  }
+
+  export type HostingSumAggregateOutputType = {
+    cost: number | null
+  }
+
+  export type HostingMinAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    domain: string | null
+    cost: number | null
+    startDate: Date | null
+    expiryDate: Date | null
+    durationType: $Enums.DurationType | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type HostingMaxAggregateOutputType = {
+    id: string | null
+    clientId: string | null
+    domain: string | null
+    cost: number | null
+    startDate: Date | null
+    expiryDate: Date | null
+    durationType: $Enums.DurationType | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type HostingCountAggregateOutputType = {
+    id: number
+    clientId: number
+    domain: number
+    cost: number
+    startDate: number
+    expiryDate: number
+    durationType: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type HostingAvgAggregateInputType = {
+    cost?: true
+  }
+
+  export type HostingSumAggregateInputType = {
+    cost?: true
+  }
+
+  export type HostingMinAggregateInputType = {
+    id?: true
+    clientId?: true
+    domain?: true
+    cost?: true
+    startDate?: true
+    expiryDate?: true
+    durationType?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type HostingMaxAggregateInputType = {
+    id?: true
+    clientId?: true
+    domain?: true
+    cost?: true
+    startDate?: true
+    expiryDate?: true
+    durationType?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type HostingCountAggregateInputType = {
+    id?: true
+    clientId?: true
+    domain?: true
+    cost?: true
+    startDate?: true
+    expiryDate?: true
+    durationType?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type HostingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Hosting to aggregate.
+     */
+    where?: HostingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Hostings to fetch.
+     */
+    orderBy?: HostingOrderByWithRelationInput | HostingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: HostingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Hostings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Hostings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Hostings
+    **/
+    _count?: true | HostingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: HostingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: HostingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: HostingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: HostingMaxAggregateInputType
+  }
+
+  export type GetHostingAggregateType<T extends HostingAggregateArgs> = {
+        [P in keyof T & keyof AggregateHosting]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHosting[P]>
+      : GetScalarType<T[P], AggregateHosting[P]>
+  }
+
+
+
+
+  export type HostingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HostingWhereInput
+    orderBy?: HostingOrderByWithAggregationInput | HostingOrderByWithAggregationInput[]
+    by: HostingScalarFieldEnum[] | HostingScalarFieldEnum
+    having?: HostingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HostingCountAggregateInputType | true
+    _avg?: HostingAvgAggregateInputType
+    _sum?: HostingSumAggregateInputType
+    _min?: HostingMinAggregateInputType
+    _max?: HostingMaxAggregateInputType
+  }
+
+  export type HostingGroupByOutputType = {
+    id: string
+    clientId: string
+    domain: string
+    cost: number
+    startDate: Date
+    expiryDate: Date
+    durationType: $Enums.DurationType
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: HostingCountAggregateOutputType | null
+    _avg: HostingAvgAggregateOutputType | null
+    _sum: HostingSumAggregateOutputType | null
+    _min: HostingMinAggregateOutputType | null
+    _max: HostingMaxAggregateOutputType | null
+  }
+
+  type GetHostingGroupByPayload<T extends HostingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HostingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HostingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HostingGroupByOutputType[P]>
+            : GetScalarType<T[P], HostingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HostingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    domain?: boolean
+    cost?: boolean
+    startDate?: boolean
+    expiryDate?: boolean
+    durationType?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["hosting"]>
+
+  export type HostingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    domain?: boolean
+    cost?: boolean
+    startDate?: boolean
+    expiryDate?: boolean
+    durationType?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["hosting"]>
+
+  export type HostingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    clientId?: boolean
+    domain?: boolean
+    cost?: boolean
+    startDate?: boolean
+    expiryDate?: boolean
+    durationType?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    client?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["hosting"]>
+
+  export type HostingSelectScalar = {
+    id?: boolean
+    clientId?: boolean
+    domain?: boolean
+    cost?: boolean
+    startDate?: boolean
+    expiryDate?: boolean
+    durationType?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type HostingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "domain" | "cost" | "startDate" | "expiryDate" | "durationType" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["hosting"]>
+  export type HostingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type HostingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type HostingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $HostingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Hosting"
+    objects: {
+      client: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      clientId: string
+      domain: string
+      cost: number
+      startDate: Date
+      expiryDate: Date
+      durationType: $Enums.DurationType
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["hosting"]>
+    composites: {}
+  }
+
+  type HostingGetPayload<S extends boolean | null | undefined | HostingDefaultArgs> = $Result.GetResult<Prisma.$HostingPayload, S>
+
+  type HostingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HostingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HostingCountAggregateInputType | true
+    }
+
+  export interface HostingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Hosting'], meta: { name: 'Hosting' } }
+    /**
+     * Find zero or one Hosting that matches the filter.
+     * @param {HostingFindUniqueArgs} args - Arguments to find a Hosting
+     * @example
+     * // Get one Hosting
+     * const hosting = await prisma.hosting.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HostingFindUniqueArgs>(args: SelectSubset<T, HostingFindUniqueArgs<ExtArgs>>): Prisma__HostingClient<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Hosting that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HostingFindUniqueOrThrowArgs} args - Arguments to find a Hosting
+     * @example
+     * // Get one Hosting
+     * const hosting = await prisma.hosting.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HostingFindUniqueOrThrowArgs>(args: SelectSubset<T, HostingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HostingClient<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Hosting that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HostingFindFirstArgs} args - Arguments to find a Hosting
+     * @example
+     * // Get one Hosting
+     * const hosting = await prisma.hosting.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HostingFindFirstArgs>(args?: SelectSubset<T, HostingFindFirstArgs<ExtArgs>>): Prisma__HostingClient<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Hosting that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HostingFindFirstOrThrowArgs} args - Arguments to find a Hosting
+     * @example
+     * // Get one Hosting
+     * const hosting = await prisma.hosting.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HostingFindFirstOrThrowArgs>(args?: SelectSubset<T, HostingFindFirstOrThrowArgs<ExtArgs>>): Prisma__HostingClient<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Hostings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HostingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Hostings
+     * const hostings = await prisma.hosting.findMany()
+     * 
+     * // Get first 10 Hostings
+     * const hostings = await prisma.hosting.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const hostingWithIdOnly = await prisma.hosting.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends HostingFindManyArgs>(args?: SelectSubset<T, HostingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Hosting.
+     * @param {HostingCreateArgs} args - Arguments to create a Hosting.
+     * @example
+     * // Create one Hosting
+     * const Hosting = await prisma.hosting.create({
+     *   data: {
+     *     // ... data to create a Hosting
+     *   }
+     * })
+     * 
+     */
+    create<T extends HostingCreateArgs>(args: SelectSubset<T, HostingCreateArgs<ExtArgs>>): Prisma__HostingClient<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Hostings.
+     * @param {HostingCreateManyArgs} args - Arguments to create many Hostings.
+     * @example
+     * // Create many Hostings
+     * const hosting = await prisma.hosting.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends HostingCreateManyArgs>(args?: SelectSubset<T, HostingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Hostings and returns the data saved in the database.
+     * @param {HostingCreateManyAndReturnArgs} args - Arguments to create many Hostings.
+     * @example
+     * // Create many Hostings
+     * const hosting = await prisma.hosting.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Hostings and only return the `id`
+     * const hostingWithIdOnly = await prisma.hosting.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends HostingCreateManyAndReturnArgs>(args?: SelectSubset<T, HostingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Hosting.
+     * @param {HostingDeleteArgs} args - Arguments to delete one Hosting.
+     * @example
+     * // Delete one Hosting
+     * const Hosting = await prisma.hosting.delete({
+     *   where: {
+     *     // ... filter to delete one Hosting
+     *   }
+     * })
+     * 
+     */
+    delete<T extends HostingDeleteArgs>(args: SelectSubset<T, HostingDeleteArgs<ExtArgs>>): Prisma__HostingClient<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Hosting.
+     * @param {HostingUpdateArgs} args - Arguments to update one Hosting.
+     * @example
+     * // Update one Hosting
+     * const hosting = await prisma.hosting.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends HostingUpdateArgs>(args: SelectSubset<T, HostingUpdateArgs<ExtArgs>>): Prisma__HostingClient<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Hostings.
+     * @param {HostingDeleteManyArgs} args - Arguments to filter Hostings to delete.
+     * @example
+     * // Delete a few Hostings
+     * const { count } = await prisma.hosting.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends HostingDeleteManyArgs>(args?: SelectSubset<T, HostingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Hostings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HostingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Hostings
+     * const hosting = await prisma.hosting.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends HostingUpdateManyArgs>(args: SelectSubset<T, HostingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Hostings and returns the data updated in the database.
+     * @param {HostingUpdateManyAndReturnArgs} args - Arguments to update many Hostings.
+     * @example
+     * // Update many Hostings
+     * const hosting = await prisma.hosting.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Hostings and only return the `id`
+     * const hostingWithIdOnly = await prisma.hosting.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends HostingUpdateManyAndReturnArgs>(args: SelectSubset<T, HostingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Hosting.
+     * @param {HostingUpsertArgs} args - Arguments to update or create a Hosting.
+     * @example
+     * // Update or create a Hosting
+     * const hosting = await prisma.hosting.upsert({
+     *   create: {
+     *     // ... data to create a Hosting
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Hosting we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HostingUpsertArgs>(args: SelectSubset<T, HostingUpsertArgs<ExtArgs>>): Prisma__HostingClient<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Hostings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HostingCountArgs} args - Arguments to filter Hostings to count.
+     * @example
+     * // Count the number of Hostings
+     * const count = await prisma.hosting.count({
+     *   where: {
+     *     // ... the filter for the Hostings we want to count
+     *   }
+     * })
+    **/
+    count<T extends HostingCountArgs>(
+      args?: Subset<T, HostingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HostingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Hosting.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HostingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HostingAggregateArgs>(args: Subset<T, HostingAggregateArgs>): Prisma.PrismaPromise<GetHostingAggregateType<T>>
+
+    /**
+     * Group by Hosting.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HostingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends HostingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HostingGroupByArgs['orderBy'] }
+        : { orderBy?: HostingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HostingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHostingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Hosting model
+   */
+  readonly fields: HostingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Hosting.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HostingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Hosting model
+   */
+  interface HostingFieldRefs {
+    readonly id: FieldRef<"Hosting", 'String'>
+    readonly clientId: FieldRef<"Hosting", 'String'>
+    readonly domain: FieldRef<"Hosting", 'String'>
+    readonly cost: FieldRef<"Hosting", 'Float'>
+    readonly startDate: FieldRef<"Hosting", 'DateTime'>
+    readonly expiryDate: FieldRef<"Hosting", 'DateTime'>
+    readonly durationType: FieldRef<"Hosting", 'DurationType'>
+    readonly notes: FieldRef<"Hosting", 'String'>
+    readonly createdAt: FieldRef<"Hosting", 'DateTime'>
+    readonly updatedAt: FieldRef<"Hosting", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Hosting findUnique
+   */
+  export type HostingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * Filter, which Hosting to fetch.
+     */
+    where: HostingWhereUniqueInput
+  }
+
+  /**
+   * Hosting findUniqueOrThrow
+   */
+  export type HostingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * Filter, which Hosting to fetch.
+     */
+    where: HostingWhereUniqueInput
+  }
+
+  /**
+   * Hosting findFirst
+   */
+  export type HostingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * Filter, which Hosting to fetch.
+     */
+    where?: HostingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Hostings to fetch.
+     */
+    orderBy?: HostingOrderByWithRelationInput | HostingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Hostings.
+     */
+    cursor?: HostingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Hostings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Hostings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Hostings.
+     */
+    distinct?: HostingScalarFieldEnum | HostingScalarFieldEnum[]
+  }
+
+  /**
+   * Hosting findFirstOrThrow
+   */
+  export type HostingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * Filter, which Hosting to fetch.
+     */
+    where?: HostingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Hostings to fetch.
+     */
+    orderBy?: HostingOrderByWithRelationInput | HostingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Hostings.
+     */
+    cursor?: HostingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Hostings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Hostings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Hostings.
+     */
+    distinct?: HostingScalarFieldEnum | HostingScalarFieldEnum[]
+  }
+
+  /**
+   * Hosting findMany
+   */
+  export type HostingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * Filter, which Hostings to fetch.
+     */
+    where?: HostingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Hostings to fetch.
+     */
+    orderBy?: HostingOrderByWithRelationInput | HostingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Hostings.
+     */
+    cursor?: HostingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Hostings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Hostings.
+     */
+    skip?: number
+    distinct?: HostingScalarFieldEnum | HostingScalarFieldEnum[]
+  }
+
+  /**
+   * Hosting create
+   */
+  export type HostingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Hosting.
+     */
+    data: XOR<HostingCreateInput, HostingUncheckedCreateInput>
+  }
+
+  /**
+   * Hosting createMany
+   */
+  export type HostingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Hostings.
+     */
+    data: HostingCreateManyInput | HostingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Hosting createManyAndReturn
+   */
+  export type HostingCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * The data used to create many Hostings.
+     */
+    data: HostingCreateManyInput | HostingCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Hosting update
+   */
+  export type HostingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Hosting.
+     */
+    data: XOR<HostingUpdateInput, HostingUncheckedUpdateInput>
+    /**
+     * Choose, which Hosting to update.
+     */
+    where: HostingWhereUniqueInput
+  }
+
+  /**
+   * Hosting updateMany
+   */
+  export type HostingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Hostings.
+     */
+    data: XOR<HostingUpdateManyMutationInput, HostingUncheckedUpdateManyInput>
+    /**
+     * Filter which Hostings to update
+     */
+    where?: HostingWhereInput
+    /**
+     * Limit how many Hostings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Hosting updateManyAndReturn
+   */
+  export type HostingUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * The data used to update Hostings.
+     */
+    data: XOR<HostingUpdateManyMutationInput, HostingUncheckedUpdateManyInput>
+    /**
+     * Filter which Hostings to update
+     */
+    where?: HostingWhereInput
+    /**
+     * Limit how many Hostings to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Hosting upsert
+   */
+  export type HostingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Hosting to update in case it exists.
+     */
+    where: HostingWhereUniqueInput
+    /**
+     * In case the Hosting found by the `where` argument doesn't exist, create a new Hosting with this data.
+     */
+    create: XOR<HostingCreateInput, HostingUncheckedCreateInput>
+    /**
+     * In case the Hosting was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HostingUpdateInput, HostingUncheckedUpdateInput>
+  }
+
+  /**
+   * Hosting delete
+   */
+  export type HostingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+    /**
+     * Filter which Hosting to delete.
+     */
+    where: HostingWhereUniqueInput
+  }
+
+  /**
+   * Hosting deleteMany
+   */
+  export type HostingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Hostings to delete
+     */
+    where?: HostingWhereInput
+    /**
+     * Limit how many Hostings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Hosting without action
+   */
+  export type HostingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hosting
+     */
+    select?: HostingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hosting
+     */
+    omit?: HostingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HostingInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -27460,6 +28758,22 @@ export namespace Prisma {
   export type TeamMemberScalarFieldEnum = (typeof TeamMemberScalarFieldEnum)[keyof typeof TeamMemberScalarFieldEnum]
 
 
+  export const HostingScalarFieldEnum: {
+    id: 'id',
+    clientId: 'clientId',
+    domain: 'domain',
+    cost: 'cost',
+    startDate: 'startDate',
+    expiryDate: 'expiryDate',
+    durationType: 'durationType',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type HostingScalarFieldEnum = (typeof HostingScalarFieldEnum)[keyof typeof HostingScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -27662,6 +28976,20 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'DurationType'
+   */
+  export type EnumDurationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DurationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'DurationType[]'
+   */
+  export type ListEnumDurationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DurationType[]'>
+    
   /**
    * Deep Input Types
    */
@@ -27714,6 +29042,7 @@ export namespace Prisma {
     meetings?: MeetingListRelationFilter
     managerApprovals?: LeaveListRelationFilter
     adminApprovals?: LeaveListRelationFilter
+    Hosting?: HostingListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -27760,6 +29089,7 @@ export namespace Prisma {
     meetings?: MeetingOrderByRelationAggregateInput
     managerApprovals?: LeaveOrderByRelationAggregateInput
     adminApprovals?: LeaveOrderByRelationAggregateInput
+    Hosting?: HostingOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -27809,6 +29139,7 @@ export namespace Prisma {
     meetings?: MeetingListRelationFilter
     managerApprovals?: LeaveListRelationFilter
     adminApprovals?: LeaveListRelationFilter
+    Hosting?: HostingListRelationFilter
   }, "id" | "username" | "email" | "cnic">
 
   export type UserOrderByWithAggregationInput = {
@@ -29263,6 +30594,88 @@ export namespace Prisma {
     joinedAt?: DateTimeWithAggregatesFilter<"TeamMember"> | Date | string
   }
 
+  export type HostingWhereInput = {
+    AND?: HostingWhereInput | HostingWhereInput[]
+    OR?: HostingWhereInput[]
+    NOT?: HostingWhereInput | HostingWhereInput[]
+    id?: StringFilter<"Hosting"> | string
+    clientId?: StringFilter<"Hosting"> | string
+    domain?: StringFilter<"Hosting"> | string
+    cost?: FloatFilter<"Hosting"> | number
+    startDate?: DateTimeFilter<"Hosting"> | Date | string
+    expiryDate?: DateTimeFilter<"Hosting"> | Date | string
+    durationType?: EnumDurationTypeFilter<"Hosting"> | $Enums.DurationType
+    notes?: StringNullableFilter<"Hosting"> | string | null
+    createdAt?: DateTimeFilter<"Hosting"> | Date | string
+    updatedAt?: DateTimeFilter<"Hosting"> | Date | string
+    client?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type HostingOrderByWithRelationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    domain?: SortOrder
+    cost?: SortOrder
+    startDate?: SortOrder
+    expiryDate?: SortOrder
+    durationType?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    client?: UserOrderByWithRelationInput
+  }
+
+  export type HostingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: HostingWhereInput | HostingWhereInput[]
+    OR?: HostingWhereInput[]
+    NOT?: HostingWhereInput | HostingWhereInput[]
+    clientId?: StringFilter<"Hosting"> | string
+    domain?: StringFilter<"Hosting"> | string
+    cost?: FloatFilter<"Hosting"> | number
+    startDate?: DateTimeFilter<"Hosting"> | Date | string
+    expiryDate?: DateTimeFilter<"Hosting"> | Date | string
+    durationType?: EnumDurationTypeFilter<"Hosting"> | $Enums.DurationType
+    notes?: StringNullableFilter<"Hosting"> | string | null
+    createdAt?: DateTimeFilter<"Hosting"> | Date | string
+    updatedAt?: DateTimeFilter<"Hosting"> | Date | string
+    client?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type HostingOrderByWithAggregationInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    domain?: SortOrder
+    cost?: SortOrder
+    startDate?: SortOrder
+    expiryDate?: SortOrder
+    durationType?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: HostingCountOrderByAggregateInput
+    _avg?: HostingAvgOrderByAggregateInput
+    _max?: HostingMaxOrderByAggregateInput
+    _min?: HostingMinOrderByAggregateInput
+    _sum?: HostingSumOrderByAggregateInput
+  }
+
+  export type HostingScalarWhereWithAggregatesInput = {
+    AND?: HostingScalarWhereWithAggregatesInput | HostingScalarWhereWithAggregatesInput[]
+    OR?: HostingScalarWhereWithAggregatesInput[]
+    NOT?: HostingScalarWhereWithAggregatesInput | HostingScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Hosting"> | string
+    clientId?: StringWithAggregatesFilter<"Hosting"> | string
+    domain?: StringWithAggregatesFilter<"Hosting"> | string
+    cost?: FloatWithAggregatesFilter<"Hosting"> | number
+    startDate?: DateTimeWithAggregatesFilter<"Hosting"> | Date | string
+    expiryDate?: DateTimeWithAggregatesFilter<"Hosting"> | Date | string
+    durationType?: EnumDurationTypeWithAggregatesFilter<"Hosting"> | $Enums.DurationType
+    notes?: StringNullableWithAggregatesFilter<"Hosting"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Hosting"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Hosting"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -29306,6 +30719,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -29351,6 +30765,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserUpdateInput = {
@@ -29396,6 +30811,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -29441,6 +30857,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -30994,6 +32411,96 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type HostingCreateInput = {
+    id?: string
+    domain: string
+    cost: number
+    startDate: Date | string
+    expiryDate: Date | string
+    durationType: $Enums.DurationType
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client: UserCreateNestedOneWithoutHostingInput
+  }
+
+  export type HostingUncheckedCreateInput = {
+    id?: string
+    clientId: string
+    domain: string
+    cost: number
+    startDate: Date | string
+    expiryDate: Date | string
+    durationType: $Enums.DurationType
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HostingUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: UserUpdateOneRequiredWithoutHostingNestedInput
+  }
+
+  export type HostingUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HostingCreateManyInput = {
+    id?: string
+    clientId: string
+    domain: string
+    cost: number
+    startDate: Date | string
+    expiryDate: Date | string
+    durationType: $Enums.DurationType
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HostingUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HostingUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -31183,6 +32690,12 @@ export namespace Prisma {
     none?: MeetingWhereInput
   }
 
+  export type HostingListRelationFilter = {
+    every?: HostingWhereInput
+    some?: HostingWhereInput
+    none?: HostingWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -31245,6 +32758,10 @@ export namespace Prisma {
   }
 
   export type MeetingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type HostingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32333,6 +33850,70 @@ export namespace Prisma {
     joinedAt?: SortOrder
   }
 
+  export type EnumDurationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DurationType | EnumDurationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DurationType[] | ListEnumDurationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DurationType[] | ListEnumDurationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDurationTypeFilter<$PrismaModel> | $Enums.DurationType
+  }
+
+  export type HostingCountOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    domain?: SortOrder
+    cost?: SortOrder
+    startDate?: SortOrder
+    expiryDate?: SortOrder
+    durationType?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HostingAvgOrderByAggregateInput = {
+    cost?: SortOrder
+  }
+
+  export type HostingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    domain?: SortOrder
+    cost?: SortOrder
+    startDate?: SortOrder
+    expiryDate?: SortOrder
+    durationType?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HostingMinOrderByAggregateInput = {
+    id?: SortOrder
+    clientId?: SortOrder
+    domain?: SortOrder
+    cost?: SortOrder
+    startDate?: SortOrder
+    expiryDate?: SortOrder
+    durationType?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HostingSumOrderByAggregateInput = {
+    cost?: SortOrder
+  }
+
+  export type EnumDurationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DurationType | EnumDurationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DurationType[] | ListEnumDurationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DurationType[] | ListEnumDurationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDurationTypeWithAggregatesFilter<$PrismaModel> | $Enums.DurationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDurationTypeFilter<$PrismaModel>
+    _max?: NestedEnumDurationTypeFilter<$PrismaModel>
+  }
+
   export type UserRoleCreateNestedManyWithoutUserInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
@@ -32470,6 +34051,13 @@ export namespace Prisma {
     connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
   }
 
+  export type HostingCreateNestedManyWithoutClientInput = {
+    create?: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput> | HostingCreateWithoutClientInput[] | HostingUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: HostingCreateOrConnectWithoutClientInput | HostingCreateOrConnectWithoutClientInput[]
+    createMany?: HostingCreateManyClientInputEnvelope
+    connect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+  }
+
   export type UserRoleUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
@@ -32599,6 +34187,13 @@ export namespace Prisma {
     connectOrCreate?: LeaveCreateOrConnectWithoutAdminInput | LeaveCreateOrConnectWithoutAdminInput[]
     createMany?: LeaveCreateManyAdminInputEnvelope
     connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+  }
+
+  export type HostingUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput> | HostingCreateWithoutClientInput[] | HostingUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: HostingCreateOrConnectWithoutClientInput | HostingCreateOrConnectWithoutClientInput[]
+    createMany?: HostingCreateManyClientInputEnvelope
+    connect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -32905,6 +34500,20 @@ export namespace Prisma {
     deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
   }
 
+  export type HostingUpdateManyWithoutClientNestedInput = {
+    create?: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput> | HostingCreateWithoutClientInput[] | HostingUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: HostingCreateOrConnectWithoutClientInput | HostingCreateOrConnectWithoutClientInput[]
+    upsert?: HostingUpsertWithWhereUniqueWithoutClientInput | HostingUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: HostingCreateManyClientInputEnvelope
+    set?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+    disconnect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+    delete?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+    connect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+    update?: HostingUpdateWithWhereUniqueWithoutClientInput | HostingUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: HostingUpdateManyWithWhereWithoutClientInput | HostingUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: HostingScalarWhereInput | HostingScalarWhereInput[]
+  }
+
   export type UserRoleUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
@@ -33161,6 +34770,20 @@ export namespace Prisma {
     update?: LeaveUpdateWithWhereUniqueWithoutAdminInput | LeaveUpdateWithWhereUniqueWithoutAdminInput[]
     updateMany?: LeaveUpdateManyWithWhereWithoutAdminInput | LeaveUpdateManyWithWhereWithoutAdminInput[]
     deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
+  }
+
+  export type HostingUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput> | HostingCreateWithoutClientInput[] | HostingUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: HostingCreateOrConnectWithoutClientInput | HostingCreateOrConnectWithoutClientInput[]
+    upsert?: HostingUpsertWithWhereUniqueWithoutClientInput | HostingUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: HostingCreateManyClientInputEnvelope
+    set?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+    disconnect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+    delete?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+    connect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
+    update?: HostingUpdateWithWhereUniqueWithoutClientInput | HostingUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: HostingUpdateManyWithWhereWithoutClientInput | HostingUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: HostingScalarWhereInput | HostingScalarWhereInput[]
   }
 
   export type UserRoleCreateNestedManyWithoutRoleInput = {
@@ -33739,6 +35362,24 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTeamsInput, UserUpdateWithoutTeamsInput>, UserUncheckedUpdateWithoutTeamsInput>
   }
 
+  export type UserCreateNestedOneWithoutHostingInput = {
+    create?: XOR<UserCreateWithoutHostingInput, UserUncheckedCreateWithoutHostingInput>
+    connectOrCreate?: UserCreateOrConnectWithoutHostingInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumDurationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.DurationType
+  }
+
+  export type UserUpdateOneRequiredWithoutHostingNestedInput = {
+    create?: XOR<UserCreateWithoutHostingInput, UserUncheckedCreateWithoutHostingInput>
+    connectOrCreate?: UserCreateOrConnectWithoutHostingInput
+    upsert?: UserUpsertWithoutHostingInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutHostingInput, UserUpdateWithoutHostingInput>, UserUncheckedUpdateWithoutHostingInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -34092,6 +35733,23 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type NestedEnumDurationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DurationType | EnumDurationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DurationType[] | ListEnumDurationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DurationType[] | ListEnumDurationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDurationTypeFilter<$PrismaModel> | $Enums.DurationType
+  }
+
+  export type NestedEnumDurationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DurationType | EnumDurationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DurationType[] | ListEnumDurationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DurationType[] | ListEnumDurationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDurationTypeWithAggregatesFilter<$PrismaModel> | $Enums.DurationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDurationTypeFilter<$PrismaModel>
+    _max?: NestedEnumDurationTypeFilter<$PrismaModel>
+  }
+
   export type UserRoleCreateWithoutUserInput = {
     id?: string
     createdAt?: Date | string
@@ -34158,6 +35816,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutSubordinatesInput = {
@@ -34202,6 +35861,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutSubordinatesInput = {
@@ -34251,6 +35911,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutReportsToInput = {
@@ -34295,6 +35956,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutReportsToInput = {
@@ -34829,6 +36491,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type HostingCreateWithoutClientInput = {
+    id?: string
+    domain: string
+    cost: number
+    startDate: Date | string
+    expiryDate: Date | string
+    durationType: $Enums.DurationType
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HostingUncheckedCreateWithoutClientInput = {
+    id?: string
+    domain: string
+    cost: number
+    startDate: Date | string
+    expiryDate: Date | string
+    durationType: $Enums.DurationType
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HostingCreateOrConnectWithoutClientInput = {
+    where: HostingWhereUniqueInput
+    create: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput>
+  }
+
+  export type HostingCreateManyClientInputEnvelope = {
+    data: HostingCreateManyClientInput | HostingCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserRoleUpsertWithWhereUniqueWithoutUserInput = {
     where: UserRoleWhereUniqueInput
     update: XOR<UserRoleUpdateWithoutUserInput, UserRoleUncheckedUpdateWithoutUserInput>
@@ -34909,6 +36605,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubordinatesInput = {
@@ -34953,6 +36650,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutReportsToInput = {
@@ -35480,6 +37178,38 @@ export namespace Prisma {
     data: XOR<LeaveUpdateManyMutationInput, LeaveUncheckedUpdateManyWithoutAdminInput>
   }
 
+  export type HostingUpsertWithWhereUniqueWithoutClientInput = {
+    where: HostingWhereUniqueInput
+    update: XOR<HostingUpdateWithoutClientInput, HostingUncheckedUpdateWithoutClientInput>
+    create: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput>
+  }
+
+  export type HostingUpdateWithWhereUniqueWithoutClientInput = {
+    where: HostingWhereUniqueInput
+    data: XOR<HostingUpdateWithoutClientInput, HostingUncheckedUpdateWithoutClientInput>
+  }
+
+  export type HostingUpdateManyWithWhereWithoutClientInput = {
+    where: HostingScalarWhereInput
+    data: XOR<HostingUpdateManyMutationInput, HostingUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type HostingScalarWhereInput = {
+    AND?: HostingScalarWhereInput | HostingScalarWhereInput[]
+    OR?: HostingScalarWhereInput[]
+    NOT?: HostingScalarWhereInput | HostingScalarWhereInput[]
+    id?: StringFilter<"Hosting"> | string
+    clientId?: StringFilter<"Hosting"> | string
+    domain?: StringFilter<"Hosting"> | string
+    cost?: FloatFilter<"Hosting"> | number
+    startDate?: DateTimeFilter<"Hosting"> | Date | string
+    expiryDate?: DateTimeFilter<"Hosting"> | Date | string
+    durationType?: EnumDurationTypeFilter<"Hosting"> | $Enums.DurationType
+    notes?: StringNullableFilter<"Hosting"> | string | null
+    createdAt?: DateTimeFilter<"Hosting"> | Date | string
+    updatedAt?: DateTimeFilter<"Hosting"> | Date | string
+  }
+
   export type UserRoleCreateWithoutRoleInput = {
     id?: string
     createdAt?: Date | string
@@ -35613,6 +37343,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutUserRolesInput = {
@@ -35657,6 +37388,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutUserRolesInput = {
@@ -35742,6 +37474,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserRolesInput = {
@@ -35786,6 +37519,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type RoleUpsertWithoutUserRolesInput = {
@@ -36013,6 +37747,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutEmergencyContactInput = {
@@ -36057,6 +37792,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutEmergencyContactInput = {
@@ -36117,6 +37853,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmergencyContactInput = {
@@ -36161,6 +37898,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutEducationInput = {
@@ -36205,6 +37943,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutEducationInput = {
@@ -36249,6 +37988,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutEducationInput = {
@@ -36309,6 +38049,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEducationInput = {
@@ -36353,6 +38094,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutExperienceInput = {
@@ -36397,6 +38139,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutExperienceInput = {
@@ -36441,6 +38184,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutExperienceInput = {
@@ -36501,6 +38245,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExperienceInput = {
@@ -36545,6 +38290,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutDocumentsInput = {
@@ -36589,6 +38335,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -36633,6 +38380,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -36693,6 +38441,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -36737,6 +38486,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutBankDetailsInput = {
@@ -36781,6 +38531,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutBankDetailsInput = {
@@ -36825,6 +38576,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutBankDetailsInput = {
@@ -36885,6 +38637,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBankDetailsInput = {
@@ -36929,6 +38682,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutAttendanceInput = {
@@ -36973,6 +38727,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutAttendanceInput = {
@@ -37017,6 +38772,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutAttendanceInput = {
@@ -37077,6 +38833,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAttendanceInput = {
@@ -37121,6 +38878,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutLeavesInput = {
@@ -37165,6 +38923,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutLeavesInput = {
@@ -37209,6 +38968,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutLeavesInput = {
@@ -37258,6 +39018,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutManagerApprovalsInput = {
@@ -37302,6 +39063,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutManagerApprovalsInput = {
@@ -37351,6 +39113,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutAdminApprovalsInput = {
@@ -37395,6 +39158,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutAdminApprovalsInput = {
@@ -37455,6 +39219,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeavesInput = {
@@ -37499,6 +39264,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUpsertWithoutManagerApprovalsInput = {
@@ -37554,6 +39320,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagerApprovalsInput = {
@@ -37598,6 +39365,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUpsertWithoutAdminApprovalsInput = {
@@ -37653,6 +39421,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdminApprovalsInput = {
@@ -37697,6 +39466,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutTasksInput = {
@@ -37741,6 +39511,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -37785,6 +39556,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -37845,6 +39617,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -37889,6 +39662,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutSkillsInput = {
@@ -37933,6 +39707,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutSkillsInput = {
@@ -37977,6 +39752,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutSkillsInput = {
@@ -38037,6 +39813,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSkillsInput = {
@@ -38081,6 +39858,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutPerformanceInput = {
@@ -38125,6 +39903,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutPerformanceInput = {
@@ -38169,6 +39948,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutPerformanceInput = {
@@ -38229,6 +40009,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPerformanceInput = {
@@ -38273,6 +40054,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ProjectAssignmentCreateWithoutProjectInput = {
@@ -38390,6 +40172,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutProjectsInput = {
@@ -38434,6 +40217,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutProjectsInput = {
@@ -38535,6 +40319,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -38579,6 +40364,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -38623,6 +40409,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -38667,6 +40454,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -38727,6 +40515,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -38771,6 +40560,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutMeetingsInput = {
@@ -38815,6 +40605,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutMeetingsInput = {
@@ -38859,6 +40650,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutMeetingsInput = {
@@ -38919,6 +40711,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMeetingsInput = {
@@ -38963,6 +40756,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserCreateWithoutLeadingTeamsInput = {
@@ -39007,6 +40801,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutLeadingTeamsInput = {
@@ -39051,6 +40846,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutLeadingTeamsInput = {
@@ -39133,6 +40929,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadingTeamsInput = {
@@ -39177,6 +40974,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type TeamMemberUpsertWithWhereUniqueWithoutTeamInput = {
@@ -39260,6 +41058,7 @@ export namespace Prisma {
     meetings?: MeetingCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    Hosting?: HostingCreateNestedManyWithoutClientInput
   }
 
   export type UserUncheckedCreateWithoutTeamsInput = {
@@ -39304,6 +41103,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
     managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
     adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type UserCreateOrConnectWithoutTeamsInput = {
@@ -39393,6 +41193,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamsInput = {
@@ -39432,6 +41233,203 @@ export namespace Prisma {
     skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
     performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type UserCreateWithoutHostingInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    teams?: TeamMemberCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+  }
+
+  export type UserUncheckedCreateWithoutHostingInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+  }
+
+  export type UserCreateOrConnectWithoutHostingInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutHostingInput, UserUncheckedCreateWithoutHostingInput>
+  }
+
+  export type UserUpsertWithoutHostingInput = {
+    update: XOR<UserUpdateWithoutHostingInput, UserUncheckedUpdateWithoutHostingInput>
+    create: XOR<UserCreateWithoutHostingInput, UserUncheckedCreateWithoutHostingInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutHostingInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutHostingInput, UserUncheckedUpdateWithoutHostingInput>
+  }
+
+  export type UserUpdateWithoutHostingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutHostingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
     leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
@@ -39631,6 +41629,18 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type HostingCreateManyClientInput = {
+    id?: string
+    domain: string
+    cost: number
+    startDate: Date | string
+    expiryDate: Date | string
+    durationType: $Enums.DurationType
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserRoleUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39694,6 +41704,7 @@ export namespace Prisma {
     meetings?: MeetingUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsToInput = {
@@ -39738,6 +41749,7 @@ export namespace Prisma {
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
     managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
     adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutReportsToInput = {
@@ -40243,6 +42255,42 @@ export namespace Prisma {
     adminStatus?: EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
     managerComment?: NullableStringFieldUpdateOperationsInput | string | null
     adminComment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HostingUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HostingUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HostingUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
