@@ -1,1055 +1,709 @@
 "use client"
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
-  Activity,
-  BarChart3,
-  Bell,
   Calendar,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Clock,
-  CreditCard,
   Download,
   FileText,
-  Grid,
-  Inbox,
-  LayoutDashboard,
-  MessageSquare,
   Plus,
   Search,
-  Settings,
-  User,
-  Users,
 } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { Bar, BarChart, Cell, Pie, PieChart as RePieChart, ResponsiveContainer, XAxis } from "recharts"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import PermissionGuard from "@/components/PermissionGuard"
 
-// Stat Card Component
-function StatCard({ icon, title, value, change, color, viewAll }) {
-    return (
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">{title}</p>
-              <p className="text-xl font-bold">{value}</p>
-            </div>
-            {icon}
+interface AttendanceRecord {
+  id: string;
+  date: string;
+  checkInTime: string | null;
+  checkOutTime: string | null;
+  totalHours: number | null;
+  status: string;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    department: string;
+    position: string;
+    pfp: string | null;
+  };
+}
+
+interface AttendanceData {
+  attendance: AttendanceRecord[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  departments: string[];
+}
+
+export default function AdminDashboard() {
+  const [showCreateAttendanceDialog, setShowCreateAttendanceDialog] = useState(false);
+  const [showImportAttendanceDialog, setShowImportAttendanceDialog] = useState(false);
+  const [users, setUsers] = useState<any[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [attendanceForm, setAttendanceForm] = useState({
+    userId: '',
+    date: '',
+    checkInTime: '',
+    checkOutTime: '',
+  });
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [isCreatingAttendance, setIsCreatingAttendance] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
+  const [isDebugging, setIsDebugging] = useState(false);
+  const [debugResults, setDebugResults] = useState<any>(null);
+  
+  // Attendance table state
+  const [attendanceData, setAttendanceData] = useState<AttendanceData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+
+  const fetchUsers = async () => {
+    setLoadingUsers(true);
+    try {
+      const response = await fetch('/api/attendance/create');
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data);
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
+  const fetchAttendanceData = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: "20",
+        search: searchTerm,
+        department: selectedDepartment,
+        status: selectedStatus,
+      });
+
+      if (dateFrom) params.append("dateFrom", dateFrom);
+      if (dateTo) params.append("dateTo", dateTo);
+
+      const response = await fetch(`/api/attendance/admin?${params}`);
+      if (response.ok) {
+        const data = await response.json();
+        setAttendanceData(data);
+      } else {
+        console.error('Failed to fetch attendance data');
+      }
+    } catch (error) {
+      console.error('Error fetching attendance data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAttendanceData();
+  }, [currentPage, searchTerm, selectedDepartment, selectedStatus, dateFrom, dateTo]);
+
+  const handleCreateAttendance = () => {
+    setShowCreateAttendanceDialog(true);
+    if (users.length === 0) {
+      fetchUsers();
+    }
+  };
+
+  const handleImportAttendance = () => {
+    setShowImportAttendanceDialog(true);
+  };
+
+  const handleCreateAttendanceSubmit = async () => {
+    if (!attendanceForm.userId || !attendanceForm.date) {
+      alert('Please select a user and date');
+      return;
+    }
+
+    setIsCreatingAttendance(true);
+    try {
+      const response = await fetch('/api/attendance/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(attendanceForm),
+      });
+
+      if (response.ok) {
+        alert('Attendance record created successfully');
+        setShowCreateAttendanceDialog(false);
+        setAttendanceForm({
+          userId: '',
+          date: '',
+          checkInTime: '',
+          checkOutTime: '',
+        });
+        fetchAttendanceData(); // Refresh the table
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (error) {
+      console.error('Error creating attendance:', error);
+      alert('Error creating attendance record');
+    } finally {
+      setIsCreatingAttendance(false);
+    }
+  };
+
+  const handleImportSubmit = async () => {
+    if (!importFile) {
+      alert('Please select a file');
+      return;
+    }
+
+    setIsImporting(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', importFile);
+
+      const response = await fetch('/api/attendance/import', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        const { results } = result;
+        
+        let message = `Import completed!\nProcessed: ${results.totalProcessed}\nCreated: ${results.totalCreated}\nSkipped: ${results.totalSkipped}`;
+        
+        if (results.errors && results.errors.length > 0) {
+          message += `\nErrors: ${results.errors.length}`;
+          
+          if (results.errors.length <= 10) {
+            message += '\n\nFirst few errors:\n' + results.errors.slice(0, 5).join('\n');
+          } else {
+            message += '\n\nFirst 5 errors:\n' + results.errors.slice(0, 5).join('\n');
+            message += '\n\n(Use Debug button to see detailed analysis)';
+          }
+        }
+        
+        alert(message);
+        
+        if (results.totalCreated > 0) {
+          setShowImportAttendanceDialog(false);
+          setImportFile(null);
+          setDebugResults(null);
+          fetchAttendanceData(); // Refresh the table
+        }
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (error) {
+      console.error('Error importing attendance:', error);
+      alert('Error importing attendance data');
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
+  const handleDebugFile = async () => {
+    if (!importFile) {
+      alert('Please select a file first');
+      return;
+    }
+
+    setIsDebugging(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', importFile);
+
+      const response = await fetch('/api/attendance/debug-import', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setDebugResults(result.debugInfo);
+      } else {
+        const error = await response.json();
+        alert(`Debug Error: ${error.message}`);
+      }
+    } catch (error) {
+      console.error('Error debugging file:', error);
+      alert('Error analyzing file');
+    } finally {
+      setIsDebugging(false);
+    }
+  };
+
+  const formatTime = (timeString: string | null) => {
+    if (!timeString) return "-";
+    return new Date(timeString).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const getStatusBadge = (status: string) => {
+    const colors = {
+      PRESENT: "bg-green-100 text-green-800",
+      ABSENT: "bg-red-100 text-red-800",
+      LATE: "bg-yellow-100 text-yellow-800",
+      HALF_DAY: "bg-blue-100 text-blue-800",
+    };
+    return colors[status as keyof typeof colors] || "bg-gray-100 text-gray-800";
+  };
+
+  return (
+    <main className="flex-1 overflow-auto bg-gray-50 p-4 md:p-6">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold">Employee Attendance</h1>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>Dashboard</span>
+            <ChevronRight className="h-3 w-3" />
+            <span>Attendance Management</span>
           </div>
-          <div className="mt-4 flex items-center justify-between">
-            <span className={`text-xs ${color}`}>{change}</span>
-            {viewAll && (
-              <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground">
-                View All
-              </Button>
-            )}
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="gap-1">
+            <Download className="h-4 w-4" />
+            Export
+          </Button>
+          <PermissionGuard permissions={["attendance.create", "attendance.import"]} requireAll={false}>
+            <Button size="sm" variant="outline" className="gap-1 bg-[#E8F5E8] text-[#198754]" onClick={handleCreateAttendance}>
+              <Plus className="h-4 w-4" />
+              Create Attendance
+            </Button>
+            <Button size="sm" variant="outline" className="gap-1 bg-[#F8F9FA] text-[#6C757D]" onClick={handleImportAttendance}>
+              <FileText className="h-4 w-4" />
+              Import Attendance
+            </Button>
+          </PermissionGuard>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <Card className="mb-6">
+        <CardContent className="p-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Search</label>
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search employees..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-8"
+                />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Department</label>
+              <select
+                value={selectedDepartment}
+                onChange={(e) => setSelectedDepartment(e.target.value)}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              >
+                <option value="all">All Departments</option>
+                {attendanceData?.departments.map(dept => (
+                  <option key={dept} value={dept}>{dept}</option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Status</label>
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              >
+                <option value="all">All Status</option>
+                <option value="PRESENT">Present</option>
+                <option value="ABSENT">Absent</option>
+                <option value="LATE">Late</option>
+                <option value="HALF_DAY">Half Day</option>
+              </select>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">From Date</label>
+              <Input
+                type="date"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">To Date</label>
+              <Input
+                type="date"
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
+              />
+            </div>
           </div>
         </CardContent>
       </Card>
-    )
-  }
-  
-  // Attendance Gauge Chart Component
-  function AttendanceGaugeChart() {
-    return (
-      <div className="h-full w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <RePieChart>
-            <Pie
-              data={[
-                { name: "Present", value: 59, color: "#22c55e" },
-                { name: "Late", value: 21, color: "#f59e0b" },
-                { name: "Permission", value: 2, color: "#3b82f6" },
-                { name: "Absent", value: 18, color: "#ef4444" },
-              ]}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={80}
-              paddingAngle={0}
-              dataKey="value"
-              startAngle={90}
-              endAngle={-270}
-            >
-              {attendanceData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-          </RePieChart>
-        </ResponsiveContainer>
-      </div>
-    )
-  }
-  
-  // Tasks Donut Chart Component
-  function TasksDonutChart() {
-    return (
-      <div className="h-full w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <RePieChart>
-            <Pie
-              data={taskStatusData}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={80}
-              paddingAngle={0}
-              dataKey="value"
-              startAngle={0}
-              endAngle={360}
-            >
-              {taskStatusData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-          </RePieChart>
-        </ResponsiveContainer>
-      </div>
-    )
-  }
-  
-  // Sample Data
-  const departmentData = [
-    { name: "Development", count: 32, percentage: 100, color: "#FF6A00" },
-    { name: "Marketing", count: 24, percentage: 75, color: "#0D6EFD" },
-    { name: "HR", count: 16, percentage: 50, color: "#FFC107" },
-    { name: "Management", count: 8, percentage: 25, color: "#198754" },
-  ]
-  
-  const attendanceData = [
-    { name: "Present", value: 75, percentage: 59, color: "#22c55e" },
-    { name: "Late", value: 10, percentage: 21, color: "#f59e0b" },
-    { name: "Permission", value: 8, percentage: 2, color: "#3b82f6" },
-    { name: "Absent", value: 7, percentage: 18, color: "#ef4444" },
-  ]
-  
-  const taskStatusData = [
-    { name: "Ongoing", value: 25, percentage: 25, color: "#FFC107" },
-    { name: "On Hold", value: 18, percentage: 18, color: "#0D6EFD" },
-    { name: "Overdue", value: 17, percentage: 17, color: "#DC3545" },
-    { name: "Ongoing", value: 40, percentage: 40, color: "#198754" },
-  ]
-  
-  const clockInData = [
-    {
-      name: "Daniel Cabella",
-      role: "UI/UX Designer",
-      status: "On Time",
-      clockIn: "10:30 AM",
-      clockOut: "09:45 AM",
-      production: "08:21 hrs",
-    },
-    { name: "Delphin Martini", role: "Project Manager", status: "On Time", clockIn: "09:45 AM" },
-    { name: "Brian Villalobos", role: "PHP Developer", status: "On Time", clockIn: "09:30 AM" },
-    { name: "Anthony Lewis", role: "Marketing Head", status: "Late", clockIn: "10:15 AM" },
-  ]
-  
-  const todoItems = [
-    { task: "Add Holidays", completed: false },
-    { task: "Add Meeting to Client", completed: false },
-    { task: "Chat with Admin", completed: false },
-    { task: "Management Call", completed: false },
-    { task: "Add Payroll", completed: false },
-    { task: "Add Policy for Increment", completed: false },
-  ]
-  
-  const applicantsData = [
-    { name: "Brian Villalobos", age: "32", experience: "5+ Years", location: "USA", status: "Video Interview" },
-    { name: "Anthony Lewis", age: "28", experience: "3+ Years", location: "USA", status: "Phone Interview" },
-    { name: "Stephen Perch", age: "32", experience: "5+ Years", location: "USA", status: "On-site Interview" },
-    { name: "Delphin Martini", age: "29", experience: "2+ Years", location: "USA", status: "Initial Screening" },
-  ]
-  
-  const employeesData = [
-    { name: "Anthony Lewis", role: "Finance", department: "Finance" },
-    { name: "Brian Villalobos", role: "PHP Developer", department: "Development" },
-    { name: "Stephen Perch", role: "Executive", department: "Marketing" },
-    { name: "Delphin Martini", role: "Project Manager", department: "Manager" },
-    { name: "Anthony Lewis", role: "UI/UX Designer", department: "Design" },
-  ]
-  
-  const salesData = [
-    { name: "Jan", income: 30 },
-    { name: "Feb", income: 25 },
-    { name: "Mar", income: 35 },
-    { name: "Apr", income: 60 },
-    { name: "May", income: 65 },
-    { name: "Jun", income: 60 },
-    { name: "Jul", income: 65 },
-    { name: "Aug", income: 60 },
-    { name: "Sep", income: 65 },
-    { name: "Oct", income: 70 },
-    { name: "Nov", income: 55 },
-    { name: "Dec", income: 25 },
-  ]
-  
-  const projectsData = [
-    { id: "PRO-001", name: "Office Management App", hours: "12,500 hrs", deadline: "12 Sep 2024", priority: "High" },
-    { id: "PRO-002", name: "Clinic Management", hours: "132,500 hrs", deadline: "24 Oct 2024", priority: "Low" },
-    { id: "PRO-003", name: "Educational Platform", hours: "400,250 hrs", deadline: "18 Feb 2024", priority: "Medium" },
-    { id: "PRO-004", name: "Chat & Call Mobile App", hours: "350,150 hrs", deadline: "18 Feb 2024", priority: "Medium" },
-    { id: "PRO-005", name: "Travel Planning Website", hours: "300,250 hrs", deadline: "18 Feb 2024", priority: "Medium" },
-    { id: "PRO-006", name: "Service Booking Software", hours: "402,550 hrs", deadline: "20 Feb 2024", priority: "Low" },
-    { id: "PRO-008", name: "Travel Planning Website", hours: "132,250 hrs", deadline: "17 Oct 2024", priority: "Medium" },
-  ]
-  
-  const activitiesData = [
-    { name: "Matt Morgan", time: "02:30 PM", action: "Added New Project | CRM Dashboard" },
-    { name: "Mary Donald", time: "02:00 PM", action: "Commented on | Uploaded Document" },
-    { name: "George David", time: "02:30 PM", action: "Bookmarked Access to Module Tickets" },
-    { name: "Aaron Zean", time: "02:00 PM", action: "Downloaded App Requests" },
-    { name: "Hendry David", time: "02:30 PM", action: "Completed New Project | CRM" },
-  ]
-  
-  const invoicesData = [
-    { company: "Anderson Website", service: "SERVICES", type: "Logistics", amount: "3560" },
-    { company: "Modular Corporation", service: "SERVICES", type: "One Corp", amount: "4175" },
-    { company: "Change on Ergo Mobile", service: "SERVICES", type: "High LLP", amount: "5885" },
-    { company: "Change on the Board", service: "SERVICES", type: "High LLP", amount: "1457" },
-    { company: "Hospital Management", service: "SERVICES", type: "One Corp", amount: "5458" },
-  ]
 
-  
-export default function AdminDashboard() {
-    return(
-        <main className="flex-1 overflow-auto bg-gray-50 p-4 md:p-6">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold">Admin Dashboard</h1>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span>Dashboard</span>
-              <ChevronRight className="h-3 w-3" />
-              <span>Admin Dashboard</span>
+      {/* Attendance Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base font-medium">
+            Employee Attendance Records
+            {attendanceData && (
+              <span className="ml-2 text-sm font-normal text-muted-foreground">
+                ({attendanceData.pagination.total} total records)
+              </span>
+            )}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="flex items-center justify-center p-8">
+              <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-1">
-              <Download className="h-4 w-4" />
-              Export
-            </Button>
-            <Button variant="outline" size="sm" className="gap-1">
-              <Calendar className="h-4 w-4" />
-              2023
-            </Button>
-          </div>
-        </div>
-
-        <div className="grid gap-6">
-          {/* Welcome Section */}
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-14 w-14 border-2 border-[#FF6A00]">
-                    <AvatarImage src="/placeholder.svg?height=56&width=56" alt="Adrian" />
-                    <AvatarFallback>AD</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h2 className="text-lg font-semibold">Welcome Back, Adrian</h2>
-                    <p className="text-sm text-muted-foreground">
-                      You have <span className="text-[#FF6A00]">2 Pending Approvals</span> &{" "}
-                      <span className="text-[#FF6A00]">14 Leave Requests</span>
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" className="gap-1 bg-[#F0F6FE] text-[#0D6EFD]">
-                    <Plus className="h-4 w-4" />
-                    Add Project
-                  </Button>
-                  <Button size="sm" className="gap-1 bg-[#FF6A00] hover:bg-[#FF6A00]/90">
-                    <Plus className="h-4 w-4" />
-                    Add Requests
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Statistics Cards */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard
-              icon={
-                <div className="rounded-full bg-accent/20 p-3 text-accent">
-                  <Activity className="h-5 w-5" />
-                </div>
-              }
-              title="Attendance Overview"
-              value="120/154"
-              change="+8.1%"
-              color="text-accent"
-              viewAll={true}
-            />
-            <StatCard
-              icon={
-                <div className="rounded-full bg-accent p-3 text-accent-foreground">
-                  <FileText className="h-5 w-5" />
-                </div>
-              }
-              title="Total No.of Projects"
-              value="90/125"
-              change="+2.1%"
-              color="text-accent-foreground"
-              viewAll={true}
-            />
-            <StatCard
-              icon={
-                <div className="rounded-full bg-accent p-3 text-accent">
-                  <Users className="h-5 w-5" />
-                </div>
-              }
-              title="Total No.of Clients"
-              value="69/86"
-              change="+12.1%"
-              color="text-accent"
-              viewAll={true}
-            />
-            <StatCard
-              icon={
-                <div className="rounded-full bg-accent p-3 text-accent-foreground">
-                  <FileText className="h-5 w-5" />
-                </div>
-              }
-              title="Total No.of Tasks"
-              value="225/28"
-              change="+16.5%"
-              color="text-accent-foreground"
-              viewAll={true}
-            />
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard
-              icon={
-                <div className="rounded-full bg-accent p-3 text-accent">
-                  <CreditCard className="h-5 w-5" />
-                </div>
-              }
-              title="Earnings"
-              value="$21445"
-              change="+18.2%"
-              color="text-accent"
-              viewAll={true}
-            />
-            <StatCard
-              icon={
-                <div className="rounded-full bg-accent p-3 text-accent">
-                  <BarChart3 className="h-5 w-5" />
-                </div>
-              }
-              title="Profit This Week"
-              value="$5,944"
-              change="+12.5%"
-              color="text-accent"
-              viewAll={true}
-            />
-            <StatCard
-              icon={
-                <div className="rounded-full bg-accent p-3 text-accent">
-                  <Inbox className="h-5 w-5" />
-                </div>
-              }
-              title="Job Applicants"
-              value="98"
-              change="+5.1%"
-              color="text-accent"
-              viewAll={true}
-            />
-            <StatCard
-              icon={
-                <div className="rounded-full bg-muted p-3 text-muted-foreground">
-                  <Users className="h-5 w-5" />
-                </div>
-              }
-              title="New Hire"
-              value="45/48"
-              change="+11.2%"
-              color="text-muted-foreground"
-              viewAll={true}
-            />
-          </div>
-
-          {/* Charts and Tables Section */}
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Employees By Department */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Employees by Department</CardTitle>
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <Clock className="h-3 w-3" />
-                  This Week
-                </Badge>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {departmentData.map((dept, index) => (
-                    <div key={index} className="space-y-1">
-                      <div className="flex items-center justify-between text-sm">
-                        <span>{dept.name}</span>
-                        <span className="font-medium">{dept.count}</span>
-                      </div>
-                      <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
-                        <div
-                          className="h-full rounded-full"
-                          style={{
-                            width: `${dept.percentage}%`,
-                            backgroundColor: dept.color,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Employee Status */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Employee Status</CardTitle>
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <Clock className="h-3 w-3" />
-                  This Week
-                </Badge>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="text-sm font-medium">Total Employees</div>
-                    <div className="text-2xl font-bold">154</div>
-                    <div className="h-2 w-full rounded-full bg-muted">
-                      <div className="flex h-full rounded-full">
-                        <div className="h-full w-[48%] rounded-l-full bg-destructive"></div>
-                        <div className="h-full w-[20%] bg-accent"></div>
-                        <div className="h-full w-[22%] bg-primary"></div>
-                        <div className="h-full w-[10%] rounded-r-full bg-accent"></div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-sm bg-destructive"></div>
-                          <span className="text-xs">Fulltime (48%)</span>
-                        </div>
-                        <div className="text-lg font-bold">112</div>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-sm bg-accent"></div>
-                          <span className="text-xs">Contract (20%)</span>
-                        </div>
-                        <div className="text-lg font-bold">112</div>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-sm bg-primary"></div>
-                          <span className="text-xs">Probation (22%)</span>
-                        </div>
-                        <div className="text-lg font-bold">12</div>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-sm bg-accent"></div>
-                          <span className="text-xs">Intern (10%)</span>
-                        </div>
-                        <div className="text-lg font-bold">04</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="mb-2 text-sm font-medium">Top Performer</div>
-                    <div className="flex items-center gap-2">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Daniel" />
-                        <AvatarFallback>DC</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-medium">Daniel Cabella</div>
-                        <div className="text-xs text-muted-foreground">iOS Developer</div>
-                      </div>
-                    </div>
-                    <div className="mt-2 text-right text-sm font-medium">Performance</div>
-                    <div className="mt-1 text-right text-lg font-bold">95%</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Attendance Overview */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Attendance Overview</CardTitle>
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <Clock className="h-3 w-3" />
-                  Today
-                </Badge>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center">
-                <div className="relative h-[180px] w-[180px]">
-                  <AttendanceGaugeChart />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className="text-sm text-muted-foreground">Total Attendance</div>
-                    <div className="text-2xl font-bold">120</div>
-                  </div>
-                </div>
-                <div className="mt-4 grid w-full grid-cols-2 gap-2">
-                  {attendanceData.map((item, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <div className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }} />
-                      <div className="flex flex-1 items-center justify-between">
-                        <span className="text-xs">{item.name}</span>
-                        <span className="text-xs font-medium">{item.percentage}%</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-              <CardFooter className="justify-center pt-0">
-                <Button variant="link" size="sm" className="text-accent">
-                  View Details
-                </Button>
-              </CardFooter>
-            </Card>
-
-            {/* Clock-In/Clock-Out */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Clock-In/Out</CardTitle>
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <Clock className="h-3 w-3" />
-                  Today
-                </Badge>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {clockInData.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage
-                          src={`/placeholder.svg?height=40&width=40&text=${item.name.charAt(0)}`}
-                          alt={item.name}
-                        />
-                        <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-medium">{item.name}</div>
-                        <div className="text-xs text-muted-foreground">{item.role}</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <Badge
-                        className={`rounded-md ${
-                          item.status === "On Time" ? "bg-accent text-accent-foreground" : "bg-destructive text-destructive-foreground"
-                        }`}
-                      >
-                        {item.status}
-                      </Badge>
-                      <div className="mt-1 flex items-center justify-end gap-2 text-xs text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <span>• Clock In</span>
-                          <span>{item.clockIn}</span>
-                        </div>
-                        {item.clockOut && (
-                          <div className="flex items-center gap-1">
-                            <span>• Clock Out</span>
-                            <span>{item.clockOut}</span>
-                          </div>
-                        )}
-                        {item.production && (
-                          <div className="flex items-center gap-1">
-                            <span>• Production</span>
-                            <span>{item.production}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-              <CardFooter className="justify-center pt-0">
-                <Button variant="link" size="sm" className="text-accent">
-                  View All Attendance
-                </Button>
-              </CardFooter>
-            </Card>
-
-            {/* Todo List */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Todo</CardTitle>
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <Clock className="h-3 w-3" />
-                  Today
-                </Badge>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {todoItems.map((item, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded border border-input">
-                      <Checkbox id={`todo-${index}`} className="h-3.5 w-3.5" />
-                    </div>
-                    <div className="flex-1">
-                      <label htmlFor={`todo-${index}`} className="text-sm font-medium">
-                        {item.task}
-                      </label>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-              <CardFooter className="justify-between pt-0">
-                <Button variant="link" size="sm" className="text-accent">
-                  View All
-                </Button>
-                <Button size="sm" className="h-8 rounded-full bg-accent hover:bg-accent/90">
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </CardFooter>
-            </Card>
-          </div>
-
-          {/* Tables Section */}
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Job Applicants */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Jobs Applicants</CardTitle>
-                <Button variant="link" size="sm" className="text-accent">
-                  View All
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="grid grid-cols-2 gap-2 rounded-md bg-muted p-2 text-sm font-medium">
-                    <div>Openings</div>
-                    <div>Applicants</div>
-                  </div>
-                  {applicantsData.map((applicant, index) => (
-                    <div key={index} className="grid grid-cols-2 gap-2 rounded-md p-2 hover:bg-muted/50">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage
-                            src={`/placeholder.svg?height=40&width=40&text=${applicant.name.charAt(0)}`}
-                            alt={applicant.name}
-                          />
-                          <AvatarFallback>{applicant.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="text-sm font-medium">{applicant.name}</div>
-                          <div className="text-xs text-muted-foreground">
-                            Age: {applicant.age} • {applicant.experience} • {applicant.location}
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <Badge
-                          className={`rounded-md ${
-                            applicant.status === "Video Interview"
-                              ? "bg-primary text-primary-foreground"
-                              : applicant.status === "Phone Interview"
-                                ? "bg-accent text-accent-foreground"
-                                : applicant.status === "On-site Interview"
-                                  ? "bg-accent text-accent-foreground"
-                                  : "bg-accent text-accent-foreground"
-                          }`}
-                        >
-                          {applicant.status}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Employees */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Employees</CardTitle>
-                <Button variant="link" size="sm" className="text-accent">
-                  View All
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="grid grid-cols-2 gap-2 rounded-md bg-muted p-2 text-sm font-medium">
-                    <div>Employee</div>
-                    <div>Department</div>
-                  </div>
-                  {employeesData.map((employee, index) => (
-                    <div key={index} className="grid grid-cols-2 gap-2 rounded-md p-2 hover:bg-muted/50">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage
-                            src={`/placeholder.svg?height=40&width=40&text=${employee.name.charAt(0)}`}
-                            alt={employee.name}
-                          />
-                          <AvatarFallback>{employee.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="text-sm font-medium">{employee.name}</div>
-                          <div className="text-xs text-muted-foreground">{employee.role}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center">
-                        <Badge
-                          className={`rounded-md ${
-                            employee.department === "Finance"
-                              ? "bg-accent text-accent-foreground"
-                              : employee.department === "Development"
-                                ? "bg-primary text-primary-foreground"
-                                : employee.department === "Marketing"
-                                  ? "bg-accent text-accent-foreground"
-                                  : employee.department === "Manager"
-                                    ? "bg-accent text-accent-foreground"
-                                    : "bg-accent text-accent-foreground"
-                          }`}
-                        >
-                          {employee.department}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Sales Overview */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-base font-medium">Sales Overview</CardTitle>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <div className="h-2 w-2 rounded-full bg-accent"></div>
-                  Income
-                </Badge>
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  Expenses
-                </Badge>
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <Clock className="h-3 w-3" />
-                  All Departments
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={salesData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                    <XAxis dataKey="name" />
-                    <Bar dataKey="income" fill="#FF6A00" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Projects */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-base font-medium">Projects</CardTitle>
-              <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                <Clock className="h-3 w-3" />
-                This Week
-              </Badge>
-            </CardHeader>
-            <CardContent>
+          ) : (
+            <>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[50px]">ID</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Team</TableHead>
-                    <TableHead>Hours</TableHead>
-                    <TableHead>Deadline</TableHead>
-                    <TableHead>Priority</TableHead>
+                    <TableHead>Employee</TableHead>
+                    <TableHead>Department</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Check In</TableHead>
+                    <TableHead>Check Out</TableHead>
+                    <TableHead>Total Hours</TableHead>
+                    <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {projectsData.map((project, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium">{project.id}</TableCell>
-                      <TableCell>{project.name}</TableCell>
+                  {attendanceData?.attendance.map((record) => (
+                    <TableRow key={record.id}>
                       <TableCell>
-                        <div className="flex -space-x-2">
-                          {[1, 2, 3].map((i) => (
-                            <Avatar key={i} className="h-6 w-6 border-2 border-background">
-                              <AvatarImage src={`/placeholder.svg?height=24&width=24&text=${i}`} alt="Team member" />
-                              <AvatarFallback className="text-xs">{i}</AvatarFallback>
-                            </Avatar>
-                          ))}
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage
+                              src={record.user.pfp || `/placeholder.svg?height=32&width=32&text=${record.user.firstName.charAt(0)}`}
+                              alt={record.user.firstName}
+                            />
+                            <AvatarFallback>{record.user.firstName.charAt(0)}{record.user.lastName.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="text-sm font-medium">
+                              {record.user.firstName} {record.user.lastName}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {record.user.position}
+                            </div>
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell>{project.hours}</TableCell>
-                      <TableCell>{project.deadline}</TableCell>
                       <TableCell>
-                        <Badge
-                          className={`rounded-md ${
-                            project.priority === "High"
-                              ? "bg-destructive text-destructive-foreground"
-                              : project.priority === "Medium"
-                                ? "bg-accent text-accent-foreground"
-                                : "bg-accent text-accent-foreground"
-                          }`}
-                        >
-                          {project.priority}
+                        <Badge variant="outline" className="rounded-md">
+                          {record.user.department}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{formatDate(record.date)}</TableCell>
+                      <TableCell>{formatTime(record.checkInTime)}</TableCell>
+                      <TableCell>{formatTime(record.checkOutTime)}</TableCell>
+                      <TableCell>
+                        {record.totalHours ? `${record.totalHours.toFixed(2)}h` : "-"}
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={`rounded-md ${getStatusBadge(record.status)}`}>
+                          {record.status}
                         </Badge>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-            </CardContent>
-          </Card>
 
-          {/* Tasks Statistics */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-base font-medium">Tasks Statistics</CardTitle>
-              <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                <Clock className="h-3 w-3" />
-                This Week
-              </Badge>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center">
-              <div className="relative h-[200px] w-[200px]">
-                <TasksDonutChart />
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="text-sm text-muted-foreground">Total Tasks</div>
-                  <div className="text-2xl font-bold">124/165</div>
+              {/* Pagination */}
+              {attendanceData && attendanceData.pagination.totalPages > 1 && (
+                <div className="flex items-center justify-between mt-4">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {((currentPage - 1) * 20) + 1} to {Math.min(currentPage * 20, attendanceData.pagination.total)} of {attendanceData.pagination.total} results
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      disabled={currentPage === 1}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                      Previous
+                    </Button>
+                    <span className="text-sm">
+                      Page {currentPage} of {attendanceData.pagination.totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(prev => Math.min(attendanceData.pagination.totalPages, prev + 1))}
+                      disabled={currentPage === attendanceData.pagination.totalPages}
+                    >
+                      Next
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
+              )}
+            </>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Create Attendance Dialog */}
+      <Dialog open={showCreateAttendanceDialog} onOpenChange={setShowCreateAttendanceDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Create Attendance Record</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="employee" className="text-right">
+                Employee
+              </label>
+              <select 
+                className="col-span-3 rounded border p-2"
+                value={attendanceForm.userId}
+                onChange={(e) => setAttendanceForm(prev => ({ ...prev, userId: e.target.value }))}
+                disabled={loadingUsers}
+              >
+                <option value="">Select Employee</option>
+                {users.map(user => (
+                  <option key={user.id} value={user.id}>
+                    {user.firstName} {user.lastName} - {user.department}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="date" className="text-right">
+                Date
+              </label>
+              <Input
+                id="date"
+                type="date"
+                className="col-span-3"
+                value={attendanceForm.date}
+                onChange={(e) => setAttendanceForm(prev => ({ ...prev, date: e.target.value }))}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="checkin" className="text-right">
+                Check In
+              </label>
+              <Input
+                id="checkin"
+                type="time"
+                className="col-span-3"
+                value={attendanceForm.checkInTime}
+                onChange={(e) => setAttendanceForm(prev => ({ ...prev, checkInTime: e.target.value }))}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="checkout" className="text-right">
+                Check Out
+              </label>
+              <Input
+                id="checkout"
+                type="time"
+                className="col-span-3"
+                value={attendanceForm.checkOutTime}
+                onChange={(e) => setAttendanceForm(prev => ({ ...prev, checkOutTime: e.target.value }))}
+              />
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setShowCreateAttendanceDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              className="bg-[#198754] hover:bg-[#198754]/90"
+              onClick={handleCreateAttendanceSubmit}
+              disabled={isCreatingAttendance}
+            >
+              {isCreatingAttendance ? "Creating..." : "Create"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Import Attendance Dialog */}
+      <Dialog open={showImportAttendanceDialog} onOpenChange={setShowImportAttendanceDialog}>
+        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Import Attendance from Excel</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <label htmlFor="excel-file" className="text-sm font-medium">
+                Select Excel File
+              </label>
+              <Input
+                id="excel-file"
+                type="file"
+                accept=".xlsx,.xls"
+                className="cursor-pointer"
+                onChange={(e) => {
+                  setImportFile(e.target.files?.[0] || null);
+                  setDebugResults(null); // Clear previous debug results
+                }}
+              />
+              <p className="text-xs text-muted-foreground">
+                Excel file should contain sheets named with employee names and columns: Index, Person ID, Name, Department, Position, Gender, Date, Day Of Week, Timetable, First-In, Last-Out
+              </p>
+            </div>
+            
+            {importFile && (
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleDebugFile}
+                  disabled={isDebugging}
+                >
+                  {isDebugging ? "Analyzing..." : "🔍 Debug File"}
+                </Button>
+                <span className="text-sm text-muted-foreground flex items-center">
+                  Analyze file structure before importing
+                </span>
               </div>
-              <div className="mt-4 grid w-full grid-cols-4 gap-2">
-                {taskStatusData.map((item, index) => (
-                  <div key={index} className="flex flex-col items-center">
-                    <div className="flex items-center gap-1">
-                      <div className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }} />
-                      <span className="text-xs">{item.name}</span>
+            )}
+
+            {debugResults && (
+              <div className="mt-4 space-y-4">
+                <div className="rounded-md bg-blue-50 p-4">
+                  <h4 className="text-sm font-medium mb-2">📊 File Analysis Results</h4>
+                  <div className="text-xs space-y-2">
+                    <p><strong>File:</strong> {debugResults.fileName} ({(debugResults.fileSize / 1024).toFixed(1)} KB)</p>
+                    <p><strong>Sheets:</strong> {debugResults.sheetNames.join(', ')}</p>
+                    <p><strong>Database Users:</strong> {debugResults.databaseUsers.length} employees found</p>
+                  </div>
+                </div>
+
+                {debugResults.sheetsInfo.map((sheet: any, index: number) => (
+                  <div key={index} className="rounded-md bg-gray-50 p-3">
+                    <h5 className="text-sm font-medium">📋 Sheet: {sheet.sheetName}</h5>
+                    <div className="text-xs mt-2 space-y-1">
+                      <p><strong>Rows:</strong> {sheet.totalRows}</p>
+                      <p><strong>Columns:</strong> {sheet.columns.join(', ')}</p>
+                      
+                      {sheet.uniqueNames && sheet.uniqueNames.length > 0 && (
+                        <div>
+                          <p><strong>Sample Names:</strong></p>
+                          <ul className="ml-4 list-disc">
+                            {sheet.uniqueNames.slice(0, 5).map((name: string, i: number) => {
+                              const matchedUser = debugResults.databaseUsers.find((u: any) => 
+                                u.name.toLowerCase().includes(name.toLowerCase()) ||
+                                name.toLowerCase().includes(u.name.toLowerCase())
+                              );
+                              return (
+                                <li key={i} className={matchedUser ? "text-green-600" : "text-red-600"}>
+                                  {name} {matchedUser ? "✓" : "❌"}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      )}
+
+                      {sheet.dateFormats && sheet.dateFormats.length > 0 && (
+                        <p><strong>Date Formats:</strong> {sheet.dateFormats.join(', ')}</p>
+                      )}
+
+                      {sheet.timeFormats && (
+                        <div>
+                          <p><strong>Time Formats:</strong></p>
+                          {sheet.timeFormats.firstIn.length > 0 && (
+                            <p className="ml-2">Check-in: {sheet.timeFormats.firstIn.join(', ')}</p>
+                          )}
+                          {sheet.timeFormats.lastOut.length > 0 && (
+                            <p className="ml-2">Check-out: {sheet.timeFormats.lastOut.join(', ')}</p>
+                          )}
+                        </div>
+                      )}
                     </div>
-                    <div className="text-sm font-medium">{item.percentage}%</div>
                   </div>
                 ))}
+
+                {debugResults.databaseUsers.length > 0 && (
+                  <div className="rounded-md bg-green-50 p-3">
+                    <h5 className="text-sm font-medium">👥 Available Employees in Database</h5>
+                    <div className="text-xs mt-2">
+                      <p className="mb-1"><strong>Sample employees:</strong></p>
+                      <ul className="ml-4 list-disc">
+                        {debugResults.databaseUsers.slice(0, 8).map((user: any, i: number) => (
+                          <li key={i}>{user.name} ({user.username})</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="mt-4 w-full rounded-md bg-muted p-2 text-center text-sm">
-                <span className="font-medium">379,689 hrs</span>
-                <span className="text-muted-foreground"> Spent on Overall Tasks This Week</span>
-              </div>
-            </CardContent>
-          </Card>
+            )}
 
-          {/* Recent Activities and Birthdays */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Schedules */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Schedules</CardTitle>
-                <Button variant="link" size="sm" className="text-accent">
-                  View All
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="rounded-md bg-primary p-2">
-                  <div className="text-sm font-medium text-primary">Interview Candidates - UI/UX Designer</div>
-                  <div className="mt-1 flex items-center gap-2 text-xs text-primary">
-                    <Calendar className="h-3 w-3" />
-                    <span>Thu, 13 Feb 2023</span>
-                    <Clock className="h-3 w-3 ml-2" />
-                    <span>10:00 AM - 12:00 PM</span>
-                  </div>
-                  <div className="mt-2 flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <Avatar key={i} className="h-6 w-6 border-2 border-background">
-                        <AvatarImage src={`/placeholder.svg?height=24&width=24&text=${i}`} alt="Team member" />
-                        <AvatarFallback className="text-xs">{i}</AvatarFallback>
-                      </Avatar>
-                    ))}
-                  </div>
-                </div>
-                <div className="rounded-md bg-muted p-2">
-                  <div className="text-sm font-medium">Interview Candidates - iOS Developer</div>
-                  <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                    <Calendar className="h-3 w-3" />
-                    <span>Thu, 13 Feb 2023</span>
-                    <Clock className="h-3 w-3 ml-2" />
-                    <span>10:00 AM - 12:00 PM</span>
-                  </div>
-                  <div className="mt-2 flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <Avatar key={i} className="h-6 w-6 border-2 border-background">
-                        <AvatarImage src={`/placeholder.svg?height=24&width=24&text=${i}`} alt="Team member" />
-                        <AvatarFallback className="text-xs">{i}</AvatarFallback>
-                      </Avatar>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Activities */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Recent Activities</CardTitle>
-                <Button variant="link" size="sm" className="text-accent">
-                  View All
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {activitiesData.map((activity, index) => (
-                    <div key={index} className="flex gap-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage
-                          src={`/placeholder.svg?height=32&width=32&text=${activity.name.charAt(0)}`}
-                          alt={activity.name}
-                        />
-                        <AvatarFallback>{activity.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="grid gap-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium">{activity.name}</span>
-                          <span className="text-xs text-muted-foreground">{activity.time}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground">{activity.action}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Birthdays */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Birthdays</CardTitle>
-                <Button variant="link" size="sm" className="text-accent">
-                  View All
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <div className="mb-2 text-sm font-medium">Today</div>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40&text=A" alt="Andrew" />
-                        <AvatarFallback>AJ</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-medium">Andrew James</div>
-                        <div className="text-xs text-muted-foreground">iOS Developer</div>
-                      </div>
-                      <Button size="sm" className="ml-auto h-7 rounded-full bg-accent hover:bg-accent/90">
-                        Wish
-                      </Button>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="mb-2 text-sm font-medium">Tomorrow</div>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40&text=M" alt="Mary" />
-                        <AvatarFallback>MZ</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-medium">Mary Zenn</div>
-                        <div className="text-xs text-muted-foreground">UI/UX Designer</div>
-                      </div>
-                      <Button size="sm" className="ml-auto h-7 rounded-full bg-accent hover:bg-accent/90">
-                        Wish
-                      </Button>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="mb-2 text-sm font-medium">25 Jun 2023</div>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40&text=A" alt="Anthony" />
-                        <AvatarFallback>AL</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-medium">Anthony Lewis</div>
-                        <div className="text-xs text-muted-foreground">Android Developer</div>
-                      </div>
-                      <Button size="sm" className="ml-auto h-7 rounded-full bg-accent hover:bg-accent/90">
-                        Wish
-                      </Button>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="mb-2 text-sm font-medium">28 Jun 2023</div>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40&text=D" alt="Delphin" />
-                        <AvatarFallback>DM</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-medium">Delphin Martini</div>
-                        <div className="text-xs text-muted-foreground">iOS Developer</div>
-                      </div>
-                      <Button size="sm" className="ml-auto h-7 rounded-full bg-accent hover:bg-accent/90">
-                        Wish
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="rounded-md bg-muted p-3">
+              <h4 className="text-sm font-medium mb-2">Expected Format:</h4>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• Multiple sheets named with employee names</li>
+                <li>• Index, Person ID, Name, Department, Position, Gender</li>
+                <li>• Date, Day Of Week, Timetable, First-In, Last-Out</li>
+                <li>• Alternative column names: "First In", "Check In", "Time In" for check-in</li>
+                <li>• Alternative column names: "Last Out", "Check Out", "Time Out" for check-out</li>
+              </ul>
+            </div>
           </div>
-
-          {/* Invoices */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Invoices</CardTitle>
-                <Badge variant="outline" className="gap-1 rounded-md font-normal">
-                  <Clock className="h-3 w-3" />
-                  This Week
-                </Badge>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {invoicesData.map((invoice, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage
-                            src={`/placeholder.svg?height=40&width=40&text=${invoice.company.charAt(0)}`}
-                            alt={invoice.company}
-                          />
-                          <AvatarFallback>{invoice.company.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="text-sm font-medium">{invoice.company}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {invoice.service} • {invoice.type}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-medium">${invoice.amount}</div>
-                        <Badge className="bg-destructive text-destructive-foreground">Unpaid</Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => {
+              setShowImportAttendanceDialog(false);
+              setDebugResults(null);
+            }}>
+              Cancel
+            </Button>
+            <Button 
+              className="bg-[#6C757D] hover:bg-[#6C757D]/90"
+              onClick={handleImportSubmit}
+              disabled={isImporting || !importFile}
+            >
+              {isImporting ? "Importing..." : "Import"}
+            </Button>
           </div>
-        </div>
-      </main>
-    )
+        </DialogContent>
+      </Dialog>
+    </main>
+  )
 }

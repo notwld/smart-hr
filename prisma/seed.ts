@@ -22,6 +22,8 @@ async function main() {
     { name: "attendance.view", description: "View attendance", resource: "attendance", action: "view" },
     { name: "attendance.mark", description: "Mark attendance", resource: "attendance", action: "mark" },
     { name: "attendance.edit", description: "Edit attendance", resource: "attendance", action: "edit" },
+    { name: "attendance.create", description: "Create attendance records", resource: "attendance", action: "create" },
+    { name: "attendance.import", description: "Import attendance from Excel", resource: "attendance", action: "import" },
     
     // Teams management
     { name: "teams.view", description: "View teams", resource: "teams", action: "view" },
