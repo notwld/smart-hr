@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useChat } from '@/hooks/useChat'
 import ChatRoomList from '@/components/chat/ChatRoomList'
 import ChatWindow from '@/components/chat/ChatWindow'
-import SupabaseTest from '@/components/chat/SupabaseTest'
 import { Card } from '@/components/ui/card'
 
 export default function ChatPage() {
@@ -56,9 +55,6 @@ export default function ChatPage() {
                     </p>
                   </div>
                 </Card>
-                
-                {/* Temporary test component - remove after setup */}
-                <SupabaseTest />
               </div>
             </div>
           )}

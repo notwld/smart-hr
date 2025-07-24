@@ -1,6 +1,73 @@
-import { useState, useEffect, useCallback } from 'react'
-import { supabase, ChatRoom, ChatMessage, ChatParticipant, MessageReadStatus } from '@/lib/supabase'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSession } from 'next-auth/react'
+
+export interface ChatRoom {
+  id: string
+  name: string
+  description?: string
+  type: 'DIRECT' | 'TEAM'
+  teamId?: string
+  participants: ChatParticipant[]
+  lastMessage?: ChatMessage
+  unreadCount: number
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ChatParticipant {
+  id: string
+  roomId: string
+  userId: string
+  user: {
+    id: string
+    firstName: string
+    lastName: string
+    pfp?: string
+  }
+  joinedAt: Date
+  lastReadAt?: Date
+  isActive: boolean
+}
+
+export interface ChatMessage {
+  id: string
+  roomId: string
+  senderId: string
+  content: string
+  messageType: 'TEXT' | 'FILE' | 'IMAGE' | 'AUDIO' | 'VIDEO'
+  fileUrl?: string
+  fileName?: string
+  fileSize?: number
+  mimeType?: string
+  parentMessageId?: string
+  parentMessage?: ChatMessage
+  replies: ChatMessage[]
+  forwardedFrom?: string
+  isEdited: boolean
+  isDeleted: boolean
+  sender: {
+    id: string
+    firstName: string
+    lastName: string
+    pfp?: string
+  }
+  readStatus: MessageReadStatus[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface MessageReadStatus {
+  id: string
+  messageId: string
+  userId: string
+  readAt: Date
+}
+
+export interface UserPresence {
+  userId: string
+  isOnline: boolean
+  lastSeen: Date
+}
 
 export function useChat() {
   const { data: session } = useSession()
@@ -12,16 +79,11 @@ export function useChat() {
     if (!session?.user?.id) return
 
     try {
-      const { data, error } = await supabase
-        .from('chat_rooms')
-        .select(`
-          *,
-          chat_participants!inner(*)
-        `)
-        .eq('chat_participants.user_id', session.user.id)
-
-      if (error) throw error
-      setChatRooms(data || [])
+      const response = await fetch('/api/chat/rooms')
+      if (!response.ok) throw new Error('Failed to fetch chat rooms')
+      
+      const data = await response.json()
+      setChatRooms(data)
     } catch (error) {
       console.error('Error fetching chat rooms:', error)
     } finally {
@@ -36,76 +98,26 @@ export function useChat() {
       return null
     }
 
-    console.log('Creating direct message between:', session.user.id, 'and', otherUserId)
-
     try {
-      // Check if DM already exists
-      const { data: existingRoom, error: fetchError } = await supabase
-        .from('chat_rooms')
-        .select(`
-          *,
-          chat_participants(user_id)
-        `)
-        .eq('type', 'direct')
-
-      if (fetchError) {
-        console.error('Error fetching existing rooms:', fetchError)
-        throw fetchError
-      }
-
-      const existing = existingRoom?.find(room => 
-        room.chat_participants?.some((p: any) => p.user_id === session.user.id) &&
-        room.chat_participants?.some((p: any) => p.user_id === otherUserId)
-      )
-
-      if (existing) {
-        console.log('Found existing DM room:', existing.id)
-        return existing
-      }
-
-      // Create new DM room
-      console.log('Creating new DM room...')
-      const { data: room, error: roomError } = await supabase
-        .from('chat_rooms')
-        .insert({
-          name: `${session.user.name || 'User'} & ${otherUserName}`,
-          type: 'direct'
+      const response = await fetch('/api/chat/rooms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'DIRECT',
+          participantIds: [session.user.id, otherUserId],
+          name: `${session.user.name || 'User'} & ${otherUserName}`
         })
-        .select()
-        .single()
+      })
 
-      if (roomError) {
-        console.error('Error creating room:', roomError)
-        throw roomError
-      }
-
-      console.log('Created room:', room.id)
-
-      // Add participants
-      console.log('Adding participants...')
-      const { error: participantError } = await supabase
-        .from('chat_participants')
-        .insert([
-          { room_id: room.id, user_id: session.user.id },
-          { room_id: room.id, user_id: otherUserId }
-        ])
-
-      if (participantError) {
-        console.error('Error adding participants:', participantError)
-        throw participantError
-      }
-
-      console.log('Successfully created DM room')
+      if (!response.ok) throw new Error('Failed to create direct message')
+      
+      const room = await response.json()
       await fetchChatRooms()
       return room
     } catch (error) {
       console.error('Error creating direct message:', error)
-      
-      // Check if it's a Supabase configuration issue
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        console.error('Possible Supabase configuration issue. Check your environment variables.')
-      }
-      
       return null
     }
   }, [session?.user?.id, session?.user?.name, fetchChatRooms])
@@ -113,32 +125,23 @@ export function useChat() {
   // Create team chat room
   const createTeamChatRoom = useCallback(async (teamId: string, teamName: string, memberIds: string[]) => {
     try {
-      // Create team chat room
-      const { data: room, error: roomError } = await supabase
-        .from('chat_rooms')
-        .insert({
+      const response = await fetch('/api/chat/rooms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'TEAM',
+          teamId,
+          participantIds: memberIds,
           name: `${teamName} Team Chat`,
-          description: `Team chat for ${teamName}`,
-          type: 'team',
-          team_id: teamId
+          description: `Team chat for ${teamName}`
         })
-        .select()
-        .single()
+      })
 
-      if (roomError) throw roomError
-
-      // Add all team members as participants
-      const participants = memberIds.map(userId => ({
-        room_id: room.id,
-        user_id: userId
-      }))
-
-      const { error: participantError } = await supabase
-        .from('chat_participants')
-        .insert(participants)
-
-      if (participantError) throw participantError
-
+      if (!response.ok) throw new Error('Failed to create team chat room')
+      
+      const room = await response.json()
       await fetchChatRooms()
       return room
     } catch (error) {
@@ -165,20 +168,18 @@ export function useChatRoom(roomId: string) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [participants, setParticipants] = useState<ChatParticipant[]>([])
+  const eventSourceRef = useRef<EventSource | null>(null)
 
   // Fetch messages for a room
   const fetchMessages = useCallback(async () => {
     if (!roomId) return
 
     try {
-      const { data, error } = await supabase
-        .from('chat_messages')
-        .select('*')
-        .eq('room_id', roomId)
-        .order('created_at', { ascending: true })
-
-      if (error) throw error
-      setMessages(data || [])
+      const response = await fetch(`/api/chat/rooms/${roomId}/messages`)
+      if (!response.ok) throw new Error('Failed to fetch messages')
+      
+      const data = await response.json()
+      setMessages(data)
     } catch (error) {
       console.error('Error fetching messages:', error)
     } finally {
@@ -191,13 +192,11 @@ export function useChatRoom(roomId: string) {
     if (!roomId) return
 
     try {
-      const { data, error } = await supabase
-        .from('chat_participants')
-        .select('*')
-        .eq('room_id', roomId)
-
-      if (error) throw error
-      setParticipants(data || [])
+      const response = await fetch(`/api/chat/rooms/${roomId}/participants`)
+      if (!response.ok) throw new Error('Failed to fetch participants')
+      
+      const data = await response.json()
+      setParticipants(data)
     } catch (error) {
       console.error('Error fetching participants:', error)
     }
@@ -210,140 +209,170 @@ export function useChatRoom(roomId: string) {
       return null
     }
 
-    console.log('Sending message:', { content, roomId, senderId: session.user.id })
-
     try {
-      const { data, error } = await supabase
-        .from('chat_messages')
-        .insert({
-          room_id: roomId,
-          sender_id: session.user.id,
+      const response = await fetch('/api/chat/socket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          roomId,
           content,
-          parent_message_id: parentMessageId,
-          message_type: 'text'
+          messageType: 'TEXT',
+          parentMessageId
         })
-        .select()
-        .single()
+      })
 
-      if (error) {
-        console.error('Error sending message:', error)
-        throw error
-      }
-
-      console.log('Message sent successfully:', data)
+      if (!response.ok) throw new Error('Failed to send message')
       
-      // Refresh messages to ensure we have the latest
-      setTimeout(() => {
-        fetchMessages()
-      }, 100)
-
-      return data
+      const result = await response.json()
+      
+      // Add the real message to UI (no optimistic message needed since we don't broadcast to sender)
+      setMessages(prev => [...prev, result.message])
+      
+      return result.message
     } catch (error) {
       console.error('Error sending message:', error)
       return null
     }
-  }, [session?.user?.id, roomId, fetchMessages])
+  }, [session?.user?.id, roomId])
 
   // Send file message
   const sendFileMessage = useCallback(async (file: File, content?: string) => {
     if (!session?.user?.id || !roomId) return
 
     try {
-      // Upload file to Supabase storage
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}.${fileExt}`
-      const filePath = `chat-files/${roomId}/${fileName}`
+      // Check file size (30MB limit)
+      if (file.size > 30 * 1024 * 1024) {
+        throw new Error('File size must be less than 30MB')
+      }
 
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('chat-files')
-        .upload(filePath, file)
-
-      if (uploadError) throw uploadError
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('chat-files')
-        .getPublicUrl(filePath)
-
-      // Send message with file
-      const { data, error } = await supabase
-        .from('chat_messages')
-        .insert({
-          room_id: roomId,
-          sender_id: session.user.id,
-          content: content || `Shared file: ${file.name}`,
-          message_type: 'file',
-          file_url: publicUrl,
-          file_name: file.name
-        })
-        .select()
-        .single()
-
-      if (error) throw error
-      return data
+      // For now, just send a text message about the file
+      // In a full implementation, you'd upload the file first
+      return await sendMessage(`Shared file: ${file.name}`, undefined)
     } catch (error) {
       console.error('Error sending file message:', error)
       return null
     }
-  }, [session?.user?.id, roomId])
+  }, [session?.user?.id, roomId, sendMessage])
+
+  // Edit message
+  const editMessage = useCallback(async (messageId: string, content: string) => {
+    try {
+      const response = await fetch(`/api/chat/messages/${messageId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content })
+      })
+
+      if (!response.ok) throw new Error('Failed to edit message')
+      
+      const message = await response.json()
+      setMessages(prev => 
+        prev.map(m => m.id === messageId ? message : m)
+      )
+    } catch (error) {
+      console.error('Error editing message:', error)
+    }
+  }, [])
+
+  // Delete message
+  const deleteMessage = useCallback(async (messageId: string) => {
+    try {
+      const response = await fetch(`/api/chat/messages/${messageId}`, {
+        method: 'DELETE'
+      })
+
+      if (!response.ok) throw new Error('Failed to delete message')
+      
+      setMessages(prev => 
+        prev.map(m => m.id === messageId ? { ...m, isDeleted: true } : m)
+      )
+    } catch (error) {
+      console.error('Error deleting message:', error)
+    }
+  }, [])
+
+  // Forward message
+  const forwardMessage = useCallback(async (messageId: string, targetRoomId: string) => {
+    try {
+      const message = messages.find(m => m.id === messageId)
+      if (!message) return
+
+      const response = await fetch('/api/chat/socket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          roomId: targetRoomId,
+          content: message.content,
+          messageType: message.messageType,
+          forwardedFrom: messageId
+        })
+      })
+
+      if (!response.ok) throw new Error('Failed to forward message')
+    } catch (error) {
+      console.error('Error forwarding message:', error)
+    }
+  }, [messages])
+
+  // Reply to message
+  const replyToMessage = useCallback(async (parentMessageId: string, content: string) => {
+    return await sendMessage(content, parentMessageId)
+  }, [sendMessage])
 
   // Mark message as read
   const markAsRead = useCallback(async (messageId: string) => {
     if (!session?.user?.id) return
 
     try {
-      const { error } = await supabase
-        .from('message_read_status')
-        .upsert({
-          message_id: messageId,
-          user_id: session.user.id
-        })
-
-      if (error) throw error
+      await fetch(`/api/chat/messages/${messageId}/read`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: session.user.id })
+      })
     } catch (error) {
       console.error('Error marking message as read:', error)
     }
   }, [session?.user?.id])
 
-  // Set up real-time subscription
+  // Set up Server-Sent Events for real-time updates
   useEffect(() => {
-    if (!roomId) return
+    if (!session?.user?.id) return
 
-    console.log('Setting up real-time subscription for room:', roomId)
+    const eventSource = new EventSource('/api/chat/socket')
+    eventSourceRef.current = eventSource
 
-    const subscription = supabase
-      .channel(`room:${roomId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'chat_messages',
-          filter: `room_id=eq.${roomId}`
-        },
-        (payload) => {
-          console.log('Received new message via real-time:', payload)
-          const newMessage = payload.new as ChatMessage
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data)
+        
+        if (data.type === 'new_message' && data.roomId === roomId) {
           setMessages(prev => {
-            // Check if message already exists to avoid duplicates
-            const exists = prev.some(msg => msg.id === newMessage.id)
-            if (exists) {
-              console.log('Message already exists, skipping')
-              return prev
-            }
-            console.log('Adding new message to state')
-            return [...prev, newMessage]
+            // Remove optimistic message if it exists
+            const filtered = prev.filter(m => !m.id.startsWith('temp-'))
+            return [...filtered, data.message]
           })
         }
-      )
-      .subscribe((status) => {
-        console.log('Subscription status:', status)
-      })
+      } catch (error) {
+        console.error('Error parsing SSE message:', error)
+      }
+    }
+
+    eventSource.onerror = (error) => {
+      console.error('SSE error:', error)
+    }
 
     return () => {
-      console.log('Cleaning up subscription for room:', roomId)
-      supabase.removeChannel(subscription)
+      eventSource.close()
     }
-  }, [roomId])
+  }, [session?.user?.id, roomId])
 
   useEffect(() => {
     fetchMessages()
@@ -356,6 +385,10 @@ export function useChatRoom(roomId: string) {
     loading,
     sendMessage,
     sendFileMessage,
+    editMessage,
+    deleteMessage,
+    forwardMessage,
+    replyToMessage,
     markAsRead,
     refreshMessages: fetchMessages
   }

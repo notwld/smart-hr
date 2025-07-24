@@ -330,6 +330,7 @@ model Team {
   leaderId    String
   leader      User         @relation("TeamLeader", fields: [leaderId], references: [id])
   members     TeamMember[]
+  chatRooms   ChatRoom[]   // Team chat rooms
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -392,4 +393,85 @@ enum DurationType {
   MONTHLY
   YEARLY
   CUSTOM
+}
+
+// Chat models
+enum ChatRoomType {
+  DIRECT
+  TEAM
+}
+
+enum MessageType {
+  TEXT
+  FILE
+  IMAGE
+  AUDIO
+  VIDEO
+}
+
+model ChatRoom {
+  id          String           @id @default(cuid())
+  name        String
+  description String?
+  type        ChatRoomType
+  teamId      String?          // Reference to Team if it's a team chat
+  team        Team?            @relation(fields: [teamId], references: [id])
+  participants ChatParticipant[]
+  messages    ChatMessage[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model ChatParticipant {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  room      ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime @default(now())
+  lastReadAt DateTime?
+  isActive  Boolean  @default(true)
+
+  @@unique([roomId, userId])
+}
+
+model ChatMessage {
+  id              String      @id @default(cuid())
+  roomId          String
+  senderId        String
+  content         String
+  messageType     MessageType @default(TEXT)
+  fileUrl         String?
+  fileName        String?
+  fileSize        Int?
+  mimeType        String?
+  parentMessageId String?     // For replies
+  parentMessage   ChatMessage? @relation("MessageReplies", fields: [parentMessageId], references: [id])
+  replies         ChatMessage[] @relation("MessageReplies")
+  forwardedFrom   String?     // Original message ID if forwarded
+  isEdited        Boolean     @default(false)
+  isDeleted       Boolean     @default(false)
+  room            ChatRoom    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  sender          User        @relation("MessageSender", fields: [senderId], references: [id])
+  readStatus      MessageReadStatus[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model MessageReadStatus {
+  id        String      @id @default(cuid())
+  messageId String
+  userId    String
+  readAt    DateTime    @default(now())
+  message   ChatMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId])
+}
+
+model UserLastSeen {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastSeen  DateTime @default(now())
+  isOnline  Boolean  @default(false)
 }

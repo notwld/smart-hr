@@ -1,19 +1,42 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../auth/[...nextauth]/route'
-import { supabase } from '@/lib/supabase'
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    // No auth check needed when using service role key
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    const { data: room, error } = await supabase
-      .from('chat_rooms')
-      .select('*')
-      .eq('id', params.id)
-      .single()
+    const room = await prisma.chatRoom.findFirst({
+      where: {
+        id: params.id,
+        participants: {
+          some: {
+            userId: session.user.id
+          }
+        }
+      },
+      include: {
+        participants: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                pfp: true
+              }
+            }
+          }
+        }
+      }
+    })
 
-    if (error || !room) {
+    if (!room) {
       return NextResponse.json({ error: 'Room not found' }, { status: 404 })
     }
 

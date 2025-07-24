@@ -38,7 +38,7 @@ export default function MessageBubble({
   useEffect(() => {
     const fetchSenderInfo = async () => {
       try {
-        const response = await fetch(`/api/users/${message.sender_id}`)
+        const response = await fetch(`/api/users/${message.senderId}`)
         const data = await response.json()
         setSenderInfo(data)
       } catch (error) {
@@ -47,7 +47,7 @@ export default function MessageBubble({
     }
 
     fetchSenderInfo()
-  }, [message.sender_id])
+  }, [message.senderId])
 
   // Fetch read status for the message
   useEffect(() => {
@@ -67,34 +67,39 @@ export default function MessageBubble({
   }, [message.id, isCurrentUser])
 
   const handleDownload = () => {
-    if (message.file_url) {
+    if (message.fileUrl) {
       const link = document.createElement('a')
-      link.href = message.file_url
-      link.download = message.file_name || 'file'
+      link.href = message.fileUrl
+      link.download = message.fileName || 'file'
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
     }
   }
 
-  const formatTime = (timestamp: string) => {
-    return format(new Date(timestamp), 'HH:mm')
+  const formatTime = (timestamp: string | Date) => {
+    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
+    if (isNaN(date.getTime())) return 'Invalid time'
+    return format(date, 'HH:mm')
   }
 
-  const formatDate = (timestamp: string) => {
-    return format(new Date(timestamp), 'MMM dd, yyyy')
+  const formatDate = (timestamp: string | Date) => {
+    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
+    if (isNaN(date.getTime())) return 'Invalid date'
+    return format(date, 'MMM dd, yyyy')
   }
 
-  const isToday = (timestamp: string) => {
+  const isToday = (timestamp: string | Date) => {
+    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
+    if (isNaN(date.getTime())) return false
     const today = new Date()
-    const messageDate = new Date(timestamp)
-    return today.toDateString() === messageDate.toDateString()
+    return today.toDateString() === date.toDateString()
   }
 
   return (
     <div className={cn(
-      "flex gap-3 group",
-      isCurrentUser ? "flex-row-reverse" : "flex-row"
+      "flex gap-3 group mr-[45px]" ,
+      isCurrentUser ? "ml-[45px] flex-row-reverse" : "flex-row"
     )}>
       {/* Avatar */}
       {showAvatar && !isCurrentUser && (
@@ -123,7 +128,7 @@ export default function MessageBubble({
               </span>
             )}
             <span className="text-xs text-gray-500">
-              {isToday(message.created_at) ? formatTime(message.created_at) : formatDate(message.created_at)}
+              {isToday(message.createdAt) ? formatTime(message.createdAt) : formatDate(message.createdAt)}
             </span>
           </div>
         )}
@@ -135,43 +140,43 @@ export default function MessageBubble({
             isCurrentUser
               ? "bg-primary text-primary-foreground"
               : "bg-gray-100 text-gray-900",
-            message.message_type === 'file' && "border border-gray-200"
+            message.messageType !== 'TEXT' && "border border-gray-200"
           )}
         >
           {/* Reply to message (if exists) */}
-          {message.parent_message_id && (
-            <div className="mb-2 p-2 bg-black/10 rounded text-xs opacity-75">
-              <p>Replying to a message...</p>
-            </div>
-          )}
+                  {message.parentMessageId && (
+          <div className="mb-2 p-2 bg-black/10 rounded text-xs opacity-75">
+            <p>Replying to a message...</p>
+          </div>
+        )}
 
-          {/* Message Content */}
-          {message.message_type === 'text' ? (
-            <p className="text-sm">{message.content}</p>
-          ) : (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-gray-50 rounded">
-                  <Download className="h-4 w-4 text-gray-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{message.file_name}</p>
-                  <p className="text-xs text-gray-500">File attachment</p>
-                </div>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="h-8 w-8 p-0"
-                  onClick={handleDownload}
-                >
-                  <Download className="h-3 w-3" />
-                </Button>
+        {/* Message Content */}
+        {message.messageType === 'TEXT' ? (
+          <p className="text-sm">{message.content}</p>
+        ) : (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="p-2 bg-gray-50 rounded">
+                <Download className="h-4 w-4 text-gray-600" />
               </div>
-              {message.content && message.content !== `Shared file: ${message.file_name}` && (
-                <p className="text-sm">{message.content}</p>
-              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{message.fileName}</p>
+                <p className="text-xs text-gray-500">File attachment</p>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 p-0"
+                onClick={handleDownload}
+              >
+                <Download className="h-3 w-3" />
+              </Button>
             </div>
-          )}
+            {message.content && message.content !== `Shared file: ${message.fileName}` && (
+              <p className="text-sm">{message.content}</p>
+            )}
+          </div>
+        )}
 
           {/* Message Actions */}
           <div className={cn(
@@ -189,7 +194,7 @@ export default function MessageBubble({
                   <Reply className="h-4 w-4 mr-2" />
                   Reply
                 </DropdownMenuItem>
-                {message.message_type === 'file' && (
+                {message.messageType !== 'TEXT' && (
                   <DropdownMenuItem onClick={handleDownload}>
                     <Download className="h-4 w-4 mr-2" />
                     Download

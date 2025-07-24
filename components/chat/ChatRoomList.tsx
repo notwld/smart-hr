@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ChatRoom } from '@/lib/supabase'
 import NewChatDialog from './NewChatDialog'
 import { cn } from '@/lib/utils'
+import { useSession } from 'next-auth/react'
 
 interface ChatRoomListProps {
   rooms: ChatRoom[]
@@ -24,9 +25,28 @@ export default function ChatRoomList({
   selectedRoomId, 
   onRoomSelect 
 }: ChatRoomListProps) {
+  const { data: session } = useSession()
   const [searchQuery, setSearchQuery] = useState('')
   const [showNewChatDialog, setShowNewChatDialog] = useState(false)
   const [filteredRooms, setFilteredRooms] = useState<ChatRoom[]>([])
+
+  // Get receiver name for direct messages
+  const getReceiverName = (room: ChatRoom) => {
+    if (room.type !== 'DIRECT' || !room.participants) return room.name
+    
+    const currentUserId = session?.user?.id
+    
+    if (!currentUserId) return room.name
+    
+    // Find the other participant (not the current user)
+    const receiver = room.participants.find(p => p.userId !== currentUserId)
+    
+    if (receiver && receiver.user) {
+      return `${receiver.user.firstName} ${receiver.user.lastName}`
+    }
+    
+    return room.name
+  }
 
   // Filter rooms based on search query
   useEffect(() => {
@@ -134,15 +154,15 @@ export default function ChatRoomList({
                 <div className="relative">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src="" />
-                    <AvatarFallback className="bg-primary/10 text-primary">
-                      {room.type === 'team' ? (
-                        <Users className="h-5 w-5" />
-                      ) : (
-                        room.name.split(' ').slice(0, 2).map(n => n[0]).join('')
-                      )}
-                    </AvatarFallback>
+                                      <AvatarFallback className="bg-primary/10 text-primary">
+                    {room.type === 'TEAM' ? (
+                      <Users className="h-5 w-5" />
+                    ) : (
+                      getReceiverName(room).split(' ').slice(0, 2).map(n => n[0]).join('')
+                    )}
+                  </AvatarFallback>
                   </Avatar>
-                  {room.type === 'team' && (
+                  {room.type === 'TEAM' && (
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
                   )}
                 </div>
@@ -150,16 +170,16 @@ export default function ChatRoomList({
                 {/* Room Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-medium text-gray-900 truncate">
-                      {room.name}
-                    </h3>
+                                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                    {room.type === 'DIRECT' ? getReceiverName(room) : room.name}
+                  </h3>
                     <span className="text-xs text-gray-500">
-                      {new Date(room.updated_at).toLocaleDateString()}
+                      {new Date(room.updatedAt).toLocaleDateString()}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <p className="text-xs text-gray-500 truncate">
-                      {room.type === 'team' ? room.description : 'Direct message'}
+                      {room.type === 'TEAM' ? room.description : 'Direct message'}
                     </p>
                     {/* Unread badge - placeholder for now */}
                     {/* <Badge variant="destructive" className="h-5 text-xs">
