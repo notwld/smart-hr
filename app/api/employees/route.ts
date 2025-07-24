@@ -24,7 +24,6 @@ export async function GET(req: Request) {
 
     // Build where clause
     const where: any = {
-      legacyRole: "EMPLOYEE",
       ...(search && {
         OR: [
           { firstName: { contains: search, mode: "insensitive" } },
@@ -72,7 +71,6 @@ export async function GET(req: Request) {
 
     // Get unique departments for filter
     const departments = await prisma.user.findMany({
-      where: { legacyRole: "EMPLOYEE" },
       select: { department: true },
       distinct: ["department"],
     });

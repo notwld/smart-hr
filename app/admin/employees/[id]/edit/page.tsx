@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import EditEmployeeForm from "@/components/employees/EditEmployeeForm";
 
 export const metadata: Metadata = {
-  title: "Edit Employee | Smart HR",
+  title: "Edit Employee | Mize Technologies Portal",
   description: "Edit employee information",
 };
 

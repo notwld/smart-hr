@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback, useMemo } from "react"
 import {
   Calendar,
   ChevronDown,
@@ -19,6 +19,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import PermissionGuard from "@/components/PermissionGuard"
+import EmployeeCalendar from "@/components/EmployeeCalendar"
 
 interface AttendanceRecord {
   id: string;
@@ -66,6 +67,10 @@ export default function AdminDashboard() {
   const [isDebugging, setIsDebugging] = useState(false);
   const [debugResults, setDebugResults] = useState<any>(null);
   
+  // Calendar state
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
+  
   // Attendance table state
   const [attendanceData, setAttendanceData] = useState<AttendanceData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -79,10 +84,18 @@ export default function AdminDashboard() {
   const fetchUsers = async () => {
     setLoadingUsers(true);
     try {
-      const response = await fetch('/api/attendance/create');
+      // Fix: Use correct endpoint for fetching users
+      const response = await fetch('/api/admin/users', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         setUsers(data);
+      } else {
+        console.error('Failed to fetch users:', response.statusText);
       }
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -91,7 +104,8 @@ export default function AdminDashboard() {
     }
   };
 
-  const fetchAttendanceData = async () => {
+  // Memoize the fetch function to prevent unnecessary re-renders
+  const fetchAttendanceData = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
@@ -105,23 +119,39 @@ export default function AdminDashboard() {
       if (dateFrom) params.append("dateFrom", dateFrom);
       if (dateTo) params.append("dateTo", dateTo);
 
-      const response = await fetch(`/api/attendance/admin?${params}`);
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+      const response = await fetch(`/api/attendance/admin?${params}`, {
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      clearTimeout(timeoutId);
+      
       if (response.ok) {
         const data = await response.json();
         setAttendanceData(data);
       } else {
-        console.error('Failed to fetch attendance data');
+        console.error('Failed to fetch attendance data:', response.statusText);
       }
     } catch (error) {
-      console.error('Error fetching attendance data:', error);
+      if (error.name === 'AbortError') {
+        console.error('Request timed out');
+      } else {
+        console.error('Error fetching attendance data:', error);
+      }
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm, selectedDepartment, selectedStatus, dateFrom, dateTo]);
 
   useEffect(() => {
     fetchAttendanceData();
-  }, [currentPage, searchTerm, selectedDepartment, selectedStatus, dateFrom, dateTo]);
+  }, [fetchAttendanceData]);
 
   const handleCreateAttendance = () => {
     setShowCreateAttendanceDialog(true);
@@ -178,15 +208,31 @@ export default function AdminDashboard() {
       return;
     }
 
+    // Prevent multiple simultaneous imports
+    if (isImporting) {
+      alert('Import already in progress. Please wait...');
+      return;
+    }
+
     setIsImporting(true);
     try {
       const formData = new FormData();
       formData.append('file', importFile);
 
+      // Add timeout for large file imports (5 minutes)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+        alert('Import timed out. Please try with a smaller file or contact support.');
+      }, 300000); // 5 minute timeout
+
       const response = await fetch('/api/attendance/import', {
         method: 'POST',
         body: formData,
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (response.ok) {
         const result = await response.json();
@@ -214,12 +260,23 @@ export default function AdminDashboard() {
           fetchAttendanceData(); // Refresh the table
         }
       } else {
-        const error = await response.json();
-        alert(`Error: ${error.message}`);
+        const errorText = await response.text();
+        let errorMessage = 'Unknown error occurred';
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.message || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        alert(`Error: ${errorMessage}`);
       }
     } catch (error) {
       console.error('Error importing attendance:', error);
-      alert('Error importing attendance data');
+      if (error.name === 'AbortError') {
+        // Timeout error already handled above
+        return;
+      }
+      alert('Error importing attendance data: ' + (error.message || 'Unknown error'));
     } finally {
       setIsImporting(false);
     }
@@ -254,6 +311,11 @@ export default function AdminDashboard() {
     } finally {
       setIsDebugging(false);
     }
+  };
+
+  const handleEmployeeClick = (employee: any) => {
+    setSelectedEmployee(employee);
+    setShowCalendar(true);
   };
 
   const formatTime = (timeString: string | null) => {
@@ -419,12 +481,15 @@ export default function AdminDashboard() {
                             <AvatarFallback>{record.user.firstName.charAt(0)}{record.user.lastName.charAt(0)}</AvatarFallback>
                           </Avatar>
                           <div>
-                            <div className="text-sm font-medium">
+                            <button
+                              onClick={() => handleEmployeeClick(record.user)}
+                              className="text-sm font-medium hover:text-primary hover:underline cursor-pointer transition-colors"
+                            >
                               {record.user.firstName} {record.user.lastName}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
+                            </button>
+                            {/* <div className="text-xs text-muted-foreground">
                               {record.user.position}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </TableCell>
@@ -704,6 +769,16 @@ export default function AdminDashboard() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Employee Calendar Dialog */}
+      <EmployeeCalendar
+        isOpen={showCalendar}
+        onClose={() => {
+          setShowCalendar(false);
+          setSelectedEmployee(null);
+        }}
+        employee={selectedEmployee}
+      />
     </main>
   )
 }

@@ -80,9 +80,9 @@ export default function LoginPage() {
             <Input name="password" type="password" placeholder="Password" required />
             <div className="flex items-center justify-between text-xs">
               <label className="flex items-center gap-2">
-                <input type="checkbox" className="accent-orange-500" /> Remember Me
+                <input type="checkbox" className="accent-primary" /> Remember Me
               </label>
-              <a href="#" className="text-orange-500 hover:underline">Forgot Password?</a>
+              <a href="#" className="text-primary hover:underline">Forgot Password?</a>
             </div>
             {error && <div className="text-red-500 text-sm text-center">{error}</div>}
             <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={loading}>

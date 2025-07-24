@@ -82,7 +82,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   try {
     const { id } = params;
     const data = await req.json();
-    const { name, description, leaderId } = data;
+    const { name, description, leaderId, memberIds } = data;
 
     // Check if team exists
     const team = await prisma.team.findUnique({
@@ -142,6 +142,35 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
           reportsToId: leaderId
         }
       });
+    }
+
+    // Handle team members update if provided
+    if (memberIds && Array.isArray(memberIds)) {
+      // Remove all current team members
+      await prisma.teamMember.deleteMany({
+        where: { teamId: id }
+      });
+
+      // Add new team members
+      if (memberIds.length > 0) {
+        await prisma.teamMember.createMany({
+          data: memberIds.map((userId: string) => ({
+            teamId: id,
+            userId: userId,
+            joinedAt: new Date()
+          }))
+        });
+
+        // Update reporting relationships for new team members
+        await prisma.user.updateMany({
+          where: {
+            id: { in: memberIds }
+          },
+          data: {
+            reportsToId: updateData.leaderId || team.leaderId
+          }
+        });
+      }
     }
 
     // Update the team

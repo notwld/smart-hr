@@ -255,7 +255,7 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
                 </Button>
                 <Dialog open={isAddMembersModalOpen} onOpenChange={setIsAddMembersModalOpen}>
                   <DialogTrigger asChild>
-                    <Button size="sm" className="bg-[#FF7B3D] hover:bg-[#FF7B3D]/90">
+                    <Button size="sm" className="bg-primary hover:bg-primary/90">
                       <UserPlus className="h-4 w-4 mr-1" />
                       Add Members
                     </Button>
@@ -361,7 +361,11 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
                     
                     <div>
                       <label className="text-sm font-medium text-gray-500 block mb-1">Team Size</label>
-                      <p>{team.members.length + 1} Members (including leader)</p>
+                      <p>{(() => {
+                        // Count unique members including leader
+                        const uniqueMemberIds = new Set([team.leaderId, ...team.members.map(m => m.user.id)]);
+                        return uniqueMemberIds.size;
+                      })()} Members (including leader)</p>
                     </div>
                   </div>
                 </CardContent>
@@ -375,7 +379,7 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
                     <Button 
                       size="sm" 
                       variant="outline" 
-                      className="text-[#FF7B3D]"
+                      className="text-primary"
                       onClick={() => setIsAddMembersModalOpen(true)}
                     >
                       <PlusCircle className="h-4 w-4 mr-1" />
@@ -402,10 +406,10 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
                       </Badge>
                     </div>
                     
-                    {/* Team Members */}
-                    {team.members.length === 0 ? (
+                    {/* Team Members (excluding leader to avoid duplication) */}
+                    {team.members.filter((member) => member.user.id !== team.leaderId).length === 0 ? (
                       <div className="text-center py-6 text-gray-500">
-                        <p>No team members yet</p>
+                        <p>No additional team members yet</p>
                         <Button 
                           variant="link" 
                           onClick={() => setIsAddMembersModalOpen(true)}
@@ -416,7 +420,9 @@ export default function TeamDetailPage({ params }: { params: { id: string } }) {
                         </Button>
                       </div>
                     ) : (
-                      team.members.map((member) => (
+                      team.members
+                        .filter((member) => member.user.id !== team.leaderId)
+                        .map((member) => (
                         <div key={member.id} className="flex items-center space-x-3 border-b pb-3 last:border-b-0">
                           <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
                             <User className="h-5 w-5 text-gray-600" />

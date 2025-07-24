@@ -6,9 +6,13 @@ import { authOptions } from './api/auth/[...nextauth]/route' // Adjust the path 
 import { Providers } from './provider'
 
 export const metadata: Metadata = {
-  title: 'smart portal',
+  title: 'Mize Technologies Portal',
   description: '',
   generator: '',
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default async function RootLayout({

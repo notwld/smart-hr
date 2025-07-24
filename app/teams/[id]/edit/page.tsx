@@ -12,6 +12,8 @@ import { useToast } from "@/components/ui/use-toast";
 import Sidebar from "@/components/sidebar";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type TeamData = {
   id: string;
@@ -25,6 +27,16 @@ type TeamData = {
     email: string;
     position: string;
   };
+  members: {
+    id: string;
+    user: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      position: string;
+    };
+  }[];
 };
 
 type UserData = {
@@ -44,8 +56,9 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
     name: "",
     description: "",
     leaderId: "",
+    memberIds: [] as string[],
   });
-  const [availableLeaders, setAvailableLeaders] = useState<UserData[]>([]);
+  const [availableEmployees, setAvailableEmployees] = useState<UserData[]>([]);
   
   const router = useRouter();
   const { toast } = useToast();
@@ -53,7 +66,7 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
   // Fetch team data on component mount
   useEffect(() => {
     fetchTeam();
-    fetchAvailableLeaders();
+    fetchAvailableEmployees();
   }, [params.id]);
 
   const fetchTeam = async () => {
@@ -66,6 +79,7 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
         name: teamData.name,
         description: teamData.description || "",
         leaderId: teamData.leaderId,
+        memberIds: teamData.members?.map((member: any) => member.user.id) || [],
       });
     } catch (error: any) {
       console.error("Error fetching team:", error);
@@ -82,31 +96,32 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
     }
   };
 
-  const fetchAvailableLeaders = async () => {
+  const fetchAvailableEmployees = async () => {
     try {
       const response = await axios.get("/api/teams/employees");
-      // Filter to only show managers and leaders as potential team leaders
       const responseData = response.data || [];
       if (!Array.isArray(responseData)) {
-        setAvailableLeaders([]);
+        setAvailableEmployees([]);
         return;
       }
-      
-      const potentialLeaders = responseData.filter((employee: UserData) => 
-        employee.position.toLowerCase().includes("manager") || 
-        employee.position.toLowerCase().includes("lead") ||
-        employee.position.toLowerCase().includes("senior")
-      );
-      setAvailableLeaders(potentialLeaders);
+      setAvailableEmployees(responseData);
     } catch (error) {
       console.error("Error fetching employees:", error);
-      setAvailableLeaders([]);
+      setAvailableEmployees([]);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setTeamForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleMemberCheckboxChange = (userId: string) => {
+    const updatedMemberIds = teamForm.memberIds.includes(userId)
+      ? teamForm.memberIds.filter((id) => id !== userId)
+      : [...teamForm.memberIds, userId];
+    
+    setTeamForm({ ...teamForm, memberIds: updatedMemberIds });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -242,15 +257,45 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
                         <SelectValue placeholder="Select a team leader" />
                       </SelectTrigger>
                       <SelectContent>
-                        {availableLeaders.map((leader) => (
-                          <SelectItem key={leader.id} value={leader.id}>
-                            {leader.firstName} {leader.lastName} - {leader.position}
+                        {availableEmployees.map((employee) => (
+                          <SelectItem key={employee.id} value={employee.id}>
+                            {employee.firstName} {employee.lastName} - {employee.position}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                     <p className="text-xs text-gray-500 mt-1">
                       Changing the team leader will update reporting relationships for all team members.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label>Team Members</Label>
+                    <ScrollArea className="h-[200px] border rounded-md p-2">
+                      <div className="space-y-2 pr-3">
+                        {availableEmployees
+                          .filter(emp => emp.id !== teamForm.leaderId)
+                          .map((employee) => (
+                            <div key={employee.id} className="flex items-center space-x-2">
+                              <Checkbox
+                                id={`employee-${employee.id}`}
+                                checked={teamForm.memberIds.includes(employee.id)}
+                                onCheckedChange={() => handleMemberCheckboxChange(employee.id)}
+                              />
+                              <Label htmlFor={`employee-${employee.id}`} className="flex items-center justify-between w-full">
+                                <span>
+                                  {employee.firstName} {employee.lastName}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  {employee.position}
+                                </span>
+                              </Label>
+                            </div>
+                          ))}
+                      </div>
+                    </ScrollArea>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Select team members. The team leader is automatically included.
                     </p>
                   </div>
                   
@@ -265,7 +310,7 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
                     <Button 
                       type="submit"
                       disabled={saving}
-                      className="bg-[#FF7B3D] hover:bg-[#FF7B3D]/90"
+                      className="bg-primary hover:bg-primary/90"
                     >
                       <Save className="mr-2 h-4 w-4" />
                       {saving ? "Saving..." : "Save Changes"}

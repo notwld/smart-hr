@@ -86,6 +86,10 @@ model User {
   image            String?
   managerApprovals Leave[]             @relation("ManagerApproval")
   adminApprovals   Leave[]             @relation("AdminApproval")
+  // Chat relationships
+  sentMessages     ChatMessage[]       @relation("MessageSender")
+  chatRooms        ChatParticipant[]
+  lastSeen         UserLastSeen?
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
   Hosting          Hosting[]

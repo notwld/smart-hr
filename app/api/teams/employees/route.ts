@@ -6,7 +6,6 @@ export async function GET(req: Request) {
     // Get all employees for team management
     const employees = await prisma.user.findMany({
       where: {
-        legacyRole: "EMPLOYEE",
         status: "ACTIVE"  // Only include active employees
       },
       select: {

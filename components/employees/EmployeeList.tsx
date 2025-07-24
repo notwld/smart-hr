@@ -218,9 +218,17 @@ export default function EmployeeList() {
                   <TableCell>{employee.department}</TableCell>
                   <TableCell>{employee.position}</TableCell>
                   <TableCell>
-                    {employee.userRoles && employee.userRoles.length > 0 
-                      ? employee.userRoles.map(ur => ur.role.name).join(", ") 
-                      : employee.legacyRole}
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      employee.legacyRole === "ADMIN" 
+                        ? "bg-purple-100 text-purple-800" 
+                        : employee.legacyRole === "MANAGER"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-gray-100 text-gray-800"
+                    }`}>
+                      {employee.userRoles && employee.userRoles.length > 0 
+                        ? employee.userRoles.map(ur => ur.role.name).join(", ") 
+                        : employee.legacyRole}
+                    </span>
                   </TableCell>
                   <TableCell>
                     {new Date(employee.joinDate).toLocaleDateString()}

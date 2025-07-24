@@ -45,7 +45,7 @@ type TeamData = {
       position: string;
     };
   }[];
-  _count: {
+  _count?: {
     members: number;
   };
 };
@@ -221,7 +221,7 @@ export default function TeamsPage() {
               </div>
               <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-[#FF7B3D] hover:bg-[#FF7B3D]/90">
+                  <Button className="bg-primary hover:bg-primary/90">
                     <Plus className="mr-2 h-4 w-4" />
                     Create Team
                   </Button>
@@ -327,7 +327,7 @@ export default function TeamsPage() {
                 <div className="mt-6">
                   <Button 
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="bg-[#FF7B3D] hover:bg-[#FF7B3D]/90"
+                    className="bg-primary hover:bg-primary/90"
                   >
                     <Plus className="mr-2 h-4 w-4" />
                     Create Team
@@ -387,7 +387,11 @@ export default function TeamsPage() {
                       </div>
                       
                       <div className="border-t pt-3 mt-3">
-                        <p className="text-sm text-gray-500 mb-2">Team Members ({team._count.members})</p>
+                        <p className="text-sm text-gray-500 mb-2">Team Members ({(() => {
+                          // Count unique members including leader
+                          const uniqueMemberIds = new Set([team.leaderId, ...team.members.map(m => m.user.id)]);
+                          return uniqueMemberIds.size;
+                        })()})</p>
                         <div className="flex flex-wrap gap-2">
                           {team.members.slice(0, 3).map((member) => (
                             <div 
@@ -399,11 +403,15 @@ export default function TeamsPage() {
                             </div>
                           ))}
                           
-                          {team._count.members > 3 && (
-                            <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-xs text-gray-600">
-                              +{team._count.members - 3}
-                            </div>
-                          )}
+                          {(() => {
+                            const uniqueMemberIds = new Set([team.leaderId, ...team.members.map(m => m.user.id)]);
+                            const totalMembers = uniqueMemberIds.size;
+                            return totalMembers > 3 ? (
+                              <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-xs text-gray-600">
+                                +{totalMembers - 3}
+                              </div>
+                            ) : null;
+                          })()}
                         </div>
                       </div>
                     </div>
@@ -411,7 +419,7 @@ export default function TeamsPage() {
                   <CardFooter className="pt-0">
                     <Button 
                       variant="outline" 
-                      className="w-full text-[#FF7B3D] hover:text-[#FF7B3D]/90 border-[#FF7B3D]"
+                      className="w-full text-primary hover:text-primary/90 border-primary"
                       onClick={() => router.push(`/teams/${team.id}`)}
                     >
                       View Details

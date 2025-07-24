@@ -71,7 +71,34 @@ export default function Sidebar() {
             <nav className="flex-1 py-4 overflow-y-auto">
                 <ul className="space-y-1 px-2">
                     {navItems.map((item, index) => {
-                        const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                        // Simplified logic: exact match first, then parent route logic
+                        let isActive = false;
+                        
+                        if (item.href === '/') {
+                            // Root path - only active when exactly on root
+                            isActive = pathname === '/';
+                        } else {
+                            // Check for exact match first
+                            if (pathname === item.href) {
+                                isActive = true;
+                            } else {
+                                // For parent routes, only highlight if we're on a child route that doesn't have its own nav item
+                                const pathSegments = pathname.split('/').filter(Boolean);
+                                const hrefSegments = item.href.split('/').filter(Boolean);
+                                
+                                // Only apply parent route logic for single-segment parent routes
+                                if (hrefSegments.length === 1 && pathSegments.length > 1) {
+                                    // Check if current path matches any other nav item exactly
+                                    const hasExactMatch = navItems.some(nav => 
+                                        nav.href !== item.href && pathname === nav.href
+                                    );
+                                    
+                                    // Only highlight parent if there's no exact match for current path
+                                    isActive = !hasExactMatch && pathname.startsWith(item.href + '/');
+                                }
+                            }
+                        }
+                        
                         return (
                             <li key={index}>
                                 <a
@@ -97,14 +124,14 @@ export default function Sidebar() {
                 <div className="space-y-3">
                     <button
                         onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                        className="w-full flex items-center justify-center p-2 text-gray-300 hover:bg-[#FF7B3D]/10 hover:text-white rounded-lg transition-all"
+                        className="w-full flex items-center justify-center p-2 text-gray-300 hover:bg-primary/10 hover:text-white rounded-lg transition-all"
                     >
                         {sidebarCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
                     </button>
                     <Button
                         onClick={() => signOut()}
                         variant="ghost"
-                        className="w-full flex items-center justify-center p-2 text-gray-300 hover:bg-[#FF7B3D]/10 hover:text-white rounded-lg transition-all"
+                        className="w-full flex items-center justify-center p-2 text-gray-300 hover:bg-primary/10 hover:text-white rounded-lg transition-all"
                     >
                         <LogOut className="w-5 h-5" />
                         {!sidebarCollapsed && <span className="ml-2">Logout</span>}
