@@ -90,9 +90,14 @@ model User {
   sentMessages     ChatMessage[]       @relation("MessageSender")
   chatRooms        ChatParticipant[]
   lastSeen         UserLastSeen?
+  messageReactions MessageReaction[]   @relation("MessageReactions")
+  messageMentions  MessageMention[]    @relation("MessageMentions")
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
   Hosting          Hosting[]
+  // Lead relationships
+  userLeads        Lead[]              @relation("UserLeads")
+  assignedLeads    Lead[]              @relation("LeadAssignee")
 }
 
 // New models for the roles and permissions system
@@ -399,6 +404,7 @@ enum DurationType {
 enum ChatRoomType {
   DIRECT
   TEAM
+  GENERAL
 }
 
 enum MessageType {
@@ -454,6 +460,8 @@ model ChatMessage {
   room            ChatRoom            @relation(fields: [roomId], references: [id], onDelete: Cascade)
   sender          User                @relation("MessageSender", fields: [senderId], references: [id])
   readStatus      MessageReadStatus[]
+  reactions       MessageReaction[]
+  mentions        MessageMention[]
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
 }
@@ -468,10 +476,56 @@ model MessageReadStatus {
   @@unique([messageId, userId])
 }
 
+model MessageReaction {
+  id        String      @id @default(cuid())
+  messageId String
+  userId    String
+  emoji     String
+  message   ChatMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User        @relation("MessageReactions", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+
+  @@unique([messageId, userId, emoji])
+}
+
+model MessageMention {
+  id        String      @id @default(cuid())
+  messageId String
+  userId    String
+  message   ChatMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User        @relation("MessageMentions", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+
+  @@unique([messageId, userId])
+}
+
 model UserLastSeen {
   id       String   @id @default(cuid())
   userId   String   @unique
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   lastSeen DateTime @default(now())
   isOnline Boolean  @default(false)
+}
+
+model Lead {
+  id         String   @id @default(cuid())
+  date       DateTime
+  time       String
+  platform   String
+  firstCall  String
+  comments   String?
+  service    String
+  name       String
+  email      String
+  number     String
+  address    String?
+  credits    Int      @default(0)
+  cost       Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  User       User?    @relation("UserLeads", fields: [userId], references: [id])
+  userId     String?
+  assigneeId String?
+  status     String?
+  assignee   User?    @relation("LeadAssignee", fields: [assigneeId], references: [id])
 }

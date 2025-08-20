@@ -21,6 +21,7 @@ export default function ChatWindow({ roomId }: ChatWindowProps) {
   const [message, setMessage] = useState('')
   const [showFileUpload, setShowFileUpload] = useState(false)
   const [roomInfo, setRoomInfo] = useState<any>(null)
+  const [replyingTo, setReplyingTo] = useState<any>(null)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   
@@ -59,7 +60,7 @@ export default function ChatWindow({ roomId }: ChatWindowProps) {
   useEffect(() => {
     if (messages.length > 0 && session?.user?.id) {
       const lastMessage = messages[messages.length - 1]
-      if (lastMessage.sender_id !== session.user.id) {
+      if (lastMessage.senderId !== session.user.id) {
         markAsRead(lastMessage.id)
       }
     }
@@ -69,10 +70,34 @@ export default function ChatWindow({ roomId }: ChatWindowProps) {
     e.preventDefault()
     if (!message.trim()) return
 
-    const success = await sendMessage(message.trim())
+    const messageData = {
+      content: message.trim(),
+      parentMessageId: replyingTo?.id
+    }
+
+    const success = await sendMessage(messageData.content, messageData.parentMessageId)
     if (success) {
       setMessage('')
+      setReplyingTo(null)
     }
+  }
+
+  const handleReply = (messageToReply: any) => {
+    setReplyingTo(messageToReply)
+  }
+
+  const handleCancelReply = () => {
+    setReplyingTo(null)
+  }
+
+  const handleEditMessage = (messageId: string, newContent: string) => {
+    // Refresh messages after edit
+    // This would typically be handled by real-time updates
+  }
+
+  const handleDeleteMessage = (messageId: string) => {
+    // Refresh messages after delete
+    // This would typically be handled by real-time updates
   }
 
   const handleFileUpload = async (file: File) => {
@@ -149,8 +174,8 @@ export default function ChatWindow({ roomId }: ChatWindowProps) {
       </div>
 
       {/* Messages Area */}
-      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-        <div className="space-y-4">
+      <ScrollArea className="flex-1" ref={scrollAreaRef}>
+        <div className="min-h-full">
           {messages.length === 0 ? (
             <div className="flex items-center justify-center h-64">
               <div className="text-center">
@@ -163,21 +188,43 @@ export default function ChatWindow({ roomId }: ChatWindowProps) {
               </div>
             </div>
           ) : (
-            messages.map((msg, index) => {
-              const isCurrentUser = msg.sender_id === session?.user?.id
-              const showAvatar = index === 0 || 
-                messages[index - 1].sender_id !== msg.sender_id
-              
-              return (
-                <MessageBubble
-                  key={msg.id}
-                  message={msg}
-                  isCurrentUser={isCurrentUser}
-                  showAvatar={showAvatar}
-                  participants={participants}
-                />
-              )
-            })
+            <div className="pb-4">
+              {messages.map((msg, index) => {
+                const isCurrentUser = msg.senderId === session?.user?.id
+                const prevMessage = index > 0 ? messages[index - 1] : null
+                const showAvatar = !prevMessage || 
+                  prevMessage.senderId !== msg.senderId ||
+                  (new Date(msg.createdAt).getTime() - new Date(prevMessage.createdAt).getTime()) > 300000 // 5 minutes
+                
+                return (
+                  <MessageBubble
+                    key={msg.id}
+                    message={{
+                      ...msg,
+                      createdAt: msg.createdAt.toString(),
+                      updatedAt: msg.updatedAt.toString(),
+                      replies: msg.replies?.map(reply => ({
+                        ...reply,
+                        createdAt: reply.createdAt.toString(),
+                        updatedAt: reply.updatedAt.toString()
+                      })) || [],
+                      reactions: msg.reactions || [],
+                      mentions: msg.mentions || []
+                    }}
+                    isCurrentUser={isCurrentUser}
+                    showAvatar={showAvatar}
+                    participants={participants.map(p => ({
+                      ...p,
+                      joinedAt: p.joinedAt.toString(),
+                      lastReadAt: p.lastReadAt?.toString()
+                    }))}
+                    onReply={handleReply}
+                    onEdit={handleEditMessage}
+                    onDelete={handleDeleteMessage}
+                  />
+                )
+              })}
+            </div>
           )}
           <div ref={messagesEndRef} />
         </div>
@@ -185,6 +232,26 @@ export default function ChatWindow({ roomId }: ChatWindowProps) {
 
       {/* Message Input */}
       <div className="p-4 border-t border-gray-200 bg-white">
+        {/* Reply Preview */}
+        {replyingTo && (
+          <div className="mb-3 p-3 bg-gray-50 rounded-lg border-l-4 border-primary">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs font-medium text-gray-700">
+                Replying to {replyingTo.sender?.firstName} {replyingTo.sender?.lastName}
+              </span>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-6 w-6 p-0"
+                onClick={handleCancelReply}
+              >
+                ✕
+              </Button>
+            </div>
+            <p className="text-sm text-gray-600 truncate">{replyingTo.content}</p>
+          </div>
+        )}
+        
         <form onSubmit={handleSendMessage} className="flex items-end space-x-2">
           <Button
             type="button"

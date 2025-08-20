@@ -42,8 +42,15 @@ interface Employee {
   userRoles?: { role: { name: string } }[];
 }
 
+interface Role {
+  id: string;
+  name: string;
+  description: string;
+}
+
 export default function EmployeeList() {
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [department, setDepartment] = useState("");
@@ -51,6 +58,18 @@ export default function EmployeeList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
+
+  const fetchRoles = async () => {
+    try {
+      const response = await fetch('/api/admin/roles');
+      if (!response.ok) throw new Error("Failed to fetch roles");
+      
+      const data = await response.json();
+      setRoles(data);
+    } catch (error) {
+      console.error("Failed to fetch roles:", error);
+    }
+  };
 
   const fetchEmployees = async () => {
     try {
@@ -78,6 +97,7 @@ export default function EmployeeList() {
 
   useEffect(() => {
     fetchEmployees();
+    fetchRoles();
   }, [currentPage, search, department, status]);
 
   const handleDelete = async (id: string) => {
@@ -118,19 +138,20 @@ export default function EmployeeList() {
     }
   };
 
-  const updateEmployeeRole = async (id: string, newRole: string) => {
+  const updateEmployeeRole = async (id: string, roleId: string) => {
     try {
       const response = await fetch(`/api/employees/${id}/role`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ role: newRole }),
+        body: JSON.stringify({ roleId }),
       });
 
       if (!response.ok) throw new Error("Failed to update employee role");
 
-      toast.success(`Employee role updated to ${newRole}`);
+      const role = roles.find(r => r.id === roleId);
+      toast.success(`Employee role updated to ${role?.name || 'Unknown'}`);
       fetchEmployees();
     } catch (error) {
       toast.error("Failed to update employee role");
@@ -299,24 +320,21 @@ export default function EmployeeList() {
                             Update Role
                           </DropdownMenuTrigger>
                           <DropdownMenuContent>
-                            <DropdownMenuItem 
-                              onClick={() => updateEmployeeRole(employee.id, "ADMIN")}
-                              disabled={employee.legacyRole === "ADMIN"}
-                            >
-                              Admin
-                            </DropdownMenuItem>
-                            <DropdownMenuItem 
-                              onClick={() => updateEmployeeRole(employee.id, "MANAGER")}
-                              disabled={employee.legacyRole === "MANAGER"}
-                            >
-                              Manager
-                            </DropdownMenuItem>
-                            <DropdownMenuItem 
-                              onClick={() => updateEmployeeRole(employee.id, "EMPLOYEE")}
-                              disabled={employee.legacyRole === "EMPLOYEE"}
-                            >
-                              Employee
-                            </DropdownMenuItem>
+                            {roles.map((role) => {
+                              const currentRoleName = employee.userRoles?.[0]?.role?.name || 
+                                                    (employee.legacyRole === "ADMIN" ? "Admin" : 
+                                                     employee.legacyRole === "MANAGER" ? "Team Leader" : "Employee");
+                              
+                              return (
+                                <DropdownMenuItem 
+                                  key={role.id}
+                                  onClick={() => updateEmployeeRole(employee.id, role.id)}
+                                  disabled={currentRoleName === role.name}
+                                >
+                                  {role.name}
+                                </DropdownMenuItem>
+                              );
+                            })}
                           </DropdownMenuContent>
                         </DropdownMenu>
                         

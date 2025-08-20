@@ -65,13 +65,8 @@ const PermissionGuard: React.FC<PermissionGuardProps> = ({
     return <>{children}</>;
   }
 
-  // TEMPORARY OVERRIDE: For development, grant access regardless of permissions
-  // Remove this when the permissions system is fully implemented
-  console.log("TEMPORARY OVERRIDE: Granting access despite missing permissions");
-  return <>{children}</>;
-
   // If access is denied, show the fallback
-  // return <>{fallback}</>;
+  return <>{fallback}</>;
 };
 
 export default PermissionGuard; 

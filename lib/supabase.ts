@@ -10,43 +10,88 @@ export const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 })
 
-// Chat-related types
+// Chat-related types matching Prisma schema
 export interface ChatRoom {
   id: string
   name: string
   description?: string
-  type: 'team' | 'direct'
-  team_id?: string
-  created_at: string
-  updated_at: string
+  type: 'DIRECT' | 'TEAM' | 'GENERAL'
+  teamId?: string
+  createdAt: string
+  updatedAt: string
+  participants?: ChatParticipant[]
+  lastMessage?: ChatMessage
+  unreadCount?: number
+  _count?: {
+    messages: number
+  }
 }
 
 export interface ChatMessage {
   id: string
-  room_id: string
-  sender_id: string
+  roomId: string
+  senderId: string
   content: string
-  message_type: 'text' | 'file'
-  file_url?: string
-  file_name?: string
-  parent_message_id?: string
-  created_at: string
-  updated_at: string
+  messageType: 'TEXT' | 'FILE' | 'IMAGE' | 'AUDIO' | 'VIDEO'
+  fileUrl?: string
+  fileName?: string
+  fileSize?: number
+  mimeType?: string
+  parentMessageId?: string
+  forwardedFrom?: string
+  isEdited: boolean
+  isDeleted: boolean
+  createdAt: string
+  updatedAt: string
   sender?: {
     id: string
-    first_name: string
-    last_name: string
+    firstName: string
+    lastName: string
     pfp?: string
   }
   replies?: ChatMessage[]
+  reactions?: MessageReaction[]
+  mentions?: MessageMention[]
 }
 
 export interface ChatParticipant {
   id: string
-  room_id: string
-  user_id: string
-  joined_at: string
-  last_read_at?: string
+  roomId: string
+  userId: string
+  joinedAt: string
+  lastReadAt?: string
+  isActive: boolean
+  user?: {
+    id: string
+    firstName: string
+    lastName: string
+    pfp?: string
+  }
+}
+
+export interface MessageReaction {
+  id: string
+  messageId: string
+  userId: string
+  emoji: string
+  createdAt: string
+  user?: {
+    id: string
+    firstName: string
+    lastName: string
+  }
+}
+
+export interface MessageMention {
+  id: string
+  messageId: string
+  userId: string
+  createdAt: string
+  user?: {
+    id: string
+    firstName: string
+    lastName: string
+  }
 }
 
 export interface MessageReadStatus {

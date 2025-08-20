@@ -137,6 +137,25 @@ export async function POST(req: Request) {
       }
     });
 
+    // Create team chat room automatically
+    const teamChatRoom = await prisma.chatRoom.create({
+      data: {
+        name: `${name} Team`,
+        description: `Team chat for ${name}`,
+        type: 'TEAM',
+        teamId: team.id,
+      },
+    });
+
+    // Add team leader to chat room
+    await prisma.chatParticipant.create({
+      data: {
+        roomId: teamChatRoom.id,
+        userId: leaderId,
+        isActive: true,
+      },
+    });
+
     // Add members to the team and update their reporting structure
     if (memberIds.length > 0) {
       // Create team members
@@ -147,6 +166,15 @@ export async function POST(req: Request) {
             teamId: team.id,
             userId
           }
+        });
+
+        // Add member to team chat room
+        await prisma.chatParticipant.create({
+          data: {
+            roomId: teamChatRoom.id,
+            userId,
+            isActive: true,
+          },
         });
 
         // Update user's reportsTo field to point to the team leader

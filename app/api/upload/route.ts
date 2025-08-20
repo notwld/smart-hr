@@ -27,18 +27,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
+    // Check file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
       return NextResponse.json(
-        { message: "File must be an image" },
-        { status: 400 }
-      );
-    }
-
-    // Validate file size (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json(
-        { message: "File size must be less than 5MB" },
+        { message: "File too large. Max size is 10MB." },
         { status: 400 }
       );
     }
@@ -70,9 +62,14 @@ export async function POST(req: Request) {
       );
     }
 
-    // Return the URL
+    // Return the URL with file info
     const url = `/uploads/${filename}`;
-    return NextResponse.json({ url });
+    return NextResponse.json({ 
+      url,
+      fileName: file.name,
+      fileSize: file.size,
+      mimeType: file.type
+    });
   } catch (error) {
     console.error("Error uploading file:", error);
     return NextResponse.json(

@@ -143,7 +143,11 @@ export default function RolesPage() {
           description: "",
           isDefault: false,
         });
-        toast.success("Role created successfully");
+        toast.success("Role created successfully with basic employee permissions");
+        
+        // Automatically select the new role and fetch its permissions
+        setSelectedRole(createdRole.id);
+        await fetchRolePermissions(createdRole.id);
       } else {
         const error = await response.json();
         toast.error(error.message || "Failed to create role");
@@ -407,7 +411,9 @@ export default function RolesPage() {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create New Role</DialogTitle>
-              <DialogDescription>Enter the details for the new role.</DialogDescription>
+              <DialogDescription>
+                Enter the details for the new role. Basic employee permissions (dashboard, leaves, attendance, teams, chat, tasks, projects, meetings, notifications) will be automatically assigned to the new role.
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">

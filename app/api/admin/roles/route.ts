@@ -68,7 +68,40 @@ export async function POST(req: Request) {
       }
     });
 
-    console.log("Created role:", role);
+    // Get basic employee permissions to assign to the new role
+    const basicEmployeePermissions = await prisma.permission.findMany({
+      where: {
+        name: {
+          in: [
+            "dashboard.view",
+            "leaves.view", 
+            "leaves.create",
+            "attendance.view",
+            "attendance.mark",
+            "teams.view",
+            "chat.view",
+            "chat.send",
+            "tasks.view",
+            "tasks.create",
+            "projects.view",
+            "meetings.view",
+            "notifications.view"
+          ]
+        }
+      }
+    });
+
+    // Assign basic permissions to the new role
+    for (const permission of basicEmployeePermissions) {
+      await prisma.rolePermission.create({
+        data: {
+          roleId: role.id,
+          permissionId: permission.id,
+        },
+      });
+    }
+
+    console.log(`Created role "${role.name}" with ${basicEmployeePermissions.length} basic permissions`);
     return NextResponse.json(role);
   } catch (error) {
     console.error("Error creating role:", error);

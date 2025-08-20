@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import PermissionGuard from "@/components/PermissionGuard";
 
 type TeamData = {
   id: string;
@@ -187,7 +188,28 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 w-full">
+    <PermissionGuard 
+      permissions="teams.edit"
+      fallback={
+        <div className="flex h-screen bg-gray-50 w-full">
+          <Sidebar />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold">Access Denied</h2>
+              <p className="text-gray-500 mt-2">You don't have permission to edit teams.</p>
+              <Button 
+                variant="link" 
+                onClick={() => router.push('/teams')}
+                className="mt-4"
+              >
+                Back to Teams
+              </Button>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <div className="flex h-screen bg-gray-50 w-full">
      
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -323,5 +345,6 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
         </main>
       </div>
     </div>
+    </PermissionGuard>
   );
 } 

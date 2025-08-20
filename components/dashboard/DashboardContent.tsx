@@ -174,16 +174,18 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const debouncedFetchStats = useCallback(
     debounce(async () => {
       try {
+        console.log("Fetching attendance stats...");
         const response = await axios.get("/api/attendance/stats");
         setStats(response.data);
       } catch (error) {
         console.error("Error fetching stats:", error);
       }
-    }, 1000),
+    }, 5000),
     []
   );
 
   useEffect(() => {
+    console.log("Dashboard useEffect triggered - setting up intervals");
     generateTimeLabels();
     debouncedFetchTodayAttendance();
     debouncedFetchStats();
@@ -191,8 +193,8 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     // Set up interval to update time labels every minute
     const timeLabelInterval = setInterval(generateTimeLabels, 60000);
     
-    // Set up interval to update stats every minute
-    const statsInterval = setInterval(debouncedFetchStats, 60000);
+    // Set up interval to update stats every 5 minutes instead of every minute to reduce server load
+    const statsInterval = setInterval(debouncedFetchStats, 300000);
 
     let elapsedInterval: NodeJS.Timeout;
 
@@ -214,7 +216,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     updateElapsedTime();
 
     if (todayAttendance?.checkInTime && !todayAttendance?.checkOutTime) {
-      elapsedInterval = setInterval(updateElapsedTime, 1000);
+      elapsedInterval = setInterval(updateElapsedTime, 7000);
     }
 
     // If user doesn't have reportsTo but has a team, fetch team leader
@@ -236,13 +238,14 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     }
 
     return () => {
+      console.log("Dashboard useEffect cleanup - clearing intervals");
       clearInterval(timeLabelInterval);
       clearInterval(statsInterval);
       if (elapsedInterval) {
         clearInterval(elapsedInterval);
       }
     };
-  }, [todayAttendance, user, generateTimeLabels, debouncedFetchTodayAttendance, debouncedFetchStats, calculateProgress]);
+  }, [todayAttendance?.checkInTime, user.id, user.reportsTo, user.teams]);
  
   // Replace the fetchTodayAttendance and fetchStats functions with their debounced versions
   const fetchTodayAttendance = () => debouncedFetchTodayAttendance();

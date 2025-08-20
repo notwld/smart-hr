@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
+import PermissionGuard from "@/components/PermissionGuard";
 
 type TeamData = {
   id: string;
@@ -219,13 +220,14 @@ export default function TeamsPage() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
-                <DialogTrigger asChild>
-                  <Button className="bg-primary hover:bg-primary/90">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create Team
-                  </Button>
-                </DialogTrigger>
+              <PermissionGuard permissions="teams.create">
+                <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="bg-primary hover:bg-primary/90">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create Team
+                    </Button>
+                  </DialogTrigger>
                 <DialogContent className="sm:max-w-[550px]">
                   <DialogHeader>
                     <DialogTitle>Create New Team</DialogTitle>
@@ -306,6 +308,7 @@ export default function TeamsPage() {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
+              </PermissionGuard>
             </div>
           </div>
         </header>
@@ -325,13 +328,15 @@ export default function TeamsPage() {
               </p>
               {!searchTerm && (
                 <div className="mt-6">
-                  <Button 
-                    onClick={() => setIsCreateModalOpen(true)}
-                    className="bg-primary hover:bg-primary/90"
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create Team
-                  </Button>
+                  <PermissionGuard permissions="teams.create">
+                    <Button 
+                      onClick={() => setIsCreateModalOpen(true)}
+                      className="bg-primary hover:bg-primary/90"
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create Team
+                    </Button>
+                  </PermissionGuard>
                 </div>
               )}
             </div>
@@ -360,14 +365,18 @@ export default function TeamsPage() {
                             <Users className="mr-2 h-4 w-4" />
                             View Team
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => router.push(`/teams/${team.id}/edit`)}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit Team
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDeleteTeam(team.id)} className="text-red-600">
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete Team
-                          </DropdownMenuItem>
+                          <PermissionGuard permissions="teams.edit">
+                            <DropdownMenuItem onClick={() => router.push(`/teams/${team.id}/edit`)}>
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit Team
+                            </DropdownMenuItem>
+                          </PermissionGuard>
+                          <PermissionGuard permissions="teams.delete">
+                            <DropdownMenuItem onClick={() => handleDeleteTeam(team.id)} className="text-red-600">
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete Team
+                            </DropdownMenuItem>
+                          </PermissionGuard>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>

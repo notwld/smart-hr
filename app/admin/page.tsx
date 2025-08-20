@@ -346,7 +346,18 @@ export default function AdminDashboard() {
   };
 
   return (
-    <main className="flex-1 overflow-auto bg-gray-50 p-4 md:p-6">
+    <PermissionGuard 
+      permissions="dashboard.admin"
+      fallback={
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2">Access Denied</h2>
+            <p className="text-muted-foreground">You don't have permission to view the admin dashboard.</p>
+          </div>
+        </div>
+      }
+    >
+      <main className="flex-1 overflow-auto bg-gray-50 p-4 md:p-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold">Employee Attendance</h1>
@@ -780,5 +791,6 @@ export default function AdminDashboard() {
         employee={selectedEmployee}
       />
     </main>
+    </PermissionGuard>
   )
 }

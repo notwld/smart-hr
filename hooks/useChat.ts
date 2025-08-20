@@ -42,6 +42,7 @@ export interface ChatMessage {
   parentMessageId?: string
   parentMessage?: ChatMessage
   replies: ChatMessage[]
+  reactions?: MessageReaction[]
   forwardedFrom?: string
   isEdited: boolean
   isDeleted: boolean
@@ -61,6 +62,19 @@ export interface MessageReadStatus {
   messageId: string
   userId: string
   readAt: Date
+}
+
+export interface MessageReaction {
+  id: string
+  messageId: string
+  userId: string
+  emoji: string
+  createdAt: Date
+  user?: {
+    id: string
+    firstName: string
+    lastName: string
+  }
 }
 
 export interface UserPresence {
@@ -227,7 +241,7 @@ export function useChatRoom(roomId: string) {
       
       const result = await response.json()
       
-      // Add the real message to UI (no optimistic message needed since we don't broadcast to sender)
+      // Add the message to UI immediately for sender (real-time will handle others)
       setMessages(prev => [...prev, result.message])
       
       return result.message
@@ -239,22 +253,68 @@ export function useChatRoom(roomId: string) {
 
   // Send file message
   const sendFileMessage = useCallback(async (file: File, content?: string) => {
-    if (!session?.user?.id || !roomId) return
+    if (!session?.user?.id || !roomId) return false
 
     try {
-      // Check file size (30MB limit)
-      if (file.size > 30 * 1024 * 1024) {
-        throw new Error('File size must be less than 30MB')
+      // Check file size (10MB limit)
+      if (file.size > 10 * 1024 * 1024) {
+        throw new Error('File size must be less than 10MB')
       }
 
-      // For now, just send a text message about the file
-      // In a full implementation, you'd upload the file first
-      return await sendMessage(`Shared file: ${file.name}`, undefined)
+      // First upload the file
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const uploadResponse = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload file')
+      }
+
+      const uploadData = await uploadResponse.json()
+      
+      // Determine message type based on file MIME type
+      let messageType = 'FILE'
+      if (file.type.startsWith('image/')) {
+        messageType = 'IMAGE'
+      } else if (file.type.startsWith('video/')) {
+        messageType = 'VIDEO'
+      } else if (file.type.startsWith('audio/')) {
+        messageType = 'AUDIO'
+      }
+
+      // Send the message with file information using the real-time socket
+      const response = await fetch('/api/chat/socket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          roomId,
+          content: content || file.name,
+          messageType,
+          fileUrl: uploadData.url,
+          fileName: uploadData.fileName || file.name,
+          fileSize: uploadData.fileSize || file.size,
+          mimeType: uploadData.mimeType || file.type
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send file message')
+      }
+
+      const message = await response.json()
+      setMessages(prev => [...prev, message])
+      return true
     } catch (error) {
       console.error('Error sending file message:', error)
-      return null
+      return false
     }
-  }, [session?.user?.id, roomId, sendMessage])
+  }, [session?.user?.id, roomId])
 
   // Edit message
   const editMessage = useCallback(async (messageId: string, content: string) => {
@@ -353,12 +413,55 @@ export function useChatRoom(roomId: string) {
       try {
         const data = JSON.parse(event.data)
         
-        if (data.type === 'new_message' && data.roomId === roomId) {
-          setMessages(prev => {
-            // Remove optimistic message if it exists
-            const filtered = prev.filter(m => !m.id.startsWith('temp-'))
-            return [...filtered, data.message]
-          })
+        if (data.roomId === roomId) {
+          switch (data.type) {
+            case 'new_message':
+              setMessages(prev => {
+                // Remove optimistic message if it exists
+                const filtered = prev.filter(m => !m.id.startsWith('temp-'))
+                return [...filtered, data.message]
+              })
+              break
+            
+            case 'message_edited':
+              setMessages(prev => 
+                prev.map(m => m.id === data.message.id ? data.message : m)
+              )
+              break
+            
+            case 'message_deleted':
+              setMessages(prev => 
+                prev.map(m => m.id === data.messageId ? { ...m, isDeleted: true, content: '[Message deleted]' } : m)
+              )
+              break
+
+            case 'reaction_added':
+              setMessages(prev => 
+                prev.map(m => {
+                  if (m.id === data.messageId) {
+                    const updatedReactions = [...(m.reactions || [])]
+                    updatedReactions.push(data.reaction)
+                    return { ...m, reactions: updatedReactions }
+                  }
+                  return m
+                })
+              )
+              break
+
+            case 'reaction_removed':
+              setMessages(prev => 
+                prev.map(m => {
+                  if (m.id === data.messageId) {
+                    const updatedReactions = (m.reactions || []).filter(
+                      (r: MessageReaction) => !(r.userId === data.userId && r.emoji === data.emoji)
+                    )
+                    return { ...m, reactions: updatedReactions }
+                  }
+                  return m
+                })
+              )
+              break
+          }
         }
       } catch (error) {
         console.error('Error parsing SSE message:', error)

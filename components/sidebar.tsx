@@ -31,6 +31,7 @@ import {
     Shield,
     Key,
     Server,
+    Target,
 } from "lucide-react"
 import { Button } from "./ui/button"
 import { signOut, useSession } from "next-auth/react"
@@ -41,19 +42,24 @@ export default function Sidebar() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
     const { data: session } = useSession()
     const pathname = usePathname()
+    const { hasPermission, hasAnyPermission } = usePermissions()
     
-    // All navigation items - permissions checks removed
-    const navItems = [
-        { icon: <Activity className="w-5 h-5" />, label: "Your Dashboard", href: "/" },
-        { icon: <FileText className="w-5 h-5" />, label: "Admin Dashboard", href: "/admin" },
-        { icon: <FileText className="w-5 h-5" />, label: "Employees", href: "/admin/employees" },
-        { icon: <Shield className="w-5 h-5" />, label: "Roles", href: "/admin/roles" },
-        { icon: <Key className="w-5 h-5" />, label: "Permissions", href: "/admin/permissions" },
-        { icon: <Server className="w-5 h-5" />, label: "Hosting", href: "/admin/hosting" },
-        { icon: <Users className="w-5 h-5" />, label: "Teams", href: "/teams" },
-        { icon: <MessageSquare className="w-5 h-5" />, label: "Chat", href: "/chat" },
-        { icon: <FileText className="w-5 h-5" />, label: "Leaves", href: "/leaves" },
+    // All navigation items with permission-based filtering
+    const allNavItems = [
+        { icon: <Activity className="w-5 h-5" />, label: "Your Dashboard", href: "/", adminOnly: false },
+        { icon: <FileText className="w-5 h-5" />, label: "Admin Dashboard", href: "/admin", permission: "dashboard.admin" },
+        { icon: <FileText className="w-5 h-5" />, label: "Employees", href: "/admin/employees", permission: "users.view" },
+        { icon: <Shield className="w-5 h-5" />, label: "Roles", href: "/admin/roles", permission: "roles.view" },
+        { icon: <Key className="w-5 h-5" />, label: "Permissions", href: "/admin/permissions", permission: "permissions.view" },
+        { icon: <Server className="w-5 h-5" />, label: "Hosting", href: "/admin/hosting", permission: "hosting.view" },
+        { icon: <Users className="w-5 h-5" />, label: "Teams", href: "/teams", permission: "teams.view" },
+        { icon: <MessageSquare className="w-5 h-5" />, label: "Chat", href: "/chat", permission: "chat.view" },
+        { icon: <FileText className="w-5 h-5" />, label: "Leaves", href: "/leaves", permission: "leaves.view" },
+        { icon: <Target className="w-5 h-5" />, label: "Leads", href: "/leads", permission: "leads.view" },
     ];
+    
+    // Filter navigation items based on user permissions
+    const navItems = allNavItems.filter(item => !item.permission || hasPermission(item.permission));
     
     return (
         <aside

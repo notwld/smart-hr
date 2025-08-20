@@ -51,7 +51,17 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { roomId, content, messageType = 'TEXT', parentMessageId, forwardedFrom } = body;
+    const { 
+      roomId, 
+      content, 
+      messageType = 'TEXT', 
+      parentMessageId, 
+      forwardedFrom,
+      fileUrl,
+      fileName,
+      fileSize,
+      mimeType
+    } = body;
 
     // Save message to database
     const message = await prisma.chatMessage.create({
@@ -61,7 +71,11 @@ export async function POST(req: NextRequest) {
         content,
         messageType,
         parentMessageId,
-        forwardedFrom
+        forwardedFrom,
+        fileUrl,
+        fileName,
+        fileSize,
+        mimeType
       },
       include: {
         sender: {
@@ -110,5 +124,30 @@ export async function POST(req: NextRequest) {
       { error: 'Failed to send message' },
       { status: 500 }
     );
+  }
+}
+
+// Broadcast function for other operations (edit, delete, etc.)
+export async function broadcastToRoom(roomId: string, data: any, excludeUserId?: string) {
+  try {
+    const participants = await prisma.chatParticipant.findMany({
+      where: { roomId },
+      select: { userId: true }
+    });
+
+    participants.forEach(participant => {
+      if (excludeUserId && participant.userId === excludeUserId) return;
+      
+      const controller = connections.get(participant.userId);
+      if (controller) {
+        try {
+          controller.enqueue(`data: ${JSON.stringify(data)}\n\n`);
+        } catch (error) {
+          connections.delete(participant.userId);
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error broadcasting to room:', error);
   }
 } 

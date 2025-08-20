@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { Search, Plus, Users, MessageCircle } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Search, Plus, Users, MessageCircle, Hash, Globe } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -11,6 +11,7 @@ import { ChatRoom } from '@/lib/supabase'
 import NewChatDialog from './NewChatDialog'
 import { cn } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
+import { Separator } from '@/components/ui/separator'
 
 interface ChatRoomListProps {
   rooms: ChatRoom[]
@@ -47,6 +48,94 @@ export default function ChatRoomList({
     
     return room.name
   }
+
+  // Get room icon based on type
+  const getRoomIcon = (room: ChatRoom) => {
+    switch (room.type) {
+      case 'DIRECT':
+        return <MessageCircle className="h-4 w-4" />
+      case 'TEAM':
+        return <Users className="h-4 w-4" />
+      case 'GENERAL':
+        return <Globe className="h-4 w-4" />
+      default:
+        return <Hash className="h-4 w-4" />
+    }
+  }
+
+  // Get avatar for room
+  const getRoomAvatar = (room: ChatRoom) => {
+    if (room.type === 'DIRECT' && room.participants) {
+      const currentUserId = session?.user?.id
+      const receiver = room.participants.find(p => p.userId !== currentUserId)
+      
+      if (receiver?.user) {
+        return (
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={receiver.user.pfp || ''} />
+            <AvatarFallback>
+              {receiver.user.firstName.charAt(0)}{receiver.user.lastName.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
+        )
+      }
+    }
+    
+    return (
+      <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+        {getRoomIcon(room)}
+      </div>
+    )
+  }
+
+  // Individual room item component
+  const RoomItem = ({ room, selectedRoomId, onRoomSelect, getRoomAvatar, getReceiverName }: {
+    room: ChatRoom
+    selectedRoomId: string | null
+    onRoomSelect: (roomId: string) => void
+    getRoomAvatar: (room: ChatRoom) => JSX.Element
+    getReceiverName: (room: ChatRoom) => string
+  }) => (
+    <div
+      onClick={() => onRoomSelect(room.id)}
+      className={cn(
+        "flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors",
+        selectedRoomId === room.id
+          ? "bg-primary/10 border border-primary/20"
+          : "hover:bg-gray-50"
+      )}
+    >
+      {/* Room Avatar */}
+      <div className="relative">
+        {getRoomAvatar(room)}
+        {room.type === 'TEAM' && (
+          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
+        )}
+      </div>
+
+      {/* Room Info */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-medium text-gray-900 truncate">
+            {room.type === 'DIRECT' ? getReceiverName(room) : room.name}
+          </h3>
+          <span className="text-xs text-gray-500">
+            {new Date(room.updatedAt).toLocaleDateString()}
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-gray-500 truncate">
+            {room.lastMessage?.content || (room.type === 'TEAM' ? room.description : 'Direct message')}
+          </p>
+          {room.unreadCount && room.unreadCount > 0 && (
+            <Badge variant="destructive" className="h-5 text-xs min-w-[20px] px-1">
+              {room.unreadCount > 99 ? '99+' : room.unreadCount}
+            </Badge>
+          )}
+        </div>
+      </div>
+    </div>
+  )
 
   // Filter rooms based on search query
   useEffect(() => {
@@ -139,56 +228,70 @@ export default function ChatRoomList({
           </div>
         ) : (
           <div className="space-y-1 p-2">
-            {filteredRooms.map((room) => (
-              <div
-                key={room.id}
-                onClick={() => onRoomSelect(room.id)}
-                className={cn(
-                  "flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors",
-                  selectedRoomId === room.id
-                    ? "bg-primary/10 border border-primary/20"
-                    : "hover:bg-gray-50"
-                )}
-              >
-                {/* Room Avatar */}
-                <div className="relative">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src="" />
-                                      <AvatarFallback className="bg-primary/10 text-primary">
-                    {room.type === 'TEAM' ? (
-                      <Users className="h-5 w-5" />
-                    ) : (
-                      getReceiverName(room).split(' ').slice(0, 2).map(n => n[0]).join('')
-                    )}
-                  </AvatarFallback>
-                  </Avatar>
-                  {room.type === 'TEAM' && (
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
-                  )}
+            {/* General Chat Section */}
+            {filteredRooms.filter(room => room.type === 'GENERAL').length > 0 && (
+              <>
+                <div className="px-3 py-2">
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    General
+                  </h4>
                 </div>
+                {filteredRooms.filter(room => room.type === 'GENERAL').map((room) => (
+                  <RoomItem 
+                    key={room.id} 
+                    room={room} 
+                    selectedRoomId={selectedRoomId}
+                    onRoomSelect={onRoomSelect}
+                    getRoomAvatar={getRoomAvatar}
+                    getReceiverName={getReceiverName}
+                  />
+                ))}
+                <Separator className="my-2" />
+              </>
+            )}
 
-                {/* Room Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                                      <h3 className="text-sm font-medium text-gray-900 truncate">
-                    {room.type === 'DIRECT' ? getReceiverName(room) : room.name}
-                  </h3>
-                    <span className="text-xs text-gray-500">
-                      {new Date(room.updatedAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-gray-500 truncate">
-                      {room.type === 'TEAM' ? room.description : 'Direct message'}
-                    </p>
-                    {/* Unread badge - placeholder for now */}
-                    {/* <Badge variant="destructive" className="h-5 text-xs">
-                      3
-                    </Badge> */}
-                  </div>
+            {/* Team Chat Section */}
+            {filteredRooms.filter(room => room.type === 'TEAM').length > 0 && (
+              <>
+                <div className="px-3 py-2">
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Teams
+                  </h4>
                 </div>
-              </div>
-            ))}
+                {filteredRooms.filter(room => room.type === 'TEAM').map((room) => (
+                  <RoomItem 
+                    key={room.id} 
+                    room={room} 
+                    selectedRoomId={selectedRoomId}
+                    onRoomSelect={onRoomSelect}
+                    getRoomAvatar={getRoomAvatar}
+                    getReceiverName={getReceiverName}
+                  />
+                ))}
+                <Separator className="my-2" />
+              </>
+            )}
+
+            {/* Direct Messages Section */}
+            {filteredRooms.filter(room => room.type === 'DIRECT').length > 0 && (
+              <>
+                <div className="px-3 py-2">
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Direct Messages
+                  </h4>
+                </div>
+                {filteredRooms.filter(room => room.type === 'DIRECT').map((room) => (
+                  <RoomItem 
+                    key={room.id} 
+                    room={room} 
+                    selectedRoomId={selectedRoomId}
+                    onRoomSelect={onRoomSelect}
+                    getRoomAvatar={getRoomAvatar}
+                    getReceiverName={getReceiverName}
+                  />
+                ))}
+              </>
+            )}
           </div>
         )}
       </div>
