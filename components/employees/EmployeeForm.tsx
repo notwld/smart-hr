@@ -25,6 +25,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Trash2, User, Briefcase, Heart, GraduationCap, Building, CreditCard, Camera } from "lucide-react";
+import { ButtonLoader } from "@/components/ui/loader";
 
 const employeeSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -86,7 +90,7 @@ export default function EmployeeForm() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const router = useRouter();
-  
+
   const form = useForm<EmployeeFormData>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
@@ -160,9 +164,9 @@ export default function EmployeeForm() {
         // Handle username unique constraint error
         if (response.status === 400 && responseData.message?.includes("username")) {
           setUsernameError("Username already exists. Please choose another one.");
-          form.setError("username", { 
-            type: "manual", 
-            message: "Username already exists. Please choose another one." 
+          form.setError("username", {
+            type: "manual",
+            message: "Username already exists. Please choose another one."
           });
           throw new Error("Username already exists");
         }
@@ -232,7 +236,7 @@ export default function EmployeeForm() {
   const generateUsername = () => {
     const firstName = form.getValues("firstName").toLowerCase();
     const lastName = form.getValues("lastName").toLowerCase();
-    
+
     if (firstName && lastName) {
       const timestamp = new Date().getTime().toString().slice(-4);
       const username = `${firstName}.${lastName}${timestamp}`;
@@ -242,686 +246,769 @@ export default function EmployeeForm() {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* Profile Image */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Profile Image</h2>
-          <div className="flex items-center space-x-4">
-            <div className="relative w-32 h-32 rounded-full overflow-hidden">
-              {imagePreview ? (
-                <Image
-                  src={imagePreview}
-                  alt="Profile preview"
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-2xl text-gray-400">No image</span>
-                </div>
-              )}
-            </div>
-            <div>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="w-full"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Max file size: 5MB. Supported formats: JPG, PNG, GIF
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-6">
+      <div className="max-w-6xl mx-auto space-y-8">
+        {/* Header */}
+        <Card className="border-0 shadow-lg bg-gradient-to-r from-cyan-500 to-blue-600">
+          <CardHeader className="text-white">
+            <CardTitle className="text-2xl font-bold flex items-center">
+              <User className="w-6 h-6 mr-2" />
+              Add New Employee
+            </CardTitle>
+            <p className="text-white/90 mt-1">Create a comprehensive employee profile</p>
+          </CardHeader>
+        </Card>
 
-        {/* Personal Information */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Personal Information</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Name</FormLabel>
-                  <FormControl>
-                    <Input 
-                      {...field} 
-                      onChange={(e) => {
-                        field.onChange(e);
-                        // Clear the username error when first name changes
-                        setUsernameError(null);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input 
-                      {...field} 
-                      onChange={(e) => {
-                        field.onChange(e);
-                        // Clear the username error when last name changes
-                        setUsernameError(null);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <div className="flex space-x-2">
-                    <FormControl>
-                      <Input 
-                        {...field} 
-                        className={usernameError ? "border-red-500" : ""}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Profile Image */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <Camera className="w-5 h-5 mr-2" />
+                  Profile Image
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center space-x-6">
+                  <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-cyan-100">
+                    {imagePreview ? (
+                      <Image
+                        src={imagePreview}
+                        alt="Profile preview"
+                        fill
+                        className="object-cover"
                       />
-                    </FormControl>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={generateUsername}
-                    >
-                      Generate
-                    </Button>
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                        <Camera className="w-8 h-8 text-gray-400" />
+                      </div>
+                    )}
                   </div>
-                  {usernameError && (
-                    <p className="text-sm font-medium text-red-500">{usernameError}</p>
+                  <div className="flex-1">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="w-full border-cyan-200 focus:border-cyan-500"
+                    />
+                    <p className="text-sm text-gray-500 mt-2">
+                      Max file size: 5MB. Supported formats: JPG, PNG, GIF
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Personal Information */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <User className="w-5 h-5 mr-2" />
+                  Personal Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700 font-medium">First Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              // Clear the username error when first name changes
+                              setUsernameError(null);
+                            }}
+                            className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700 font-medium">Last Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              // Clear the username error when last name changes
+                              setUsernameError(null);
+                            }}
+                            className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Username</FormLabel>
+                        <div className="flex space-x-2">
+                          <FormControl>
+                            <Input
+                              {...field}
+                              className={usernameError ? "border-red-500" : ""}
+                            />
+                          </FormControl>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={generateUsername}
+                          >
+                            Generate
+                          </Button>
+                        </div>
+                        {usernameError && (
+                          <p className="text-sm font-medium text-red-500">{usernameError}</p>
+                        )}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input type="email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Address</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cnic"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>CNIC</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="XXXXX-XXXXXXX-X"
+                            onChange={(e) => {
+                              // Strip existing dashes first to normalize input
+                              let value = e.target.value.replace(/-/g, '');
+
+                              // Only allow digits
+                              value = value.replace(/[^\d]/g, '');
+
+                              // Limit to 13 digits
+                              value = value.slice(0, 13);
+
+                              // Add dashes at appropriate positions if we have enough digits
+                              if (value.length > 5) {
+                                value = value.slice(0, 5) + '-' + value.slice(5);
+                              }
+                              if (value.length > 13) {
+                                value = value.slice(0, 13) + '-' + value.slice(13);
+                              }
+
+                              // Set the formatted value
+                              field.onChange(value);
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="+923115798967"
+                            onChange={(e) => {
+                              let value = e.target.value;
+
+                              // Ensure the value starts with +
+                              if (!value.startsWith('+')) {
+                                value = '+' + value;
+                              }
+
+                              // Only allow + at start and digits after
+                              value = '+' + value.slice(1).replace(/[^\d]/g, '');
+
+                              // Limit to 13 characters total (+ and 12 digits)
+                              value = value.slice(0, 13);
+
+                              field.onChange(value);
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="dateOfBirth"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Date of Birth</FormLabel>
+                        <FormControl>
+                          <Input type="date" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="gender"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Gender</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select gender" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="MALE">Male</SelectItem>
+                            <SelectItem value="FEMALE">Female</SelectItem>
+                            <SelectItem value="OTHER">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="maritalStatus"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Marital Status</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="SINGLE">Single</SelectItem>
+                            <SelectItem value="MARRIED">Married</SelectItem>
+                            <SelectItem value="DIVORCED">Divorced</SelectItem>
+                            <SelectItem value="WIDOWED">Widowed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Employment Information */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <Briefcase className="w-5 h-5 mr-2" />
+                  Employment Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="department"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Department</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="position"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Position</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="salary"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Salary</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            onChange={(e) => field.onChange(Number(e.target.value))}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="joinDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Join Date</FormLabel>
+                        <FormControl>
+                          <Input type="date" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Emergency Contact */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <Heart className="w-5 h-5 mr-2" />
+                  Emergency Contact
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="emergencyContact.name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Contact Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="emergencyContact.relationship"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Relationship</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="emergencyContact.phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="+923115798967"
+                            onChange={(e) => {
+                              let value = e.target.value;
+
+                              // Ensure the value starts with +
+                              if (!value.startsWith('+')) {
+                                value = '+' + value;
+                              }
+
+                              // Only allow + at start and digits after
+                              value = '+' + value.slice(1).replace(/[^\d]/g, '');
+
+                              // Limit to 13 characters total (+ and 12 digits)
+                              value = value.slice(0, 13);
+
+                              field.onChange(value);
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="emergencyContact.address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Address</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Education */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <GraduationCap className="w-5 h-5 mr-2" />
+                  Education
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {form.watch("education").map((_, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-gray-50/50 rounded-xl border border-gray-200">
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.degree`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Degree</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.institution`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Institution</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.field`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Field</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.startDate`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Start Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.endDate`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>End Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.grade`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Grade</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                                    </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    form.setValue("education", [
+                      ...form.watch("education"),
+                      {
+                        degree: "",
+                        institution: "",
+                        field: "",
+                        startDate: "",
+                        endDate: "",
+                        grade: "",
+                      },
+                    ])
+                  }
+                  className="border-cyan-200 text-cyan-600 hover:bg-cyan-50 hover:border-cyan-300"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Education
+                </Button>
+              </CardContent>
+            </Card>
+
+                          {/* Experience */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <Building className="w-5 h-5 mr-2" />
+                  Experience
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {form.watch("experience").map((_, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-gray-50/50 rounded-xl border border-gray-200">
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.company`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Company</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.position`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Position</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.startDate`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Start Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.endDate`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>End Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.description`}
+                      render={({ field }) => (
+                        <FormItem className="col-span-2">
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                                    </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    form.setValue("experience", [
+                      ...form.watch("experience"),
+                      {
+                        company: "",
+                        position: "",
+                        startDate: "",
+                        endDate: "",
+                        description: "",
+                      },
+                    ])
+                  }
+                  className="border-cyan-200 text-cyan-600 hover:bg-cyan-50 hover:border-cyan-300"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Experience
+                </Button>
+              </CardContent>
+            </Card>
+
+                          {/* Bank Details */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <CreditCard className="w-5 h-5 mr-2" />
+                  Bank Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="bankDetails.bankName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bank Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="bankDetails.accountNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Account Number</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="bankDetails.accountTitle"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Account Title</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="bankDetails.branchCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Branch Code</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                                </div>
+              </CardContent>
+            </Card>
+
+            {/* Submit Button */}
+            <Card className="border-0 shadow-sm bg-gradient-to-r from-cyan-500 to-blue-600">
+              <CardContent className="p-6">
+                <Button 
+                  type="submit" 
+                  disabled={loading}
+                  className="w-full bg-white text-cyan-600 hover:bg-gray-100 font-semibold py-3 text-lg shadow-lg"
+                >
+                  {loading ? (
+                    <ButtonLoader size="md" />
+                  ) : (
+                    <>
+                      <User className="w-5 h-5 mr-2" />
+                      Create Employee
+                    </>
                   )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input type="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="cnic"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>CNIC</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="XXXXX-XXXXXXX-X"
-                      onChange={(e) => {
-                        // Strip existing dashes first to normalize input
-                        let value = e.target.value.replace(/-/g, '');
-                        
-                        // Only allow digits
-                        value = value.replace(/[^\d]/g, '');
-                        
-                        // Limit to 13 digits
-                        value = value.slice(0, 13);
-                        
-                        // Add dashes at appropriate positions if we have enough digits
-                        if (value.length > 5) {
-                          value = value.slice(0, 5) + '-' + value.slice(5);
-                        }
-                        if (value.length > 13) {
-                          value = value.slice(0, 13) + '-' + value.slice(13);
-                        }
-                        
-                        // Set the formatted value
-                        field.onChange(value);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="+923115798967"
-                      onChange={(e) => {
-                        let value = e.target.value;
-                        
-                        // Ensure the value starts with +
-                        if (!value.startsWith('+')) {
-                          value = '+' + value;
-                        }
-                        
-                        // Only allow + at start and digits after
-                        value = '+' + value.slice(1).replace(/[^\d]/g, '');
-                        
-                        // Limit to 13 characters total (+ and 12 digits)
-                        value = value.slice(0, 13);
-                        
-                        field.onChange(value);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="dateOfBirth"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date of Birth</FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Gender</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="MALE">Male</SelectItem>
-                      <SelectItem value="FEMALE">Female</SelectItem>
-                      <SelectItem value="OTHER">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="maritalStatus"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Marital Status</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="SINGLE">Single</SelectItem>
-                      <SelectItem value="MARRIED">Married</SelectItem>
-                      <SelectItem value="DIVORCED">Divorced</SelectItem>
-                      <SelectItem value="WIDOWED">Widowed</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        {/* Employment Information */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Employment Information</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="department"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Department</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="position"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Position</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="salary"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Salary</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      {...field} 
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="joinDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Join Date</FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        {/* Emergency Contact */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Emergency Contact</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="emergencyContact.name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contact Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="emergencyContact.relationship"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Relationship</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="emergencyContact.phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone</FormLabel>
-                  <FormControl>
-                    <Input 
-                      {...field}
-                      placeholder="+923115798967"
-                      onChange={(e) => {
-                        let value = e.target.value;
-                        
-                        // Ensure the value starts with +
-                        if (!value.startsWith('+')) {
-                          value = '+' + value;
-                        }
-                        
-                        // Only allow + at start and digits after
-                        value = '+' + value.slice(1).replace(/[^\d]/g, '');
-                        
-                        // Limit to 13 characters total (+ and 12 digits)
-                        value = value.slice(0, 13);
-                        
-                        field.onChange(value);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="emergencyContact.address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        {/* Education */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Education</h2>
-          {form.watch("education").map((_, index) => (
-            <div key={index} className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
-              <FormField
-                control={form.control}
-                name={`education.${index}.degree`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Degree</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.institution`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Institution</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.field`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Field</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.startDate`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.endDate`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`education.${index}.grade`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Grade</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() =>
-              form.setValue("education", [
-                ...form.watch("education"),
-                {
-                  degree: "",
-                  institution: "",
-                  field: "",
-                  startDate: "",
-                  endDate: "",
-                  grade: "",
-                },
-              ])
-            }
-          >
-            Add Education
-          </Button>
-        </div>
-
-        {/* Experience */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Experience</h2>
-          {form.watch("experience").map((_, index) => (
-            <div key={index} className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
-              <FormField
-                control={form.control}
-                name={`experience.${index}.company`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Company</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`experience.${index}.position`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Position</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`experience.${index}.startDate`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`experience.${index}.endDate`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`experience.${index}.description`}
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() =>
-              form.setValue("experience", [
-                ...form.watch("experience"),
-                {
-                  company: "",
-                  position: "",
-                  startDate: "",
-                  endDate: "",
-                  description: "",
-                },
-              ])
-            }
-          >
-            Add Experience
-          </Button>
-        </div>
-
-        {/* Bank Details */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Bank Details</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="bankDetails.bankName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Bank Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="bankDetails.accountNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Account Number</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="bankDetails.accountTitle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Account Title</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="bankDetails.branchCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Branch Code</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        <Button 
-          type="submit" 
-          disabled={loading}
-        >
-          {loading ? "Creating..." : "Create Employee"}
-        </Button>
-      </form>
-    </Form>
+                </Button>
+              </CardContent>
+            </Card>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 } 

@@ -85,7 +85,10 @@ export async function POST(req: Request) {
             "tasks.create",
             "projects.view",
             "meetings.view",
-            "notifications.view"
+            "notifications.view",
+            "onboarding.view",
+            "onboarding.complete",
+            
           ]
         }
       }

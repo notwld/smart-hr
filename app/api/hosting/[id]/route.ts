@@ -17,18 +17,6 @@ export async function GET(
 
     const hosting = await prisma.hosting.findUnique({
       where: { id: params.id },
-      include: {
-        client: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            phone: true,
-            address: true,
-          }
-        }
-      }
     });
 
     if (!hosting) {
@@ -61,7 +49,7 @@ export async function PUT(
 
     const data = await req.json();
     const {
-      clientId,
+      clientName,
       domain,
       cost,
       startDate,
@@ -71,7 +59,7 @@ export async function PUT(
     } = data;
 
     // Validate required fields
-    if (!clientId || !domain || !cost || !startDate || !expiryDate || !durationType) {
+    if (!clientName || !domain || !cost || !startDate || !expiryDate || !durationType) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
@@ -98,18 +86,6 @@ export async function PUT(
       );
     }
 
-    // Check if client exists
-    const client = await prisma.user.findUnique({
-      where: { id: clientId }
-    });
-
-    if (!client) {
-      return NextResponse.json(
-        { message: "Client not found" },
-        { status: 404 }
-      );
-    }
-
     // Check if domain already exists (excluding current hosting)
     const domainConflict = await prisma.hosting.findFirst({
       where: { 
@@ -129,7 +105,7 @@ export async function PUT(
     const hosting = await prisma.hosting.update({
       where: { id: params.id },
       data: {
-        clientId,
+        clientName,
         domain,
         cost: Number(cost),
         startDate: new Date(startDate),
@@ -137,17 +113,6 @@ export async function PUT(
         durationType,
         notes,
       },
-      include: {
-        client: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            phone: true,
-          }
-        }
-      }
     });
 
     return NextResponse.json({

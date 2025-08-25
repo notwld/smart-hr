@@ -2,11 +2,10 @@ import EmployeeList from "@/components/employees/EmployeeList";
 
 export default function EmployeesPage() {
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold">Employees</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
+      <div className="container mx-auto p-6">
+        <EmployeeList />
       </div>
-      <EmployeeList />
     </div>
   );
 } 

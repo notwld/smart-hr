@@ -12,6 +12,7 @@ declare module "next-auth" {
       id: string;
       role: string;
       legacyRole?: string;
+      onboardingCompleted?: boolean;
     } & DefaultSession["user"];
   }
 
@@ -19,6 +20,7 @@ declare module "next-auth" {
     id: string;
     role: string;
     legacyRole?: string;
+    onboardingCompleted?: boolean;
   }
 }
 
@@ -27,6 +29,7 @@ declare module "next-auth/jwt" {
     id: string;
     role: string;
     legacyRole?: string;
+    onboardingCompleted?: boolean;
   }
 }
 
@@ -101,7 +104,8 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.username,
           role: effectiveRole,
-          legacyRole: user.legacyRole
+          legacyRole: user.legacyRole,
+          onboardingCompleted: user.onboardingCompleted
         };
       },
     }),
@@ -114,6 +118,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.role = user.role;
         token.legacyRole = user.legacyRole;
+        token.onboardingCompleted = user.onboardingCompleted;
       }
       
       // If the user record was updated, we might need to refresh the token
@@ -146,6 +151,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
         session.user.legacyRole = token.legacyRole as string;
+        session.user.onboardingCompleted = token.onboardingCompleted as boolean;
         
         // Ensure the role is never undefined
         if (!session.user.role) {
@@ -164,8 +170,10 @@ export const authOptions: NextAuthOptions = {
             const hasAdminRole = user.userRoles?.some(ur => ur.role.name === "Admin");
             const isLegacyAdmin = user.legacyRole === "ADMIN";
             session.user.role = isLegacyAdmin || hasAdminRole ? "ADMIN" : user.legacyRole || "EMPLOYEE";
+            session.user.onboardingCompleted = user.onboardingCompleted;
           } else {
             session.user.role = "EMPLOYEE"; // Default fallback
+            session.user.onboardingCompleted = false;
           }
         }
         

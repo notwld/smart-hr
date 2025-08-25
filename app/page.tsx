@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import DashboardContent from "@/components/dashboard/DashboardContent";
+import { hasPermission } from "@/lib/permissions";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -18,6 +19,15 @@ export default async function DashboardPage() {
 
   if (!user) {
     redirect("/login");
+  }
+
+  // Check if user needs onboarding
+  if (!user.onboardingCompleted) {
+    // Check if user has permission to access onboarding
+    const hasOnboardingPermission = await hasPermission(user.id, "onboarding.view");
+    if (hasOnboardingPermission) {
+      redirect("/onboarding");
+    }
   }
 
   // Fetch related data separately

@@ -24,6 +24,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { ButtonLoader, OverlayLoader } from "@/components/ui/loader";
 
 const leaveSchema = z.object({
   startDate: z.string().min(1, "Start date is required"),
@@ -85,8 +86,10 @@ export default function LeaveApplicationForm() {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <div className="relative">
+      {loading && <OverlayLoader text="Submitting your leave request..." />}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -178,10 +181,11 @@ export default function LeaveApplicationForm() {
             Cancel
           </Button>
           <Button type="submit" disabled={loading}>
-            {loading ? "Submitting..." : "Submit Leave Request"}
+            {loading ? <ButtonLoader size="sm" /> : "Submit Leave Request"}
           </Button>
         </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+    </div>
   );
 } 

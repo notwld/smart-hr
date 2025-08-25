@@ -5,6 +5,8 @@
 -- Dumped from database version 17.5
 -- Dumped by pg_dump version 17.5
 
+-- Started on 2025-08-20 23:03:16 PKT
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -18,18 +20,21 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- TOC entry 968 (class 1247 OID 16806)
 -- Name: ChatRoomType; Type: TYPE; Schema: public; Owner: salad
 --
 
 CREATE TYPE public."ChatRoomType" AS ENUM (
     'DIRECT',
-    'TEAM'
+    'TEAM',
+    'GENERAL'
 );
 
 
 ALTER TYPE public."ChatRoomType" OWNER TO salad;
 
 --
+-- TOC entry 884 (class 1247 OID 16412)
 -- Name: DocumentType; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -46,6 +51,7 @@ CREATE TYPE public."DocumentType" AS ENUM (
 ALTER TYPE public."DocumentType" OWNER TO salad;
 
 --
+-- TOC entry 899 (class 1247 OID 16468)
 -- Name: DurationType; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -59,6 +65,7 @@ CREATE TYPE public."DurationType" AS ENUM (
 ALTER TYPE public."DurationType" OWNER TO salad;
 
 --
+-- TOC entry 878 (class 1247 OID 16394)
 -- Name: Gender; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -72,6 +79,7 @@ CREATE TYPE public."Gender" AS ENUM (
 ALTER TYPE public."Gender" OWNER TO salad;
 
 --
+-- TOC entry 890 (class 1247 OID 16440)
 -- Name: LeaveStatus; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -85,6 +93,7 @@ CREATE TYPE public."LeaveStatus" AS ENUM (
 ALTER TYPE public."LeaveStatus" OWNER TO salad;
 
 --
+-- TOC entry 887 (class 1247 OID 16426)
 -- Name: LeaveType; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -101,6 +110,7 @@ CREATE TYPE public."LeaveType" AS ENUM (
 ALTER TYPE public."LeaveType" OWNER TO salad;
 
 --
+-- TOC entry 875 (class 1247 OID 16387)
 -- Name: LegacyRole; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -114,6 +124,7 @@ CREATE TYPE public."LegacyRole" AS ENUM (
 ALTER TYPE public."LegacyRole" OWNER TO salad;
 
 --
+-- TOC entry 881 (class 1247 OID 16402)
 -- Name: MaritalStatus; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -128,6 +139,7 @@ CREATE TYPE public."MaritalStatus" AS ENUM (
 ALTER TYPE public."MaritalStatus" OWNER TO salad;
 
 --
+-- TOC entry 971 (class 1247 OID 16812)
 -- Name: MessageType; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -143,6 +155,7 @@ CREATE TYPE public."MessageType" AS ENUM (
 ALTER TYPE public."MessageType" OWNER TO salad;
 
 --
+-- TOC entry 896 (class 1247 OID 16458)
 -- Name: Priority; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -157,6 +170,7 @@ CREATE TYPE public."Priority" AS ENUM (
 ALTER TYPE public."Priority" OWNER TO salad;
 
 --
+-- TOC entry 893 (class 1247 OID 16448)
 -- Name: TaskStatus; Type: TYPE; Schema: public; Owner: salad
 --
 
@@ -175,6 +189,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- TOC entry 227 (class 1259 OID 16559)
 -- Name: Attendance; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -194,6 +209,7 @@ CREATE TABLE public."Attendance" (
 ALTER TABLE public."Attendance" OWNER TO salad;
 
 --
+-- TOC entry 226 (class 1259 OID 16551)
 -- Name: BankDetails; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -212,6 +228,7 @@ CREATE TABLE public."BankDetails" (
 ALTER TABLE public."BankDetails" OWNER TO salad;
 
 --
+-- TOC entry 241 (class 1259 OID 16840)
 -- Name: ChatMessage; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -237,6 +254,7 @@ CREATE TABLE public."ChatMessage" (
 ALTER TABLE public."ChatMessage" OWNER TO salad;
 
 --
+-- TOC entry 240 (class 1259 OID 16831)
 -- Name: ChatParticipant; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -253,6 +271,7 @@ CREATE TABLE public."ChatParticipant" (
 ALTER TABLE public."ChatParticipant" OWNER TO salad;
 
 --
+-- TOC entry 239 (class 1259 OID 16823)
 -- Name: ChatRoom; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -270,6 +289,7 @@ CREATE TABLE public."ChatRoom" (
 ALTER TABLE public."ChatRoom" OWNER TO salad;
 
 --
+-- TOC entry 225 (class 1259 OID 16542)
 -- Name: Document; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -288,6 +308,7 @@ CREATE TABLE public."Document" (
 ALTER TABLE public."Document" OWNER TO salad;
 
 --
+-- TOC entry 223 (class 1259 OID 16526)
 -- Name: Education; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -308,6 +329,7 @@ CREATE TABLE public."Education" (
 ALTER TABLE public."Education" OWNER TO salad;
 
 --
+-- TOC entry 222 (class 1259 OID 16518)
 -- Name: EmergencyContact; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -326,6 +348,7 @@ CREATE TABLE public."EmergencyContact" (
 ALTER TABLE public."EmergencyContact" OWNER TO salad;
 
 --
+-- TOC entry 224 (class 1259 OID 16534)
 -- Name: Experience; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -345,6 +368,7 @@ CREATE TABLE public."Experience" (
 ALTER TABLE public."Experience" OWNER TO salad;
 
 --
+-- TOC entry 238 (class 1259 OID 16655)
 -- Name: Hosting; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -365,6 +389,36 @@ CREATE TABLE public."Hosting" (
 ALTER TABLE public."Hosting" OWNER TO salad;
 
 --
+-- TOC entry 244 (class 1259 OID 17465)
+-- Name: Lead; Type: TABLE; Schema: public; Owner: salad
+--
+
+CREATE TABLE public."Lead" (
+    id text NOT NULL,
+    date timestamp(3) without time zone NOT NULL,
+    "time" text NOT NULL,
+    platform text NOT NULL,
+    "firstCall" text NOT NULL,
+    comments text,
+    service text NOT NULL,
+    name text NOT NULL,
+    email text NOT NULL,
+    number text NOT NULL,
+    address text,
+    credits integer DEFAULT 0 NOT NULL,
+    cost double precision NOT NULL,
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updatedAt" timestamp(3) without time zone NOT NULL,
+    "userId" text,
+    "assigneeId" text,
+    status text
+);
+
+
+ALTER TABLE public."Lead" OWNER TO salad;
+
+--
+-- TOC entry 228 (class 1259 OID 16569)
 -- Name: Leave; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -390,6 +444,7 @@ CREATE TABLE public."Leave" (
 ALTER TABLE public."Leave" OWNER TO salad;
 
 --
+-- TOC entry 235 (class 1259 OID 16631)
 -- Name: Meeting; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -407,6 +462,38 @@ CREATE TABLE public."Meeting" (
 ALTER TABLE public."Meeting" OWNER TO salad;
 
 --
+-- TOC entry 246 (class 1259 OID 17493)
+-- Name: MessageMention; Type: TABLE; Schema: public; Owner: salad
+--
+
+CREATE TABLE public."MessageMention" (
+    id text NOT NULL,
+    "messageId" text NOT NULL,
+    "userId" text NOT NULL,
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public."MessageMention" OWNER TO salad;
+
+--
+-- TOC entry 245 (class 1259 OID 17485)
+-- Name: MessageReaction; Type: TABLE; Schema: public; Owner: salad
+--
+
+CREATE TABLE public."MessageReaction" (
+    id text NOT NULL,
+    "messageId" text NOT NULL,
+    "userId" text NOT NULL,
+    emoji text NOT NULL,
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public."MessageReaction" OWNER TO salad;
+
+--
+-- TOC entry 242 (class 1259 OID 16851)
 -- Name: MessageReadStatus; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -421,6 +508,7 @@ CREATE TABLE public."MessageReadStatus" (
 ALTER TABLE public."MessageReadStatus" OWNER TO salad;
 
 --
+-- TOC entry 234 (class 1259 OID 16623)
 -- Name: Notification; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -437,6 +525,7 @@ CREATE TABLE public."Notification" (
 ALTER TABLE public."Notification" OWNER TO salad;
 
 --
+-- TOC entry 231 (class 1259 OID 16599)
 -- Name: Performance; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -454,6 +543,7 @@ CREATE TABLE public."Performance" (
 ALTER TABLE public."Performance" OWNER TO salad;
 
 --
+-- TOC entry 220 (class 1259 OID 16502)
 -- Name: Permission; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -471,6 +561,7 @@ CREATE TABLE public."Permission" (
 ALTER TABLE public."Permission" OWNER TO salad;
 
 --
+-- TOC entry 232 (class 1259 OID 16607)
 -- Name: Project; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -493,6 +584,7 @@ CREATE TABLE public."Project" (
 ALTER TABLE public."Project" OWNER TO salad;
 
 --
+-- TOC entry 233 (class 1259 OID 16615)
 -- Name: ProjectAssignment; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -507,6 +599,7 @@ CREATE TABLE public."ProjectAssignment" (
 ALTER TABLE public."ProjectAssignment" OWNER TO salad;
 
 --
+-- TOC entry 218 (class 1259 OID 16485)
 -- Name: Role; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -523,6 +616,7 @@ CREATE TABLE public."Role" (
 ALTER TABLE public."Role" OWNER TO salad;
 
 --
+-- TOC entry 221 (class 1259 OID 16510)
 -- Name: RolePermission; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -538,6 +632,7 @@ CREATE TABLE public."RolePermission" (
 ALTER TABLE public."RolePermission" OWNER TO salad;
 
 --
+-- TOC entry 230 (class 1259 OID 16590)
 -- Name: Skill; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -554,6 +649,7 @@ CREATE TABLE public."Skill" (
 ALTER TABLE public."Skill" OWNER TO salad;
 
 --
+-- TOC entry 229 (class 1259 OID 16580)
 -- Name: Task; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -573,6 +669,7 @@ CREATE TABLE public."Task" (
 ALTER TABLE public."Task" OWNER TO salad;
 
 --
+-- TOC entry 236 (class 1259 OID 16639)
 -- Name: Team; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -589,6 +686,7 @@ CREATE TABLE public."Team" (
 ALTER TABLE public."Team" OWNER TO salad;
 
 --
+-- TOC entry 237 (class 1259 OID 16647)
 -- Name: TeamMember; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -603,6 +701,7 @@ CREATE TABLE public."TeamMember" (
 ALTER TABLE public."TeamMember" OWNER TO salad;
 
 --
+-- TOC entry 217 (class 1259 OID 16475)
 -- Name: User; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -636,6 +735,7 @@ CREATE TABLE public."User" (
 ALTER TABLE public."User" OWNER TO salad;
 
 --
+-- TOC entry 243 (class 1259 OID 16859)
 -- Name: UserLastSeen; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -650,6 +750,7 @@ CREATE TABLE public."UserLastSeen" (
 ALTER TABLE public."UserLastSeen" OWNER TO salad;
 
 --
+-- TOC entry 219 (class 1259 OID 16494)
 -- Name: UserRole; Type: TABLE; Schema: public; Owner: salad
 --
 
@@ -665,6 +766,8 @@ CREATE TABLE public."UserRole" (
 ALTER TABLE public."UserRole" OWNER TO salad;
 
 --
+-- TOC entry 3741 (class 0 OID 16559)
+-- Dependencies: 227
 -- Data for Name: Attendance; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -861,6 +964,8 @@ cmdhfa0tx00aifi0zladgj740	cmdg7mhfv000lfi9xgle1ozjd	2025-07-01 14:48:53	2025-07-
 
 
 --
+-- TOC entry 3740 (class 0 OID 16551)
+-- Dependencies: 226
 -- Data for Name: BankDetails; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -869,6 +974,8 @@ COPY public."BankDetails" (id, "userId", "bankName", "accountNumber", "accountTi
 
 
 --
+-- TOC entry 3755 (class 0 OID 16840)
+-- Dependencies: 241
 -- Data for Name: ChatMessage; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -881,31 +988,69 @@ cmdhjnecd000nfioh6rlmwftk	cmdhj4am50000fimhbmjfa66d	cmdhf9zdt0000fi0zevfqomye	hi
 cmdhjng9y000rfiohnr4mi5lr	cmdhj4am50000fimhbmjfa66d	cmdhf9zdt0000fi0zevfqomye	why	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-07-24 15:25:12.358	2025-07-24 15:25:12.358
 cmdhjq8820011fiohzqghao7q	cmdhj4am50000fimhbmjfa66d	cmdhf9zdt0000fi0zevfqomye	k	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-07-24 15:27:21.89	2025-07-24 15:27:21.89
 cmdhjqipt0015fiohg3m9i4h4	cmdhj4am50000fimhbmjfa66d	cmdhf9zdt0000fi0zevfqomye	Shared file: Month of June.xlsx	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-07-24 15:27:35.489	2025-07-24 15:27:35.489
-cmdhjsm6q001dfiohstjl5d2r	cmdhj4am50000fimhbmjfa66d	cmdg7mg0n000ffi9x0lnmxjzq	hi	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-07-24 15:29:13.298	2025-07-24 15:29:13.298
-cmdhjti1d001lfiohncp7nexj	cmdhj4am50000fimhbmjfa66d	cmdg7mg0n000ffi9x0lnmxjzq	okok	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-07-24 15:29:54.499	2025-07-24 15:29:54.499
+cmek8qsit0013fihoxblw9jep	general-chat-room	cmdhf9zdt0000fi0zevfqomye	👋 Welcome to the company chat! This is where we can all communicate and collaborate.	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-08-20 17:22:53.285	2025-08-20 17:22:53.285
+cmek8zro2000ffisvcw0i7gmu	general-chat-room	cmdg7mg0n000ffi9x0lnmxjzq	ty	TEXT	\N	\N	\N	\N	cmek8qsit0013fihoxblw9jep	\N	f	f	2025-08-20 17:29:52.082	2025-08-20 17:29:52.082
+cmek91dbt000hfisvrrhfpgi2	cmdhj4am50000fimhbmjfa66d	cmdg7mg0n000ffi9x0lnmxjzq	[Message deleted]	TEXT	\N	\N	\N	\N	\N	\N	f	t	2025-08-20 17:31:06.808	2025-08-20 17:36:46.019
+cmek96pju000pfisv6gv1al25	cmdhj4am50000fimhbmjfa66d	cmdg7mg0n000ffi9x0lnmxjzq	[Message deleted]	TEXT	\N	\N	\N	\N	\N	\N	f	t	2025-08-20 17:35:15.93	2025-08-20 17:36:47.784
+cmdhjti1d001lfiohncp7nexj	cmdhj4am50000fimhbmjfa66d	cmdg7mg0n000ffi9x0lnmxjzq	[Message deleted]	TEXT	\N	\N	\N	\N	\N	\N	f	t	2025-07-24 15:29:54.499	2025-08-20 17:39:10.606
+cmdhjsm6q001dfiohstjl5d2r	cmdhj4am50000fimhbmjfa66d	cmdg7mg0n000ffi9x0lnmxjzq	[Message deleted]	TEXT	\N	\N	\N	\N	\N	\N	f	t	2025-07-24 15:29:13.298	2025-08-20 17:39:15.005
+cmek8wszw0005fisvgt8itsgf	general-chat-room	cmdg7mg0n000ffi9x0lnmxjzq	[Message deleted]	TEXT	\N	\N	\N	\N	\N	\N	f	t	2025-08-20 17:27:33.836	2025-08-20 17:41:47.413
+cmek9fcbs000zfisva9ge4bas	general-chat-room	cmdg7mg0n000ffi9x0lnmxjzq	[Message deleted]	TEXT	\N	\N	\N	\N	\N	\N	f	t	2025-08-20 17:41:58.695	2025-08-20 17:51:27.872
+cmek9wntm001ffisv8j6ahno2	general-chat-room	cmdg7mg0n000ffi9x0lnmxjzq	hi	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-08-20 17:55:26.746	2025-08-20 17:55:26.746
+cmek9xlbv001nfisv77534fc9	cmdhj4am50000fimhbmjfa66d	cmdhf9zdt0000fi0zevfqomye	j	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-08-20 17:56:10.138	2025-08-20 17:56:10.138
+cmek9zk9x0005fiwbqygyfgeu	cmdhj4am50000fimhbmjfa66d	cmdhf9zdt0000fi0zevfqomye	okok	TEXT	\N	\N	\N	\N	\N	\N	f	f	2025-08-20 17:57:42.117	2025-08-20 17:57:42.117
 \.
 
 
 --
+-- TOC entry 3754 (class 0 OID 16831)
+-- Dependencies: 240
 -- Data for Name: ChatParticipant; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
 COPY public."ChatParticipant" (id, "roomId", "userId", "joinedAt", "lastReadAt", "isActive") FROM stdin;
 cmdhj4ame0002fimh1kw9l5ha	cmdhj4am50000fimhbmjfa66d	cmdhf9zdt0000fi0zevfqomye	2025-07-24 15:10:18.553	\N	t
 cmdhj4ame0003fimhrgzd6lcw	cmdhj4am50000fimhbmjfa66d	cmdg7mg0n000ffi9x0lnmxjzq	2025-07-24 15:10:18.553	\N	t
+cmek8qsft0001fiho0z6l7a2j	general-chat-room	cmdg7mdsy0006fi9x6vdw91re	2025-08-20 17:22:53.177	\N	t
+cmek8qsg00003fihoqq9qstrz	general-chat-room	cmdg7mfax000cfi9xmhek342g	2025-08-20 17:22:53.184	\N	t
+cmek8qsg40005fihogrn31v2n	general-chat-room	cmdg7mczw0003fi9xa53xjuqy	2025-08-20 17:22:53.189	\N	t
+cmek8qsg90007fihopzukjsui	general-chat-room	cmdg7mc8d0000fi9xjjn2sq2y	2025-08-20 17:22:53.193	\N	t
+cmek8qsge0009fiho8h0xup4q	general-chat-room	cmdg7mekt0009fi9xq0jez3n6	2025-08-20 17:22:53.198	\N	t
+cmek8qsgj000bfihohtaiipgp	general-chat-room	cmdg7mg0n000ffi9x0lnmxjzq	2025-08-20 17:22:53.203	\N	t
+cmek8qsgn000dfihozxvcjm9n	general-chat-room	cmdg7mgpt000ifi9xhbw7rjg3	2025-08-20 17:22:53.208	\N	t
+cmek8qsgs000ffihodem1dn5u	general-chat-room	cmdg7mhfv000lfi9xgle1ozjd	2025-08-20 17:22:53.212	\N	t
+cmek8qsgy000hfihosin7eg9n	general-chat-room	cmdhf9zdt0000fi0zevfqomye	2025-08-20 17:22:53.218	\N	t
+cmek8qshf000lfiho838me9hd	cmek8qsha000jfihoxgzu4g0v	cmdg7mdsy0006fi9x6vdw91re	2025-08-20 17:22:53.235	\N	t
+cmek8qshk000nfiho689wfj0i	cmek8qsha000jfihoxgzu4g0v	cmdg7mfax000cfi9xmhek342g	2025-08-20 17:22:53.24	\N	t
+cmek8qshp000pfihojurlii3e	cmek8qsha000jfihoxgzu4g0v	cmdg7mczw0003fi9xa53xjuqy	2025-08-20 17:22:53.245	\N	t
+cmek8qshv000rfihosrhzc9ev	cmek8qsha000jfihoxgzu4g0v	cmdg7mekt0009fi9xq0jez3n6	2025-08-20 17:22:53.252	\N	t
+cmek8qshz000tfihow9p7dw2w	cmek8qsha000jfihoxgzu4g0v	cmdg7mc8d0000fi9xjjn2sq2y	2025-08-20 17:22:53.256	\N	t
+cmek8qsia000xfihof09f0fok	cmek8qsi5000vfihoucduka9j	cmdhf9zdt0000fi0zevfqomye	2025-08-20 17:22:53.267	\N	t
+cmek8qsif000zfihoogk1vy96	cmek8qsi5000vfihoucduka9j	cmdg7mgpt000ifi9xhbw7rjg3	2025-08-20 17:22:53.271	\N	t
+cmek8qsij0011fihovi4ah7w0	cmek8qsi5000vfihoucduka9j	cmdg7mhfv000lfi9xgle1ozjd	2025-08-20 17:22:53.276	\N	t
+cmek96ctz000mfisvuuhbbpgn	cmek96cty000kfisvkcltnt2q	cmdg7mg0n000ffi9x0lnmxjzq	2025-08-20 17:34:59.445	\N	t
+cmek96ctz000nfisvbms02hnb	cmek96cty000kfisvkcltnt2q	cmdg7mdsy0006fi9x6vdw91re	2025-08-20 17:34:59.445	\N	t
 \.
 
 
 --
+-- TOC entry 3753 (class 0 OID 16823)
+-- Dependencies: 239
 -- Data for Name: ChatRoom; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
 COPY public."ChatRoom" (id, name, description, type, "teamId", "createdAt", "updatedAt") FROM stdin;
 cmdhj4am50000fimhbmjfa66d	faizanfarrukh & Kamran Shahid	\N	DIRECT	\N	2025-07-24 15:10:18.555	2025-07-24 15:10:18.555
+general-chat-room	General	Company-wide general chat for all employees	GENERAL	\N	2025-08-20 17:22:53.166	2025-08-20 17:22:53.166
+cmek8qsha000jfihoxgzu4g0v	Production Team	Team chat for Production	TEAM	cmdhfzx880001fi361lmsi89t	2025-08-20 17:22:53.231	2025-08-20 17:22:53.231
+cmek8qsi5000vfihoucduka9j	Sales Team Team	Team chat for Sales Team	TEAM	cmdhg1p8g000dfi36oqs269f3	2025-08-20 17:22:53.262	2025-08-20 17:22:53.262
+cmek96cty000kfisvkcltnt2q	kamran.shahid & Rahat Jawaid	\N	DIRECT	\N	2025-08-20 17:34:59.447	2025-08-20 17:34:59.447
 \.
 
 
 --
+-- TOC entry 3739 (class 0 OID 16542)
+-- Dependencies: 225
 -- Data for Name: Document; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -914,6 +1059,8 @@ COPY public."Document" (id, "userId", type, name, url, "uploadedAt", "createdAt"
 
 
 --
+-- TOC entry 3737 (class 0 OID 16526)
+-- Dependencies: 223
 -- Data for Name: Education; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -922,6 +1069,8 @@ COPY public."Education" (id, "userId", degree, institution, field, "startDate", 
 
 
 --
+-- TOC entry 3736 (class 0 OID 16518)
+-- Dependencies: 222
 -- Data for Name: EmergencyContact; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -930,6 +1079,8 @@ COPY public."EmergencyContact" (id, "userId", name, relationship, phone, address
 
 
 --
+-- TOC entry 3738 (class 0 OID 16534)
+-- Dependencies: 224
 -- Data for Name: Experience; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -938,6 +1089,8 @@ COPY public."Experience" (id, "userId", company, "position", "startDate", "endDa
 
 
 --
+-- TOC entry 3752 (class 0 OID 16655)
+-- Dependencies: 238
 -- Data for Name: Hosting; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -946,14 +1099,31 @@ COPY public."Hosting" (id, "clientId", domain, cost, "startDate", "expiryDate", 
 
 
 --
--- Data for Name: Leave; Type: TABLE DATA; Schema: public; Owner: salad
+-- TOC entry 3758 (class 0 OID 17465)
+-- Dependencies: 244
+-- Data for Name: Lead; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
-COPY public."Leave" (id, "userId", "startDate", "endDate", type, status, reason, "managerId", "adminId", "managerStatus", "adminStatus", "managerComment", "adminComment", "createdAt", "updatedAt") FROM stdin;
+COPY public."Lead" (id, date, "time", platform, "firstCall", comments, service, name, email, number, address, credits, cost, "createdAt", "updatedAt", "userId", "assigneeId", status) FROM stdin;
+cmek1qtat0001fimbj99sg2np	2025-08-20 14:05:45.645	02:29	Email	Call Back Later	Laborum Quae mollit	SEO	Yasir Barrera	ryfad@mailinator.com	+1 (699) 117-8231	Nostrum esse hic si	81	85	2025-08-20 14:06:56.969	2025-08-20 14:10:20.123	cmdhf9zdt0000fi0zevfqomye	\N	new
+cmek3578d0003fimbpjlzl3q7	2024-01-15 00:00:00	10:30	Facebook	interested	Potential client for e-commerce website	Web Development	John Doe	john@example.com	1234567890	123 Main St, City, State	10	1500	2025-08-20 14:46:07.833	2025-08-20 14:46:07.833	cmdhf9zdt0000fi0zevfqomye	\N	new
 \.
 
 
 --
+-- TOC entry 3742 (class 0 OID 16569)
+-- Dependencies: 228
+-- Data for Name: Leave; Type: TABLE DATA; Schema: public; Owner: salad
+--
+
+COPY public."Leave" (id, "userId", "startDate", "endDate", type, status, reason, "managerId", "adminId", "managerStatus", "adminStatus", "managerComment", "adminComment", "createdAt", "updatedAt") FROM stdin;
+cmek6krxi0001fi0pr6fuw2bi	cmdg7mekt0009fi9xq0jez3n6	2025-08-20 00:00:00	2025-08-20 00:00:00	MATERNITY	APPROVED	should take	cmdg7mg0n000ffi9x0lnmxjzq	cmdhf9zdt0000fi0zevfqomye	APPROVED	APPROVED			2025-08-20 16:22:13.348	2025-08-20 16:24:19.719
+\.
+
+
+--
+-- TOC entry 3749 (class 0 OID 16631)
+-- Dependencies: 235
 -- Data for Name: Meeting; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -962,6 +1132,28 @@ COPY public."Meeting" (id, "userId", title, "scheduledAt", color, "createdAt", "
 
 
 --
+-- TOC entry 3760 (class 0 OID 17493)
+-- Dependencies: 246
+-- Data for Name: MessageMention; Type: TABLE DATA; Schema: public; Owner: salad
+--
+
+COPY public."MessageMention" (id, "messageId", "userId", "createdAt") FROM stdin;
+\.
+
+
+--
+-- TOC entry 3759 (class 0 OID 17485)
+-- Dependencies: 245
+-- Data for Name: MessageReaction; Type: TABLE DATA; Schema: public; Owner: salad
+--
+
+COPY public."MessageReaction" (id, "messageId", "userId", emoji, "createdAt") FROM stdin;
+\.
+
+
+--
+-- TOC entry 3756 (class 0 OID 16851)
+-- Dependencies: 242
 -- Data for Name: MessageReadStatus; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -974,15 +1166,22 @@ cmdhjnepn000pfiohqpkccfsd	cmdhjnecd000nfioh6rlmwftk	cmdhf9zdt0000fi0zevfqomye	20
 cmdhjngml000tfiohn5yjykp3	cmdhjng9y000rfiohnr4mi5lr	cmdhf9zdt0000fi0zevfqomye	2025-07-24 15:27:18.747
 cmdhjq8wh0013fiohzdrafzge	cmdhjq8820011fiohzqghao7q	cmdhf9zdt0000fi0zevfqomye	2025-07-24 15:27:22.769
 cmdhjqj430017fiohwvebk3h5	cmdhjqipt0015fiohg3m9i4h4	cmdhf9zdt0000fi0zevfqomye	2025-07-24 15:27:36.002
-cmdhjsji00019fiohplbygj9j	cmdhjqipt0015fiohg3m9i4h4	cmdg7mg0n000ffi9x0lnmxjzq	2025-07-24 15:29:10.368
 cmdhjsnaz001ffiohvxmsi4jm	cmdhjsm6q001dfiohstjl5d2r	cmdg7mg0n000ffi9x0lnmxjzq	2025-07-24 15:29:14.745
 cmdhjsyud001hfiohgijsb4ox	cmdhjsm6q001dfiohstjl5d2r	cmdhf9zdt0000fi0zevfqomye	2025-07-24 15:29:35.486
 cmdhjtk8h001nfiohoanjv9ax	cmdhjti1d001lfiohncp7nexj	cmdhf9zdt0000fi0zevfqomye	2025-07-24 15:29:57.395
-cmdhjtk9e001pfioh1hmyhk81	cmdhjti1d001lfiohncp7nexj	cmdg7mg0n000ffi9x0lnmxjzq	2025-07-24 15:29:57.452
+cmek8w49w0001fisvbnpb08d6	cmek8qsit0013fihoxblw9jep	cmdg7mg0n000ffi9x0lnmxjzq	2025-08-20 17:27:01.796
+cmdhjtk9e001pfioh1hmyhk81	cmdhjti1d001lfiohncp7nexj	cmdg7mg0n000ffi9x0lnmxjzq	2025-08-20 17:27:43.98
+cmek8wtos0007fisvdocddgsu	cmek8wszw0005fisvgt8itsgf	cmdg7mg0n000ffi9x0lnmxjzq	2025-08-20 17:28:13.099
+cmdhjsji00019fiohplbygj9j	cmdhjqipt0015fiohg3m9i4h4	cmdg7mg0n000ffi9x0lnmxjzq	2025-08-20 17:53:21.478
+cmek9x0oh001hfisv6zfwhv10	cmek9wntm001ffisv8j6ahno2	cmdhf9zdt0000fi0zevfqomye	2025-08-20 17:56:03.619
+cmek9zdjf0001fiwbg6gjw50w	cmek9xlbv001nfisv77534fc9	cmdg7mg0n000ffi9x0lnmxjzq	2025-08-20 17:57:33.386
+cmek9zsge0007fiwbtx0im0nf	cmek9zk9x0005fiwbqygyfgeu	cmdg7mg0n000ffi9x0lnmxjzq	2025-08-20 17:57:52.716
 \.
 
 
 --
+-- TOC entry 3748 (class 0 OID 16623)
+-- Dependencies: 234
 -- Data for Name: Notification; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -991,6 +1190,8 @@ COPY public."Notification" (id, "userId", message, "timestamp", "createdAt", "up
 
 
 --
+-- TOC entry 3745 (class 0 OID 16599)
+-- Dependencies: 231
 -- Data for Name: Performance; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -999,6 +1200,8 @@ COPY public."Performance" (id, "userId", score, month, year, "createdAt", "updat
 
 
 --
+-- TOC entry 3734 (class 0 OID 16502)
+-- Dependencies: 220
 -- Data for Name: Permission; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1026,10 +1229,58 @@ cmcm08r78000jfif2o9hg4tjn	roles.view	View roles	roles	view	2025-07-02 13:41:02.5
 cmcm08r7f000kfif27mcdfnd3	roles.create	Create roles	roles	create	2025-07-02 13:41:02.524	2025-07-02 13:41:02.524
 cmcm08r7n000lfif2nzfknzy4	roles.edit	Edit roles	roles	edit	2025-07-02 13:41:02.531	2025-07-02 13:41:02.531
 cmcm08r7u000mfif24agk310n	roles.delete	Delete roles	roles	delete	2025-07-02 13:41:02.538	2025-07-02 13:41:02.538
+cmek7k0610008fi6jwaovytrf	leaves.edit	Edit leaves	leaves	edit	2025-08-20 16:49:36.985	2025-08-20 16:49:36.985
+cmek7k0660009fi6jeeok13fz	leaves.delete	Delete leaves	leaves	delete	2025-08-20 16:49:36.99	2025-08-20 16:49:36.99
+cmek7k06f000dfi6j3nljeq6c	attendance.create	Create attendance records	attendance	create	2025-08-20 16:49:37	2025-08-20 16:49:37
+cmek7k06j000efi6jfl7qd1nv	attendance.import	Import attendance from Excel	attendance	import	2025-08-20 16:49:37.004	2025-08-20 16:49:37.004
+cmek7k06o000ffi6jb35csl4d	attendance.delete	Delete attendance records	attendance	delete	2025-08-20 16:49:37.008	2025-08-20 16:49:37.008
+cmek7k06y000kfi6jwskd2vvz	teams.manage	Manage team members	teams	manage	2025-08-20 16:49:37.018	2025-08-20 16:49:37.018
+cmek7k072000lfi6jt6f4g1vm	leads.view	View leads	leads	view	2025-08-20 16:49:37.022	2025-08-20 16:49:37.022
+cmek7k077000mfi6j78w8ew5h	leads.create	Create leads	leads	create	2025-08-20 16:49:37.027	2025-08-20 16:49:37.027
+cmek7k07f000nfi6jmgorvrf3	leads.edit	Edit leads	leads	edit	2025-08-20 16:49:37.035	2025-08-20 16:49:37.035
+cmek7k07n000ofi6jzeroftik	leads.delete	Delete leads	leads	delete	2025-08-20 16:49:37.044	2025-08-20 16:49:37.044
+cmek7k07v000pfi6j3ch3er1z	leads.assign	Assign leads to team members	leads	assign	2025-08-20 16:49:37.052	2025-08-20 16:49:37.052
+cmek7k084000qfi6jkq59u9e3	leads.import	Import leads from Excel	leads	import	2025-08-20 16:49:37.06	2025-08-20 16:49:37.06
+cmek7k08c000rfi6jyf4zbrfx	leads.export	Export leads data	leads	export	2025-08-20 16:49:37.068	2025-08-20 16:49:37.068
+cmek7k08l000sfi6jsxh19u8l	chat.view	View chat messages	chat	view	2025-08-20 16:49:37.077	2025-08-20 16:49:37.077
+cmek7k08u000tfi6j6x9128up	chat.send	Send chat messages	chat	send	2025-08-20 16:49:37.086	2025-08-20 16:49:37.086
+cmek7k092000ufi6jrvt6sbrx	chat.delete	Delete chat messages	chat	delete	2025-08-20 16:49:37.094	2025-08-20 16:49:37.094
+cmek7k098000vfi6jfe0ag3zp	chat.moderate	Moderate chat rooms	chat	moderate	2025-08-20 16:49:37.1	2025-08-20 16:49:37.1
+cmek7k09d000wfi6j1zzk0l8h	chat.create_room	Create chat rooms	chat	create_room	2025-08-20 16:49:37.105	2025-08-20 16:49:37.105
+cmek7k09j000xfi6jowyy276e	hosting.view	View hosting records	hosting	view	2025-08-20 16:49:37.111	2025-08-20 16:49:37.111
+cmek7k09o000yfi6jah1pmg4d	hosting.create	Create hosting records	hosting	create	2025-08-20 16:49:37.116	2025-08-20 16:49:37.116
+cmek7k09u000zfi6j54hnh56t	hosting.edit	Edit hosting records	hosting	edit	2025-08-20 16:49:37.122	2025-08-20 16:49:37.122
+cmek7k0a00010fi6je5rkr5l0	hosting.delete	Delete hosting records	hosting	delete	2025-08-20 16:49:37.128	2025-08-20 16:49:37.128
+cmek7k0a80012fi6jyoeavu4b	reports.create	Generate reports	reports	create	2025-08-20 16:49:37.136	2025-08-20 16:49:37.136
+cmek7k0ae0013fi6j8886asjy	reports.export	Export reports	reports	export	2025-08-20 16:49:37.142	2025-08-20 16:49:37.142
+cmek7k0al0015fi6j0gu5xgvd	dashboard.admin	View admin dashboard	dashboard	admin	2025-08-20 16:49:37.149	2025-08-20 16:49:37.149
+cmek7k0bd001cfi6j0b3jbh5g	permissions.view	View permissions	permissions	view	2025-08-20 16:49:37.177	2025-08-20 16:49:37.177
+cmek7k0bi001dfi6jqjk4aqsx	permissions.assign	Assign permissions to roles	permissions	assign	2025-08-20 16:49:37.182	2025-08-20 16:49:37.182
+cmek7k0bn001efi6jzhb9791m	performance.view	View performance records	performance	view	2025-08-20 16:49:37.187	2025-08-20 16:49:37.187
+cmek7k0bt001ffi6jogsbx524	performance.create	Create performance records	performance	create	2025-08-20 16:49:37.193	2025-08-20 16:49:37.193
+cmek7k0by001gfi6jdp9lsenl	performance.edit	Edit performance records	performance	edit	2025-08-20 16:49:37.199	2025-08-20 16:49:37.199
+cmek7k0c3001hfi6jlqkxla26	tasks.view	View tasks	tasks	view	2025-08-20 16:49:37.204	2025-08-20 16:49:37.204
+cmek7k0c9001ifi6jtbb0m02y	tasks.create	Create tasks	tasks	create	2025-08-20 16:49:37.209	2025-08-20 16:49:37.209
+cmek7k0cf001jfi6jt9fmdtha	tasks.edit	Edit tasks	tasks	edit	2025-08-20 16:49:37.215	2025-08-20 16:49:37.215
+cmek7k0ck001kfi6jyiiyipls	tasks.delete	Delete tasks	tasks	delete	2025-08-20 16:49:37.22	2025-08-20 16:49:37.22
+cmek7k0cp001lfi6j3ftx455a	tasks.assign	Assign tasks to users	tasks	assign	2025-08-20 16:49:37.226	2025-08-20 16:49:37.226
+cmek7k0cv001mfi6jh1wjqj3z	projects.view	View projects	projects	view	2025-08-20 16:49:37.231	2025-08-20 16:49:37.231
+cmek7k0d0001nfi6j0yjym9w2	projects.create	Create projects	projects	create	2025-08-20 16:49:37.236	2025-08-20 16:49:37.236
+cmek7k0d5001ofi6jc198b3gj	projects.edit	Edit projects	projects	edit	2025-08-20 16:49:37.241	2025-08-20 16:49:37.241
+cmek7k0db001pfi6j0ndyjlfq	projects.delete	Delete projects	projects	delete	2025-08-20 16:49:37.247	2025-08-20 16:49:37.247
+cmek7k0dg001qfi6ji6ieoxub	projects.assign	Assign users to projects	projects	assign	2025-08-20 16:49:37.252	2025-08-20 16:49:37.252
+cmek7k0dl001rfi6jcjvj9qdv	notifications.view	View notifications	notifications	view	2025-08-20 16:49:37.258	2025-08-20 16:49:37.258
+cmek7k0dr001sfi6ja9qh7126	notifications.send	Send notifications	notifications	send	2025-08-20 16:49:37.263	2025-08-20 16:49:37.263
+cmek7k0dw001tfi6jwhydsad4	meetings.view	View meetings	meetings	view	2025-08-20 16:49:37.268	2025-08-20 16:49:37.268
+cmek7k0e2001ufi6j5feq4npm	meetings.create	Create meetings	meetings	create	2025-08-20 16:49:37.274	2025-08-20 16:49:37.274
+cmek7k0e7001vfi6jf06gxz1j	meetings.edit	Edit meetings	meetings	edit	2025-08-20 16:49:37.28	2025-08-20 16:49:37.28
+cmek7k0ed001wfi6j001rfxvy	meetings.delete	Delete meetings	meetings	delete	2025-08-20 16:49:37.285	2025-08-20 16:49:37.285
 \.
 
 
 --
+-- TOC entry 3746 (class 0 OID 16607)
+-- Dependencies: 232
 -- Data for Name: Project; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1038,6 +1289,8 @@ COPY public."Project" (id, name, description, "managerName", "joinDate", "tasksD
 
 
 --
+-- TOC entry 3747 (class 0 OID 16615)
+-- Dependencies: 233
 -- Data for Name: ProjectAssignment; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1046,6 +1299,8 @@ COPY public."ProjectAssignment" (id, "projectId", "userId", "assignedAt") FROM s
 
 
 --
+-- TOC entry 3732 (class 0 OID 16485)
+-- Dependencies: 218
 -- Data for Name: Role; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1057,6 +1312,8 @@ cmcm08r8o000pfif292yrq7th	Employee	Regular employee	t	2025-07-02 13:41:02.568	20
 
 
 --
+-- TOC entry 3735 (class 0 OID 16510)
+-- Dependencies: 221
 -- Data for Name: RolePermission; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1100,10 +1357,88 @@ cmcm08rg3002pfif2fr9a6k5d	cmcm08r8o000pfif292yrq7th	cmcm08r5h0008fif2ja0ostu3	20
 cmcm08rgb002rfif2l5hbcmne	cmcm08r8o000pfif292yrq7th	cmcm08r5m0009fif27njwy0ux	2025-07-02 13:41:02.843	2025-07-02 13:41:02.843
 cmcm08rgj002tfif2u9xzq9fc	cmcm08r8o000pfif292yrq7th	cmcm08r5w000bfif2ihlovaw9	2025-07-02 13:41:02.851	2025-07-02 13:41:02.851
 cmcm08rgq002vfif2hleoxk4r	cmcm08r8o000pfif292yrq7th	cmcm08r6n000gfif2mi5i6t8r	2025-07-02 13:41:02.858	2025-07-02 13:41:02.858
+cmek7k0h4003bfi6jwzme8dxx	cmcm08r85000nfif2i498l1sc	cmek7k0610008fi6jwaovytrf	2025-08-20 16:49:37.385	2025-08-20 16:49:37.385
+cmek7k0hd003dfi6jaiqqa4xc	cmcm08r85000nfif2i498l1sc	cmek7k0660009fi6jeeok13fz	2025-08-20 16:49:37.393	2025-08-20 16:49:37.393
+cmek7k0hi003ffi6jg2l0gsm4	cmcm08r85000nfif2i498l1sc	cmek7k06f000dfi6j3nljeq6c	2025-08-20 16:49:37.398	2025-08-20 16:49:37.398
+cmek7k0hm003hfi6jpkj06vqh	cmcm08r85000nfif2i498l1sc	cmek7k06j000efi6jfl7qd1nv	2025-08-20 16:49:37.403	2025-08-20 16:49:37.403
+cmek7k0ht003jfi6jlksvib5a	cmcm08r85000nfif2i498l1sc	cmek7k06o000ffi6jb35csl4d	2025-08-20 16:49:37.409	2025-08-20 16:49:37.409
+cmek7k0hy003lfi6j6frwfmqu	cmcm08r85000nfif2i498l1sc	cmek7k06y000kfi6jwskd2vvz	2025-08-20 16:49:37.414	2025-08-20 16:49:37.414
+cmek7k0i3003nfi6jhnazn6yi	cmcm08r85000nfif2i498l1sc	cmek7k072000lfi6jt6f4g1vm	2025-08-20 16:49:37.419	2025-08-20 16:49:37.419
+cmek7k0i8003pfi6jopxhuprq	cmcm08r85000nfif2i498l1sc	cmek7k077000mfi6j78w8ew5h	2025-08-20 16:49:37.424	2025-08-20 16:49:37.424
+cmek7k0id003rfi6j9tkgh944	cmcm08r85000nfif2i498l1sc	cmek7k07f000nfi6jmgorvrf3	2025-08-20 16:49:37.429	2025-08-20 16:49:37.429
+cmek7k0ih003tfi6jeewa7z5d	cmcm08r85000nfif2i498l1sc	cmek7k07n000ofi6jzeroftik	2025-08-20 16:49:37.434	2025-08-20 16:49:37.434
+cmek7k0im003vfi6jt8tkem53	cmcm08r85000nfif2i498l1sc	cmek7k07v000pfi6j3ch3er1z	2025-08-20 16:49:37.439	2025-08-20 16:49:37.439
+cmek7k0is003xfi6js6tiq6az	cmcm08r85000nfif2i498l1sc	cmek7k084000qfi6jkq59u9e3	2025-08-20 16:49:37.444	2025-08-20 16:49:37.444
+cmek7k0iw003zfi6jnes5h4ly	cmcm08r85000nfif2i498l1sc	cmek7k08c000rfi6jyf4zbrfx	2025-08-20 16:49:37.449	2025-08-20 16:49:37.449
+cmek7k0j10041fi6ji8ujcowi	cmcm08r85000nfif2i498l1sc	cmek7k08l000sfi6jsxh19u8l	2025-08-20 16:49:37.454	2025-08-20 16:49:37.454
+cmek7k0j70043fi6jbzzwwlyc	cmcm08r85000nfif2i498l1sc	cmek7k08u000tfi6j6x9128up	2025-08-20 16:49:37.459	2025-08-20 16:49:37.459
+cmek7k0jb0045fi6jzxudnbeq	cmcm08r85000nfif2i498l1sc	cmek7k092000ufi6jrvt6sbrx	2025-08-20 16:49:37.464	2025-08-20 16:49:37.464
+cmek7k0jg0047fi6j2otpood0	cmcm08r85000nfif2i498l1sc	cmek7k098000vfi6jfe0ag3zp	2025-08-20 16:49:37.468	2025-08-20 16:49:37.468
+cmek7k0jl0049fi6jb70v0ssd	cmcm08r85000nfif2i498l1sc	cmek7k09d000wfi6j1zzk0l8h	2025-08-20 16:49:37.473	2025-08-20 16:49:37.473
+cmek7k0jq004bfi6jssznxbwz	cmcm08r85000nfif2i498l1sc	cmek7k09j000xfi6jowyy276e	2025-08-20 16:49:37.478	2025-08-20 16:49:37.478
+cmek7k0jv004dfi6jbjtzbhzo	cmcm08r85000nfif2i498l1sc	cmek7k09o000yfi6jah1pmg4d	2025-08-20 16:49:37.483	2025-08-20 16:49:37.483
+cmek7k0k0004ffi6jgr0kqxh2	cmcm08r85000nfif2i498l1sc	cmek7k09u000zfi6j54hnh56t	2025-08-20 16:49:37.488	2025-08-20 16:49:37.488
+cmek7k0k5004hfi6jlcnvtl85	cmcm08r85000nfif2i498l1sc	cmek7k0a00010fi6je5rkr5l0	2025-08-20 16:49:37.493	2025-08-20 16:49:37.493
+cmek7k0k9004jfi6jbitncd2a	cmcm08r85000nfif2i498l1sc	cmek7k0a80012fi6jyoeavu4b	2025-08-20 16:49:37.498	2025-08-20 16:49:37.498
+cmek7k0ke004lfi6jmnbyu51o	cmcm08r85000nfif2i498l1sc	cmek7k0ae0013fi6j8886asjy	2025-08-20 16:49:37.502	2025-08-20 16:49:37.502
+cmek7k0kj004nfi6jem0ym22f	cmcm08r85000nfif2i498l1sc	cmek7k0al0015fi6j0gu5xgvd	2025-08-20 16:49:37.507	2025-08-20 16:49:37.507
+cmek7k0ko004pfi6jnaq81xsz	cmcm08r85000nfif2i498l1sc	cmek7k0bd001cfi6j0b3jbh5g	2025-08-20 16:49:37.513	2025-08-20 16:49:37.513
+cmek7k0kt004rfi6jdonakc8x	cmcm08r85000nfif2i498l1sc	cmek7k0bi001dfi6jqjk4aqsx	2025-08-20 16:49:37.517	2025-08-20 16:49:37.517
+cmek7k0ky004tfi6jvevs55lj	cmcm08r85000nfif2i498l1sc	cmek7k0bn001efi6jzhb9791m	2025-08-20 16:49:37.522	2025-08-20 16:49:37.522
+cmek7k0l4004vfi6jwn5zzru9	cmcm08r85000nfif2i498l1sc	cmek7k0bt001ffi6jogsbx524	2025-08-20 16:49:37.528	2025-08-20 16:49:37.528
+cmek7k0l9004xfi6j1d7eslik	cmcm08r85000nfif2i498l1sc	cmek7k0by001gfi6jdp9lsenl	2025-08-20 16:49:37.533	2025-08-20 16:49:37.533
+cmek7k0le004zfi6j177h3ga4	cmcm08r85000nfif2i498l1sc	cmek7k0c3001hfi6jlqkxla26	2025-08-20 16:49:37.538	2025-08-20 16:49:37.538
+cmek7k0lk0051fi6jgkuexh1w	cmcm08r85000nfif2i498l1sc	cmek7k0c9001ifi6jtbb0m02y	2025-08-20 16:49:37.544	2025-08-20 16:49:37.544
+cmek7k0lo0053fi6jpe2ko0x3	cmcm08r85000nfif2i498l1sc	cmek7k0cf001jfi6jt9fmdtha	2025-08-20 16:49:37.549	2025-08-20 16:49:37.549
+cmek7k0lt0055fi6j3nxehvcz	cmcm08r85000nfif2i498l1sc	cmek7k0ck001kfi6jyiiyipls	2025-08-20 16:49:37.553	2025-08-20 16:49:37.553
+cmek7k0lz0057fi6jvu31pxhq	cmcm08r85000nfif2i498l1sc	cmek7k0cp001lfi6j3ftx455a	2025-08-20 16:49:37.559	2025-08-20 16:49:37.559
+cmek7k0m40059fi6jf3ziu2hd	cmcm08r85000nfif2i498l1sc	cmek7k0cv001mfi6jh1wjqj3z	2025-08-20 16:49:37.564	2025-08-20 16:49:37.564
+cmek7k0m9005bfi6jj1zv92oo	cmcm08r85000nfif2i498l1sc	cmek7k0d0001nfi6j0yjym9w2	2025-08-20 16:49:37.569	2025-08-20 16:49:37.569
+cmek7k0me005dfi6jn2qi1lyi	cmcm08r85000nfif2i498l1sc	cmek7k0d5001ofi6jc198b3gj	2025-08-20 16:49:37.574	2025-08-20 16:49:37.574
+cmek7k0mj005ffi6j5xjanvy9	cmcm08r85000nfif2i498l1sc	cmek7k0db001pfi6j0ndyjlfq	2025-08-20 16:49:37.579	2025-08-20 16:49:37.579
+cmek7k0mo005hfi6j78gyktd6	cmcm08r85000nfif2i498l1sc	cmek7k0dg001qfi6ji6ieoxub	2025-08-20 16:49:37.584	2025-08-20 16:49:37.584
+cmek7k0mu005jfi6jz2pd6bnj	cmcm08r85000nfif2i498l1sc	cmek7k0dl001rfi6jcjvj9qdv	2025-08-20 16:49:37.59	2025-08-20 16:49:37.59
+cmek7k0mz005lfi6jy2pgb96w	cmcm08r85000nfif2i498l1sc	cmek7k0dr001sfi6ja9qh7126	2025-08-20 16:49:37.595	2025-08-20 16:49:37.595
+cmek7k0n3005nfi6jcu9nr07y	cmcm08r85000nfif2i498l1sc	cmek7k0dw001tfi6jwhydsad4	2025-08-20 16:49:37.6	2025-08-20 16:49:37.6
+cmek7k0n8005pfi6jk5hp1t8w	cmcm08r85000nfif2i498l1sc	cmek7k0e2001ufi6j5feq4npm	2025-08-20 16:49:37.605	2025-08-20 16:49:37.605
+cmek7k0ne005rfi6jtg0ybagr	cmcm08r85000nfif2i498l1sc	cmek7k0e7001vfi6jf06gxz1j	2025-08-20 16:49:37.61	2025-08-20 16:49:37.61
+cmek7k0ni005tfi6jcr216vvz	cmcm08r85000nfif2i498l1sc	cmek7k0ed001wfi6j001rfxvy	2025-08-20 16:49:37.615	2025-08-20 16:49:37.615
+cmek7k0od006dfi6jsov3za8l	cmcm08r8g000ofif2iy7vrwit	cmek7k0610008fi6jwaovytrf	2025-08-20 16:49:37.645	2025-08-20 16:49:37.645
+cmek7k0oh006ffi6jn5xrl6gb	cmcm08r8g000ofif2iy7vrwit	cmek7k06f000dfi6j3nljeq6c	2025-08-20 16:49:37.65	2025-08-20 16:49:37.65
+cmek7k0on006hfi6jnu4uf59e	cmcm08r8g000ofif2iy7vrwit	cmek7k06y000kfi6jwskd2vvz	2025-08-20 16:49:37.656	2025-08-20 16:49:37.656
+cmek7k0ou006jfi6j49en501x	cmcm08r8g000ofif2iy7vrwit	cmek7k072000lfi6jt6f4g1vm	2025-08-20 16:49:37.662	2025-08-20 16:49:37.662
+cmek7k0oz006lfi6jidalp7i8	cmcm08r8g000ofif2iy7vrwit	cmek7k077000mfi6j78w8ew5h	2025-08-20 16:49:37.667	2025-08-20 16:49:37.667
+cmek7k0p4006nfi6jl8yuyaa7	cmcm08r8g000ofif2iy7vrwit	cmek7k07f000nfi6jmgorvrf3	2025-08-20 16:49:37.672	2025-08-20 16:49:37.672
+cmek7k0p9006pfi6jjaxjbcn6	cmcm08r8g000ofif2iy7vrwit	cmek7k07v000pfi6j3ch3er1z	2025-08-20 16:49:37.678	2025-08-20 16:49:37.678
+cmek7k0pe006rfi6jl9mq3tkt	cmcm08r8g000ofif2iy7vrwit	cmek7k08l000sfi6jsxh19u8l	2025-08-20 16:49:37.683	2025-08-20 16:49:37.683
+cmek7k0pj006tfi6jyzvqlpgr	cmcm08r8g000ofif2iy7vrwit	cmek7k08u000tfi6j6x9128up	2025-08-20 16:49:37.687	2025-08-20 16:49:37.687
+cmek7k0pp006vfi6jca2z09g0	cmcm08r8g000ofif2iy7vrwit	cmek7k098000vfi6jfe0ag3zp	2025-08-20 16:49:37.693	2025-08-20 16:49:37.693
+cmek7k0pu006xfi6jn1x1ki91	cmcm08r8g000ofif2iy7vrwit	cmek7k0a80012fi6jyoeavu4b	2025-08-20 16:49:37.698	2025-08-20 16:49:37.698
+cmek7k0py006zfi6jik0qy8j0	cmcm08r8g000ofif2iy7vrwit	cmek7k0bn001efi6jzhb9791m	2025-08-20 16:49:37.703	2025-08-20 16:49:37.703
+cmek7k0q30071fi6jvgsmp29a	cmcm08r8g000ofif2iy7vrwit	cmek7k0bt001ffi6jogsbx524	2025-08-20 16:49:37.708	2025-08-20 16:49:37.708
+cmek7k0q80073fi6j140sz6mj	cmcm08r8g000ofif2iy7vrwit	cmek7k0c3001hfi6jlqkxla26	2025-08-20 16:49:37.713	2025-08-20 16:49:37.713
+cmek7k0qd0075fi6j896aqjru	cmcm08r8g000ofif2iy7vrwit	cmek7k0c9001ifi6jtbb0m02y	2025-08-20 16:49:37.718	2025-08-20 16:49:37.718
+cmek7k0qi0077fi6j2loptxc7	cmcm08r8g000ofif2iy7vrwit	cmek7k0cf001jfi6jt9fmdtha	2025-08-20 16:49:37.723	2025-08-20 16:49:37.723
+cmek7k0qo0079fi6jcjtm1w54	cmcm08r8g000ofif2iy7vrwit	cmek7k0cp001lfi6j3ftx455a	2025-08-20 16:49:37.728	2025-08-20 16:49:37.728
+cmek7k0qs007bfi6jocvp6y1b	cmcm08r8g000ofif2iy7vrwit	cmek7k0cv001mfi6jh1wjqj3z	2025-08-20 16:49:37.733	2025-08-20 16:49:37.733
+cmek7k0qx007dfi6jfo3q95t5	cmcm08r8g000ofif2iy7vrwit	cmek7k0d0001nfi6j0yjym9w2	2025-08-20 16:49:37.738	2025-08-20 16:49:37.738
+cmek7k0r3007ffi6j8j4nugp3	cmcm08r8g000ofif2iy7vrwit	cmek7k0d5001ofi6jc198b3gj	2025-08-20 16:49:37.743	2025-08-20 16:49:37.743
+cmek7k0r8007hfi6j4e1ge7t4	cmcm08r8g000ofif2iy7vrwit	cmek7k0dg001qfi6ji6ieoxub	2025-08-20 16:49:37.749	2025-08-20 16:49:37.749
+cmek7k0rf007jfi6jb95l7mnu	cmcm08r8g000ofif2iy7vrwit	cmek7k0dw001tfi6jwhydsad4	2025-08-20 16:49:37.755	2025-08-20 16:49:37.755
+cmek7k0rn007lfi6jfey4xklr	cmcm08r8g000ofif2iy7vrwit	cmek7k0e2001ufi6j5feq4npm	2025-08-20 16:49:37.763	2025-08-20 16:49:37.763
+cmek7k0sb007zfi6jha4a0n5d	cmcm08r8o000pfif292yrq7th	cmek7k08l000sfi6jsxh19u8l	2025-08-20 16:49:37.787	2025-08-20 16:49:37.787
+cmek7k0sg0081fi6jfvopkrqv	cmcm08r8o000pfif292yrq7th	cmek7k08u000tfi6j6x9128up	2025-08-20 16:49:37.792	2025-08-20 16:49:37.792
+cmek7k0sl0083fi6jgdttpe2k	cmcm08r8o000pfif292yrq7th	cmek7k0c3001hfi6jlqkxla26	2025-08-20 16:49:37.798	2025-08-20 16:49:37.798
+cmek7k0sr0085fi6jyf3ibegs	cmcm08r8o000pfif292yrq7th	cmek7k0c9001ifi6jtbb0m02y	2025-08-20 16:49:37.803	2025-08-20 16:49:37.803
+cmek7k0sw0087fi6j2zjetcsw	cmcm08r8o000pfif292yrq7th	cmek7k0cv001mfi6jh1wjqj3z	2025-08-20 16:49:37.808	2025-08-20 16:49:37.808
+cmek7k0t00089fi6jwxep5q4i	cmcm08r8o000pfif292yrq7th	cmek7k0dl001rfi6jcjvj9qdv	2025-08-20 16:49:37.813	2025-08-20 16:49:37.813
+cmek7k0t5008bfi6jv1ougs3e	cmcm08r8o000pfif292yrq7th	cmek7k0dw001tfi6jwhydsad4	2025-08-20 16:49:37.817	2025-08-20 16:49:37.817
 \.
 
 
 --
+-- TOC entry 3744 (class 0 OID 16590)
+-- Dependencies: 230
 -- Data for Name: Skill; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1112,6 +1447,8 @@ COPY public."Skill" (id, name, level, "userId", "createdAt", "updatedAt") FROM s
 
 
 --
+-- TOC entry 3743 (class 0 OID 16580)
+-- Dependencies: 229
 -- Data for Name: Task; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1120,6 +1457,8 @@ COPY public."Task" (id, title, description, status, priority, "dueDate", "assign
 
 
 --
+-- TOC entry 3750 (class 0 OID 16639)
+-- Dependencies: 236
 -- Data for Name: Team; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1130,6 +1469,8 @@ cmdhg1p8g000dfi36oqs269f3	Sales Team	Mize Technologies Sales Team	cmdhf9zdt0000f
 
 
 --
+-- TOC entry 3751 (class 0 OID 16647)
+-- Dependencies: 237
 -- Data for Name: TeamMember; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1146,16 +1487,18 @@ cmdhge8uf000mfi36050zwd1b	cmdhg1p8g000dfi36oqs269f3	cmdg7mhfv000lfi9xgle1ozjd	20
 
 
 --
+-- TOC entry 3731 (class 0 OID 16475)
+-- Dependencies: 217
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
 COPY public."User" (id, username, "firstName", "lastName", email, cnic, pfp, password, salary, address, department, "position", "joinDate", phone, role, status, "dateOfBirth", gender, "maritalStatus", "reportsToId", image, "createdAt", "updatedAt") FROM stdin;
-cmdg7mg0n000ffi9x0lnmxjzq	kamran.shahid	Kamran	Shahid	kamran.shahid@company.com	35401-6789012-6	\N	$2b$12$rqRWy1gqG5CT4fBERg81NuSj0Fu2nmtyv8m/WlEMmMeBexC/9UaFe	58000	987 Digital Valley, Islamabad	Development	Backend Developer	2023-12-05 00:00:00	+92-300-6789012	EMPLOYEE	ACTIVE	\N	\N	\N	\N	\N	2025-07-23 17:00:43.799	2025-07-23 17:00:43.799
 cmdg7mdsy0006fi9x6vdw91re	rahat.jawaid	Rahat	Jawaid	rahat.jawaid@company.com	35401-3456789-3	\N	$2b$12$R0CkKDNqXv/254r5bOkTuuLo.JSmXqSudmxR.OZoB4IlnWllxrPdS	60000	789 Tech Hub, Islamabad	Development	Lead Developer	2023-08-10 00:00:00	+92-300-3456789	EMPLOYEE	ACTIVE	\N	\N	\N	cmdg7mg0n000ffi9x0lnmxjzq	\N	2025-07-23 17:00:40.93	2025-07-24 13:42:55.76
 cmdg7mfax000cfi9xmhek342g	kavish.asif	Kavish	Asif	kavish.asif@company.com	35401-5678901-5	\N	$2b$12$rbIFNnkho6gYMEBPAdvxieOiRXL/4fJxmZJ4UnNDhkGmo.mQ1zBly	52000	654 Software Park, Lahore	Development	Full Stack Developer	2024-03-12 00:00:00	+92-300-5678901	EMPLOYEE	ACTIVE	\N	\N	\N	cmdg7mg0n000ffi9x0lnmxjzq	\N	2025-07-23 17:00:42.873	2025-07-24 13:42:55.764
 cmdg7mczw0003fi9xa53xjuqy	muhammad.sharique	Muhammad	Sharique	muhammad.sharique@company.com	35401-2345678-2	\N	$2b$12$WPXk8MudwAVkAvhkw/dMKujPK1gyzmXprr0qnFBiuuUFOjNjrGS0u	55000	456 Business District, Lahore	Development	Senior Developer	2023-11-20 00:00:00	+92-300-2345678	EMPLOYEE	ACTIVE	\N	\N	\N	cmdg7mg0n000ffi9x0lnmxjzq	\N	2025-07-23 17:00:39.884	2025-07-24 13:42:55.77
 cmdg7mc8d0000fi9xjjn2sq2y	hamza.qureshi	Hamza	Qureshi	hamza.qureshi@company.com	35401-1234567-1	\N	$2b$12$mf2nzNoPJDCYR2BYRlL6Qeo/ndqfRmb1c3Icg2Z0DoABR8136n8Eq	50000	123 Main Street, Karachi	Development	Software Engineer	2024-01-15 00:00:00	+92-300-1234567	EMPLOYEE	ACTIVE	\N	\N	\N	cmdg7mg0n000ffi9x0lnmxjzq	\N	2025-07-23 17:00:38.891	2025-07-24 13:42:55.772
 cmdg7mekt0009fi9xq0jez3n6	zohaib.hussain	Zohaib	Hussain	zohaib.hussain@company.com	35401-4567890-4	\N	$2b$12$n.xBN86hl1lPnp6z5dtHceHk1rDo0hhTtiMUDdySIZWfXZd6HijYO	48000	321 Innovation Center, Karachi	Development	Frontend Developer	2024-02-01 00:00:00	+92-300-4567890	EMPLOYEE	ACTIVE	\N	\N	\N	cmdg7mg0n000ffi9x0lnmxjzq	\N	2025-07-23 17:00:41.934	2025-07-24 13:42:55.773
+cmdg7mg0n000ffi9x0lnmxjzq	kamran.shahid	Kamran	Shahid	kamran.shahid@company.com	35401-6789012-6	\N	$2b$12$rqRWy1gqG5CT4fBERg81NuSj0Fu2nmtyv8m/WlEMmMeBexC/9UaFe	58000	987 Digital Valley, Islamabad	Development	Backend Developer	2023-12-05 00:00:00	+92-300-6789012	EMPLOYEE	ACTIVE	\N	\N	\N	\N	\N	2025-07-23 17:00:43.799	2025-08-20 17:02:02.618
 cmdg7mgpt000ifi9xhbw7rjg3	muhammad.azan	Muhammad	Azan	muhammad.azan@company.com	35401-7890123-7	\N	$2b$12$xygWcbbo/lkPQBmvYk.NdO1B2yNPoXAk8l8daaG3.1zynwpup9Xwy	45000	159 Code Street, Karachi	Development	Junior Developer	2024-04-20 00:00:00	+92-300-7890123	EMPLOYEE	ACTIVE	\N	\N	\N	cmdhf9zdt0000fi0zevfqomye	\N	2025-07-23 17:00:44.706	2025-07-24 13:54:03.983
 cmdg7mhfv000lfi9xgle1ozjd	muhammad.uzair	Muhammad	Uzair	muhammad.uzair@company.com	35401-8901234-8	\N	$2b$12$DkwTtadoJUr8lpxFrlviAuafWmcP3EX4Az0sAuwb1pRbZo4ETsqaa	47000	753 Tech City, Lahore	Development	Mobile Developer	2024-01-30 00:00:00	+92-300-8901234	EMPLOYEE	ACTIVE	\N	\N	\N	cmdhf9zdt0000fi0zevfqomye	\N	2025-07-23 17:00:45.643	2025-07-24 13:54:03.983
 cmdhf9zdt0000fi0zevfqomye	faizanfarrukh	FAIZAN	FARRUKH	faizanfarrukh@mizetechnologies.com	00001-3310534-7	\N	$2b$12$sfWj809j8Kf2UnZ.UKJI6.g8xcXrbl7Myz9vRKb0jk17erm4k7ZBy	50000	Default Address	Mize Technologies	Employee	2025-01-01 00:00:00	\N	ADMIN	ACTIVE	\N	MALE	\N	cmdhf9zdt0000fi0zevfqomye	\N	2025-07-24 13:22:45.473	2025-07-24 13:54:03.983
@@ -1163,6 +1506,8 @@ cmdhf9zdt0000fi0zevfqomye	faizanfarrukh	FAIZAN	FARRUKH	faizanfarrukh@mizetechnol
 
 
 --
+-- TOC entry 3757 (class 0 OID 16859)
+-- Dependencies: 243
 -- Data for Name: UserLastSeen; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1171,6 +1516,8 @@ COPY public."UserLastSeen" (id, "userId", "lastSeen", "isOnline") FROM stdin;
 
 
 --
+-- TOC entry 3733 (class 0 OID 16494)
+-- Dependencies: 219
 -- Data for Name: UserRole; Type: TABLE DATA; Schema: public; Owner: salad
 --
 
@@ -1180,14 +1527,15 @@ cmdg7mczw0005fi9x7ypsbp2g	cmdg7mczw0003fi9xa53xjuqy	cmcm08r8o000pfif292yrq7th	20
 cmdg7mdsy0008fi9xrqnbyccd	cmdg7mdsy0006fi9x6vdw91re	cmcm08r8o000pfif292yrq7th	2025-07-23 17:00:40.93	2025-07-23 17:00:40.93
 cmdg7mekt000bfi9xi4kci6cj	cmdg7mekt0009fi9xq0jez3n6	cmcm08r8o000pfif292yrq7th	2025-07-23 17:00:41.934	2025-07-23 17:00:41.934
 cmdg7mfax000efi9xrvcx92po	cmdg7mfax000cfi9xmhek342g	cmcm08r8o000pfif292yrq7th	2025-07-23 17:00:42.873	2025-07-23 17:00:42.873
-cmdg7mg0n000hfi9xmiu7vkhu	cmdg7mg0n000ffi9x0lnmxjzq	cmcm08r8o000pfif292yrq7th	2025-07-23 17:00:43.799	2025-07-23 17:00:43.799
 cmdg7mgpu000kfi9xgzggzwqu	cmdg7mgpt000ifi9xhbw7rjg3	cmcm08r8o000pfif292yrq7th	2025-07-23 17:00:44.706	2025-07-23 17:00:44.706
 cmdg7mhfv000nfi9xn4aclfky	cmdg7mhfv000lfi9xgle1ozjd	cmcm08r8o000pfif292yrq7th	2025-07-23 17:00:45.643	2025-07-23 17:00:45.643
 cmdhf9zee0002fi0z0frudvab	cmdhf9zdt0000fi0zevfqomye	cmcm08r85000nfif2i498l1sc	2025-07-24 13:22:45.494	2025-07-24 13:22:45.494
+cmek7zzdy000qfic4fhmqoko4	cmdg7mg0n000ffi9x0lnmxjzq	cmcm08r8o000pfif292yrq7th	2025-08-20 17:02:02.471	2025-08-20 17:02:02.471
 \.
 
 
 --
+-- TOC entry 3501 (class 2606 OID 16568)
 -- Name: Attendance Attendance_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1196,6 +1544,7 @@ ALTER TABLE ONLY public."Attendance"
 
 
 --
+-- TOC entry 3498 (class 2606 OID 16558)
 -- Name: BankDetails BankDetails_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1204,6 +1553,7 @@ ALTER TABLE ONLY public."BankDetails"
 
 
 --
+-- TOC entry 3532 (class 2606 OID 16850)
 -- Name: ChatMessage ChatMessage_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1212,6 +1562,7 @@ ALTER TABLE ONLY public."ChatMessage"
 
 
 --
+-- TOC entry 3529 (class 2606 OID 16839)
 -- Name: ChatParticipant ChatParticipant_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1220,6 +1571,7 @@ ALTER TABLE ONLY public."ChatParticipant"
 
 
 --
+-- TOC entry 3527 (class 2606 OID 16830)
 -- Name: ChatRoom ChatRoom_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1228,6 +1580,7 @@ ALTER TABLE ONLY public."ChatRoom"
 
 
 --
+-- TOC entry 3496 (class 2606 OID 16550)
 -- Name: Document Document_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1236,6 +1589,7 @@ ALTER TABLE ONLY public."Document"
 
 
 --
+-- TOC entry 3492 (class 2606 OID 16533)
 -- Name: Education Education_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1244,6 +1598,7 @@ ALTER TABLE ONLY public."Education"
 
 
 --
+-- TOC entry 3489 (class 2606 OID 16525)
 -- Name: EmergencyContact EmergencyContact_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1252,6 +1607,7 @@ ALTER TABLE ONLY public."EmergencyContact"
 
 
 --
+-- TOC entry 3494 (class 2606 OID 16541)
 -- Name: Experience Experience_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1260,6 +1616,7 @@ ALTER TABLE ONLY public."Experience"
 
 
 --
+-- TOC entry 3525 (class 2606 OID 16662)
 -- Name: Hosting Hosting_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1268,6 +1625,16 @@ ALTER TABLE ONLY public."Hosting"
 
 
 --
+-- TOC entry 3540 (class 2606 OID 17473)
+-- Name: Lead Lead_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."Lead"
+    ADD CONSTRAINT "Lead_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3504 (class 2606 OID 16579)
 -- Name: Leave Leave_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1276,6 +1643,7 @@ ALTER TABLE ONLY public."Leave"
 
 
 --
+-- TOC entry 3518 (class 2606 OID 16638)
 -- Name: Meeting Meeting_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1284,6 +1652,25 @@ ALTER TABLE ONLY public."Meeting"
 
 
 --
+-- TOC entry 3546 (class 2606 OID 17500)
+-- Name: MessageMention MessageMention_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."MessageMention"
+    ADD CONSTRAINT "MessageMention_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3543 (class 2606 OID 17492)
+-- Name: MessageReaction MessageReaction_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."MessageReaction"
+    ADD CONSTRAINT "MessageReaction_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3535 (class 2606 OID 16858)
 -- Name: MessageReadStatus MessageReadStatus_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1292,6 +1679,7 @@ ALTER TABLE ONLY public."MessageReadStatus"
 
 
 --
+-- TOC entry 3516 (class 2606 OID 16630)
 -- Name: Notification Notification_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1300,6 +1688,7 @@ ALTER TABLE ONLY public."Notification"
 
 
 --
+-- TOC entry 3510 (class 2606 OID 16606)
 -- Name: Performance Performance_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1308,6 +1697,7 @@ ALTER TABLE ONLY public."Performance"
 
 
 --
+-- TOC entry 3483 (class 2606 OID 16509)
 -- Name: Permission Permission_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1316,6 +1706,7 @@ ALTER TABLE ONLY public."Permission"
 
 
 --
+-- TOC entry 3514 (class 2606 OID 16622)
 -- Name: ProjectAssignment ProjectAssignment_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1324,6 +1715,7 @@ ALTER TABLE ONLY public."ProjectAssignment"
 
 
 --
+-- TOC entry 3512 (class 2606 OID 16614)
 -- Name: Project Project_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1332,6 +1724,7 @@ ALTER TABLE ONLY public."Project"
 
 
 --
+-- TOC entry 3486 (class 2606 OID 16517)
 -- Name: RolePermission RolePermission_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1340,6 +1733,7 @@ ALTER TABLE ONLY public."RolePermission"
 
 
 --
+-- TOC entry 3477 (class 2606 OID 16493)
 -- Name: Role Role_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1348,6 +1742,7 @@ ALTER TABLE ONLY public."Role"
 
 
 --
+-- TOC entry 3508 (class 2606 OID 16598)
 -- Name: Skill Skill_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1356,6 +1751,7 @@ ALTER TABLE ONLY public."Skill"
 
 
 --
+-- TOC entry 3506 (class 2606 OID 16589)
 -- Name: Task Task_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1364,6 +1760,7 @@ ALTER TABLE ONLY public."Task"
 
 
 --
+-- TOC entry 3522 (class 2606 OID 16654)
 -- Name: TeamMember TeamMember_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1372,6 +1769,7 @@ ALTER TABLE ONLY public."TeamMember"
 
 
 --
+-- TOC entry 3520 (class 2606 OID 16646)
 -- Name: Team Team_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1380,6 +1778,7 @@ ALTER TABLE ONLY public."Team"
 
 
 --
+-- TOC entry 3537 (class 2606 OID 16867)
 -- Name: UserLastSeen UserLastSeen_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1388,6 +1787,7 @@ ALTER TABLE ONLY public."UserLastSeen"
 
 
 --
+-- TOC entry 3479 (class 2606 OID 16501)
 -- Name: UserRole UserRole_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1396,6 +1796,7 @@ ALTER TABLE ONLY public."UserRole"
 
 
 --
+-- TOC entry 3473 (class 2606 OID 16484)
 -- Name: User User_pkey; Type: CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1404,6 +1805,7 @@ ALTER TABLE ONLY public."User"
 
 
 --
+-- TOC entry 3502 (class 1259 OID 16673)
 -- Name: Attendance_userId_date_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1411,6 +1813,7 @@ CREATE UNIQUE INDEX "Attendance_userId_date_key" ON public."Attendance" USING bt
 
 
 --
+-- TOC entry 3499 (class 1259 OID 16672)
 -- Name: BankDetails_userId_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1418,6 +1821,7 @@ CREATE UNIQUE INDEX "BankDetails_userId_key" ON public."BankDetails" USING btree
 
 
 --
+-- TOC entry 3530 (class 1259 OID 16868)
 -- Name: ChatParticipant_roomId_userId_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1425,6 +1829,7 @@ CREATE UNIQUE INDEX "ChatParticipant_roomId_userId_key" ON public."ChatParticipa
 
 
 --
+-- TOC entry 3490 (class 1259 OID 16671)
 -- Name: EmergencyContact_userId_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1432,6 +1837,23 @@ CREATE UNIQUE INDEX "EmergencyContact_userId_key" ON public."EmergencyContact" U
 
 
 --
+-- TOC entry 3544 (class 1259 OID 17502)
+-- Name: MessageMention_messageId_userId_key; Type: INDEX; Schema: public; Owner: salad
+--
+
+CREATE UNIQUE INDEX "MessageMention_messageId_userId_key" ON public."MessageMention" USING btree ("messageId", "userId");
+
+
+--
+-- TOC entry 3541 (class 1259 OID 17501)
+-- Name: MessageReaction_messageId_userId_emoji_key; Type: INDEX; Schema: public; Owner: salad
+--
+
+CREATE UNIQUE INDEX "MessageReaction_messageId_userId_emoji_key" ON public."MessageReaction" USING btree ("messageId", "userId", emoji);
+
+
+--
+-- TOC entry 3533 (class 1259 OID 16869)
 -- Name: MessageReadStatus_messageId_userId_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1439,6 +1861,7 @@ CREATE UNIQUE INDEX "MessageReadStatus_messageId_userId_key" ON public."MessageR
 
 
 --
+-- TOC entry 3481 (class 1259 OID 16668)
 -- Name: Permission_name_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1446,6 +1869,7 @@ CREATE UNIQUE INDEX "Permission_name_key" ON public."Permission" USING btree (na
 
 
 --
+-- TOC entry 3484 (class 1259 OID 16669)
 -- Name: Permission_resource_action_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1453,6 +1877,7 @@ CREATE UNIQUE INDEX "Permission_resource_action_key" ON public."Permission" USIN
 
 
 --
+-- TOC entry 3487 (class 1259 OID 16670)
 -- Name: RolePermission_roleId_permissionId_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1460,6 +1885,7 @@ CREATE UNIQUE INDEX "RolePermission_roleId_permissionId_key" ON public."RolePerm
 
 
 --
+-- TOC entry 3475 (class 1259 OID 16666)
 -- Name: Role_name_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1467,6 +1893,7 @@ CREATE UNIQUE INDEX "Role_name_key" ON public."Role" USING btree (name);
 
 
 --
+-- TOC entry 3523 (class 1259 OID 16674)
 -- Name: TeamMember_teamId_userId_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1474,6 +1901,7 @@ CREATE UNIQUE INDEX "TeamMember_teamId_userId_key" ON public."TeamMember" USING 
 
 
 --
+-- TOC entry 3538 (class 1259 OID 16870)
 -- Name: UserLastSeen_userId_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1481,6 +1909,7 @@ CREATE UNIQUE INDEX "UserLastSeen_userId_key" ON public."UserLastSeen" USING btr
 
 
 --
+-- TOC entry 3480 (class 1259 OID 16667)
 -- Name: UserRole_userId_roleId_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1488,6 +1917,7 @@ CREATE UNIQUE INDEX "UserRole_userId_roleId_key" ON public."UserRole" USING btre
 
 
 --
+-- TOC entry 3470 (class 1259 OID 16665)
 -- Name: User_cnic_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1495,6 +1925,7 @@ CREATE UNIQUE INDEX "User_cnic_key" ON public."User" USING btree (cnic);
 
 
 --
+-- TOC entry 3471 (class 1259 OID 16664)
 -- Name: User_email_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1502,6 +1933,7 @@ CREATE UNIQUE INDEX "User_email_key" ON public."User" USING btree (email);
 
 
 --
+-- TOC entry 3474 (class 1259 OID 16663)
 -- Name: User_username_key; Type: INDEX; Schema: public; Owner: salad
 --
 
@@ -1509,6 +1941,7 @@ CREATE UNIQUE INDEX "User_username_key" ON public."User" USING btree (username);
 
 
 --
+-- TOC entry 3557 (class 2606 OID 16725)
 -- Name: Attendance Attendance_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1517,6 +1950,7 @@ ALTER TABLE ONLY public."Attendance"
 
 
 --
+-- TOC entry 3556 (class 2606 OID 16720)
 -- Name: BankDetails BankDetails_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1525,6 +1959,7 @@ ALTER TABLE ONLY public."BankDetails"
 
 
 --
+-- TOC entry 3575 (class 2606 OID 16886)
 -- Name: ChatMessage ChatMessage_parentMessageId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1533,6 +1968,7 @@ ALTER TABLE ONLY public."ChatMessage"
 
 
 --
+-- TOC entry 3576 (class 2606 OID 16891)
 -- Name: ChatMessage ChatMessage_roomId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1541,6 +1977,7 @@ ALTER TABLE ONLY public."ChatMessage"
 
 
 --
+-- TOC entry 3577 (class 2606 OID 16896)
 -- Name: ChatMessage ChatMessage_senderId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1549,6 +1986,7 @@ ALTER TABLE ONLY public."ChatMessage"
 
 
 --
+-- TOC entry 3573 (class 2606 OID 16876)
 -- Name: ChatParticipant ChatParticipant_roomId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1557,6 +1995,7 @@ ALTER TABLE ONLY public."ChatParticipant"
 
 
 --
+-- TOC entry 3574 (class 2606 OID 16881)
 -- Name: ChatParticipant ChatParticipant_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1565,6 +2004,7 @@ ALTER TABLE ONLY public."ChatParticipant"
 
 
 --
+-- TOC entry 3572 (class 2606 OID 16871)
 -- Name: ChatRoom ChatRoom_teamId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1573,6 +2013,7 @@ ALTER TABLE ONLY public."ChatRoom"
 
 
 --
+-- TOC entry 3555 (class 2606 OID 16715)
 -- Name: Document Document_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1581,6 +2022,7 @@ ALTER TABLE ONLY public."Document"
 
 
 --
+-- TOC entry 3553 (class 2606 OID 16705)
 -- Name: Education Education_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1589,6 +2031,7 @@ ALTER TABLE ONLY public."Education"
 
 
 --
+-- TOC entry 3552 (class 2606 OID 16700)
 -- Name: EmergencyContact EmergencyContact_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1597,6 +2040,7 @@ ALTER TABLE ONLY public."EmergencyContact"
 
 
 --
+-- TOC entry 3554 (class 2606 OID 16710)
 -- Name: Experience Experience_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1605,6 +2049,7 @@ ALTER TABLE ONLY public."Experience"
 
 
 --
+-- TOC entry 3571 (class 2606 OID 16795)
 -- Name: Hosting Hosting_clientId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1613,6 +2058,25 @@ ALTER TABLE ONLY public."Hosting"
 
 
 --
+-- TOC entry 3580 (class 2606 OID 17479)
+-- Name: Lead Lead_assigneeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."Lead"
+    ADD CONSTRAINT "Lead_assigneeId_fkey" FOREIGN KEY ("assigneeId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- TOC entry 3581 (class 2606 OID 17474)
+-- Name: Lead Lead_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."Lead"
+    ADD CONSTRAINT "Lead_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- TOC entry 3558 (class 2606 OID 16740)
 -- Name: Leave Leave_adminId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1621,6 +2085,7 @@ ALTER TABLE ONLY public."Leave"
 
 
 --
+-- TOC entry 3559 (class 2606 OID 16735)
 -- Name: Leave Leave_managerId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1629,6 +2094,7 @@ ALTER TABLE ONLY public."Leave"
 
 
 --
+-- TOC entry 3560 (class 2606 OID 16730)
 -- Name: Leave Leave_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1637,6 +2103,7 @@ ALTER TABLE ONLY public."Leave"
 
 
 --
+-- TOC entry 3567 (class 2606 OID 16775)
 -- Name: Meeting Meeting_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1645,6 +2112,43 @@ ALTER TABLE ONLY public."Meeting"
 
 
 --
+-- TOC entry 3584 (class 2606 OID 17513)
+-- Name: MessageMention MessageMention_messageId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."MessageMention"
+    ADD CONSTRAINT "MessageMention_messageId_fkey" FOREIGN KEY ("messageId") REFERENCES public."ChatMessage"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3585 (class 2606 OID 17518)
+-- Name: MessageMention MessageMention_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."MessageMention"
+    ADD CONSTRAINT "MessageMention_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3582 (class 2606 OID 17503)
+-- Name: MessageReaction MessageReaction_messageId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."MessageReaction"
+    ADD CONSTRAINT "MessageReaction_messageId_fkey" FOREIGN KEY ("messageId") REFERENCES public."ChatMessage"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3583 (class 2606 OID 17508)
+-- Name: MessageReaction MessageReaction_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
+--
+
+ALTER TABLE ONLY public."MessageReaction"
+    ADD CONSTRAINT "MessageReaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3578 (class 2606 OID 16901)
 -- Name: MessageReadStatus MessageReadStatus_messageId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1653,6 +2157,7 @@ ALTER TABLE ONLY public."MessageReadStatus"
 
 
 --
+-- TOC entry 3566 (class 2606 OID 16770)
 -- Name: Notification Notification_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1661,6 +2166,7 @@ ALTER TABLE ONLY public."Notification"
 
 
 --
+-- TOC entry 3563 (class 2606 OID 16755)
 -- Name: Performance Performance_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1669,6 +2175,7 @@ ALTER TABLE ONLY public."Performance"
 
 
 --
+-- TOC entry 3564 (class 2606 OID 16760)
 -- Name: ProjectAssignment ProjectAssignment_projectId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1677,6 +2184,7 @@ ALTER TABLE ONLY public."ProjectAssignment"
 
 
 --
+-- TOC entry 3565 (class 2606 OID 16765)
 -- Name: ProjectAssignment ProjectAssignment_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1685,6 +2193,7 @@ ALTER TABLE ONLY public."ProjectAssignment"
 
 
 --
+-- TOC entry 3550 (class 2606 OID 16695)
 -- Name: RolePermission RolePermission_permissionId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1693,6 +2202,7 @@ ALTER TABLE ONLY public."RolePermission"
 
 
 --
+-- TOC entry 3551 (class 2606 OID 16690)
 -- Name: RolePermission RolePermission_roleId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1701,6 +2211,7 @@ ALTER TABLE ONLY public."RolePermission"
 
 
 --
+-- TOC entry 3562 (class 2606 OID 16750)
 -- Name: Skill Skill_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1709,6 +2220,7 @@ ALTER TABLE ONLY public."Skill"
 
 
 --
+-- TOC entry 3561 (class 2606 OID 16745)
 -- Name: Task Task_assignedTo_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1717,6 +2229,7 @@ ALTER TABLE ONLY public."Task"
 
 
 --
+-- TOC entry 3569 (class 2606 OID 16785)
 -- Name: TeamMember TeamMember_teamId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1725,6 +2238,7 @@ ALTER TABLE ONLY public."TeamMember"
 
 
 --
+-- TOC entry 3570 (class 2606 OID 16790)
 -- Name: TeamMember TeamMember_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1733,6 +2247,7 @@ ALTER TABLE ONLY public."TeamMember"
 
 
 --
+-- TOC entry 3568 (class 2606 OID 16780)
 -- Name: Team Team_leaderId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1741,6 +2256,7 @@ ALTER TABLE ONLY public."Team"
 
 
 --
+-- TOC entry 3579 (class 2606 OID 16906)
 -- Name: UserLastSeen UserLastSeen_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1749,6 +2265,7 @@ ALTER TABLE ONLY public."UserLastSeen"
 
 
 --
+-- TOC entry 3548 (class 2606 OID 16685)
 -- Name: UserRole UserRole_roleId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1757,6 +2274,7 @@ ALTER TABLE ONLY public."UserRole"
 
 
 --
+-- TOC entry 3549 (class 2606 OID 16680)
 -- Name: UserRole UserRole_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
@@ -1765,12 +2283,15 @@ ALTER TABLE ONLY public."UserRole"
 
 
 --
+-- TOC entry 3547 (class 2606 OID 16675)
 -- Name: User User_reportsToId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: salad
 --
 
 ALTER TABLE ONLY public."User"
     ADD CONSTRAINT "User_reportsToId_fkey" FOREIGN KEY ("reportsToId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
+
+-- Completed on 2025-08-20 23:03:16 PKT
 
 --
 -- PostgreSQL database dump complete

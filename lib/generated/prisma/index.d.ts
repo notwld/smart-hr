@@ -252,6 +252,10 @@ export type Priority = (typeof Priority)[keyof typeof Priority]
 export const DurationType: {
   MONTHLY: 'MONTHLY',
   YEARLY: 'YEARLY',
+  TWO_YEARS: 'TWO_YEARS',
+  THREE_YEARS: 'THREE_YEARS',
+  FOUR_YEARS: 'FOUR_YEARS',
+  FIVE_YEARS: 'FIVE_YEARS',
   CUSTOM: 'CUSTOM'
 };
 
@@ -805,8 +809,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 6.8.2
+   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
    */
   export type PrismaVersion = {
     client: string
@@ -3688,7 +3692,6 @@ export namespace Prisma {
     chatRooms: number
     messageReactions: number
     messageMentions: number
-    Hosting: number
     userLeads: number
     assignedLeads: number
   }
@@ -3715,7 +3718,6 @@ export namespace Prisma {
     chatRooms?: boolean | UserCountOutputTypeCountChatRoomsArgs
     messageReactions?: boolean | UserCountOutputTypeCountMessageReactionsArgs
     messageMentions?: boolean | UserCountOutputTypeCountMessageMentionsArgs
-    Hosting?: boolean | UserCountOutputTypeCountHostingArgs
     userLeads?: boolean | UserCountOutputTypeCountUserLeadsArgs
     assignedLeads?: boolean | UserCountOutputTypeCountAssignedLeadsArgs
   }
@@ -3876,13 +3878,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountMessageMentionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MessageMentionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountHostingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: HostingWhereInput
   }
 
   /**
@@ -4188,6 +4183,7 @@ export namespace Prisma {
     image: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    onboardingCompleted: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -4214,6 +4210,7 @@ export namespace Prisma {
     image: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    onboardingCompleted: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -4240,6 +4237,7 @@ export namespace Prisma {
     image: number
     createdAt: number
     updatedAt: number
+    onboardingCompleted: number
     _all: number
   }
 
@@ -4276,6 +4274,7 @@ export namespace Prisma {
     image?: true
     createdAt?: true
     updatedAt?: true
+    onboardingCompleted?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -4302,6 +4301,7 @@ export namespace Prisma {
     image?: true
     createdAt?: true
     updatedAt?: true
+    onboardingCompleted?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -4328,6 +4328,7 @@ export namespace Prisma {
     image?: true
     createdAt?: true
     updatedAt?: true
+    onboardingCompleted?: true
     _all?: true
   }
 
@@ -4441,6 +4442,7 @@ export namespace Prisma {
     image: string | null
     createdAt: Date
     updatedAt: Date
+    onboardingCompleted: boolean
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -4486,6 +4488,7 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    onboardingCompleted?: boolean
     userRoles?: boolean | User$userRolesArgs<ExtArgs>
     reportsTo?: boolean | User$reportsToArgs<ExtArgs>
     subordinates?: boolean | User$subordinatesArgs<ExtArgs>
@@ -4511,7 +4514,6 @@ export namespace Prisma {
     lastSeen?: boolean | User$lastSeenArgs<ExtArgs>
     messageReactions?: boolean | User$messageReactionsArgs<ExtArgs>
     messageMentions?: boolean | User$messageMentionsArgs<ExtArgs>
-    Hosting?: boolean | User$HostingArgs<ExtArgs>
     userLeads?: boolean | User$userLeadsArgs<ExtArgs>
     assignedLeads?: boolean | User$assignedLeadsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -4541,6 +4543,7 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    onboardingCompleted?: boolean
     reportsTo?: boolean | User$reportsToArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4568,6 +4571,7 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    onboardingCompleted?: boolean
     reportsTo?: boolean | User$reportsToArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4595,9 +4599,10 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    onboardingCompleted?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firstName" | "lastName" | "email" | "cnic" | "pfp" | "password" | "salary" | "address" | "department" | "position" | "joinDate" | "phone" | "legacyRole" | "status" | "dateOfBirth" | "gender" | "maritalStatus" | "reportsToId" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firstName" | "lastName" | "email" | "cnic" | "pfp" | "password" | "salary" | "address" | "department" | "position" | "joinDate" | "phone" | "legacyRole" | "status" | "dateOfBirth" | "gender" | "maritalStatus" | "reportsToId" | "image" | "createdAt" | "updatedAt" | "onboardingCompleted", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userRoles?: boolean | User$userRolesArgs<ExtArgs>
     reportsTo?: boolean | User$reportsToArgs<ExtArgs>
@@ -4624,7 +4629,6 @@ export namespace Prisma {
     lastSeen?: boolean | User$lastSeenArgs<ExtArgs>
     messageReactions?: boolean | User$messageReactionsArgs<ExtArgs>
     messageMentions?: boolean | User$messageMentionsArgs<ExtArgs>
-    Hosting?: boolean | User$HostingArgs<ExtArgs>
     userLeads?: boolean | User$userLeadsArgs<ExtArgs>
     assignedLeads?: boolean | User$assignedLeadsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -4664,7 +4668,6 @@ export namespace Prisma {
       lastSeen: Prisma.$UserLastSeenPayload<ExtArgs> | null
       messageReactions: Prisma.$MessageReactionPayload<ExtArgs>[]
       messageMentions: Prisma.$MessageMentionPayload<ExtArgs>[]
-      Hosting: Prisma.$HostingPayload<ExtArgs>[]
       userLeads: Prisma.$LeadPayload<ExtArgs>[]
       assignedLeads: Prisma.$LeadPayload<ExtArgs>[]
     }
@@ -4692,6 +4695,7 @@ export namespace Prisma {
       image: string | null
       createdAt: Date
       updatedAt: Date
+      onboardingCompleted: boolean
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -5111,7 +5115,6 @@ export namespace Prisma {
     lastSeen<T extends User$lastSeenArgs<ExtArgs> = {}>(args?: Subset<T, User$lastSeenArgs<ExtArgs>>): Prisma__UserLastSeenClient<$Result.GetResult<Prisma.$UserLastSeenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     messageReactions<T extends User$messageReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$messageReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessageReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     messageMentions<T extends User$messageMentionsArgs<ExtArgs> = {}>(args?: Subset<T, User$messageMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessageMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Hosting<T extends User$HostingArgs<ExtArgs> = {}>(args?: Subset<T, User$HostingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HostingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userLeads<T extends User$userLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$userLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedLeads<T extends User$assignedLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -5166,6 +5169,7 @@ export namespace Prisma {
     readonly image: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly onboardingCompleted: FieldRef<"User", 'Boolean'>
   }
     
 
@@ -6139,30 +6143,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MessageMentionScalarFieldEnum | MessageMentionScalarFieldEnum[]
-  }
-
-  /**
-   * User.Hosting
-   */
-  export type User$HostingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Hosting
-     */
-    select?: HostingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Hosting
-     */
-    omit?: HostingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
-    where?: HostingWhereInput
-    orderBy?: HostingOrderByWithRelationInput | HostingOrderByWithRelationInput[]
-    cursor?: HostingWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: HostingScalarFieldEnum | HostingScalarFieldEnum[]
   }
 
   /**
@@ -28445,7 +28425,7 @@ export namespace Prisma {
 
   export type HostingMinAggregateOutputType = {
     id: string | null
-    clientId: string | null
+    clientName: string | null
     domain: string | null
     cost: number | null
     startDate: Date | null
@@ -28458,7 +28438,7 @@ export namespace Prisma {
 
   export type HostingMaxAggregateOutputType = {
     id: string | null
-    clientId: string | null
+    clientName: string | null
     domain: string | null
     cost: number | null
     startDate: Date | null
@@ -28471,7 +28451,7 @@ export namespace Prisma {
 
   export type HostingCountAggregateOutputType = {
     id: number
-    clientId: number
+    clientName: number
     domain: number
     cost: number
     startDate: number
@@ -28494,7 +28474,7 @@ export namespace Prisma {
 
   export type HostingMinAggregateInputType = {
     id?: true
-    clientId?: true
+    clientName?: true
     domain?: true
     cost?: true
     startDate?: true
@@ -28507,7 +28487,7 @@ export namespace Prisma {
 
   export type HostingMaxAggregateInputType = {
     id?: true
-    clientId?: true
+    clientName?: true
     domain?: true
     cost?: true
     startDate?: true
@@ -28520,7 +28500,7 @@ export namespace Prisma {
 
   export type HostingCountAggregateInputType = {
     id?: true
-    clientId?: true
+    clientName?: true
     domain?: true
     cost?: true
     startDate?: true
@@ -28620,7 +28600,7 @@ export namespace Prisma {
 
   export type HostingGroupByOutputType = {
     id: string
-    clientId: string
+    clientName: string
     domain: string
     cost: number
     startDate: Date
@@ -28652,7 +28632,7 @@ export namespace Prisma {
 
   export type HostingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    clientId?: boolean
+    clientName?: boolean
     domain?: boolean
     cost?: boolean
     startDate?: boolean
@@ -28661,12 +28641,11 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    client?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["hosting"]>
 
   export type HostingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    clientId?: boolean
+    clientName?: boolean
     domain?: boolean
     cost?: boolean
     startDate?: boolean
@@ -28675,12 +28654,11 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    client?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["hosting"]>
 
   export type HostingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    clientId?: boolean
+    clientName?: boolean
     domain?: boolean
     cost?: boolean
     startDate?: boolean
@@ -28689,12 +28667,11 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    client?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["hosting"]>
 
   export type HostingSelectScalar = {
     id?: boolean
-    clientId?: boolean
+    clientName?: boolean
     domain?: boolean
     cost?: boolean
     startDate?: boolean
@@ -28705,25 +28682,14 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type HostingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "domain" | "cost" | "startDate" | "expiryDate" | "durationType" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["hosting"]>
-  export type HostingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    client?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type HostingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    client?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type HostingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    client?: boolean | UserDefaultArgs<ExtArgs>
-  }
+  export type HostingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientName" | "domain" | "cost" | "startDate" | "expiryDate" | "durationType" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["hosting"]>
 
   export type $HostingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Hosting"
-    objects: {
-      client: Prisma.$UserPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      clientId: string
+      clientName: string
       domain: string
       cost: number
       startDate: Date
@@ -29126,7 +29092,6 @@ export namespace Prisma {
    */
   export interface Prisma__HostingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    client<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29157,7 +29122,7 @@ export namespace Prisma {
    */
   interface HostingFieldRefs {
     readonly id: FieldRef<"Hosting", 'String'>
-    readonly clientId: FieldRef<"Hosting", 'String'>
+    readonly clientName: FieldRef<"Hosting", 'String'>
     readonly domain: FieldRef<"Hosting", 'String'>
     readonly cost: FieldRef<"Hosting", 'Float'>
     readonly startDate: FieldRef<"Hosting", 'DateTime'>
@@ -29183,10 +29148,6 @@ export namespace Prisma {
      */
     omit?: HostingOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
-    /**
      * Filter, which Hosting to fetch.
      */
     where: HostingWhereUniqueInput
@@ -29205,10 +29166,6 @@ export namespace Prisma {
      */
     omit?: HostingOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
-    /**
      * Filter, which Hosting to fetch.
      */
     where: HostingWhereUniqueInput
@@ -29226,10 +29183,6 @@ export namespace Prisma {
      * Omit specific fields from the Hosting
      */
     omit?: HostingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
     /**
      * Filter, which Hosting to fetch.
      */
@@ -29279,10 +29232,6 @@ export namespace Prisma {
      */
     omit?: HostingOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
-    /**
      * Filter, which Hosting to fetch.
      */
     where?: HostingWhereInput
@@ -29331,10 +29280,6 @@ export namespace Prisma {
      */
     omit?: HostingOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
-    /**
      * Filter, which Hostings to fetch.
      */
     where?: HostingWhereInput
@@ -29378,10 +29323,6 @@ export namespace Prisma {
      */
     omit?: HostingOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
-    /**
      * The data needed to create a Hosting.
      */
     data: XOR<HostingCreateInput, HostingUncheckedCreateInput>
@@ -29415,10 +29356,6 @@ export namespace Prisma {
      */
     data: HostingCreateManyInput | HostingCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -29433,10 +29370,6 @@ export namespace Prisma {
      * Omit specific fields from the Hosting
      */
     omit?: HostingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
     /**
      * The data needed to update a Hosting.
      */
@@ -29489,10 +29422,6 @@ export namespace Prisma {
      * Limit how many Hostings to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -29507,10 +29436,6 @@ export namespace Prisma {
      * Omit specific fields from the Hosting
      */
     omit?: HostingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
     /**
      * The filter to search for the Hosting to update in case it exists.
      */
@@ -29537,10 +29462,6 @@ export namespace Prisma {
      * Omit specific fields from the Hosting
      */
     omit?: HostingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
     /**
      * Filter which Hosting to delete.
      */
@@ -29573,10 +29494,6 @@ export namespace Prisma {
      * Omit specific fields from the Hosting
      */
     omit?: HostingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HostingInclude<ExtArgs> | null
   }
 
 
@@ -38748,7 +38665,8 @@ export namespace Prisma {
     reportsToId: 'reportsToId',
     image: 'image',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    onboardingCompleted: 'onboardingCompleted'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -39027,7 +38945,7 @@ export namespace Prisma {
 
   export const HostingScalarFieldEnum: {
     id: 'id',
-    clientId: 'clientId',
+    clientName: 'clientName',
     domain: 'domain',
     cost: 'cost',
     startDate: 'startDate',
@@ -39428,6 +39346,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    onboardingCompleted?: BoolFilter<"User"> | boolean
     userRoles?: UserRoleListRelationFilter
     reportsTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     subordinates?: UserListRelationFilter
@@ -39453,7 +39372,6 @@ export namespace Prisma {
     lastSeen?: XOR<UserLastSeenNullableScalarRelationFilter, UserLastSeenWhereInput> | null
     messageReactions?: MessageReactionListRelationFilter
     messageMentions?: MessageMentionListRelationFilter
-    Hosting?: HostingListRelationFilter
     userLeads?: LeadListRelationFilter
     assignedLeads?: LeadListRelationFilter
   }
@@ -39482,6 +39400,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    onboardingCompleted?: SortOrder
     userRoles?: UserRoleOrderByRelationAggregateInput
     reportsTo?: UserOrderByWithRelationInput
     subordinates?: UserOrderByRelationAggregateInput
@@ -39507,7 +39426,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenOrderByWithRelationInput
     messageReactions?: MessageReactionOrderByRelationAggregateInput
     messageMentions?: MessageMentionOrderByRelationAggregateInput
-    Hosting?: HostingOrderByRelationAggregateInput
     userLeads?: LeadOrderByRelationAggregateInput
     assignedLeads?: LeadOrderByRelationAggregateInput
   }
@@ -39539,6 +39457,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    onboardingCompleted?: BoolFilter<"User"> | boolean
     userRoles?: UserRoleListRelationFilter
     reportsTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     subordinates?: UserListRelationFilter
@@ -39564,7 +39483,6 @@ export namespace Prisma {
     lastSeen?: XOR<UserLastSeenNullableScalarRelationFilter, UserLastSeenWhereInput> | null
     messageReactions?: MessageReactionListRelationFilter
     messageMentions?: MessageMentionListRelationFilter
-    Hosting?: HostingListRelationFilter
     userLeads?: LeadListRelationFilter
     assignedLeads?: LeadListRelationFilter
   }, "id" | "username" | "email" | "cnic">
@@ -39593,6 +39511,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    onboardingCompleted?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -39627,6 +39546,7 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    onboardingCompleted?: BoolWithAggregatesFilter<"User"> | boolean
   }
 
   export type RoleWhereInput = {
@@ -41029,7 +40949,7 @@ export namespace Prisma {
     OR?: HostingWhereInput[]
     NOT?: HostingWhereInput | HostingWhereInput[]
     id?: StringFilter<"Hosting"> | string
-    clientId?: StringFilter<"Hosting"> | string
+    clientName?: StringFilter<"Hosting"> | string
     domain?: StringFilter<"Hosting"> | string
     cost?: FloatFilter<"Hosting"> | number
     startDate?: DateTimeFilter<"Hosting"> | Date | string
@@ -41038,12 +40958,11 @@ export namespace Prisma {
     notes?: StringNullableFilter<"Hosting"> | string | null
     createdAt?: DateTimeFilter<"Hosting"> | Date | string
     updatedAt?: DateTimeFilter<"Hosting"> | Date | string
-    client?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type HostingOrderByWithRelationInput = {
     id?: SortOrder
-    clientId?: SortOrder
+    clientName?: SortOrder
     domain?: SortOrder
     cost?: SortOrder
     startDate?: SortOrder
@@ -41052,7 +40971,6 @@ export namespace Prisma {
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    client?: UserOrderByWithRelationInput
   }
 
   export type HostingWhereUniqueInput = Prisma.AtLeast<{
@@ -41060,7 +40978,7 @@ export namespace Prisma {
     AND?: HostingWhereInput | HostingWhereInput[]
     OR?: HostingWhereInput[]
     NOT?: HostingWhereInput | HostingWhereInput[]
-    clientId?: StringFilter<"Hosting"> | string
+    clientName?: StringFilter<"Hosting"> | string
     domain?: StringFilter<"Hosting"> | string
     cost?: FloatFilter<"Hosting"> | number
     startDate?: DateTimeFilter<"Hosting"> | Date | string
@@ -41069,12 +40987,11 @@ export namespace Prisma {
     notes?: StringNullableFilter<"Hosting"> | string | null
     createdAt?: DateTimeFilter<"Hosting"> | Date | string
     updatedAt?: DateTimeFilter<"Hosting"> | Date | string
-    client?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type HostingOrderByWithAggregationInput = {
     id?: SortOrder
-    clientId?: SortOrder
+    clientName?: SortOrder
     domain?: SortOrder
     cost?: SortOrder
     startDate?: SortOrder
@@ -41095,7 +41012,7 @@ export namespace Prisma {
     OR?: HostingScalarWhereWithAggregatesInput[]
     NOT?: HostingScalarWhereWithAggregatesInput | HostingScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Hosting"> | string
-    clientId?: StringWithAggregatesFilter<"Hosting"> | string
+    clientName?: StringWithAggregatesFilter<"Hosting"> | string
     domain?: StringWithAggregatesFilter<"Hosting"> | string
     cost?: FloatWithAggregatesFilter<"Hosting"> | number
     startDate?: DateTimeWithAggregatesFilter<"Hosting"> | Date | string
@@ -41728,6 +41645,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -41753,7 +41671,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -41782,6 +41699,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -41806,7 +41724,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -41834,6 +41751,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -41859,7 +41777,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -41888,6 +41805,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -41912,7 +41830,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -41941,6 +41858,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
   }
 
   export type UserUpdateManyMutationInput = {
@@ -41966,6 +41884,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -41992,6 +41911,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RoleCreateInput = {
@@ -43474,6 +43394,7 @@ export namespace Prisma {
 
   export type HostingCreateInput = {
     id?: string
+    clientName: string
     domain: string
     cost: number
     startDate: Date | string
@@ -43482,12 +43403,11 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    client: UserCreateNestedOneWithoutHostingInput
   }
 
   export type HostingUncheckedCreateInput = {
     id?: string
-    clientId: string
+    clientName: string
     domain: string
     cost: number
     startDate: Date | string
@@ -43500,6 +43420,7 @@ export namespace Prisma {
 
   export type HostingUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
     domain?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43508,12 +43429,11 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    client?: UserUpdateOneRequiredWithoutHostingNestedInput
   }
 
   export type HostingUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clientId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
     domain?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43526,7 +43446,7 @@ export namespace Prisma {
 
   export type HostingCreateManyInput = {
     id?: string
-    clientId: string
+    clientName: string
     domain: string
     cost: number
     startDate: Date | string
@@ -43539,6 +43459,7 @@ export namespace Prisma {
 
   export type HostingUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
     domain?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43551,7 +43472,7 @@ export namespace Prisma {
 
   export type HostingUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clientId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
     domain?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44265,6 +44186,11 @@ export namespace Prisma {
     not?: NestedEnumMaritalStatusNullableFilter<$PrismaModel> | $Enums.MaritalStatus | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type UserRoleListRelationFilter = {
     every?: UserRoleWhereInput
     some?: UserRoleWhereInput
@@ -44399,12 +44325,6 @@ export namespace Prisma {
     none?: MessageMentionWhereInput
   }
 
-  export type HostingListRelationFilter = {
-    every?: HostingWhereInput
-    some?: HostingWhereInput
-    none?: HostingWhereInput
-  }
-
   export type LeadListRelationFilter = {
     every?: LeadWhereInput
     some?: LeadWhereInput
@@ -44492,10 +44412,6 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type HostingOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type LeadOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -44524,6 +44440,7 @@ export namespace Prisma {
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    onboardingCompleted?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -44554,6 +44471,7 @@ export namespace Prisma {
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    onboardingCompleted?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -44580,6 +44498,7 @@ export namespace Prisma {
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    onboardingCompleted?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -44696,9 +44615,12 @@ export namespace Prisma {
     _max?: NestedEnumMaritalStatusNullableFilter<$PrismaModel>
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type RolePermissionListRelationFilter = {
@@ -44736,14 +44658,6 @@ export namespace Prisma {
     isDefault?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -45604,7 +45518,7 @@ export namespace Prisma {
 
   export type HostingCountOrderByAggregateInput = {
     id?: SortOrder
-    clientId?: SortOrder
+    clientName?: SortOrder
     domain?: SortOrder
     cost?: SortOrder
     startDate?: SortOrder
@@ -45621,7 +45535,7 @@ export namespace Prisma {
 
   export type HostingMaxOrderByAggregateInput = {
     id?: SortOrder
-    clientId?: SortOrder
+    clientName?: SortOrder
     domain?: SortOrder
     cost?: SortOrder
     startDate?: SortOrder
@@ -45634,7 +45548,7 @@ export namespace Prisma {
 
   export type HostingMinOrderByAggregateInput = {
     id?: SortOrder
-    clientId?: SortOrder
+    clientName?: SortOrder
     domain?: SortOrder
     cost?: SortOrder
     startDate?: SortOrder
@@ -46221,13 +46135,6 @@ export namespace Prisma {
     connect?: MessageMentionWhereUniqueInput | MessageMentionWhereUniqueInput[]
   }
 
-  export type HostingCreateNestedManyWithoutClientInput = {
-    create?: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput> | HostingCreateWithoutClientInput[] | HostingUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: HostingCreateOrConnectWithoutClientInput | HostingCreateOrConnectWithoutClientInput[]
-    createMany?: HostingCreateManyClientInputEnvelope
-    connect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-  }
-
   export type LeadCreateNestedManyWithoutUserInput = {
     create?: XOR<LeadCreateWithoutUserInput, LeadUncheckedCreateWithoutUserInput> | LeadCreateWithoutUserInput[] | LeadUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LeadCreateOrConnectWithoutUserInput | LeadCreateOrConnectWithoutUserInput[]
@@ -46407,13 +46314,6 @@ export namespace Prisma {
     connect?: MessageMentionWhereUniqueInput | MessageMentionWhereUniqueInput[]
   }
 
-  export type HostingUncheckedCreateNestedManyWithoutClientInput = {
-    create?: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput> | HostingCreateWithoutClientInput[] | HostingUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: HostingCreateOrConnectWithoutClientInput | HostingCreateOrConnectWithoutClientInput[]
-    createMany?: HostingCreateManyClientInputEnvelope
-    connect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-  }
-
   export type LeadUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<LeadCreateWithoutUserInput, LeadUncheckedCreateWithoutUserInput> | LeadCreateWithoutUserInput[] | LeadUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LeadCreateOrConnectWithoutUserInput | LeadCreateOrConnectWithoutUserInput[]
@@ -46462,6 +46362,10 @@ export namespace Prisma {
 
   export type NullableEnumMaritalStatusFieldUpdateOperationsInput = {
     set?: $Enums.MaritalStatus | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type UserRoleUpdateManyWithoutUserNestedInput = {
@@ -46796,20 +46700,6 @@ export namespace Prisma {
     update?: MessageMentionUpdateWithWhereUniqueWithoutUserInput | MessageMentionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: MessageMentionUpdateManyWithWhereWithoutUserInput | MessageMentionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: MessageMentionScalarWhereInput | MessageMentionScalarWhereInput[]
-  }
-
-  export type HostingUpdateManyWithoutClientNestedInput = {
-    create?: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput> | HostingCreateWithoutClientInput[] | HostingUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: HostingCreateOrConnectWithoutClientInput | HostingCreateOrConnectWithoutClientInput[]
-    upsert?: HostingUpsertWithWhereUniqueWithoutClientInput | HostingUpsertWithWhereUniqueWithoutClientInput[]
-    createMany?: HostingCreateManyClientInputEnvelope
-    set?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-    disconnect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-    delete?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-    connect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-    update?: HostingUpdateWithWhereUniqueWithoutClientInput | HostingUpdateWithWhereUniqueWithoutClientInput[]
-    updateMany?: HostingUpdateManyWithWhereWithoutClientInput | HostingUpdateManyWithWhereWithoutClientInput[]
-    deleteMany?: HostingScalarWhereInput | HostingScalarWhereInput[]
   }
 
   export type LeadUpdateManyWithoutUserNestedInput = {
@@ -47164,20 +47054,6 @@ export namespace Prisma {
     deleteMany?: MessageMentionScalarWhereInput | MessageMentionScalarWhereInput[]
   }
 
-  export type HostingUncheckedUpdateManyWithoutClientNestedInput = {
-    create?: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput> | HostingCreateWithoutClientInput[] | HostingUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: HostingCreateOrConnectWithoutClientInput | HostingCreateOrConnectWithoutClientInput[]
-    upsert?: HostingUpsertWithWhereUniqueWithoutClientInput | HostingUpsertWithWhereUniqueWithoutClientInput[]
-    createMany?: HostingCreateManyClientInputEnvelope
-    set?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-    disconnect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-    delete?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-    connect?: HostingWhereUniqueInput | HostingWhereUniqueInput[]
-    update?: HostingUpdateWithWhereUniqueWithoutClientInput | HostingUpdateWithWhereUniqueWithoutClientInput[]
-    updateMany?: HostingUpdateManyWithWhereWithoutClientInput | HostingUpdateManyWithWhereWithoutClientInput[]
-    deleteMany?: HostingScalarWhereInput | HostingScalarWhereInput[]
-  }
-
   export type LeadUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<LeadCreateWithoutUserInput, LeadUncheckedCreateWithoutUserInput> | LeadCreateWithoutUserInput[] | LeadUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LeadCreateOrConnectWithoutUserInput | LeadCreateOrConnectWithoutUserInput[]
@@ -47232,10 +47108,6 @@ export namespace Prisma {
     connectOrCreate?: RolePermissionCreateOrConnectWithoutRoleInput | RolePermissionCreateOrConnectWithoutRoleInput[]
     createMany?: RolePermissionCreateManyRoleInputEnvelope
     connect?: RolePermissionWhereUniqueInput | RolePermissionWhereUniqueInput[]
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type UserRoleUpdateManyWithoutRoleNestedInput = {
@@ -47824,22 +47696,8 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTeamsInput, UserUpdateWithoutTeamsInput>, UserUncheckedUpdateWithoutTeamsInput>
   }
 
-  export type UserCreateNestedOneWithoutHostingInput = {
-    create?: XOR<UserCreateWithoutHostingInput, UserUncheckedCreateWithoutHostingInput>
-    connectOrCreate?: UserCreateOrConnectWithoutHostingInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type EnumDurationTypeFieldUpdateOperationsInput = {
     set?: $Enums.DurationType
-  }
-
-  export type UserUpdateOneRequiredWithoutHostingNestedInput = {
-    create?: XOR<UserCreateWithoutHostingInput, UserUncheckedCreateWithoutHostingInput>
-    connectOrCreate?: UserCreateOrConnectWithoutHostingInput
-    upsert?: UserUpsertWithoutHostingInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutHostingInput, UserUpdateWithoutHostingInput>, UserUncheckedUpdateWithoutHostingInput>
   }
 
   export type TeamCreateNestedOneWithoutChatRoomsInput = {
@@ -48396,6 +48254,11 @@ export namespace Prisma {
     not?: NestedEnumMaritalStatusNullableFilter<$PrismaModel> | $Enums.MaritalStatus | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -48524,11 +48387,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumMaritalStatusNullableFilter<$PrismaModel>
     _max?: NestedEnumMaritalStatusNullableFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -48781,6 +48639,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
@@ -48805,7 +48664,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -48834,6 +48692,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
     education?: EducationUncheckedCreateNestedManyWithoutUserInput
@@ -48857,7 +48716,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -48890,6 +48748,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
@@ -48914,7 +48773,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -48942,6 +48800,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -48966,7 +48825,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -49646,40 +49504,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type HostingCreateWithoutClientInput = {
-    id?: string
-    domain: string
-    cost: number
-    startDate: Date | string
-    expiryDate: Date | string
-    durationType: $Enums.DurationType
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type HostingUncheckedCreateWithoutClientInput = {
-    id?: string
-    domain: string
-    cost: number
-    startDate: Date | string
-    expiryDate: Date | string
-    durationType: $Enums.DurationType
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type HostingCreateOrConnectWithoutClientInput = {
-    where: HostingWhereUniqueInput
-    create: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput>
-  }
-
-  export type HostingCreateManyClientInputEnvelope = {
-    data: HostingCreateManyClientInput | HostingCreateManyClientInput[]
-    skipDuplicates?: boolean
-  }
-
   export type LeadCreateWithoutUserInput = {
     id?: string
     date: Date | string
@@ -49841,6 +49665,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
@@ -49865,7 +49690,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -49894,6 +49718,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
     education?: EducationUncheckedUpdateManyWithoutUserNestedInput
@@ -49917,7 +49742,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -49965,6 +49789,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    onboardingCompleted?: BoolFilter<"User"> | boolean
   }
 
   export type EmergencyContactUpsertWithoutUserInput = {
@@ -50588,38 +50413,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"MessageMention"> | Date | string
   }
 
-  export type HostingUpsertWithWhereUniqueWithoutClientInput = {
-    where: HostingWhereUniqueInput
-    update: XOR<HostingUpdateWithoutClientInput, HostingUncheckedUpdateWithoutClientInput>
-    create: XOR<HostingCreateWithoutClientInput, HostingUncheckedCreateWithoutClientInput>
-  }
-
-  export type HostingUpdateWithWhereUniqueWithoutClientInput = {
-    where: HostingWhereUniqueInput
-    data: XOR<HostingUpdateWithoutClientInput, HostingUncheckedUpdateWithoutClientInput>
-  }
-
-  export type HostingUpdateManyWithWhereWithoutClientInput = {
-    where: HostingScalarWhereInput
-    data: XOR<HostingUpdateManyMutationInput, HostingUncheckedUpdateManyWithoutClientInput>
-  }
-
-  export type HostingScalarWhereInput = {
-    AND?: HostingScalarWhereInput | HostingScalarWhereInput[]
-    OR?: HostingScalarWhereInput[]
-    NOT?: HostingScalarWhereInput | HostingScalarWhereInput[]
-    id?: StringFilter<"Hosting"> | string
-    clientId?: StringFilter<"Hosting"> | string
-    domain?: StringFilter<"Hosting"> | string
-    cost?: FloatFilter<"Hosting"> | number
-    startDate?: DateTimeFilter<"Hosting"> | Date | string
-    expiryDate?: DateTimeFilter<"Hosting"> | Date | string
-    durationType?: EnumDurationTypeFilter<"Hosting"> | $Enums.DurationType
-    notes?: StringNullableFilter<"Hosting"> | string | null
-    createdAt?: DateTimeFilter<"Hosting"> | Date | string
-    updatedAt?: DateTimeFilter<"Hosting"> | Date | string
-  }
-
   export type LeadUpsertWithWhereUniqueWithoutUserInput = {
     where: LeadWhereUniqueInput
     update: XOR<LeadUpdateWithoutUserInput, LeadUncheckedUpdateWithoutUserInput>
@@ -50790,6 +50583,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
@@ -50814,7 +50608,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -50843,6 +50636,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
     education?: EducationUncheckedCreateNestedManyWithoutUserInput
@@ -50866,7 +50660,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -50935,6 +50728,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
@@ -50959,7 +50753,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -50988,6 +50781,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
     education?: EducationUncheckedUpdateManyWithoutUserNestedInput
@@ -51011,7 +50805,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -51222,6 +51015,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -51246,7 +51040,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -51275,6 +51068,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     education?: EducationUncheckedCreateNestedManyWithoutUserInput
@@ -51298,7 +51092,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -51342,6 +51135,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -51366,7 +51160,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -51395,6 +51188,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     education?: EducationUncheckedUpdateManyWithoutUserNestedInput
@@ -51418,7 +51212,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -51446,6 +51239,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -51470,7 +51264,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -51499,6 +51292,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -51522,7 +51316,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -51566,6 +51359,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -51590,7 +51384,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -51619,6 +51412,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -51642,7 +51436,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -51670,6 +51463,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -51694,7 +51488,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -51723,6 +51516,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -51746,7 +51540,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -51790,6 +51583,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -51814,7 +51608,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -51843,6 +51636,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -51866,7 +51660,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -51894,6 +51687,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -51918,7 +51712,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -51947,6 +51740,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -51970,7 +51764,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -52014,6 +51807,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -52038,7 +51832,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -52067,6 +51860,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -52090,7 +51884,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -52118,6 +51911,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -52142,7 +51936,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -52171,6 +51964,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -52194,7 +51988,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -52238,6 +52031,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -52262,7 +52056,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -52291,6 +52084,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -52314,7 +52108,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -52342,6 +52135,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -52366,7 +52160,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -52395,6 +52188,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -52418,7 +52212,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -52462,6 +52255,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -52486,7 +52280,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -52515,6 +52308,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -52538,7 +52332,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -52566,6 +52359,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -52590,7 +52384,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -52619,6 +52412,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -52642,7 +52436,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -52675,6 +52468,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -52699,7 +52493,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -52728,6 +52521,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -52751,7 +52545,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -52784,6 +52577,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -52808,7 +52602,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -52837,6 +52630,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -52860,7 +52654,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -52904,6 +52697,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -52928,7 +52722,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -52957,6 +52750,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -52980,7 +52774,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -53019,6 +52812,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -53043,7 +52837,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -53072,6 +52865,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -53095,7 +52889,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -53134,6 +52927,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -53158,7 +52952,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -53187,6 +52980,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -53210,7 +53004,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -53238,6 +53031,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -53262,7 +53056,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -53291,6 +53084,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -53314,7 +53108,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -53358,6 +53151,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -53382,7 +53176,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -53411,6 +53204,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -53434,7 +53228,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -53462,6 +53255,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -53486,7 +53280,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -53515,6 +53308,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -53538,7 +53332,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -53582,6 +53375,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -53606,7 +53400,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -53635,6 +53428,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -53658,7 +53452,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -53686,6 +53479,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -53710,7 +53504,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -53739,6 +53532,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -53762,7 +53556,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -53806,6 +53599,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -53830,7 +53624,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -53859,6 +53652,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -53882,7 +53676,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -53983,6 +53776,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -54007,7 +53801,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -54036,6 +53829,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -54059,7 +53853,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -54144,6 +53937,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -54168,7 +53962,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -54197,6 +53990,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -54220,7 +54014,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -54248,6 +54041,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -54272,7 +54066,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -54301,6 +54094,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -54324,7 +54118,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -54368,6 +54161,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -54392,7 +54186,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -54421,6 +54214,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -54444,7 +54238,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -54472,6 +54265,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -54496,7 +54290,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -54525,6 +54318,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -54548,7 +54342,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -54592,6 +54385,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -54616,7 +54410,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -54645,6 +54438,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -54668,7 +54462,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -54696,6 +54489,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -54720,7 +54514,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -54749,6 +54542,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -54772,7 +54566,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -54870,6 +54663,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -54894,7 +54688,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -54923,6 +54716,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -54946,7 +54740,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -55044,6 +54837,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -55068,7 +54862,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -55097,6 +54890,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -55120,7 +54914,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -55195,6 +54988,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -55219,7 +55013,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -55248,6 +55041,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -55261,231 +55055,6 @@ export namespace Prisma {
     skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
     performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
     projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
-    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
-    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
-    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
-    sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
-    chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
-    lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
-    messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
-    messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
-    userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
-    assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  }
-
-  export type UserCreateWithoutHostingInput = {
-    id?: string
-    username: string
-    firstName: string
-    lastName: string
-    email: string
-    cnic: string
-    pfp?: string | null
-    password: string
-    salary: number
-    address: string
-    department: string
-    position: string
-    joinDate: Date | string
-    phone?: string | null
-    legacyRole?: $Enums.LegacyRole
-    status?: string
-    dateOfBirth?: Date | string | null
-    gender?: $Enums.Gender | null
-    maritalStatus?: $Enums.MaritalStatus | null
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
-    subordinates?: UserCreateNestedManyWithoutReportsToInput
-    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
-    education?: EducationCreateNestedManyWithoutUserInput
-    experience?: ExperienceCreateNestedManyWithoutUserInput
-    documents?: DocumentCreateNestedManyWithoutUserInput
-    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
-    attendance?: AttendanceCreateNestedManyWithoutUserInput
-    leaves?: LeaveCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    skills?: SkillCreateNestedManyWithoutUserInput
-    performance?: PerformanceCreateNestedManyWithoutUserInput
-    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
-    teams?: TeamMemberCreateNestedManyWithoutUserInput
-    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    meetings?: MeetingCreateNestedManyWithoutUserInput
-    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
-    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
-    sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
-    chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
-    lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
-    messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
-    messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    userLeads?: LeadCreateNestedManyWithoutUserInput
-    assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
-  }
-
-  export type UserUncheckedCreateWithoutHostingInput = {
-    id?: string
-    username: string
-    firstName: string
-    lastName: string
-    email: string
-    cnic: string
-    pfp?: string | null
-    password: string
-    salary: number
-    address: string
-    department: string
-    position: string
-    joinDate: Date | string
-    phone?: string | null
-    legacyRole?: $Enums.LegacyRole
-    status?: string
-    dateOfBirth?: Date | string | null
-    gender?: $Enums.Gender | null
-    maritalStatus?: $Enums.MaritalStatus | null
-    reportsToId?: string | null
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
-    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
-    education?: EducationUncheckedCreateNestedManyWithoutUserInput
-    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
-    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
-    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
-    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
-    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
-    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
-    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
-    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
-    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
-    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
-    chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
-    lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
-    messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
-    messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
-    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  }
-
-  export type UserCreateOrConnectWithoutHostingInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutHostingInput, UserUncheckedCreateWithoutHostingInput>
-  }
-
-  export type UserUpsertWithoutHostingInput = {
-    update: XOR<UserUpdateWithoutHostingInput, UserUncheckedUpdateWithoutHostingInput>
-    create: XOR<UserCreateWithoutHostingInput, UserUncheckedCreateWithoutHostingInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutHostingInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutHostingInput, UserUncheckedUpdateWithoutHostingInput>
-  }
-
-  export type UserUpdateWithoutHostingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    cnic?: StringFieldUpdateOperationsInput | string
-    pfp?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    salary?: FloatFieldUpdateOperationsInput | number
-    address?: StringFieldUpdateOperationsInput | string
-    department?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
-    status?: StringFieldUpdateOperationsInput | string
-    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
-    subordinates?: UserUpdateManyWithoutReportsToNestedInput
-    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
-    education?: EducationUpdateManyWithoutUserNestedInput
-    experience?: ExperienceUpdateManyWithoutUserNestedInput
-    documents?: DocumentUpdateManyWithoutUserNestedInput
-    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
-    attendance?: AttendanceUpdateManyWithoutUserNestedInput
-    leaves?: LeaveUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    skills?: SkillUpdateManyWithoutUserNestedInput
-    performance?: PerformanceUpdateManyWithoutUserNestedInput
-    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
-    teams?: TeamMemberUpdateManyWithoutUserNestedInput
-    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    meetings?: MeetingUpdateManyWithoutUserNestedInput
-    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
-    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
-    sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
-    chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
-    lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
-    messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
-    messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    userLeads?: LeadUpdateManyWithoutUserNestedInput
-    assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutHostingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    cnic?: StringFieldUpdateOperationsInput | string
-    pfp?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    salary?: FloatFieldUpdateOperationsInput | number
-    address?: StringFieldUpdateOperationsInput | string
-    department?: StringFieldUpdateOperationsInput | string
-    position?: StringFieldUpdateOperationsInput | string
-    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
-    status?: StringFieldUpdateOperationsInput | string
-    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
-    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
-    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
-    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
-    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
-    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
-    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
-    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
-    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
     leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
@@ -55716,6 +55285,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -55740,7 +55310,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -55769,6 +55338,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -55792,7 +55362,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -55869,6 +55438,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -55893,7 +55463,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -55922,6 +55491,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -55945,7 +55515,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -56099,6 +55668,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -56123,7 +55693,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -56152,6 +55721,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -56175,7 +55745,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -56389,6 +55958,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -56413,7 +55983,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -56442,6 +56011,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -56465,7 +56035,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -56698,6 +56267,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -56722,7 +56292,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -56751,6 +56320,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -56774,7 +56344,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -56871,6 +56440,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -56895,7 +56465,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -56924,6 +56493,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -56947,7 +56517,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -57022,6 +56591,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -57046,7 +56616,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -57075,6 +56644,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -57098,7 +56668,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -57195,6 +56764,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -57219,7 +56789,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -57248,6 +56817,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -57271,7 +56841,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -57299,6 +56868,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -57323,7 +56893,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
@@ -57352,6 +56921,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -57375,7 +56945,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
@@ -57419,6 +56988,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -57443,7 +57013,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -57472,6 +57041,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -57495,7 +57065,6 @@ export namespace Prisma {
     chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -57523,6 +57092,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -57548,7 +57118,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
   }
 
@@ -57576,6 +57145,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -57600,7 +57170,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
   }
 
@@ -57632,6 +57201,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
     reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
     subordinates?: UserCreateNestedManyWithoutReportsToInput
@@ -57657,7 +57227,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
-    Hosting?: HostingCreateNestedManyWithoutClientInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
   }
 
@@ -57685,6 +57254,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
     subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
     emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
@@ -57709,7 +57279,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
-    Hosting?: HostingUncheckedCreateNestedManyWithoutClientInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -57752,6 +57321,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -57777,7 +57347,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
 
@@ -57805,6 +57374,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -57829,7 +57399,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
 
@@ -57867,6 +57436,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
@@ -57892,7 +57462,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
   }
 
@@ -57920,6 +57489,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -57944,7 +57514,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -57978,6 +57547,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    onboardingCompleted?: boolean
   }
 
   export type EducationCreateManyUserInput = {
@@ -58178,18 +57748,6 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type HostingCreateManyClientInput = {
-    id?: string
-    domain: string
-    cost: number
-    startDate: Date | string
-    expiryDate: Date | string
-    durationType: $Enums.DurationType
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type LeadCreateManyUserInput = {
     id?: string
     date: Date | string
@@ -58274,6 +57832,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
     subordinates?: UserUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
@@ -58298,7 +57857,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUpdateManyWithoutClientNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
   }
@@ -58326,6 +57884,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
     subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
     emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
@@ -58350,7 +57909,6 @@ export namespace Prisma {
     lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
-    Hosting?: HostingUncheckedUpdateManyWithoutClientNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   }
@@ -58378,6 +57936,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type EducationUpdateWithoutUserInput = {
@@ -58984,42 +58543,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HostingUpdateWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    cost?: FloatFieldUpdateOperationsInput | number
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HostingUncheckedUpdateWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    cost?: FloatFieldUpdateOperationsInput | number
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HostingUncheckedUpdateManyWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    cost?: FloatFieldUpdateOperationsInput | number
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiryDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    durationType?: EnumDurationTypeFieldUpdateOperationsInput | $Enums.DurationType
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LeadUpdateWithoutUserInput = {

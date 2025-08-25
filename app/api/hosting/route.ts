@@ -30,13 +30,7 @@ export async function GET(req: Request) {
       ...(search && {
         OR: [
           { domain: { contains: search, mode: "insensitive" } },
-          { client: { 
-            OR: [
-              { firstName: { contains: search, mode: "insensitive" } },
-              { lastName: { contains: search, mode: "insensitive" } },
-              { email: { contains: search, mode: "insensitive" } }
-            ]
-          } },
+          { clientName: { contains: search, mode: "insensitive" } },
         ],
       }),
       ...(durationType && { durationType }),
@@ -63,17 +57,6 @@ export async function GET(req: Request) {
     // Get hostings with pagination
     const hostings = await (prisma as any).hosting.findMany({
       where,
-      include: {
-        client: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            phone: true,
-          }
-        }
-      },
       skip: (page - 1) * ITEMS_PER_PAGE,
       take: ITEMS_PER_PAGE,
       orderBy: { createdAt: "desc" },
@@ -88,7 +71,7 @@ export async function GET(req: Request) {
     return NextResponse.json({
       hostings,
       totalPages,
-      durationTypes: durationTypes.map((d) => d.durationType),
+      durationTypes: durationTypes.map((d: any) => d.durationType),
     });
   } catch (error) {
     console.error("Error fetching hostings:", error);
@@ -114,7 +97,7 @@ export async function POST(req: Request) {
     console.log("Request data:", data);
     
     const {
-      clientId,
+      clientName,
       domain,
       cost,
       startDate,
@@ -124,7 +107,7 @@ export async function POST(req: Request) {
     } = data;
 
     // Validate required fields
-    if (!clientId || !domain || !cost || !startDate || !expiryDate || !durationType) {
+    if (!clientName || !domain || !cost || !startDate || !expiryDate || !durationType) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
@@ -136,18 +119,6 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { message: "Invalid cost value" },
         { status: 400 }
-      );
-    }
-
-    // Check if client exists
-    const client = await prisma.user.findUnique({
-      where: { id: clientId }
-    });
-
-    if (!client) {
-      return NextResponse.json(
-        { message: "Client not found" },
-        { status: 404 }
       );
     }
 
@@ -168,7 +139,7 @@ export async function POST(req: Request) {
     // Create hosting
     const hosting = await (prisma as any).hosting.create({
       data: {
-        clientId,
+        clientName,
         domain,
         cost: Number(cost),
         startDate: new Date(startDate),
@@ -176,17 +147,6 @@ export async function POST(req: Request) {
         durationType,
         notes,
       },
-      include: {
-        client: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            phone: true,
-          }
-        }
-      }
     });
 
     return NextResponse.json({

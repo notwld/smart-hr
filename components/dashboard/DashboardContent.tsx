@@ -26,7 +26,7 @@ import {
   ChevronUp,
 } from "lucide-react"
 import { Line, LineChart, Pie, PieChart } from "recharts"
-import {format} from 'date-fns'
+import { format } from 'date-fns'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -39,6 +39,7 @@ import { useEffect, useState, useCallback } from "react"
 import axios from "axios"
 import Link from "next/link"
 import { toast } from "sonner"
+import { ButtonLoader, Loader } from "@/components/ui/loader"
 
 interface DashboardUser {
   id: string;
@@ -111,19 +112,19 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const [stats, setStats] = useState<any>(null);
   const [elapsedTime, setElapsedTime] = useState<string>("00:00:00");
   const [showLeaveBanner, setShowLeaveBanner] = useState(true);
-  const [teamLeader, setTeamLeader] = useState<{firstName: string; lastName: string} | null>(null);
+  const [teamLeader, setTeamLeader] = useState<{ firstName: string; lastName: string } | null>(null);
   const [timeLabels, setTimeLabels] = useState<string[]>([]);
 
   // Function to generate time labels
   const generateTimeLabels = useCallback(() => {
     const labels: string[] = [];
-    
+
     if (todayAttendance?.checkInTime) {
       // Start from check-in time
       const startTime = new Date(todayAttendance.checkInTime);
       // Round to nearest hour for cleaner display
-      
-      
+
+
       // Generate 10 labels (including start time and next 9 hours)
       for (let i = 0; i < 10; i++) {
         const time = new Date(startTime);
@@ -135,7 +136,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       const now = new Date();
       // Round to nearest hour
       now.setMinutes(0, 0, 0);
-      
+
       // Generate 10 labels starting from current time
       for (let i = 0; i < 10; i++) {
         const time = new Date(now);
@@ -143,14 +144,14 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         labels.push(format(time, 'hh:mm a'));
       }
     }
-    
+
     setTimeLabels(labels);
   }, [todayAttendance?.checkInTime]);
 
   // Update the progress bar calculation to be dynamic based on check-in time
   const calculateProgress = useCallback(() => {
     if (!todayAttendance?.checkInTime) return 0;
-    
+
     const now = new Date();
     const checkInTime = new Date(todayAttendance.checkInTime);
     const elapsedHours = (now.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
@@ -189,10 +190,10 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     generateTimeLabels();
     debouncedFetchTodayAttendance();
     debouncedFetchStats();
-    
+
     // Set up interval to update time labels every minute
     const timeLabelInterval = setInterval(generateTimeLabels, 60000);
-    
+
     // Set up interval to update stats every 5 minutes instead of every minute to reduce server load
     const statsInterval = setInterval(debouncedFetchStats, 300000);
 
@@ -203,11 +204,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         const checkInTime = new Date(todayAttendance.checkInTime);
         const now = new Date();
         const diff = now.getTime() - checkInTime.getTime();
-        
+
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        
+
         const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         setElapsedTime(formattedTime);
       }
@@ -231,7 +232,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
           console.error("Error fetching team leader:", error);
         }
       };
-      
+
       fetchTeamLeader();
     } else if (user.teams && user.teams.length > 0 && user.teams[0].team.leader) {
       setTeamLeader(user.teams[0].team.leader);
@@ -246,7 +247,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       }
     };
   }, [todayAttendance?.checkInTime, user.id, user.reportsTo, user.teams]);
- 
+
   // Replace the fetchTodayAttendance and fetchStats functions with their debounced versions
   const fetchTodayAttendance = () => debouncedFetchTodayAttendance();
   const fetchStats = () => debouncedFetchStats();
@@ -261,9 +262,9 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       }
     } catch (error: any) {
       console.error("Check-in error:", error);
-      const errorMessage = error.response?.data?.message || 
-                          error.response?.data?.error || 
-                          "Failed to check in. Please try again.";
+      const errorMessage = error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to check in. Please try again.";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -280,9 +281,9 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       }
     } catch (error: any) {
       console.error("Check-out error:", error);
-      const errorMessage = error.response?.data?.message || 
-                          error.response?.data?.error || 
-                          "Failed to check out. Please try again.";
+      const errorMessage = error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to check out. Please try again.";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -337,7 +338,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                 </ul>
               </div>
             </div>
-            
+
           </div>
         </header>
 
@@ -345,60 +346,59 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         <main className="flex-1 overflow-auto p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Employee Profile Card */}
-            <Card className="overflow-hidden">
-              <div className="bg-primary text-white p-4">
+            <Card className="overflow-hidden rounded-lg shadow-sm border-0">
+              <div className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-6">
                 <div className="flex items-center">
-                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white text-xl font-bold">
-                    {user.firstName[0]} {user.lastName[0]}
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-cyan-600 text-lg font-bold shadow-sm">
+                    {user.firstName[0]}{user.lastName[0]}
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-semibold">{user.firstName} {user.lastName}</h3>
-                    <p className="text-sm text-white">{user.position} - {user.department}</p>
+                    <h3 className="text-xl font-semibold text-white">{user.firstName} {user.lastName}</h3>
+                    <p className="text-sm text-white/90">{user.position} - {user.department}</p>
                   </div>
                 </div>
               </div>
-              <CardContent className="p-4">
-                <div className="space-y-3">
+              <CardContent className="p-6 bg-[#dff9ff]">
+                <div className="space-y-4">
                   <div className="flex items-start">
-                    <Phone className="w-4 h-4 text-gray-500 mt-0.5 mr-3" />
+                    <Phone className="w-4 h-4 text-gray-500 mt-1 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Phone Number</p>
-                      <p className="text-sm font-medium">{user.phone || "Not provided"}</p>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Phone Number</p>
+                      <p className="text-sm font-medium text-gray-900">{user.phone || "Not provided"}</p>
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <Mail className="w-4 h-4 text-gray-500 mt-0.5 mr-3" />
+                    <Mail className="w-4 h-4 text-gray-500 mt-1 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Email</p>
-                      <p className="text-sm font-medium">{user.email}</p>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Email</p>
+                      <p className="text-sm font-medium text-gray-900">{user.email}</p>
                     </div>
                   </div>
-                  <Separator />
                   <div className="flex items-start">
-                    <Users className="w-4 h-4 text-gray-500 mt-0.5 mr-3" />
+                    <Users className="w-4 h-4 text-gray-500 mt-1 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Report To</p>
-                      <p className="text-sm font-medium">
-                        {user.reportsTo 
-                          ? `${user.reportsTo.firstName} ${user.reportsTo.lastName}` 
-                          : teamLeader 
+                      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Report To</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {user.reportsTo
+                          ? `${user.reportsTo.firstName} ${user.reportsTo.lastName}`
+                          : teamLeader
                             ? `${teamLeader.firstName} ${teamLeader.lastName} (Team Leader)`
                             : "Not assigned"}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <Layout className="w-4 h-4 text-gray-500 mt-0.5 mr-3" />
+                    <Layout className="w-4 h-4 text-gray-500 mt-1 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Department</p>
-                      <p className="text-sm font-medium">{user.department}</p>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Department</p>
+                      <p className="text-sm font-medium text-gray-900">{user.department}</p>
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <Calendar className="w-4 h-4 text-gray-500 mt-0.5 mr-3" />
+                    <Calendar className="w-4 h-4 text-gray-500 mt-1 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Join Date</p>
-                      <p className="text-sm font-medium">{new Date(user.joinDate).toLocaleDateString()}</p>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Join Date</p>
+                      <p className="text-sm font-medium text-gray-900">{new Date(user.joinDate).toLocaleDateString('en-GB')}</p>
                     </div>
                   </div>
                 </div>
@@ -406,11 +406,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
             </Card>
 
             {/* Leave Details Pie Chart Card */}
-            <Card>
+            <Card className="border-0 rounded-lg shadow-sm  bg-[#dff9ff]">
               <CardHeader className="pb-2 flex justify-between items-center">
-                <CardTitle className="text-base">Leave Details</CardTitle>
-                <Button variant="outline" size="sm" className="h-7 px-3">
-                  <span className="text-blue-600 font-medium">{new Date().getFullYear()}</span>
+                <CardTitle className="text-lg font-semibold text-gray-800">Leave Details</CardTitle>
+                <Button variant="outline" size="sm" className="h-8 px-4 rounded-full border-cyan-200 bg-white hover:bg-cyan-50">
+                  <span className="text-cyan-600 font-medium">{new Date().getFullYear()}</span>
                 </Button>
               </CardHeader>
               <CardContent className="pt-0">
@@ -499,69 +499,68 @@ export default function DashboardContent({ user }: DashboardContentProps) {
             </Card>
 
             {/* Leave Summary Card */}
-            <Card>
-              <CardHeader className="pb-2 flex justify-between items-center">
-                <CardTitle className="text-base">Leave Summary</CardTitle>
-                <Button variant="outline" size="sm" className="h-7 px-3">
-                  <span className="text-blue-600 font-medium">{new Date().getFullYear()}</span>
-                </Button>
+            <Card className="bg-[#dff9ff] border-0 rounded-lg shadow-sm ">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold text-gray-800">Leave Summary</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-6 mb-6">
+              <CardContent className="pt-0 flex flex-col">
+                <div className="grid grid-cols-2 gap-6 mb-8">
                   <div>
-                    <p className="text-gray-600 text-sm">Total Leaves</p>
-                    <p className="text-xl font-medium">{leaveStats.total}</p>
+                    <p className="text-gray-500 text-sm mb-1">Total Leaves</p>
+                    <p className="text-2xl font-bold text-gray-900">{leaveStats.total}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-sm">Taken</p>
-                    <p className="text-xl font-medium">{leaveStats.taken}</p>
+                    <p className="text-gray-500 text-sm mb-1">Taken</p>
+                    <p className="text-2xl font-bold text-gray-900">{leaveStats.taken}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-sm">Pending</p>
-                    <p className="text-xl font-medium">{leaveStats.pending}</p>
+                    <p className="text-gray-500 text-sm mb-1">Pending</p>
+                    <p className="text-2xl font-bold text-gray-900">{leaveStats.pending}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-sm">Available</p>
-                    <p className="text-xl font-medium">{20 - leaveStats.taken}</p>
+                    <p className="text-gray-500 text-sm mb-1">Available</p>
+                    <p className="text-2xl font-bold text-gray-900">{20 - leaveStats.taken}</p>
                   </div>
                 </div>
-                <Link href="/leaves/apply">
-                  <Button className="w-full bg-gray-900 hover:bg-black text-white">
-                    Apply for Leave
-                  </Button>
-                </Link>
+                <div className="align-self-end">
+                  <Link href="/leaves/apply">
+                    <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-full py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+                      Leave Summary
+                    </Button>
+                  </Link>
+                </div>
               </CardContent>
             </Card>
-        
-           
+
+
             {/* Attendance and Work Hours Side by Side */}
             <div className="col-span-3 grid grid-cols-1 md:grid-cols-4 gap-6">
               {/* Attendance Card */}
-              <Card className="md:col-span-1">
-    <CardHeader>
-      <CardTitle className="text-base">Attendance</CardTitle>
-    </CardHeader>
-    <CardContent className="flex flex-col items-center">
-      <div className="relative w-40 h-40 rounded-full border-8 border-gray-100 flex items-center justify-center mb-4">
-        <div className="absolute inset-0 rounded-full border-t-8 border-primary"></div>
-        <div className="text-center">
-          <p className="text-xl font-bold">
-            {todayAttendance?.checkInTime
-              ? format(new Date(todayAttendance.checkInTime), "hh:mm a")
-              : "--:--"}
-          </p>
-          <p className="text-xs text-gray-500">
-            {format(new Date(), "dd MMM yyyy")}
-          </p>
-        </div>
-      </div>
+              <Card className="md:col-span-1 border-0 rounded-lg shadow-sm bg-[#dff9ff]">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold text-gray-800">Attendance</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col items-center">
+                  <div className="relative w-40 h-40 rounded-full border-8 border-[#dff9ff] flex items-center justify-center mb-4">
+                    <div className="absolute inset-0 rounded-full border-t-8 border-primary"></div>
+                    <div className="text-center">
+                      <p className="text-xl font-bold">
+                        {todayAttendance?.checkInTime
+                          ? format(new Date(todayAttendance.checkInTime), "hh:mm a")
+                          : "--:--"}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {format(new Date(), "dd MMM yyyy")}
+                      </p>
+                    </div>
+                  </div>
 
-      <div className="text-center mb-4">
-        <p className="text-sm text-gray-500">Time Elapsed</p>
-        <p className="text-xl font-bold">{elapsedTime}</p>
-      </div>
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-gray-500">Time Elapsed</p>
+                    <p className="text-xl font-bold">{elapsedTime}</p>
+                  </div>
 
-      {/* <div className="text-center mb-4">
+                  {/* <div className="text-center mb-4">
         <p className="text-sm text-gray-500">Total Hours Today</p>
         <p className="text-xl font-bold">
           {todayAttendance?.totalHours
@@ -570,141 +569,141 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         </p>
       </div> */}
 
-      {!todayAttendance?.checkInTime && (
-        <Button
-          className="w-full bg-primary hover:bg-primary/80"
-          onClick={handleCheckIn}
-          disabled={loading}
-        >
-          {loading ? "Checking In..." : "Punch In"}
-        </Button>
-      )}
+                  {!todayAttendance?.checkInTime && (
+                                         <Button
+                       className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-full py-3 font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                       onClick={handleCheckIn}
+                       disabled={loading}
+                     >
+                       {loading ? <ButtonLoader size="sm" /> : "Punch In"}
+                     </Button>
+                  )}
 
-      {todayAttendance?.checkInTime && !todayAttendance?.checkOutTime && (
-        <Button
-          className="w-full bg-primary hover:bg-primary/80"
-          onClick={handleCheckOut}
-          disabled={loading}
-        >
-          {loading ? "Checking Out..." : "Punch Out"}
-        </Button>
-      )}
+                  {todayAttendance?.checkInTime && !todayAttendance?.checkOutTime && (
+                    <Button
+                      className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-full py-3 font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                      onClick={handleCheckOut}
+                      disabled={loading}
+                    >
+                      {loading ? <ButtonLoader size="sm" /> : "Punch Out"}
+                    </Button>
+                  )}
 
-      {todayAttendance?.checkInTime && todayAttendance?.checkOutTime && (
-        <div className="text-green-600 font-semibold mt-2">Attendance Completed ✔️</div>
-      )}
-    </CardContent>
-  </Card>
+                  {todayAttendance?.checkInTime && todayAttendance?.checkOutTime && (
+                    <div className="text-green-600 font-semibold mt-2">Attendance Completed ✔️</div>
+                  )}
+                </CardContent>
+              </Card>
 
 
               {/* Work Hours Tracker Card */}
-              <Card className="md:col-span-3">
-                <CardContent className="p-4">
-                   {/* Attendance and Work Hours Row */}
-            <div className="col-span-3 grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-              {/* Hours Tracking Cards */}
-              <Card className="bg-white">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white">
-                      <Clock className="w-5 h-5" />
-                    </div>
-                  </div>
-                  <div className="flex items-baseline">
-                    <span className="text-2xl font-bold">{stats?.today?.total.toFixed(2)}</span>
-                    <span className="text-gray-500 ml-1">/ 9</span>
-                  </div>
-                  <p className="text-sm text-gray-600">Total Hours Today</p>
-                  <div className="mt-3 flex items-center">
-                    <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
-                      <ChevronUp className="w-3 h-3" />
-                    </div>
-                    <span className="text-sm ml-1">5% This Week</span>
-                  </div>
-                  {stats?.today?.remaining > 0 && (
-                    <div className="mt-2 text-sm text-orange-500">
-                      Remaining: {formatHours(stats.today.remaining)}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <Card className="md:col-span-3 border-0 rounded-lg shadow-sm bg-[#dff9ff]">
+                <CardContent className="p-6">
+                  {/* Attendance and Work Hours Row */}
+                  <div className="col-span-3 grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                    {/* Hours Tracking Cards */}
+                    <Card className="bg-white border-0 rounded-lg shadow-sm">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white">
+                            <Clock className="w-5 h-5" />
+                          </div>
+                        </div>
+                        <div className="flex items-baseline">
+                          <span className="text-2xl font-bold">{stats?.today?.total.toFixed(2)}</span>
+                          <span className="text-gray-500 ml-1">/ 9</span>
+                        </div>
+                        <p className="text-sm text-gray-600">Total Hours Today</p>
+                        <div className="mt-3 flex items-center">
+                          <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
+                            <ChevronUp className="w-3 h-3" />
+                          </div>
+                          <span className="text-sm ml-1">5% This Week</span>
+                        </div>
+                        {stats?.today?.remaining > 0 && (
+                          <div className="mt-2 text-sm text-orange-500">
+                            Remaining: {formatHours(stats.today.remaining)}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
 
-              {/* Total Hours Week */}
-              <Card className="bg-white">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-8 h-8 rounded-md bg-gray-900 flex items-center justify-center text-white">
-                      <Clock className="w-5 h-5" />
-                    </div>
-                  </div>
-                  <div className="flex items-baseline">
-                    <span className="text-2xl font-bold">{stats?.week?.total.toFixed(2)}</span>
-                    <span className="text-gray-500 ml-1">/ 45</span>
-                  </div>
-                  <p className="text-sm text-gray-600">Total Hours Week</p>
-                  <div className="mt-3 flex items-center">
-                    <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
-                      <ChevronUp className="w-3 h-3" />
-                    </div>
-                    <span className="text-sm ml-1">7% Last Week</span>
-                  </div>
-                  {stats?.week?.remaining > 0 && (
-                    <div className="mt-2 text-sm text-orange-500">
-                      Remaining: {formatHours(stats.week.remaining)}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                    {/* Total Hours Week */}
+                    <Card className="bg-white border-0 rounded-lg shadow-sm">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="w-8 h-8 rounded-md bg-gray-900 flex items-center justify-center text-white">
+                            <Clock className="w-5 h-5" />
+                          </div>
+                        </div>
+                        <div className="flex items-baseline">
+                          <span className="text-2xl font-bold">{stats?.week?.total.toFixed(2)}</span>
+                          <span className="text-gray-500 ml-1">/ 45</span>
+                        </div>
+                        <p className="text-sm text-gray-600">Total Hours Week</p>
+                        <div className="mt-3 flex items-center">
+                          <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
+                            <ChevronUp className="w-3 h-3" />
+                          </div>
+                          <span className="text-sm ml-1">7% Last Week</span>
+                        </div>
+                        {stats?.week?.remaining > 0 && (
+                          <div className="mt-2 text-sm text-orange-500">
+                            Remaining: {formatHours(stats.week.remaining)}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
 
-              {/* Total Hours Month */}
-              <Card className="bg-white">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white">
-                      <Clock className="w-5 h-5" />
-                    </div>
-                  </div>
-                  <div className="flex items-baseline">
-                    <span className="text-2xl font-bold">{stats?.month?.total.toFixed(2)}</span>
-                    <span className="text-gray-500 ml-1">/ 180</span>
-                  </div>
-                  <p className="text-sm text-gray-600">Total Hours Month</p>
-                  <div className="mt-3 flex items-center">
-                    <div className="w-5 h-5 rounded-full bg-destructive flex items-center justify-center text-white text-xs">
-                      <ChevronDown className="w-3 h-3" />
-                    </div>
-                    <span className="text-sm ml-1">8% Last Month</span>
-                  </div>
-                  {stats?.month?.remaining > 0 && (
-                    <div className="mt-2 text-sm text-orange-500">
-                      Remaining: {formatHours(stats.month.remaining)}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                    {/* Total Hours Month */}
+                    <Card className="bg-white border-0 rounded-lg shadow-sm">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white">
+                            <Clock className="w-5 h-5" />
+                          </div>
+                        </div>
+                        <div className="flex items-baseline">
+                          <span className="text-2xl font-bold">{stats?.month?.total.toFixed(2)}</span>
+                          <span className="text-gray-500 ml-1">/ 180</span>
+                        </div>
+                        <p className="text-sm text-gray-600">Total Hours Month</p>
+                        <div className="mt-3 flex items-center">
+                          <div className="w-5 h-5 rounded-full bg-destructive flex items-center justify-center text-white text-xs">
+                            <ChevronDown className="w-3 h-3" />
+                          </div>
+                          <span className="text-sm ml-1">8% Last Month</span>
+                        </div>
+                        {stats?.month?.remaining > 0 && (
+                          <div className="mt-2 text-sm text-orange-500">
+                            Remaining: {formatHours(stats.month.remaining)}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
 
-              {/* Overtime this Month */}
-              <Card className="bg-white">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center text-white">
-                      <Clock className="w-5 h-5" />
-                    </div>
+                    {/* Overtime this Month */}
+                    <Card className="bg-white border-0 rounded-lg shadow-sm">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center text-white">
+                            <Clock className="w-5 h-5" />
+                          </div>
+                        </div>
+                        <div className="flex items-baseline">
+                          <span className="text-2xl font-bold">{stats?.month?.overtime.toFixed(2)}</span>
+                          <span className="text-gray-500 ml-1">/ 28</span>
+                        </div>
+                        <p className="text-sm text-gray-600">Overtime this Month</p>
+                        <div className="mt-3 flex items-center">
+                          <div className="w-5 h-5 rounded-full bg-destructive flex items-center justify-center text-white text-xs">
+                            <ChevronDown className="w-3 h-3" />
+                          </div>
+                          <span className="text-sm ml-1">6% Last Month</span>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
-                  <div className="flex items-baseline">
-                    <span className="text-2xl font-bold">{stats?.month?.overtime.toFixed(2)}</span>
-                    <span className="text-gray-500 ml-1">/ 28</span>
-                  </div>
-                  <p className="text-sm text-gray-600">Overtime this Month</p>
-                  <div className="mt-3 flex items-center">
-                    <div className="w-5 h-5 rounded-full bg-destructive flex items-center justify-center text-white text-xs">
-                      <ChevronDown className="w-3 h-3" />
-                    </div>
-                    <span className="text-sm ml-1">6% Last Month</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
 
                   <div className="grid grid-cols-5 gap-6 mb-4">
                     <div>
@@ -745,7 +744,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                   </div>
 
                   <div className="relative h-8 w-full mt-6 mb-2">
-                    <div 
+                    <div
                       className="absolute top-0 left-0 h-full bg-green-500 rounded-l-md transition-all duration-1000"
                       style={{ width: `${calculateProgress()}%` }}
                     ></div>
@@ -759,20 +758,20 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                       <span key={index}>{label}</span>
                     ))}
                   </div>
-                  
+
                 </CardContent>
               </Card>
             </div>
 
-           
+
           </div>
 
           {/* Attendance History and Leave History Cards */}
           <div className="col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             {/* Attendance History Card */}
-            <Card>
+            <Card className="border-0 rounded-lg shadow-sm bg-[#dff9ff]">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base">Attendance History</CardTitle>
+                <CardTitle className="text-lg font-semibold text-gray-800">Attendance History</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 <AttendanceHistoryTable />
@@ -780,9 +779,9 @@ export default function DashboardContent({ user }: DashboardContentProps) {
             </Card>
 
             {/* Leave History Card */}
-            <Card>
+            <Card className="border-0 rounded-lg shadow-sm bg-[#dff9ff]">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base">Leave History</CardTitle>
+                <CardTitle className="text-lg font-semibold text-gray-800">Leave History</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 <LeaveHistoryTable />
@@ -793,7 +792,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       </div>
     </div>
   )
-} 
+}
 
 // Attendance History Table Component
 function AttendanceHistoryTable() {
@@ -853,7 +852,9 @@ function AttendanceHistoryTable() {
         <tbody className="divide-y divide-gray-200">
           {loading ? (
             <tr>
-              <td colSpan={5} className="px-4 py-3 text-center">Loading...</td>
+              <td colSpan={5} className="px-4 py-8 text-center">
+                <Loader size="md" text="Loading attendance history..." />
+              </td>
             </tr>
           ) : attendanceHistory.length === 0 ? (
             <tr>
@@ -958,7 +959,9 @@ function LeaveHistoryTable() {
         <tbody className="divide-y divide-gray-200">
           {loading ? (
             <tr>
-              <td colSpan={5} className="px-4 py-3 text-center">Loading...</td>
+              <td colSpan={5} className="px-4 py-8 text-center">
+                <Loader size="md" text="Loading leave history..." />
+              </td>
             </tr>
           ) : leaveHistory.length === 0 ? (
             <tr>

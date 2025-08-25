@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Sidebar from '@/components/sidebar'
-import { getServerSession } from 'next-auth'
-import { authOptions } from './api/auth/[...nextauth]/route' // Adjust the path as necessary
 import { Providers } from './provider'
+import ClientLayout from './client-layout'
 
 export const metadata: Metadata = {
   title: 'Mize Technologies Portal',
@@ -15,20 +13,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const session = await getServerSession(authOptions)
-
   return (
     <html lang="en">
       <body>
         <div className="flex h-screen bg-[#f8f9fa]">
           <Providers>
-          {session ? <Sidebar /> : null} 
-          {children}
+            <ClientLayout>
+              {children}
+            </ClientLayout>
           </Providers>
         </div>
       </body>

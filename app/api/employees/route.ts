@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { hash } from "bcryptjs";
+import { sendWelcomeEmailServer } from "@/lib/serverEmailService";
 import { isUserAdmin } from "@/lib/auth";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
@@ -210,7 +211,48 @@ export async function POST(req: Request) {
         },
       });
 
+      // Assign the default Employee role to the new user
+      const employeeRole = await prisma.role.findFirst({
+        where: { name: "Employee" }
+      });
+
+      if (employeeRole) {
+        await prisma.userRole.create({
+          data: {
+            userId: employee.id,
+            roleId: employeeRole.id,
+          },
+        });
+        console.log("Assigned Employee role to new user:", employee.id);
+      } else {
+        console.warn("Employee role not found - please run the seed script to create default roles");
+      }
+
       console.log("Employee created successfully:", employee);
+      
+      // Send welcome email to the new employee
+      try {
+        console.log('📧 Attempting to send welcome email to new employee...');
+        const emailSent = await sendWelcomeEmailServer({
+          firstName: employee.firstName,
+          lastName: employee.lastName,
+          email: employee.email,
+          department: employee.department,
+          position: employee.position,
+          loginEmail: employee.email,
+          portalUrl: 'https://portal.mizetechnologies.com/'
+        });
+
+        if (emailSent) {
+          console.log('✅ Welcome email sent successfully to new employee:', employee.email);
+        } else {
+          console.log('⚠️ Welcome email failed to send to new employee:', employee.email);
+        }
+      } catch (emailError) {
+        console.error('❌ Error sending welcome email to new employee:', emailError);
+        // Don't fail the whole request if email fails
+      }
+
       return NextResponse.json(employee, { status: 201 });
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {

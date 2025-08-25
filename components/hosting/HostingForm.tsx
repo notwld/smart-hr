@@ -14,32 +14,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, ChevronsUpDown, CalendarIcon, DollarSign, Server, User } from "lucide-react";
+import { CalendarIcon, DollarSign, Server, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-
-interface Client {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
-}
 
 interface HostingFormProps {
   hostingId?: string;
@@ -48,14 +32,11 @@ interface HostingFormProps {
 export default function HostingForm({ hostingId }: HostingFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [clients, setClients] = useState<Client[]>([]);
-  const [clientOpen, setClientOpen] = useState(false);
-  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [expiryDateOpen, setExpiryDateOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    clientId: "",
+    clientName: "",
     domain: "",
     cost: "",
     startDate: new Date(),
@@ -63,18 +44,6 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
     durationType: "",
     notes: "",
   });
-
-  // Fetch clients for dropdown
-  const fetchClients = async (search: string = "") => {
-    try {
-      const response = await fetch(`/api/clients?search=${search}`);
-      if (!response.ok) throw new Error("Failed to fetch clients");
-      const data = await response.json();
-      setClients(data.clients);
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-    }
-  };
 
   // Fetch hosting data for editing
   const fetchHosting = async () => {
@@ -89,7 +58,7 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
       const hosting = data.hosting;
 
       setFormData({
-        clientId: hosting.clientId,
+        clientName: hosting.clientName,
         domain: hosting.domain,
         cost: hosting.cost.toString(),
         startDate: new Date(hosting.startDate),
@@ -97,8 +66,6 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
         durationType: hosting.durationType,
         notes: hosting.notes || "",
       });
-
-      setSelectedClient(hosting.client);
     } catch (error) {
       toast.error("Failed to fetch hosting details");
       console.error(error);
@@ -108,7 +75,6 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
   };
 
   useEffect(() => {
-    fetchClients();
     if (hostingId) {
       fetchHosting();
     }
@@ -124,6 +90,14 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
         expiryDate.setMonth(expiryDate.getMonth() + 1);
       } else if (formData.durationType === "YEARLY") {
         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+      } else if (formData.durationType === "TWO_YEARS") {
+        expiryDate.setFullYear(expiryDate.getFullYear() + 2);
+      } else if (formData.durationType === "THREE_YEARS") {
+        expiryDate.setFullYear(expiryDate.getFullYear() + 3);
+      } else if (formData.durationType === "FOUR_YEARS") {
+        expiryDate.setFullYear(expiryDate.getFullYear() + 4);
+      } else if (formData.durationType === "FIVE_YEARS") {
+        expiryDate.setFullYear(expiryDate.getFullYear() + 5);
       }
 
       if (formData.durationType !== "CUSTOM") {
@@ -135,7 +109,7 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.clientId || !formData.domain || !formData.cost || !formData.durationType) {
+    if (!formData.clientName || !formData.domain || !formData.cost || !formData.durationType) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -152,7 +126,7 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          clientId: formData.clientId,
+          clientName: formData.clientName,
           domain: formData.domain,
           cost: parseFloat(formData.cost),
           startDate: formData.startDate.toISOString(),
@@ -196,61 +170,21 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Client Selection */}
+            {/* Client Name */}
             <div className="space-y-2">
-              <Label htmlFor="client">Client *</Label>
-              <Popover open={clientOpen} onOpenChange={setClientOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={clientOpen}
-                    className="w-full justify-between"
-                  >
-                    {selectedClient ? (
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        {selectedClient.firstName} {selectedClient.lastName}
-                      </div>
-                    ) : (
-                      "Select client..."
-                    )}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
-                  <Command>
-                    <CommandInput 
-                      placeholder="Search clients..." 
-                      onValueChange={(search) => fetchClients(search)}
-                    />
-                    <CommandEmpty>No client found.</CommandEmpty>
-                    <CommandGroup>
-                      {clients.map((client) => (
-                        <CommandItem
-                          key={client.id}
-                          onSelect={() => {
-                            setSelectedClient(client);
-                            setFormData(prev => ({ ...prev, clientId: client.id }));
-                            setClientOpen(false);
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              selectedClient?.id === client.id ? "opacity-100" : "opacity-0"
-                            )}
-                          />
-                          <div className="flex flex-col">
-                            <span>{client.firstName} {client.lastName}</span>
-                            <span className="text-sm text-gray-500">{client.email}</span>
-                          </div>
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <Label htmlFor="clientName">Client Name *</Label>
+              <div className="relative">
+                <User className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
+                <Input
+                  id="clientName"
+                  type="text"
+                  placeholder="Enter client name"
+                  value={formData.clientName}
+                  onChange={(e) => setFormData(prev => ({ ...prev, clientName: e.target.value }))}
+                  className="pl-8"
+                  required
+                />
+              </div>
             </div>
 
             {/* Domain */}
@@ -300,7 +234,11 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="MONTHLY">Monthly</SelectItem>
-                  <SelectItem value="YEARLY">Yearly</SelectItem>
+                  <SelectItem value="YEARLY">1 Year</SelectItem>
+                  <SelectItem value="TWO_YEARS">2 Years</SelectItem>
+                  <SelectItem value="THREE_YEARS">3 Years</SelectItem>
+                  <SelectItem value="FOUR_YEARS">4 Years</SelectItem>
+                  <SelectItem value="FIVE_YEARS">5 Years</SelectItem>
                   <SelectItem value="CUSTOM">Custom</SelectItem>
                 </SelectContent>
               </Select>

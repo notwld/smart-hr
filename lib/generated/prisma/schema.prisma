@@ -45,59 +45,60 @@ enum DocumentType {
 }
 
 model User {
-  id               String              @id @default(cuid())
-  username         String              @unique
-  firstName        String
-  lastName         String
-  email            String              @unique
-  cnic             String              @unique
-  pfp              String? // profile picture
-  password         String
-  salary           Float
-  address          String
-  department       String
-  position         String
-  joinDate         DateTime
-  phone            String?
-  legacyRole       LegacyRole          @default(EMPLOYEE) @map("role") // Renamed for backward compatibility
-  userRoles        UserRole[] // New relationship to roles
-  status           String              @default("ACTIVE")
-  dateOfBirth      DateTime? // Made optional
-  gender           Gender? // Made optional
-  maritalStatus    MaritalStatus? // Made optional
-  reportsTo        User?               @relation("ReportsTo", fields: [reportsToId], references: [id])
-  reportsToId      String?
-  subordinates     User[]              @relation("ReportsTo")
-  emergencyContact EmergencyContact?
-  education        Education[]
-  experience       Experience[]
-  documents        Document[]
-  bankDetails      BankDetails?
-  attendance       Attendance[]
-  leaves           Leave[]             @relation("UserLeaves")
-  tasks            Task[]
-  skills           Skill[]
-  performance      Performance[]
-  projects         ProjectAssignment[]
-  teams            TeamMember[] // Team memberships
-  leadingTeams     Team[]              @relation("TeamLeader") // Teams this user leads
-  notifications    Notification[]
-  meetings         Meeting[]
-  image            String?
-  managerApprovals Leave[]             @relation("ManagerApproval")
-  adminApprovals   Leave[]             @relation("AdminApproval")
+  id                  String              @id @default(cuid())
+  username            String              @unique
+  firstName           String
+  lastName            String
+  email               String              @unique
+  cnic                String              @unique
+  pfp                 String? // profile picture
+  password            String
+  salary              Float
+  address             String
+  department          String
+  position            String
+  joinDate            DateTime
+  phone               String?
+  legacyRole          LegacyRole          @default(EMPLOYEE) @map("role") // Renamed for backward compatibility
+  userRoles           UserRole[] // New relationship to roles
+  status              String              @default("ACTIVE")
+  dateOfBirth         DateTime? // Made optional
+  gender              Gender? // Made optional
+  maritalStatus       MaritalStatus? // Made optional
+  reportsTo           User?               @relation("ReportsTo", fields: [reportsToId], references: [id])
+  reportsToId         String?
+  subordinates        User[]              @relation("ReportsTo")
+  emergencyContact    EmergencyContact?
+  education           Education[]
+  experience          Experience[]
+  documents           Document[]
+  bankDetails         BankDetails?
+  attendance          Attendance[]
+  leaves              Leave[]             @relation("UserLeaves")
+  tasks               Task[]
+  skills              Skill[]
+  performance         Performance[]
+  projects            ProjectAssignment[]
+  teams               TeamMember[] // Team memberships
+  leadingTeams        Team[]              @relation("TeamLeader") // Teams this user leads
+  notifications       Notification[]
+  meetings            Meeting[]
+  image               String?
+  managerApprovals    Leave[]             @relation("ManagerApproval")
+  adminApprovals      Leave[]             @relation("AdminApproval")
   // Chat relationships
-  sentMessages     ChatMessage[]       @relation("MessageSender")
-  chatRooms        ChatParticipant[]
-  lastSeen         UserLastSeen?
-  messageReactions MessageReaction[]   @relation("MessageReactions")
-  messageMentions  MessageMention[]    @relation("MessageMentions")
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
-  Hosting          Hosting[]
+  sentMessages        ChatMessage[]       @relation("MessageSender")
+  chatRooms           ChatParticipant[]
+  lastSeen            UserLastSeen?
+  messageReactions    MessageReaction[]   @relation("MessageReactions")
+  messageMentions     MessageMention[]    @relation("MessageMentions")
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  // Onboarding status
+  onboardingCompleted Boolean             @default(false)
   // Lead relationships
-  userLeads        Lead[]              @relation("UserLeads")
-  assignedLeads    Lead[]              @relation("LeadAssignee")
+  userLeads           Lead[]              @relation("UserLeads")
+  assignedLeads       Lead[]              @relation("LeadAssignee")
 }
 
 // New models for the roles and permissions system
@@ -382,8 +383,7 @@ enum Priority {
 
 model Hosting {
   id           String       @id @default(cuid())
-  clientId     String
-  client       User         @relation(fields: [clientId], references: [id])
+  clientName   String
   domain       String
   cost         Float
   startDate    DateTime
@@ -397,6 +397,10 @@ model Hosting {
 enum DurationType {
   MONTHLY
   YEARLY
+  TWO_YEARS
+  THREE_YEARS
+  FOUR_YEARS
+  FIVE_YEARS
   CUSTOM
 }
 

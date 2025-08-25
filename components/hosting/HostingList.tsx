@@ -30,23 +30,15 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { format } from "date-fns";
 
-interface Client {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-}
-
 interface Hosting {
   id: string;
+  clientName: string;
   domain: string;
   cost: number;
   startDate: string;
   expiryDate: string;
   durationType: "MONTHLY" | "YEARLY" | "CUSTOM";
   notes?: string;
-  client: Client;
   createdAt: string;
   updatedAt: string;
 }
@@ -125,9 +117,26 @@ export default function HostingList() {
     const colors = {
       MONTHLY: "bg-blue-100 text-blue-800",
       YEARLY: "bg-purple-100 text-purple-800",
+      TWO_YEARS: "bg-green-100 text-green-800",
+      THREE_YEARS: "bg-orange-100 text-orange-800",
+      FOUR_YEARS: "bg-pink-100 text-pink-800",
+      FIVE_YEARS: "bg-indigo-100 text-indigo-800",
       CUSTOM: "bg-gray-100 text-gray-800",
     };
-    return <Badge variant="secondary" className={colors[type as keyof typeof colors]}>{type}</Badge>;
+    
+    const labels = {
+      MONTHLY: "Monthly",
+      YEARLY: "1 Year",
+      TWO_YEARS: "2 Years",
+      THREE_YEARS: "3 Years",
+      FOUR_YEARS: "4 Years",
+      FIVE_YEARS: "5 Years",
+      CUSTOM: "Custom",
+    };
+    
+    return <Badge variant="secondary" className={colors[type as keyof typeof colors]}>
+      {labels[type as keyof typeof labels] || type}
+    </Badge>;
   };
 
   return (
@@ -214,10 +223,7 @@ export default function HostingList() {
                       <User className="h-4 w-4 text-gray-400" />
                       <div>
                         <div className="font-medium">
-                          {hosting.client.firstName} {hosting.client.lastName}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {hosting.client.email}
+                          {hosting.clientName}
                         </div>
                       </div>
                     </div>

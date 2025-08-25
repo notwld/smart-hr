@@ -1,4 +1,5 @@
 import HostingList from "@/components/hosting/HostingList";
+import HostingNotifications from "@/components/hosting/HostingNotifications";
 
 export default function HostingPage() {
   return (

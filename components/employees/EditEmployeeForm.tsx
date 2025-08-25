@@ -25,6 +25,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { User, Briefcase, Heart, CreditCard, Camera, Save } from "lucide-react";
+import { ButtonLoader } from "@/components/ui/loader";
 
 // Define schema with same validation as EmployeeForm
 const employeeSchema = z.object({
@@ -321,52 +325,78 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* Profile Image */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Profile Image</h2>
-          <div className="flex items-center space-x-4">
-            <div className="relative w-32 h-32 rounded-full overflow-hidden">
-              {imagePreview ? (
-                <Image
-                  src={imagePreview}
-                  alt="Profile preview"
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-2xl text-gray-400">No image</span>
-                </div>
-              )}
-            </div>
-            <div>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="w-full"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Max file size: 5MB. Supported formats: JPG, PNG, GIF
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-6">
+      <div className="max-w-6xl mx-auto space-y-8">
+        {/* Header */}
+        <Card className="border-0 shadow-lg bg-gradient-to-r from-cyan-500 to-blue-600">
+          <CardHeader className="text-white">
+            <CardTitle className="text-2xl font-bold flex items-center">
+              <User className="w-6 h-6 mr-2" />
+              Edit Employee Profile
+            </CardTitle>
+            <p className="text-white/90 mt-1">Update employee information and details</p>
+          </CardHeader>
+        </Card>
 
-        {/* Personal Information */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Personal Information</h2>
-          <div className="grid grid-cols-2 gap-4">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Profile Image */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <Camera className="w-5 h-5 mr-2" />
+                  Profile Image
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center space-x-6">
+                  <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-cyan-100">
+                    {imagePreview ? (
+                      <Image
+                        src={imagePreview}
+                        alt="Profile preview"
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                        <Camera className="w-8 h-8 text-gray-400" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="w-full border-cyan-200 focus:border-cyan-500"
+                    />
+                    <p className="text-sm text-gray-500 mt-2">
+                      Max file size: 5MB. Supported formats: JPG, PNG, GIF
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Personal Information */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <User className="w-5 h-5 mr-2" />
+                  Personal Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Username</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -377,9 +407,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Email</FormLabel>
                   <FormControl>
-                    <Input type="email" {...field} />
+                    <Input type="email" {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -390,9 +420,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">First Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -403,9 +433,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Last Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -416,7 +446,7 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="cnic"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>CNIC</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">CNIC</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -453,7 +483,7 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Phone</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -485,9 +515,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Birth</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Date of Birth</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input type="date" {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -498,10 +528,10 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gender</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Gender</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500">
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
                     </FormControl>
@@ -520,10 +550,10 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="maritalStatus"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Marital Status</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Marital Status</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                     </FormControl>
@@ -543,29 +573,36 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password (leave empty to keep unchanged)</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Password (leave empty to keep unchanged)</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input type="password" {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
-        </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        {/* Employment Information */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Employment Information</h2>
-          <div className="grid grid-cols-2 gap-4">
+            {/* Employment Information */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <Briefcase className="w-5 h-5 mr-2" />
+                  Employment Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
               name="department"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Department</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Department</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -576,9 +613,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="position"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Position</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Position</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -589,11 +626,12 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="salary"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Salary</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Salary</FormLabel>
                   <FormControl>
-                    <Input 
+                                          <Input 
                       type="number" 
                       {...field} 
+                      className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
@@ -606,9 +644,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="joinDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Join Date</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Join Date</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input type="date" {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -619,29 +657,36 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="address"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Address</FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <Textarea {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
-        </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        {/* Emergency Contact */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Emergency Contact</h2>
-          <div className="grid grid-cols-2 gap-4">
+            {/* Emergency Contact */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <Heart className="w-5 h-5 mr-2" />
+                  Emergency Contact
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
               name="emergencyContact.name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -652,9 +697,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="emergencyContact.relationship"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Relationship</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Relationship</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -665,7 +710,7 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="emergencyContact.phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Phone</FormLabel>
                   <FormControl>
                     <Input 
                       {...field}
@@ -697,29 +742,36 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="emergencyContact.address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Address</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
-        </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        {/* Bank Details */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Bank Details</h2>
-          <div className="grid grid-cols-2 gap-4">
+            {/* Bank Details */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <CreditCard className="w-5 h-5 mr-2" />
+                  Bank Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
               name="bankDetails.bankName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bank Name</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Bank Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -730,9 +782,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="bankDetails.accountNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Account Number</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Account Number</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -743,9 +795,9 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="bankDetails.accountTitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Account Title</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Account Title</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -756,25 +808,42 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               name="bankDetails.branchCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Branch Code</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">Branch Code</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
-        </div>
+                </div>
+              </CardContent>
+            </Card>
 
-        {/* Remaining form sections like Education, Experience, etc. should go here */}
+            {/* Remaining form sections like Education, Experience, etc. should go here */}
 
-        <div className="flex justify-end">
-          <Button type="submit" disabled={loading}>
-            {loading ? "Updating..." : "Update Employee"}
-          </Button>
-        </div>
-      </form>
-    </Form>
+            {/* Submit Button */}
+            <Card className="border-0 shadow-sm bg-gradient-to-r from-cyan-500 to-blue-600">
+              <CardContent className="p-6">
+                <Button 
+                  type="submit" 
+                  disabled={loading}
+                  className="w-full bg-white text-cyan-600 hover:bg-gray-100 font-semibold py-3 text-lg shadow-lg"
+                >
+                  {loading ? (
+                    <ButtonLoader size="md" />
+                  ) : (
+                    <>
+                      <Save className="w-5 h-5 mr-2" />
+                      Update Employee
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 } 

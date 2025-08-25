@@ -65,6 +65,10 @@ async function main() {
     // Dashboard
     { name: "dashboard.view", description: "View dashboard", resource: "dashboard", action: "view" },
     { name: "dashboard.admin", description: "View admin dashboard", resource: "dashboard", action: "admin" },
+
+    // Onboarding
+    { name: "onboarding.view", description: "Access onboarding page", resource: "onboarding", action: "view" },
+    { name: "onboarding.complete", description: "Complete onboarding process", resource: "onboarding", action: "complete" },
     
     // Settings
     { name: "settings.view", description: "View settings", resource: "settings", action: "view" },
@@ -221,7 +225,7 @@ async function main() {
   }
 
   // Employee permissions
-  const employeePermissions = allPermissions.filter(p => 
+  const employeePermissions = allPermissions.filter(p =>
     p.name === "dashboard.view" ||
     p.name === "leaves.view" ||
     p.name === "leaves.create" ||
@@ -234,7 +238,9 @@ async function main() {
     p.name === "tasks.create" ||
     p.name === "projects.view" ||
     p.name === "meetings.view" ||
-    p.name === "notifications.view"
+    p.name === "notifications.view" ||
+    p.name === "onboarding.view" ||
+    p.name === "onboarding.complete"
   );
 
   for (const permission of employeePermissions) {

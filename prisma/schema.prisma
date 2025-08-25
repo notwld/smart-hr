@@ -94,7 +94,8 @@ model User {
   messageMentions  MessageMention[]    @relation("MessageMentions")
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
-  Hosting          Hosting[]
+  // Onboarding status
+  onboardingCompleted Boolean          @default(false)
   // Lead relationships
   userLeads        Lead[]              @relation("UserLeads")
   assignedLeads    Lead[]              @relation("LeadAssignee")
@@ -382,8 +383,7 @@ enum Priority {
 
 model Hosting {
   id           String       @id @default(cuid())
-  clientId     String
-  client       User         @relation(fields: [clientId], references: [id])
+  clientName   String
   domain       String
   cost         Float
   startDate    DateTime
@@ -397,6 +397,10 @@ model Hosting {
 enum DurationType {
   MONTHLY
   YEARLY
+  TWO_YEARS
+  THREE_YEARS
+  FOUR_YEARS
+  FIVE_YEARS
   CUSTOM
 }
 
