@@ -3,6 +3,54 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
+// Handle lead assignment
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { assigneeId } = body;
+
+    const lead = await prisma.lead.update({
+      where: { id: params.id },
+      data: {
+        assigneeId: assigneeId || null,
+      },
+      include: {
+        User: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json(lead);
+  } catch (error) {
+    console.error("Error assigning lead:", error);
+    return NextResponse.json(
+      { error: "Failed to assign lead" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }

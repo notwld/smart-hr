@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import Sidebar from '@/components/sidebar'
+import SkeletonSidebar from '@/components/SkeletonSidebar'
 
 interface ClientLayoutProps {
   children: React.ReactNode
@@ -14,11 +15,20 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
   // Routes that should not show the sidebar (full-screen experiences)
   const noSidebarRoutes = ['/onboarding', '/login', '/register']
-  const shouldShowSidebar = session && !noSidebarRoutes.includes(pathname)
+  const isNoSidebarRoute = noSidebarRoutes.includes(pathname)
+  const shouldShowSidebar = session && !isNoSidebarRoute
+  const shouldShowSkeletonSidebar = status === 'loading' && !isNoSidebarRoute
 
-  // Don't show sidebar while loading
-  if (status === 'loading') {
-    return <div className="w-full">{children}</div>
+  // Show skeleton sidebar during loading (except on full-screen routes)
+  if (shouldShowSkeletonSidebar) {
+    return (
+      <>
+        <SkeletonSidebar />
+        <div className="flex-1 overflow-auto">
+          {children}
+        </div>
+      </>
+    )
   }
 
   // Show sidebar conditionally based on route and authentication

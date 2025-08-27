@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
+
+
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -163,6 +165,116 @@ export async function GET(req: Request) {
     console.error("Error fetching leaves:", error);
     return NextResponse.json(
       { message: "Error fetching leaves" },
+      { status: 500 }
+    );
+  }
+}
+
+// Leave statistics endpoint - Add this as a separate route file if needed
+// For now, we'll add it here as a separate function
+export async function PATCH(req: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const data = await req.json();
+    const { id, status, comment } = data;
+
+    if (!id || !status) {
+      return NextResponse.json(
+        { message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const leave = await prisma.leave.findUnique({
+      where: { id },
+      include: {
+        user: true,
+        manager: true,
+        admin: true,
+      },
+    });
+
+    if (!leave) {
+      return NextResponse.json(
+        { message: "Leave request not found" },
+        { status: 404 }
+      );
+    }
+
+    // Check permissions
+    const userRole = session.user.role || session.user.legacyRole;
+    const isTeamLeader = leave.managerId === session.user.id;
+    const isAdmin = userRole === "ADMIN" || session.user.legacyRole === "ADMIN";
+
+    let updateData: any = {};
+
+    if (status === "APPROVED" || status === "REJECTED") {
+      if (isTeamLeader && leave.managerStatus === "PENDING") {
+        updateData.managerStatus = status;
+        updateData.managerComment = comment || "";
+        if (status === "REJECTED") {
+          updateData.status = "REJECTED";
+        } else if (leave.adminStatus === "APPROVED") {
+          updateData.status = "APPROVED";
+        }
+      } else if (isAdmin && leave.adminStatus === "PENDING" && leave.managerStatus === "APPROVED") {
+        updateData.adminStatus = status;
+        updateData.adminComment = comment || "";
+        if (status === "REJECTED") {
+          updateData.status = "REJECTED";
+        } else {
+          updateData.status = "APPROVED";
+        }
+      } else {
+        return NextResponse.json(
+          { message: "You don't have permission to approve this leave request" },
+          { status: 403 }
+        );
+      }
+    }
+
+    const updatedLeave = await prisma.leave.update({
+      where: { id },
+      data: updateData,
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+            department: true,
+          },
+        },
+        manager: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        admin: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json(updatedLeave);
+  } catch (error) {
+    console.error("Error updating leave request:", error);
+    return NextResponse.json(
+      { message: "Error updating leave request" },
       { status: 500 }
     );
   }

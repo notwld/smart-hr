@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -77,18 +77,21 @@ interface Employee {
   };
 }
 
-export default function EmployeeDetailPage({ params }: { params: { id: string } }) {
+export default function EmployeeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const [employee, setEmployee] = useState<Employee | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  // Unwrap params with React.use()
+  const resolvedParams = use(params);
+
   useEffect(() => {
     fetchEmployee();
-  }, [params.id]);
+  }, [resolvedParams.id]);
 
   const fetchEmployee = async () => {
     try {
-      const response = await fetch(`/api/employees/${params.id}`);
+      const response = await fetch(`/api/employees/${resolvedParams.id}`);
       if (!response.ok) throw new Error("Failed to fetch employee");
       const data = await response.json();
       setEmployee(data);
@@ -103,7 +106,7 @@ export default function EmployeeDetailPage({ params }: { params: { id: string } 
     if (!confirm("Are you sure you want to delete this employee?")) return;
 
     try {
-      const response = await fetch(`/api/employees/${params.id}`, {
+      const response = await fetch(`/api/employees/${resolvedParams.id}`, {
         method: "DELETE",
       });
 
@@ -159,7 +162,7 @@ export default function EmployeeDetailPage({ params }: { params: { id: string } 
                   Back
                 </Button>
                 <Button 
-                  onClick={() => router.push(`/admin/employees/${params.id}/edit`)}
+                  onClick={() => router.push(`/admin/employees/${resolvedParams.id}/edit`)}
                   className="bg-white text-cyan-600 hover:bg-gray-100"
                 >
                   <Edit className="w-4 h-4 mr-2" />

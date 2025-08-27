@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Edit } from "lucide-react";
 import { toast } from "sonner";
 import { usePermissions } from "@/contexts/PermissionContext";
 import PermissionGuard from "@/components/PermissionGuard";
@@ -30,9 +30,12 @@ interface Role {
   isDefault: boolean;
 }
 
-export default function EditRolePage({ params }: { params: { id: string } }) {
+export default function EditRolePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const roleId = params.id;
+
+  // Unwrap params with React.use()
+  const resolvedParams = use(params);
+  const roleId = resolvedParams.id;
   
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);

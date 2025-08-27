@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import { User, ChevronLeft, Save } from "lucide-react";
+import { User, ChevronLeft, Save, UserPlus, Edit, Users } from "lucide-react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,7 +49,7 @@ type UserData = {
   department: string;
 };
 
-export default function EditTeamPage({ params }: { params: { id: string } }) {
+export default function EditTeamPage({ params }: { params: Promise<{ id: string }> }) {
   const [team, setTeam] = useState<TeamData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -60,20 +60,23 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
     memberIds: [] as string[],
   });
   const [availableEmployees, setAvailableEmployees] = useState<UserData[]>([]);
-  
+
   const router = useRouter();
   const { toast } = useToast();
+
+  // Unwrap params with React.use()
+  const resolvedParams = use(params);
 
   // Fetch team data on component mount
   useEffect(() => {
     fetchTeam();
     fetchAvailableEmployees();
-  }, [params.id]);
+  }, [resolvedParams.id]);
 
   const fetchTeam = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/teams/${params.id}`);
+      const response = await axios.get(`/api/teams/${resolvedParams.id}`);
       const teamData = response.data;
       setTeam(teamData);
       setTeamForm({
@@ -121,13 +124,13 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
     const updatedMemberIds = teamForm.memberIds.includes(userId)
       ? teamForm.memberIds.filter((id) => id !== userId)
       : [...teamForm.memberIds, userId];
-    
+
     setTeamForm({ ...teamForm, memberIds: updatedMemberIds });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!teamForm.name) {
       toast({
         variant: "destructive",
@@ -139,12 +142,12 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
 
     setSaving(true);
     try {
-      await axios.put(`/api/teams/${params.id}`, teamForm);
+      await axios.put(`/api/teams/${resolvedParams.id}`, teamForm);
       toast({
         title: "Success",
         description: "Team updated successfully.",
       });
-      router.push(`/teams/${params.id}`);
+      router.push(`/teams/${resolvedParams.id}`);
     } catch (error: any) {
       console.error("Error updating team:", error);
       toast({
@@ -188,163 +191,231 @@ export default function EditTeamPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <PermissionGuard 
+    <PermissionGuard
       permissions="teams.edit"
       fallback={
-        <div className="flex h-screen bg-gray-50 w-full">
-          <Sidebar />
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <h2 className="text-xl font-semibold">Access Denied</h2>
-              <p className="text-gray-500 mt-2">You don't have permission to edit teams.</p>
-              <Button 
-                variant="link" 
-                onClick={() => router.push('/teams')}
-                className="mt-4"
-              >
-                Back to Teams
-              </Button>
+        <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 flex items-center justify-center">
+          <Card className="border-0 shadow-lg bg-white p-8 text-center max-w-md">
+            <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Edit className="w-8 h-8 text-white" />
             </div>
-          </div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Access Denied</h2>
+            <p className="text-gray-500 mb-6">You don't have permission to edit teams.</p>
+            <Button
+              onClick={() => router.push('/teams')}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Back to Teams
+            </Button>
+          </Card>
         </div>
       }
     >
-      <div className="flex h-screen bg-gray-50 w-full">
-     
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="bg-white border-b border-gray-200 p-4">
-          <div className="container mx-auto">
-            <div className="flex items-center">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push(`/teams/${params.id}`)}
-                className="mr-4"
-              >
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                Back
-              </Button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Edit Team</h1>
-                <p className="text-sm text-gray-500">
-                  Make changes to team {team.name}
-                </p>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Form */}
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="container mx-auto max-w-3xl">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Team Information</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Team Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={teamForm.name}
-                      onChange={handleInputChange}
-                      placeholder="Enter team name"
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      name="description"
-                      value={teamForm.description}
-                      onChange={handleInputChange}
-                      placeholder="Enter team description"
-                      rows={3}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="leaderId">Team Leader</Label>
-                    <Select
-                      value={teamForm.leaderId}
-                      onValueChange={(value) => setTeamForm({ ...teamForm, leaderId: value })}
+      <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
+        <div className="w-full container mx-auto py-8 px-4">
+          {/* Header */}
+          <div className="w-full mb-8">
+            <Card className="w-full border-0 shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 mx-auto">
+              <CardHeader className="w-full text-white">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => router.push(`/teams/${resolvedParams.id}`)}
+                      className="bg-white/10 border-white/20 text-white hover:bg-white/20"
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a team leader" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {availableEmployees.map((employee) => (
-                          <SelectItem key={employee.id} value={employee.id}>
-                            {employee.firstName} {employee.lastName} - {employee.position}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Changing the team leader will update reporting relationships for all team members.
-                    </p>
+                      <ChevronLeft className="h-4 w-4 mr-1" />
+                      Back
+                    </Button>
+                    <div>
+                      <CardTitle className="text-3xl w-full font-bold flex gap-2">
+                        <Edit className="w-8 h-8" />
+                        Edit Team
+                      </CardTitle>
+                      <p className="text-left text-white/90 mt-1">Make changes to team {team.name}</p>
+                    </div>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label>Team Members</Label>
-                    <ScrollArea className="h-[200px] border rounded-md p-2">
-                      <div className="space-y-2 pr-3">
-                        {availableEmployees
-                          .filter(emp => emp.id !== teamForm.leaderId)
-                          .map((employee) => (
-                            <div key={employee.id} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`employee-${employee.id}`}
-                                checked={teamForm.memberIds.includes(employee.id)}
-                                onCheckedChange={() => handleMemberCheckboxChange(employee.id)}
-                              />
-                              <Label htmlFor={`employee-${employee.id}`} className="flex items-center justify-between w-full">
-                                <span>
-                                  {employee.firstName} {employee.lastName}
-                                </span>
-                                <span className="text-xs text-gray-500">
-                                  {employee.position}
-                                </span>
-                              </Label>
-                            </div>
+                </div>
+              </CardHeader>
+            </Card>
+          </div>
+
+          {/* Form */}
+          <div className="w-full">
+            <Card className="border-0 shadow-lg bg-white">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-t-lg">
+                <CardTitle className="text-xl flex items-center gap-2 text-blue-800">
+                  <Users className="w-6 h-6" />
+                  Team Information
+                </CardTitle>
+                <p className="text-blue-600 text-sm">Update team details and membership</p>
+              </CardHeader>
+              <CardContent className="p-8">
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  {/* Team Name Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                      <User className="w-5 h-5 text-blue-600" />
+                      Basic Information
+                    </h3>
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                        <Users className="w-4 h-4 text-blue-600" />
+                        Team Name
+                      </Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={teamForm.name}
+                        onChange={handleInputChange}
+                        placeholder="Enter team name"
+                        required
+                        className="h-11 border-2 border-gray-200 focus:border-blue-500 transition-colors"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="description" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                        <Edit className="w-4 h-4 text-green-600" />
+                        Description
+                      </Label>
+                      <Textarea
+                        id="description"
+                        name="description"
+                        value={teamForm.description}
+                        onChange={handleInputChange}
+                        placeholder="Enter team description"
+                        rows={4}
+                        className="border-2 border-gray-200 focus:border-green-500 transition-colors resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Team Leader Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                      <User className="w-5 h-5 text-purple-600" />
+                      Team Leadership
+                    </h3>
+                    <div className="space-y-2">
+                      <Label htmlFor="leaderId" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                        <User className="w-4 h-4 text-purple-600" />
+                        Team Leader
+                      </Label>
+                      <Select
+                        value={teamForm.leaderId}
+                        onValueChange={(value) => setTeamForm({ ...teamForm, leaderId: value })}
+                      >
+                        <SelectTrigger className="h-11 border-2 border-gray-200 focus:border-purple-500 transition-colors">
+                          <SelectValue placeholder="Select a team leader" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableEmployees.map((employee) => (
+                            <SelectItem key={employee.id} value={employee.id}>
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+                                  {employee.firstName[0]}{employee.lastName[0]}
+                                </div>
+                                <div>
+                                  <div className="font-medium">{employee.firstName} {employee.lastName}</div>
+                                  <div className="text-xs text-gray-500">{employee.position}</div>
+                                </div>
+                              </div>
+                            </SelectItem>
                           ))}
+                        </SelectContent>
+                      </Select>
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                        <p className="text-xs text-purple-700">
+                          <strong>Note:</strong> Changing the team leader will update reporting relationships for all team members.
+                        </p>
                       </div>
-                    </ScrollArea>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Select team members. The team leader is automatically included.
-                    </p>
+                    </div>
                   </div>
-                  
-                  <div className="flex justify-end space-x-2 pt-4">
+
+                  {/* Team Members Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                      <UserPlus className="w-5 h-5 text-orange-600" />
+                      Team Members
+                    </h3>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                        <UserPlus className="w-4 h-4 text-orange-600" />
+                        Select Team Members
+                      </Label>
+                      <ScrollArea className="h-[300px] border-2 border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div className="space-y-3 pr-3">
+                          {availableEmployees
+                            .filter(emp => emp.id !== teamForm.leaderId)
+                            .map((employee) => (
+                              <div key={employee.id} className="flex items-center space-x-3 p-3 bg-white rounded-lg border hover:shadow-sm transition-shadow">
+                                <Checkbox
+                                  id={`employee-${employee.id}`}
+                                  checked={teamForm.memberIds.includes(employee.id)}
+                                  onCheckedChange={() => handleMemberCheckboxChange(employee.id)}
+                                  className="border-2"
+                                />
+                                <Label htmlFor={`employee-${employee.id}`} className="flex items-center justify-between w-full cursor-pointer">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-gradient-to-r from-gray-500 to-gray-600 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+                                      {employee.firstName[0]}{employee.lastName[0]}
+                                    </div>
+                                    <div>
+                                      <span className="font-medium">{employee.firstName} {employee.lastName}</span>
+                                      <div className="text-xs text-gray-500">{employee.position}</div>
+                                    </div>
+                                  </div>
+                                </Label>
+                              </div>
+                            ))}
+                        </div>
+                      </ScrollArea>
+                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                        <p className="text-xs text-orange-700">
+                          <strong>Note:</strong> Select team members from the list above. The team leader is automatically included.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Form Actions */}
+                  <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-6 border-t border-gray-200">
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => router.push(`/teams/${params.id}`)}
+                      onClick={() => router.push(`/teams/${resolvedParams.id}`)}
+                      className="h-11 px-8 border-2 border-gray-300 hover:border-gray-400 transition-colors"
                     >
+                      <ChevronLeft className="w-4 h-4 mr-2" />
                       Cancel
                     </Button>
-                    <Button 
+                    <Button
                       type="submit"
                       disabled={saving}
-                      className="bg-primary hover:bg-primary/90"
+                      className="h-11 px-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold transition-all duration-200"
                     >
-                      <Save className="mr-2 h-4 w-4" />
-                      {saving ? "Saving..." : "Save Changes"}
+                      {saving ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4 mr-2" />
+                          Save Changes
+                        </>
+                      )}
                     </Button>
                   </div>
                 </form>
               </CardContent>
             </Card>
           </div>
-        </main>
+        </div>
       </div>
-    </div>
     </PermissionGuard>
   );
 } 

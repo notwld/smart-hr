@@ -32,6 +32,7 @@ import {
     Key,
     Server,
     Target,
+    Ticket,
 } from "lucide-react"
 import { Button } from "./ui/button"
 import { signOut, useSession } from "next-auth/react"
@@ -47,6 +48,7 @@ export default function Sidebar() {
     // All navigation items with permission-based filtering
     const allNavItems = [
         { icon: <Activity className="w-5 h-5" />, label: "Your Dashboard", href: "/", adminOnly: false },
+        { icon: <Ticket className="w-5 h-5" />, label: "Support Tickets", href: "/tickets", adminOnly: false },
         { icon: <FileText className="w-5 h-5" />, label: "Admin Dashboard", href: "/admin", permission: "dashboard.admin" },
         { icon: <FileText className="w-5 h-5" />, label: "Employees", href: "/admin/employees", permission: "users.view" },
         { icon: <Shield className="w-5 h-5" />, label: "Roles", href: "/admin/roles", permission: "roles.view" },

@@ -45,60 +45,69 @@ enum DocumentType {
 }
 
 model User {
-  id                  String              @id @default(cuid())
-  username            String              @unique
-  firstName           String
-  lastName            String
-  email               String              @unique
-  cnic                String              @unique
-  pfp                 String? // profile picture
-  password            String
-  salary              Float
-  address             String
-  department          String
-  position            String
-  joinDate            DateTime
-  phone               String?
-  legacyRole          LegacyRole          @default(EMPLOYEE) @map("role") // Renamed for backward compatibility
-  userRoles           UserRole[] // New relationship to roles
-  status              String              @default("ACTIVE")
-  dateOfBirth         DateTime? // Made optional
-  gender              Gender? // Made optional
-  maritalStatus       MaritalStatus? // Made optional
-  reportsTo           User?               @relation("ReportsTo", fields: [reportsToId], references: [id])
-  reportsToId         String?
-  subordinates        User[]              @relation("ReportsTo")
-  emergencyContact    EmergencyContact?
-  education           Education[]
-  experience          Experience[]
-  documents           Document[]
-  bankDetails         BankDetails?
-  attendance          Attendance[]
-  leaves              Leave[]             @relation("UserLeaves")
-  tasks               Task[]
-  skills              Skill[]
-  performance         Performance[]
-  projects            ProjectAssignment[]
-  teams               TeamMember[] // Team memberships
-  leadingTeams        Team[]              @relation("TeamLeader") // Teams this user leads
-  notifications       Notification[]
-  meetings            Meeting[]
-  image               String?
-  managerApprovals    Leave[]             @relation("ManagerApproval")
-  adminApprovals      Leave[]             @relation("AdminApproval")
+  id                     String                  @id @default(cuid())
+  username               String                  @unique
+  firstName              String
+  lastName               String
+  email                  String                  @unique
+  cnic                   String                  @unique
+  pfp                    String? // profile picture
+  password               String
+  salary                 Float
+  address                String
+  department             String
+  position               String
+  joinDate               DateTime
+  phone                  String?
+  legacyRole             LegacyRole              @default(EMPLOYEE) @map("role") // Renamed for backward compatibility
+  userRoles              UserRole[] // New relationship to roles
+  status                 String                  @default("ACTIVE")
+  dateOfBirth            DateTime? // Made optional
+  gender                 Gender? // Made optional
+  maritalStatus          MaritalStatus? // Made optional
+  reportsTo              User?                   @relation("ReportsTo", fields: [reportsToId], references: [id])
+  reportsToId            String?
+  subordinates           User[]                  @relation("ReportsTo")
+  emergencyContact       EmergencyContact?
+  education              Education[]
+  experience             Experience[]
+  documents              Document[]
+  bankDetails            BankDetails?
+  attendance             Attendance[]
+  leaves                 Leave[]                 @relation("UserLeaves")
+  tasks                  Task[]
+  skills                 Skill[]
+  performance            Performance[]
+  projects               ProjectAssignment[]
+  teams                  TeamMember[] // Team memberships
+  leadingTeams           Team[]                  @relation("TeamLeader") // Teams this user leads
+  // Notification relationships
+  createdNotifications   Notification[]          @relation("NotificationCreatedBy")
+  notificationRecipients NotificationRecipient[] @relation("NotificationRecipients")
+  // Ticketing relationships
+  createdTickets         Ticket[]                @relation("TicketCreatedBy")
+  assignedTickets        Ticket[]                @relation("TicketAssignedTo")
+  resolvedTickets        Ticket[]                @relation("TicketResolvedBy")
+  ticketComments         TicketComment[]         @relation("TicketCommentAuthor")
+  ticketAttachments      TicketAttachment[]      @relation("TicketAttachmentUploadedBy")
+  ticketActivities       TicketActivity[]        @relation("TicketActivityUser")
+  meetings               Meeting[]
+  image                  String?
+  managerApprovals       Leave[]                 @relation("ManagerApproval")
+  adminApprovals         Leave[]                 @relation("AdminApproval")
   // Chat relationships
-  sentMessages        ChatMessage[]       @relation("MessageSender")
-  chatRooms           ChatParticipant[]
-  lastSeen            UserLastSeen?
-  messageReactions    MessageReaction[]   @relation("MessageReactions")
-  messageMentions     MessageMention[]    @relation("MessageMentions")
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
+  sentMessages           ChatMessage[]           @relation("MessageSender")
+  chatRooms              ChatParticipant[]
+  lastSeen               UserLastSeen?
+  messageReactions       MessageReaction[]       @relation("MessageReactions")
+  messageMentions        MessageMention[]        @relation("MessageMentions")
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
   // Onboarding status
-  onboardingCompleted Boolean             @default(false)
+  onboardingCompleted    Boolean                 @default(false)
   // Lead relationships
-  userLeads           Lead[]              @relation("UserLeads")
-  assignedLeads       Lead[]              @relation("LeadAssignee")
+  userLeads              Lead[]                  @relation("UserLeads")
+  assignedLeads          Lead[]                  @relation("LeadAssignee")
 }
 
 // New models for the roles and permissions system
@@ -309,13 +318,104 @@ model ProjectAssignment {
 }
 
 model Notification {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  message   String
-  timestamp DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String                  @id @default(cuid())
+  title            String
+  message          String
+  priority         TicketPriority          @default(MEDIUM)
+  status           String                  @default("DRAFT")
+  type             String                  @default("GENERAL")
+  createdById      String
+  createdBy        User                    @relation("NotificationCreatedBy", fields: [createdById], references: [id])
+  targetRole       String?
+  targetDepartment String?
+  targetUserIds    String[]
+  sendAt           DateTime?
+  sentAt           DateTime?
+  recipientCount   Int                     @default(0)
+  readCount        Int                     @default(0)
+  metadata         Json?
+  recipients       NotificationRecipient[]
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+}
+
+model NotificationRecipient {
+  id             String       @id @default(cuid())
+  notificationId String
+  userId         String
+  status         String       @default("SENT")
+  readAt         DateTime?
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  user           User         @relation("NotificationRecipients", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+
+  @@unique([notificationId, userId])
+}
+
+// Ticketing System Models
+model Ticket {
+  id           String             @id @default(cuid())
+  ticketNumber String             @unique
+  title        String
+  description  String
+  category     TicketCategory     @default(OTHER)
+  priority     TicketPriority     @default(MEDIUM)
+  status       TicketStatus       @default(OPEN)
+  createdById  String
+  assignedToId String?
+  resolvedById String?
+  resolvedAt   DateTime?
+  dueDate      DateTime?
+  tags         String[]
+  createdBy    User               @relation("TicketCreatedBy", fields: [createdById], references: [id])
+  assignedTo   User?              @relation("TicketAssignedTo", fields: [assignedToId], references: [id])
+  resolvedBy   User?              @relation("TicketResolvedBy", fields: [resolvedById], references: [id])
+  comments     TicketComment[]
+  attachments  TicketAttachment[]
+  activities   TicketActivity[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+model TicketComment {
+  id          String   @id @default(cuid())
+  content     String
+  ticketId    String
+  authorId    String
+  isInternal  Boolean  @default(false)
+  attachments String[]
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author      User     @relation("TicketCommentAuthor", fields: [authorId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model TicketAttachment {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  ticketId     String
+  uploadedById String
+  ticket       Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  uploadedBy   User     @relation("TicketAttachmentUploadedBy", fields: [uploadedById], references: [id])
+  createdAt    DateTime @default(now())
+}
+
+model TicketActivity {
+  id          String   @id @default(cuid())
+  ticketId    String
+  userId      String
+  action      String
+  description String
+  oldValue    String?
+  newValue    String?
+  metadata    Json?
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user        User     @relation("TicketActivityUser", fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
 }
 
 model Meeting {
@@ -379,6 +479,34 @@ enum Priority {
   MEDIUM
   HIGH
   URGENT
+}
+
+// Ticketing System Enums
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_CUSTOMER
+  RESOLVED
+  CLOSED
+  CANCELLED
+}
+
+enum TicketCategory {
+  TECHNICAL
+  HR
+  LEAVE
+  PAYROLL
+  EQUIPMENT
+  ACCESS
+  TRAINING
+  OTHER
 }
 
 model Hosting {

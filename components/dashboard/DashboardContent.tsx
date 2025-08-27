@@ -24,6 +24,7 @@ import {
   Users,
   X,
   ChevronUp,
+  Ticket,
 } from "lucide-react"
 import { Line, LineChart, Pie, PieChart } from "recharts"
 import { format } from 'date-fns'
@@ -40,6 +41,8 @@ import axios from "axios"
 import Link from "next/link"
 import { toast } from "sonner"
 import { ButtonLoader, Loader } from "@/components/ui/loader"
+import NotificationDropdown from "./NotificationDropdown"
+import TicketRequestModal from "./TicketRequestModal"
 
 interface DashboardUser {
   id: string;
@@ -114,6 +117,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const [showLeaveBanner, setShowLeaveBanner] = useState(true);
   const [teamLeader, setTeamLeader] = useState<{ firstName: string; lastName: string } | null>(null);
   const [timeLabels, setTimeLabels] = useState<string[]>([]);
+  const [assignedTickets, setAssignedTickets] = useState<any[]>([]);
 
   // Function to generate time labels
   const generateTimeLabels = useCallback(() => {
@@ -190,6 +194,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     generateTimeLabels();
     debouncedFetchTodayAttendance();
     debouncedFetchStats();
+    fetchAssignedTickets();
 
     // Set up interval to update time labels every minute
     const timeLabelInterval = setInterval(generateTimeLabels, 60000);
@@ -252,6 +257,18 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const fetchTodayAttendance = () => debouncedFetchTodayAttendance();
   const fetchStats = () => debouncedFetchStats();
 
+  // Function to fetch tickets assigned to current user
+  const fetchAssignedTickets = useCallback(async () => {
+    try {
+      console.log('Fetching assigned tickets for dashboard...');
+      const response = await axios.get('/api/tickets?assignedTo=current&limit=5');
+      console.log('Assigned tickets response:', response.data);
+      setAssignedTickets(response.data.tickets || []);
+    } catch (error) {
+      console.error('Error fetching assigned tickets:', error);
+    }
+  }, []);
+
   const handleCheckIn = async () => {
     setLoading(true);
     try {
@@ -303,6 +320,22 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     <div className="flex w-full">
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Assigned Tickets Card */}
+        {assignedTickets.length > 0 && (
+          <div className="col-span-3 mt-6">
+            <Card className="border-0 rounded-lg shadow-sm bg-[#fff7ed]">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold text-gray-800 flex items-center">
+                  <User className="w-5 h-5 mr-2 text-orange-500" />
+                  Tickets Assigned to Me
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <AssignedTicketsTable tickets={assignedTickets} />
+              </CardContent>
+            </Card>
+          </div>
+        )}
         {/* Header */}
         <header className="bg-white border-b border-gray-200">
           {/* Notification Banner */}
@@ -339,6 +372,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
               </div>
             </div>
 
+            {/* Right side actions */}
+            <div className="flex items-center gap-3">
+              <TicketRequestModal />
+              <NotificationDropdown />
+            </div>
           </div>
         </header>
 
@@ -531,6 +569,9 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                 </div>
               </CardContent>
             </Card>
+
+
+          
 
 
             {/* Attendance and Work Hours Side by Side */}
@@ -788,10 +829,238 @@ export default function DashboardContent({ user }: DashboardContentProps) {
               </CardContent>
             </Card>
           </div>
+            {/* My Tickets Card */}
+            <Card className="mt-5 border-0 rounded-lg shadow-sm bg-[#fff7ed]">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold text-gray-800 flex items-center">
+                  <Ticket className="w-5 h-5 mr-2 text-orange-500" />
+                  My Support Tickets
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <MyTicketsTable />
+              </CardContent>
+            </Card>
         </main>
       </div>
     </div>
   )
+}
+
+// Assigned Tickets Table Component
+function AssignedTicketsTable({ tickets }: { tickets: any[] }) {
+  const getStatusBadge = (status: string) => {
+    const styles = {
+      OPEN: "bg-blue-100 text-blue-800",
+      IN_PROGRESS: "bg-yellow-100 text-yellow-800",
+      WAITING_FOR_CUSTOMER: "bg-orange-100 text-orange-800",
+      RESOLVED: "bg-green-100 text-green-800",
+      CLOSED: "bg-gray-100 text-gray-800",
+      CANCELLED: "bg-red-100 text-red-800"
+    };
+    return styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800";
+  };
+
+  const getPriorityBadge = (priority: string) => {
+    const styles = {
+      LOW: "bg-gray-100 text-gray-800",
+      MEDIUM: "bg-blue-100 text-blue-800",
+      HIGH: "bg-orange-100 text-orange-800",
+      CRITICAL: "bg-red-100 text-red-800"
+    };
+    return styles[priority as keyof typeof styles] || "bg-gray-100 text-gray-800";
+  };
+
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), 'MMM dd, yyyy');
+  };
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-orange-50">
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Ticket</th>
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Priority</th>
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Status</th>
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Due Date</th>
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Actions</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {tickets.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-3 py-4 text-center">
+                <div className="flex flex-col items-center">
+                  <User className="w-8 h-8 text-gray-300 mb-2" />
+                  <p className="text-gray-500 text-sm">No tickets assigned to you</p>
+                </div>
+              </td>
+            </tr>
+          ) : (
+            tickets.map((ticket) => (
+              <tr key={ticket.id} className="hover:bg-orange-25">
+                <td className="px-3 py-2">
+                  <div>
+                    <div className="font-medium text-gray-900 text-sm">{ticket.ticketNumber}</div>
+                    <div className="text-xs text-gray-500 truncate max-w-xs">{ticket.title}</div>
+                  </div>
+                </td>
+                <td className="px-3 py-2">
+                  <Badge className={`text-xs ${getPriorityBadge(ticket.priority)}`}>
+                    {ticket.priority}
+                  </Badge>
+                </td>
+                <td className="px-3 py-2">
+                  <Badge className={`text-xs ${getStatusBadge(ticket.status)}`}>
+                    {ticket.status.replace('_', ' ')}
+                  </Badge>
+                </td>
+                <td className="px-3 py-2 text-xs text-gray-500">
+                  {ticket.dueDate ? formatDate(ticket.dueDate) : 'No due date'}
+                </td>
+                <td className="px-3 py-2">
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        // Open ticket in a new tab/window
+                        window.open(`/tickets/${ticket.id}`, '_blank');
+                      }}
+                      className="h-8 w-auto px-3 text-xs"
+                    >
+                      <Eye className="h-3 w-3 mr-1" />
+                      View
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+      {tickets.length > 0 && (
+        <div className="p-3 border-t border-gray-200 text-center">
+          <Link href="/tickets?assignedTo=current" className="text-sm text-orange-600 hover:text-orange-800">
+            View all assigned tickets →
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// My Tickets Table Component
+function MyTicketsTable() {
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMyTickets = async () => {
+      try {
+        const response = await axios.get('/api/tickets?limit=5&createdBy=current');
+        setTickets(response.data.tickets || []);
+      } catch (error) {
+        console.error('Error fetching my tickets:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMyTickets();
+  }, []);
+
+  const getStatusBadge = (status: string) => {
+    const styles = {
+      OPEN: "bg-blue-100 text-blue-800",
+      IN_PROGRESS: "bg-yellow-100 text-yellow-800",
+      WAITING_FOR_CUSTOMER: "bg-orange-100 text-orange-800",
+      RESOLVED: "bg-green-100 text-green-800",
+      CLOSED: "bg-gray-100 text-gray-800",
+      CANCELLED: "bg-red-100 text-red-800"
+    };
+    return styles[status as keyof typeof styles] || "bg-gray-100 text-gray-800";
+  };
+
+  const getPriorityBadge = (priority: string) => {
+    const styles = {
+      LOW: "bg-gray-100 text-gray-800",
+      MEDIUM: "bg-blue-100 text-blue-800",
+      HIGH: "bg-orange-100 text-orange-800",
+      CRITICAL: "bg-red-100 text-red-800"
+    };
+    return styles[priority as keyof typeof styles] || "bg-gray-100 text-gray-800";
+  };
+
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), 'MMM dd, yyyy');
+  };
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-orange-50">
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Ticket</th>
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Priority</th>
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Status</th>
+            <th className="px-3 py-2 text-left font-medium text-gray-500">Created</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {loading ? (
+            <tr>
+              <td colSpan={4} className="px-3 py-4 text-center">
+                <Loader size="sm" text="Loading tickets..." />
+              </td>
+            </tr>
+          ) : tickets.length === 0 ? (
+            <tr>
+              <td colSpan={4} className="px-3 py-4 text-center">
+                <div className="flex flex-col items-center">
+                  <Ticket className="w-8 h-8 text-gray-300 mb-2" />
+                  <p className="text-gray-500 text-sm">No tickets submitted yet</p>
+                  <p className="text-gray-400 text-xs">Use the "Submit Ticket" button to create one</p>
+                </div>
+              </td>
+            </tr>
+          ) : (
+            tickets.map((ticket) => (
+              <tr key={ticket.id} className="hover:bg-orange-25">
+                <td className="px-3 py-2">
+                  <div>
+                    <div className="font-medium text-gray-900 text-sm">{ticket.ticketNumber}</div>
+                    <div className="text-xs text-gray-500 truncate max-w-xs">{ticket.title}</div>
+                  </div>
+                </td>
+                <td className="px-3 py-2">
+                  <Badge className={`text-xs ${getPriorityBadge(ticket.priority)}`}>
+                    {ticket.priority}
+                  </Badge>
+                </td>
+                <td className="px-3 py-2">
+                  <Badge className={`text-xs ${getStatusBadge(ticket.status)}`}>
+                    {ticket.status.replace('_', ' ')}
+                  </Badge>
+                </td>
+                <td className="px-3 py-2 text-xs text-gray-500">
+                  {formatDate(ticket.createdAt)}
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+      {tickets.length > 0 && (
+        <div className="p-3 border-t border-gray-200 text-center">
+          <Link href="/tickets" className="text-sm text-orange-600 hover:text-orange-800">
+            View all my tickets →
+          </Link>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // Attendance History Table Component
