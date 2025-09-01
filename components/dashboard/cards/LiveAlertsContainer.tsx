@@ -87,18 +87,6 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
       )
     })),
 
-    // Absent employees
-    ...data.absentEmployees.map(employee => ({
-      id: `absent-${employee.id}`,
-      component: (
-        <AbsentAlertCard
-          key={`absent-${employee.id}`}
-          user={employee}
-          onDismiss={() => dismissCard(`absent-${employee.id}`)}
-        />
-      )
-    })),
-
     // Birthdays
     ...data.birthdaysToday.map(employee => ({
       id: `birthday-${employee.id}`,
@@ -169,6 +157,18 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
           key={`closed-ticket-${ticket.id}`}
           ticket={ticket}
           onDismiss={() => dismissCard(`closed-ticket-${ticket.id}`)}
+        />
+      )
+    })),
+
+    // Absent employees (lowest priority - shown last)
+    ...data.absentEmployees.map(employee => ({
+      id: `absent-${employee.id}`,
+      component: (
+        <AbsentAlertCard
+          key={`absent-${employee.id}`}
+          user={employee}
+          onDismiss={() => dismissCard(`absent-${employee.id}`)}
         />
       )
     }))
