@@ -188,6 +188,41 @@ export type UserLastSeen = $Result.DefaultSelection<Prisma.$UserLastSeenPayload>
  * 
  */
 export type Lead = $Result.DefaultSelection<Prisma.$LeadPayload>
+/**
+ * Model Board
+ * 
+ */
+export type Board = $Result.DefaultSelection<Prisma.$BoardPayload>
+/**
+ * Model BoardMember
+ * 
+ */
+export type BoardMember = $Result.DefaultSelection<Prisma.$BoardMemberPayload>
+/**
+ * Model BoardStar
+ * 
+ */
+export type BoardStar = $Result.DefaultSelection<Prisma.$BoardStarPayload>
+/**
+ * Model List
+ * 
+ */
+export type List = $Result.DefaultSelection<Prisma.$ListPayload>
+/**
+ * Model Card
+ * 
+ */
+export type Card = $Result.DefaultSelection<Prisma.$CardPayload>
+/**
+ * Model CardComment
+ * 
+ */
+export type CardComment = $Result.DefaultSelection<Prisma.$CardCommentPayload>
+/**
+ * Model CardActivity
+ * 
+ */
+export type CardActivity = $Result.DefaultSelection<Prisma.$CardActivityPayload>
 
 /**
  * Enums
@@ -342,6 +377,25 @@ export const MessageType: {
 
 export type MessageType = (typeof MessageType)[keyof typeof MessageType]
 
+
+export const BoardVisibility: {
+  PRIVATE: 'PRIVATE',
+  TEAM: 'TEAM',
+  PUBLIC: 'PUBLIC'
+};
+
+export type BoardVisibility = (typeof BoardVisibility)[keyof typeof BoardVisibility]
+
+
+export const CardPriority: {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+export type CardPriority = (typeof CardPriority)[keyof typeof CardPriority]
+
 }
 
 export type LegacyRole = $Enums.LegacyRole
@@ -399,6 +453,14 @@ export const ChatRoomType: typeof $Enums.ChatRoomType
 export type MessageType = $Enums.MessageType
 
 export const MessageType: typeof $Enums.MessageType
+
+export type BoardVisibility = $Enums.BoardVisibility
+
+export const BoardVisibility: typeof $Enums.BoardVisibility
+
+export type CardPriority = $Enums.CardPriority
+
+export const CardPriority: typeof $Enums.CardPriority
 
 /**
  * ##  Prisma Client ʲˢ
@@ -874,6 +936,76 @@ export class PrismaClient<
     * ```
     */
   get lead(): Prisma.LeadDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.board`: Exposes CRUD operations for the **Board** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Boards
+    * const boards = await prisma.board.findMany()
+    * ```
+    */
+  get board(): Prisma.BoardDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.boardMember`: Exposes CRUD operations for the **BoardMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BoardMembers
+    * const boardMembers = await prisma.boardMember.findMany()
+    * ```
+    */
+  get boardMember(): Prisma.BoardMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.boardStar`: Exposes CRUD operations for the **BoardStar** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BoardStars
+    * const boardStars = await prisma.boardStar.findMany()
+    * ```
+    */
+  get boardStar(): Prisma.BoardStarDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.list`: Exposes CRUD operations for the **List** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Lists
+    * const lists = await prisma.list.findMany()
+    * ```
+    */
+  get list(): Prisma.ListDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.card`: Exposes CRUD operations for the **Card** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Cards
+    * const cards = await prisma.card.findMany()
+    * ```
+    */
+  get card(): Prisma.CardDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cardComment`: Exposes CRUD operations for the **CardComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CardComments
+    * const cardComments = await prisma.cardComment.findMany()
+    * ```
+    */
+  get cardComment(): Prisma.CardCommentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cardActivity`: Exposes CRUD operations for the **CardActivity** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CardActivities
+    * const cardActivities = await prisma.cardActivity.findMany()
+    * ```
+    */
+  get cardActivity(): Prisma.CardActivityDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -932,8 +1064,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.8.2
-   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
+   * Prisma Client JS version: 6.6.0
+   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
    */
   export type PrismaVersion = {
     client: string
@@ -1348,7 +1480,14 @@ export namespace Prisma {
     MessageReaction: 'MessageReaction',
     MessageMention: 'MessageMention',
     UserLastSeen: 'UserLastSeen',
-    Lead: 'Lead'
+    Lead: 'Lead',
+    Board: 'Board',
+    BoardMember: 'BoardMember',
+    BoardStar: 'BoardStar',
+    List: 'List',
+    Card: 'Card',
+    CardComment: 'CardComment',
+    CardActivity: 'CardActivity'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1367,7 +1506,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "emergencyContact" | "education" | "experience" | "document" | "bankDetails" | "attendance" | "leave" | "task" | "skill" | "performance" | "project" | "projectAssignment" | "notification" | "notificationRecipient" | "ticket" | "ticketComment" | "ticketAttachment" | "ticketActivity" | "meeting" | "team" | "teamMember" | "hosting" | "chatRoom" | "chatParticipant" | "chatMessage" | "messageReadStatus" | "messageReaction" | "messageMention" | "userLastSeen" | "lead"
+      modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "emergencyContact" | "education" | "experience" | "document" | "bankDetails" | "attendance" | "leave" | "task" | "skill" | "performance" | "project" | "projectAssignment" | "notification" | "notificationRecipient" | "ticket" | "ticketComment" | "ticketAttachment" | "ticketActivity" | "meeting" | "team" | "teamMember" | "hosting" | "chatRoom" | "chatParticipant" | "chatMessage" | "messageReadStatus" | "messageReaction" | "messageMention" | "userLastSeen" | "lead" | "board" | "boardMember" | "boardStar" | "list" | "card" | "cardComment" | "cardActivity"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3961,6 +4100,524 @@ export namespace Prisma {
           }
         }
       }
+      Board: {
+        payload: Prisma.$BoardPayload<ExtArgs>
+        fields: Prisma.BoardFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BoardFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BoardFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>
+          }
+          findFirst: {
+            args: Prisma.BoardFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BoardFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>
+          }
+          findMany: {
+            args: Prisma.BoardFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>[]
+          }
+          create: {
+            args: Prisma.BoardCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>
+          }
+          createMany: {
+            args: Prisma.BoardCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BoardCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>[]
+          }
+          delete: {
+            args: Prisma.BoardDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>
+          }
+          update: {
+            args: Prisma.BoardUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>
+          }
+          deleteMany: {
+            args: Prisma.BoardDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BoardUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BoardUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>[]
+          }
+          upsert: {
+            args: Prisma.BoardUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardPayload>
+          }
+          aggregate: {
+            args: Prisma.BoardAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBoard>
+          }
+          groupBy: {
+            args: Prisma.BoardGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BoardGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BoardCountArgs<ExtArgs>
+            result: $Utils.Optional<BoardCountAggregateOutputType> | number
+          }
+        }
+      }
+      BoardMember: {
+        payload: Prisma.$BoardMemberPayload<ExtArgs>
+        fields: Prisma.BoardMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BoardMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BoardMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.BoardMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BoardMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          }
+          findMany: {
+            args: Prisma.BoardMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>[]
+          }
+          create: {
+            args: Prisma.BoardMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          }
+          createMany: {
+            args: Prisma.BoardMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BoardMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.BoardMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          }
+          update: {
+            args: Prisma.BoardMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.BoardMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BoardMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BoardMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.BoardMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.BoardMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBoardMember>
+          }
+          groupBy: {
+            args: Prisma.BoardMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BoardMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BoardMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<BoardMemberCountAggregateOutputType> | number
+          }
+        }
+      }
+      BoardStar: {
+        payload: Prisma.$BoardStarPayload<ExtArgs>
+        fields: Prisma.BoardStarFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BoardStarFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BoardStarFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>
+          }
+          findFirst: {
+            args: Prisma.BoardStarFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BoardStarFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>
+          }
+          findMany: {
+            args: Prisma.BoardStarFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>[]
+          }
+          create: {
+            args: Prisma.BoardStarCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>
+          }
+          createMany: {
+            args: Prisma.BoardStarCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BoardStarCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>[]
+          }
+          delete: {
+            args: Prisma.BoardStarDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>
+          }
+          update: {
+            args: Prisma.BoardStarUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>
+          }
+          deleteMany: {
+            args: Prisma.BoardStarDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BoardStarUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BoardStarUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>[]
+          }
+          upsert: {
+            args: Prisma.BoardStarUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BoardStarPayload>
+          }
+          aggregate: {
+            args: Prisma.BoardStarAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBoardStar>
+          }
+          groupBy: {
+            args: Prisma.BoardStarGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BoardStarGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BoardStarCountArgs<ExtArgs>
+            result: $Utils.Optional<BoardStarCountAggregateOutputType> | number
+          }
+        }
+      }
+      List: {
+        payload: Prisma.$ListPayload<ExtArgs>
+        fields: Prisma.ListFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ListFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ListFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>
+          }
+          findFirst: {
+            args: Prisma.ListFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ListFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>
+          }
+          findMany: {
+            args: Prisma.ListFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>[]
+          }
+          create: {
+            args: Prisma.ListCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>
+          }
+          createMany: {
+            args: Prisma.ListCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ListCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>[]
+          }
+          delete: {
+            args: Prisma.ListDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>
+          }
+          update: {
+            args: Prisma.ListUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>
+          }
+          deleteMany: {
+            args: Prisma.ListDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ListUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ListUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>[]
+          }
+          upsert: {
+            args: Prisma.ListUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ListPayload>
+          }
+          aggregate: {
+            args: Prisma.ListAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateList>
+          }
+          groupBy: {
+            args: Prisma.ListGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ListGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ListCountArgs<ExtArgs>
+            result: $Utils.Optional<ListCountAggregateOutputType> | number
+          }
+        }
+      }
+      Card: {
+        payload: Prisma.$CardPayload<ExtArgs>
+        fields: Prisma.CardFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CardFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CardFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          findFirst: {
+            args: Prisma.CardFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CardFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          findMany: {
+            args: Prisma.CardFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>[]
+          }
+          create: {
+            args: Prisma.CardCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          createMany: {
+            args: Prisma.CardCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CardCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>[]
+          }
+          delete: {
+            args: Prisma.CardDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          update: {
+            args: Prisma.CardUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          deleteMany: {
+            args: Prisma.CardDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CardUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CardUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>[]
+          }
+          upsert: {
+            args: Prisma.CardUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          aggregate: {
+            args: Prisma.CardAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCard>
+          }
+          groupBy: {
+            args: Prisma.CardGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CardGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CardCountArgs<ExtArgs>
+            result: $Utils.Optional<CardCountAggregateOutputType> | number
+          }
+        }
+      }
+      CardComment: {
+        payload: Prisma.$CardCommentPayload<ExtArgs>
+        fields: Prisma.CardCommentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CardCommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CardCommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>
+          }
+          findFirst: {
+            args: Prisma.CardCommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CardCommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>
+          }
+          findMany: {
+            args: Prisma.CardCommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>[]
+          }
+          create: {
+            args: Prisma.CardCommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>
+          }
+          createMany: {
+            args: Prisma.CardCommentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CardCommentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>[]
+          }
+          delete: {
+            args: Prisma.CardCommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>
+          }
+          update: {
+            args: Prisma.CardCommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>
+          }
+          deleteMany: {
+            args: Prisma.CardCommentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CardCommentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CardCommentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>[]
+          }
+          upsert: {
+            args: Prisma.CardCommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardCommentPayload>
+          }
+          aggregate: {
+            args: Prisma.CardCommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCardComment>
+          }
+          groupBy: {
+            args: Prisma.CardCommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CardCommentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CardCommentCountArgs<ExtArgs>
+            result: $Utils.Optional<CardCommentCountAggregateOutputType> | number
+          }
+        }
+      }
+      CardActivity: {
+        payload: Prisma.$CardActivityPayload<ExtArgs>
+        fields: Prisma.CardActivityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CardActivityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CardActivityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>
+          }
+          findFirst: {
+            args: Prisma.CardActivityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CardActivityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>
+          }
+          findMany: {
+            args: Prisma.CardActivityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>[]
+          }
+          create: {
+            args: Prisma.CardActivityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>
+          }
+          createMany: {
+            args: Prisma.CardActivityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CardActivityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>[]
+          }
+          delete: {
+            args: Prisma.CardActivityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>
+          }
+          update: {
+            args: Prisma.CardActivityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>
+          }
+          deleteMany: {
+            args: Prisma.CardActivityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CardActivityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CardActivityUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>[]
+          }
+          upsert: {
+            args: Prisma.CardActivityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CardActivityPayload>
+          }
+          aggregate: {
+            args: Prisma.CardActivityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCardActivity>
+          }
+          groupBy: {
+            args: Prisma.CardActivityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CardActivityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CardActivityCountArgs<ExtArgs>
+            result: $Utils.Optional<CardActivityCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4080,6 +4737,13 @@ export namespace Prisma {
     messageMention?: MessageMentionOmit
     userLastSeen?: UserLastSeenOmit
     lead?: LeadOmit
+    board?: BoardOmit
+    boardMember?: BoardMemberOmit
+    boardStar?: BoardStarOmit
+    list?: ListOmit
+    card?: CardOmit
+    cardComment?: CardCommentOmit
+    cardActivity?: CardActivityOmit
   }
 
   /* Types for Logging */
@@ -4204,6 +4868,13 @@ export namespace Prisma {
     messageMentions: number
     userLeads: number
     assignedLeads: number
+    createdBoards: number
+    boardMemberships: number
+    boardStars: number
+    assignedCards: number
+    createdCards: number
+    cardComments: number
+    cardActivities: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4237,6 +4908,13 @@ export namespace Prisma {
     messageMentions?: boolean | UserCountOutputTypeCountMessageMentionsArgs
     userLeads?: boolean | UserCountOutputTypeCountUserLeadsArgs
     assignedLeads?: boolean | UserCountOutputTypeCountAssignedLeadsArgs
+    createdBoards?: boolean | UserCountOutputTypeCountCreatedBoardsArgs
+    boardMemberships?: boolean | UserCountOutputTypeCountBoardMembershipsArgs
+    boardStars?: boolean | UserCountOutputTypeCountBoardStarsArgs
+    assignedCards?: boolean | UserCountOutputTypeCountAssignedCardsArgs
+    createdCards?: boolean | UserCountOutputTypeCountCreatedCardsArgs
+    cardComments?: boolean | UserCountOutputTypeCountCardCommentsArgs
+    cardActivities?: boolean | UserCountOutputTypeCountCardActivitiesArgs
   }
 
   // Custom InputTypes
@@ -4460,6 +5138,55 @@ export namespace Prisma {
     where?: LeadWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedBoardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBoardMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBoardStarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardStarWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAssignedCardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedCardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCardCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardCommentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCardActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardActivityWhereInput
+  }
+
 
   /**
    * Count Type RoleCountOutputType
@@ -4650,11 +5377,13 @@ export namespace Prisma {
   export type TeamCountOutputType = {
     members: number
     chatRooms: number
+    boards: number
   }
 
   export type TeamCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | TeamCountOutputTypeCountMembersArgs
     chatRooms?: boolean | TeamCountOutputTypeCountChatRoomsArgs
+    boards?: boolean | TeamCountOutputTypeCountBoardsArgs
   }
 
   // Custom InputTypes
@@ -4680,6 +5409,13 @@ export namespace Prisma {
    */
   export type TeamCountOutputTypeCountChatRoomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ChatRoomWhereInput
+  }
+
+  /**
+   * TeamCountOutputType without action
+   */
+  export type TeamCountOutputTypeCountBoardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardWhereInput
   }
 
 
@@ -4778,6 +5514,126 @@ export namespace Prisma {
    */
   export type ChatMessageCountOutputTypeCountMentionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MessageMentionWhereInput
+  }
+
+
+  /**
+   * Count Type BoardCountOutputType
+   */
+
+  export type BoardCountOutputType = {
+    lists: number
+    members: number
+    starredBy: number
+  }
+
+  export type BoardCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lists?: boolean | BoardCountOutputTypeCountListsArgs
+    members?: boolean | BoardCountOutputTypeCountMembersArgs
+    starredBy?: boolean | BoardCountOutputTypeCountStarredByArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BoardCountOutputType without action
+   */
+  export type BoardCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardCountOutputType
+     */
+    select?: BoardCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BoardCountOutputType without action
+   */
+  export type BoardCountOutputTypeCountListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ListWhereInput
+  }
+
+  /**
+   * BoardCountOutputType without action
+   */
+  export type BoardCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardMemberWhereInput
+  }
+
+  /**
+   * BoardCountOutputType without action
+   */
+  export type BoardCountOutputTypeCountStarredByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardStarWhereInput
+  }
+
+
+  /**
+   * Count Type ListCountOutputType
+   */
+
+  export type ListCountOutputType = {
+    cards: number
+  }
+
+  export type ListCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cards?: boolean | ListCountOutputTypeCountCardsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ListCountOutputType without action
+   */
+  export type ListCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ListCountOutputType
+     */
+    select?: ListCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ListCountOutputType without action
+   */
+  export type ListCountOutputTypeCountCardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardWhereInput
+  }
+
+
+  /**
+   * Count Type CardCountOutputType
+   */
+
+  export type CardCountOutputType = {
+    comments: number
+    activities: number
+  }
+
+  export type CardCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    comments?: boolean | CardCountOutputTypeCountCommentsArgs
+    activities?: boolean | CardCountOutputTypeCountActivitiesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CardCountOutputType without action
+   */
+  export type CardCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardCountOutputType
+     */
+    select?: CardCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CardCountOutputType without action
+   */
+  export type CardCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardCommentWhereInput
+  }
+
+  /**
+   * CardCountOutputType without action
+   */
+  export type CardCountOutputTypeCountActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardActivityWhereInput
   }
 
 
@@ -5169,6 +6025,13 @@ export namespace Prisma {
     messageMentions?: boolean | User$messageMentionsArgs<ExtArgs>
     userLeads?: boolean | User$userLeadsArgs<ExtArgs>
     assignedLeads?: boolean | User$assignedLeadsArgs<ExtArgs>
+    createdBoards?: boolean | User$createdBoardsArgs<ExtArgs>
+    boardMemberships?: boolean | User$boardMembershipsArgs<ExtArgs>
+    boardStars?: boolean | User$boardStarsArgs<ExtArgs>
+    assignedCards?: boolean | User$assignedCardsArgs<ExtArgs>
+    createdCards?: boolean | User$createdCardsArgs<ExtArgs>
+    cardComments?: boolean | User$cardCommentsArgs<ExtArgs>
+    cardActivities?: boolean | User$cardActivitiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5291,6 +6154,13 @@ export namespace Prisma {
     messageMentions?: boolean | User$messageMentionsArgs<ExtArgs>
     userLeads?: boolean | User$userLeadsArgs<ExtArgs>
     assignedLeads?: boolean | User$assignedLeadsArgs<ExtArgs>
+    createdBoards?: boolean | User$createdBoardsArgs<ExtArgs>
+    boardMemberships?: boolean | User$boardMembershipsArgs<ExtArgs>
+    boardStars?: boolean | User$boardStarsArgs<ExtArgs>
+    assignedCards?: boolean | User$assignedCardsArgs<ExtArgs>
+    createdCards?: boolean | User$createdCardsArgs<ExtArgs>
+    cardComments?: boolean | User$cardCommentsArgs<ExtArgs>
+    cardActivities?: boolean | User$cardActivitiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5337,6 +6207,13 @@ export namespace Prisma {
       messageMentions: Prisma.$MessageMentionPayload<ExtArgs>[]
       userLeads: Prisma.$LeadPayload<ExtArgs>[]
       assignedLeads: Prisma.$LeadPayload<ExtArgs>[]
+      createdBoards: Prisma.$BoardPayload<ExtArgs>[]
+      boardMemberships: Prisma.$BoardMemberPayload<ExtArgs>[]
+      boardStars: Prisma.$BoardStarPayload<ExtArgs>[]
+      assignedCards: Prisma.$CardPayload<ExtArgs>[]
+      createdCards: Prisma.$CardPayload<ExtArgs>[]
+      cardComments: Prisma.$CardCommentPayload<ExtArgs>[]
+      cardActivities: Prisma.$CardActivityPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5791,6 +6668,13 @@ export namespace Prisma {
     messageMentions<T extends User$messageMentionsArgs<ExtArgs> = {}>(args?: Subset<T, User$messageMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessageMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userLeads<T extends User$userLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$userLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedLeads<T extends User$assignedLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdBoards<T extends User$createdBoardsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdBoardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    boardMemberships<T extends User$boardMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$boardMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    boardStars<T extends User$boardStarsArgs<ExtArgs> = {}>(args?: Subset<T, User$boardStarsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assignedCards<T extends User$assignedCardsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedCardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdCards<T extends User$createdCardsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdCardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cardComments<T extends User$cardCommentsArgs<ExtArgs> = {}>(args?: Subset<T, User$cardCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cardActivities<T extends User$cardActivitiesArgs<ExtArgs> = {}>(args?: Subset<T, User$cardActivitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7033,6 +7917,174 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdBoards
+   */
+  export type User$createdBoardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    where?: BoardWhereInput
+    orderBy?: BoardOrderByWithRelationInput | BoardOrderByWithRelationInput[]
+    cursor?: BoardWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BoardScalarFieldEnum | BoardScalarFieldEnum[]
+  }
+
+  /**
+   * User.boardMemberships
+   */
+  export type User$boardMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    where?: BoardMemberWhereInput
+    orderBy?: BoardMemberOrderByWithRelationInput | BoardMemberOrderByWithRelationInput[]
+    cursor?: BoardMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BoardMemberScalarFieldEnum | BoardMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.boardStars
+   */
+  export type User$boardStarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    where?: BoardStarWhereInput
+    orderBy?: BoardStarOrderByWithRelationInput | BoardStarOrderByWithRelationInput[]
+    cursor?: BoardStarWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BoardStarScalarFieldEnum | BoardStarScalarFieldEnum[]
+  }
+
+  /**
+   * User.assignedCards
+   */
+  export type User$assignedCardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    where?: CardWhereInput
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    cursor?: CardWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdCards
+   */
+  export type User$createdCardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    where?: CardWhereInput
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    cursor?: CardWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+  /**
+   * User.cardComments
+   */
+  export type User$cardCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    where?: CardCommentWhereInput
+    orderBy?: CardCommentOrderByWithRelationInput | CardCommentOrderByWithRelationInput[]
+    cursor?: CardCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CardCommentScalarFieldEnum | CardCommentScalarFieldEnum[]
+  }
+
+  /**
+   * User.cardActivities
+   */
+  export type User$cardActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    where?: CardActivityWhereInput
+    orderBy?: CardActivityOrderByWithRelationInput | CardActivityOrderByWithRelationInput[]
+    cursor?: CardActivityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CardActivityScalarFieldEnum | CardActivityScalarFieldEnum[]
   }
 
   /**
@@ -16931,10 +17983,12 @@ export namespace Prisma {
 
   export type AttendanceAvgAggregateOutputType = {
     totalHours: number | null
+    totalBreakTime: number | null
   }
 
   export type AttendanceSumAggregateOutputType = {
     totalHours: number | null
+    totalBreakTime: number | null
   }
 
   export type AttendanceMinAggregateOutputType = {
@@ -16943,6 +17997,9 @@ export namespace Prisma {
     checkInTime: Date | null
     checkOutTime: Date | null
     totalHours: number | null
+    breakStartTime: Date | null
+    breakEndTime: Date | null
+    totalBreakTime: number | null
     date: Date | null
     status: string | null
     createdAt: Date | null
@@ -16955,6 +18012,9 @@ export namespace Prisma {
     checkInTime: Date | null
     checkOutTime: Date | null
     totalHours: number | null
+    breakStartTime: Date | null
+    breakEndTime: Date | null
+    totalBreakTime: number | null
     date: Date | null
     status: string | null
     createdAt: Date | null
@@ -16967,6 +18027,9 @@ export namespace Prisma {
     checkInTime: number
     checkOutTime: number
     totalHours: number
+    breakStartTime: number
+    breakEndTime: number
+    totalBreakTime: number
     date: number
     status: number
     createdAt: number
@@ -16977,10 +18040,12 @@ export namespace Prisma {
 
   export type AttendanceAvgAggregateInputType = {
     totalHours?: true
+    totalBreakTime?: true
   }
 
   export type AttendanceSumAggregateInputType = {
     totalHours?: true
+    totalBreakTime?: true
   }
 
   export type AttendanceMinAggregateInputType = {
@@ -16989,6 +18054,9 @@ export namespace Prisma {
     checkInTime?: true
     checkOutTime?: true
     totalHours?: true
+    breakStartTime?: true
+    breakEndTime?: true
+    totalBreakTime?: true
     date?: true
     status?: true
     createdAt?: true
@@ -17001,6 +18069,9 @@ export namespace Prisma {
     checkInTime?: true
     checkOutTime?: true
     totalHours?: true
+    breakStartTime?: true
+    breakEndTime?: true
+    totalBreakTime?: true
     date?: true
     status?: true
     createdAt?: true
@@ -17013,6 +18084,9 @@ export namespace Prisma {
     checkInTime?: true
     checkOutTime?: true
     totalHours?: true
+    breakStartTime?: true
+    breakEndTime?: true
+    totalBreakTime?: true
     date?: true
     status?: true
     createdAt?: true
@@ -17112,6 +18186,9 @@ export namespace Prisma {
     checkInTime: Date | null
     checkOutTime: Date | null
     totalHours: number | null
+    breakStartTime: Date | null
+    breakEndTime: Date | null
+    totalBreakTime: number | null
     date: Date
     status: string
     createdAt: Date
@@ -17143,6 +18220,9 @@ export namespace Prisma {
     checkInTime?: boolean
     checkOutTime?: boolean
     totalHours?: boolean
+    breakStartTime?: boolean
+    breakEndTime?: boolean
+    totalBreakTime?: boolean
     date?: boolean
     status?: boolean
     createdAt?: boolean
@@ -17156,6 +18236,9 @@ export namespace Prisma {
     checkInTime?: boolean
     checkOutTime?: boolean
     totalHours?: boolean
+    breakStartTime?: boolean
+    breakEndTime?: boolean
+    totalBreakTime?: boolean
     date?: boolean
     status?: boolean
     createdAt?: boolean
@@ -17169,6 +18252,9 @@ export namespace Prisma {
     checkInTime?: boolean
     checkOutTime?: boolean
     totalHours?: boolean
+    breakStartTime?: boolean
+    breakEndTime?: boolean
+    totalBreakTime?: boolean
     date?: boolean
     status?: boolean
     createdAt?: boolean
@@ -17182,13 +18268,16 @@ export namespace Prisma {
     checkInTime?: boolean
     checkOutTime?: boolean
     totalHours?: boolean
+    breakStartTime?: boolean
+    breakEndTime?: boolean
+    totalBreakTime?: boolean
     date?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "checkInTime" | "checkOutTime" | "totalHours" | "date" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["attendance"]>
+  export type AttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "checkInTime" | "checkOutTime" | "totalHours" | "breakStartTime" | "breakEndTime" | "totalBreakTime" | "date" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["attendance"]>
   export type AttendanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -17210,6 +18299,9 @@ export namespace Prisma {
       checkInTime: Date | null
       checkOutTime: Date | null
       totalHours: number | null
+      breakStartTime: Date | null
+      breakEndTime: Date | null
+      totalBreakTime: number | null
       date: Date
       status: string
       createdAt: Date
@@ -17643,6 +18735,9 @@ export namespace Prisma {
     readonly checkInTime: FieldRef<"Attendance", 'DateTime'>
     readonly checkOutTime: FieldRef<"Attendance", 'DateTime'>
     readonly totalHours: FieldRef<"Attendance", 'Float'>
+    readonly breakStartTime: FieldRef<"Attendance", 'DateTime'>
+    readonly breakEndTime: FieldRef<"Attendance", 'DateTime'>
+    readonly totalBreakTime: FieldRef<"Attendance", 'Float'>
     readonly date: FieldRef<"Attendance", 'DateTime'>
     readonly status: FieldRef<"Attendance", 'String'>
     readonly createdAt: FieldRef<"Attendance", 'DateTime'>
@@ -33211,6 +34306,7 @@ export namespace Prisma {
     leader?: boolean | UserDefaultArgs<ExtArgs>
     members?: boolean | Team$membersArgs<ExtArgs>
     chatRooms?: boolean | Team$chatRoomsArgs<ExtArgs>
+    boards?: boolean | Team$boardsArgs<ExtArgs>
     _count?: boolean | TeamCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["team"]>
 
@@ -33248,6 +34344,7 @@ export namespace Prisma {
     leader?: boolean | UserDefaultArgs<ExtArgs>
     members?: boolean | Team$membersArgs<ExtArgs>
     chatRooms?: boolean | Team$chatRoomsArgs<ExtArgs>
+    boards?: boolean | Team$boardsArgs<ExtArgs>
     _count?: boolean | TeamCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TeamIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -33263,6 +34360,7 @@ export namespace Prisma {
       leader: Prisma.$UserPayload<ExtArgs>
       members: Prisma.$TeamMemberPayload<ExtArgs>[]
       chatRooms: Prisma.$ChatRoomPayload<ExtArgs>[]
+      boards: Prisma.$BoardPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -33668,6 +34766,7 @@ export namespace Prisma {
     leader<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     members<T extends Team$membersArgs<ExtArgs> = {}>(args?: Subset<T, Team$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chatRooms<T extends Team$chatRoomsArgs<ExtArgs> = {}>(args?: Subset<T, Team$chatRoomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    boards<T extends Team$boardsArgs<ExtArgs> = {}>(args?: Subset<T, Team$boardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -34144,6 +35243,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ChatRoomScalarFieldEnum | ChatRoomScalarFieldEnum[]
+  }
+
+  /**
+   * Team.boards
+   */
+  export type Team$boardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    where?: BoardWhereInput
+    orderBy?: BoardOrderByWithRelationInput | BoardOrderByWithRelationInput[]
+    cursor?: BoardWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BoardScalarFieldEnum | BoardScalarFieldEnum[]
   }
 
   /**
@@ -45444,6 +46567,7948 @@ export namespace Prisma {
 
 
   /**
+   * Model Board
+   */
+
+  export type AggregateBoard = {
+    _count: BoardCountAggregateOutputType | null
+    _min: BoardMinAggregateOutputType | null
+    _max: BoardMaxAggregateOutputType | null
+  }
+
+  export type BoardMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    background: string | null
+    visibility: $Enums.BoardVisibility | null
+    createdById: string | null
+    teamId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BoardMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    background: string | null
+    visibility: $Enums.BoardVisibility | null
+    createdById: string | null
+    teamId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BoardCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    background: number
+    visibility: number
+    createdById: number
+    teamId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BoardMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    background?: true
+    visibility?: true
+    createdById?: true
+    teamId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BoardMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    background?: true
+    visibility?: true
+    createdById?: true
+    teamId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BoardCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    background?: true
+    visibility?: true
+    createdById?: true
+    teamId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BoardAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Board to aggregate.
+     */
+    where?: BoardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Boards to fetch.
+     */
+    orderBy?: BoardOrderByWithRelationInput | BoardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BoardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Boards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Boards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Boards
+    **/
+    _count?: true | BoardCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BoardMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BoardMaxAggregateInputType
+  }
+
+  export type GetBoardAggregateType<T extends BoardAggregateArgs> = {
+        [P in keyof T & keyof AggregateBoard]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBoard[P]>
+      : GetScalarType<T[P], AggregateBoard[P]>
+  }
+
+
+
+
+  export type BoardGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardWhereInput
+    orderBy?: BoardOrderByWithAggregationInput | BoardOrderByWithAggregationInput[]
+    by: BoardScalarFieldEnum[] | BoardScalarFieldEnum
+    having?: BoardScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BoardCountAggregateInputType | true
+    _min?: BoardMinAggregateInputType
+    _max?: BoardMaxAggregateInputType
+  }
+
+  export type BoardGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    background: string | null
+    visibility: $Enums.BoardVisibility
+    createdById: string
+    teamId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BoardCountAggregateOutputType | null
+    _min: BoardMinAggregateOutputType | null
+    _max: BoardMaxAggregateOutputType | null
+  }
+
+  type GetBoardGroupByPayload<T extends BoardGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BoardGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BoardGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BoardGroupByOutputType[P]>
+            : GetScalarType<T[P], BoardGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BoardSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    background?: boolean
+    visibility?: boolean
+    createdById?: boolean
+    teamId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    team?: boolean | Board$teamArgs<ExtArgs>
+    lists?: boolean | Board$listsArgs<ExtArgs>
+    members?: boolean | Board$membersArgs<ExtArgs>
+    starredBy?: boolean | Board$starredByArgs<ExtArgs>
+    _count?: boolean | BoardCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["board"]>
+
+  export type BoardSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    background?: boolean
+    visibility?: boolean
+    createdById?: boolean
+    teamId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    team?: boolean | Board$teamArgs<ExtArgs>
+  }, ExtArgs["result"]["board"]>
+
+  export type BoardSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    background?: boolean
+    visibility?: boolean
+    createdById?: boolean
+    teamId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    team?: boolean | Board$teamArgs<ExtArgs>
+  }, ExtArgs["result"]["board"]>
+
+  export type BoardSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    background?: boolean
+    visibility?: boolean
+    createdById?: boolean
+    teamId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BoardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "background" | "visibility" | "createdById" | "teamId" | "createdAt" | "updatedAt", ExtArgs["result"]["board"]>
+  export type BoardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    team?: boolean | Board$teamArgs<ExtArgs>
+    lists?: boolean | Board$listsArgs<ExtArgs>
+    members?: boolean | Board$membersArgs<ExtArgs>
+    starredBy?: boolean | Board$starredByArgs<ExtArgs>
+    _count?: boolean | BoardCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type BoardIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    team?: boolean | Board$teamArgs<ExtArgs>
+  }
+  export type BoardIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    team?: boolean | Board$teamArgs<ExtArgs>
+  }
+
+  export type $BoardPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Board"
+    objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      team: Prisma.$TeamPayload<ExtArgs> | null
+      lists: Prisma.$ListPayload<ExtArgs>[]
+      members: Prisma.$BoardMemberPayload<ExtArgs>[]
+      starredBy: Prisma.$BoardStarPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      background: string | null
+      visibility: $Enums.BoardVisibility
+      createdById: string
+      teamId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["board"]>
+    composites: {}
+  }
+
+  type BoardGetPayload<S extends boolean | null | undefined | BoardDefaultArgs> = $Result.GetResult<Prisma.$BoardPayload, S>
+
+  type BoardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BoardFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BoardCountAggregateInputType | true
+    }
+
+  export interface BoardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Board'], meta: { name: 'Board' } }
+    /**
+     * Find zero or one Board that matches the filter.
+     * @param {BoardFindUniqueArgs} args - Arguments to find a Board
+     * @example
+     * // Get one Board
+     * const board = await prisma.board.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BoardFindUniqueArgs>(args: SelectSubset<T, BoardFindUniqueArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Board that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BoardFindUniqueOrThrowArgs} args - Arguments to find a Board
+     * @example
+     * // Get one Board
+     * const board = await prisma.board.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BoardFindUniqueOrThrowArgs>(args: SelectSubset<T, BoardFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Board that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardFindFirstArgs} args - Arguments to find a Board
+     * @example
+     * // Get one Board
+     * const board = await prisma.board.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BoardFindFirstArgs>(args?: SelectSubset<T, BoardFindFirstArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Board that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardFindFirstOrThrowArgs} args - Arguments to find a Board
+     * @example
+     * // Get one Board
+     * const board = await prisma.board.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BoardFindFirstOrThrowArgs>(args?: SelectSubset<T, BoardFindFirstOrThrowArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Boards that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Boards
+     * const boards = await prisma.board.findMany()
+     * 
+     * // Get first 10 Boards
+     * const boards = await prisma.board.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const boardWithIdOnly = await prisma.board.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BoardFindManyArgs>(args?: SelectSubset<T, BoardFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Board.
+     * @param {BoardCreateArgs} args - Arguments to create a Board.
+     * @example
+     * // Create one Board
+     * const Board = await prisma.board.create({
+     *   data: {
+     *     // ... data to create a Board
+     *   }
+     * })
+     * 
+     */
+    create<T extends BoardCreateArgs>(args: SelectSubset<T, BoardCreateArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Boards.
+     * @param {BoardCreateManyArgs} args - Arguments to create many Boards.
+     * @example
+     * // Create many Boards
+     * const board = await prisma.board.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BoardCreateManyArgs>(args?: SelectSubset<T, BoardCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Boards and returns the data saved in the database.
+     * @param {BoardCreateManyAndReturnArgs} args - Arguments to create many Boards.
+     * @example
+     * // Create many Boards
+     * const board = await prisma.board.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Boards and only return the `id`
+     * const boardWithIdOnly = await prisma.board.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BoardCreateManyAndReturnArgs>(args?: SelectSubset<T, BoardCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Board.
+     * @param {BoardDeleteArgs} args - Arguments to delete one Board.
+     * @example
+     * // Delete one Board
+     * const Board = await prisma.board.delete({
+     *   where: {
+     *     // ... filter to delete one Board
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BoardDeleteArgs>(args: SelectSubset<T, BoardDeleteArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Board.
+     * @param {BoardUpdateArgs} args - Arguments to update one Board.
+     * @example
+     * // Update one Board
+     * const board = await prisma.board.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BoardUpdateArgs>(args: SelectSubset<T, BoardUpdateArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Boards.
+     * @param {BoardDeleteManyArgs} args - Arguments to filter Boards to delete.
+     * @example
+     * // Delete a few Boards
+     * const { count } = await prisma.board.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BoardDeleteManyArgs>(args?: SelectSubset<T, BoardDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Boards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Boards
+     * const board = await prisma.board.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BoardUpdateManyArgs>(args: SelectSubset<T, BoardUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Boards and returns the data updated in the database.
+     * @param {BoardUpdateManyAndReturnArgs} args - Arguments to update many Boards.
+     * @example
+     * // Update many Boards
+     * const board = await prisma.board.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Boards and only return the `id`
+     * const boardWithIdOnly = await prisma.board.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BoardUpdateManyAndReturnArgs>(args: SelectSubset<T, BoardUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Board.
+     * @param {BoardUpsertArgs} args - Arguments to update or create a Board.
+     * @example
+     * // Update or create a Board
+     * const board = await prisma.board.upsert({
+     *   create: {
+     *     // ... data to create a Board
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Board we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BoardUpsertArgs>(args: SelectSubset<T, BoardUpsertArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Boards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardCountArgs} args - Arguments to filter Boards to count.
+     * @example
+     * // Count the number of Boards
+     * const count = await prisma.board.count({
+     *   where: {
+     *     // ... the filter for the Boards we want to count
+     *   }
+     * })
+    **/
+    count<T extends BoardCountArgs>(
+      args?: Subset<T, BoardCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BoardCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Board.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BoardAggregateArgs>(args: Subset<T, BoardAggregateArgs>): Prisma.PrismaPromise<GetBoardAggregateType<T>>
+
+    /**
+     * Group by Board.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BoardGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BoardGroupByArgs['orderBy'] }
+        : { orderBy?: BoardGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BoardGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBoardGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Board model
+   */
+  readonly fields: BoardFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Board.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BoardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    team<T extends Board$teamArgs<ExtArgs> = {}>(args?: Subset<T, Board$teamArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    lists<T extends Board$listsArgs<ExtArgs> = {}>(args?: Subset<T, Board$listsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    members<T extends Board$membersArgs<ExtArgs> = {}>(args?: Subset<T, Board$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    starredBy<T extends Board$starredByArgs<ExtArgs> = {}>(args?: Subset<T, Board$starredByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Board model
+   */
+  interface BoardFieldRefs {
+    readonly id: FieldRef<"Board", 'String'>
+    readonly title: FieldRef<"Board", 'String'>
+    readonly description: FieldRef<"Board", 'String'>
+    readonly background: FieldRef<"Board", 'String'>
+    readonly visibility: FieldRef<"Board", 'BoardVisibility'>
+    readonly createdById: FieldRef<"Board", 'String'>
+    readonly teamId: FieldRef<"Board", 'String'>
+    readonly createdAt: FieldRef<"Board", 'DateTime'>
+    readonly updatedAt: FieldRef<"Board", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Board findUnique
+   */
+  export type BoardFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * Filter, which Board to fetch.
+     */
+    where: BoardWhereUniqueInput
+  }
+
+  /**
+   * Board findUniqueOrThrow
+   */
+  export type BoardFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * Filter, which Board to fetch.
+     */
+    where: BoardWhereUniqueInput
+  }
+
+  /**
+   * Board findFirst
+   */
+  export type BoardFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * Filter, which Board to fetch.
+     */
+    where?: BoardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Boards to fetch.
+     */
+    orderBy?: BoardOrderByWithRelationInput | BoardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Boards.
+     */
+    cursor?: BoardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Boards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Boards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Boards.
+     */
+    distinct?: BoardScalarFieldEnum | BoardScalarFieldEnum[]
+  }
+
+  /**
+   * Board findFirstOrThrow
+   */
+  export type BoardFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * Filter, which Board to fetch.
+     */
+    where?: BoardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Boards to fetch.
+     */
+    orderBy?: BoardOrderByWithRelationInput | BoardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Boards.
+     */
+    cursor?: BoardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Boards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Boards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Boards.
+     */
+    distinct?: BoardScalarFieldEnum | BoardScalarFieldEnum[]
+  }
+
+  /**
+   * Board findMany
+   */
+  export type BoardFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * Filter, which Boards to fetch.
+     */
+    where?: BoardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Boards to fetch.
+     */
+    orderBy?: BoardOrderByWithRelationInput | BoardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Boards.
+     */
+    cursor?: BoardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Boards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Boards.
+     */
+    skip?: number
+    distinct?: BoardScalarFieldEnum | BoardScalarFieldEnum[]
+  }
+
+  /**
+   * Board create
+   */
+  export type BoardCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Board.
+     */
+    data: XOR<BoardCreateInput, BoardUncheckedCreateInput>
+  }
+
+  /**
+   * Board createMany
+   */
+  export type BoardCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Boards.
+     */
+    data: BoardCreateManyInput | BoardCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Board createManyAndReturn
+   */
+  export type BoardCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * The data used to create many Boards.
+     */
+    data: BoardCreateManyInput | BoardCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Board update
+   */
+  export type BoardUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Board.
+     */
+    data: XOR<BoardUpdateInput, BoardUncheckedUpdateInput>
+    /**
+     * Choose, which Board to update.
+     */
+    where: BoardWhereUniqueInput
+  }
+
+  /**
+   * Board updateMany
+   */
+  export type BoardUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Boards.
+     */
+    data: XOR<BoardUpdateManyMutationInput, BoardUncheckedUpdateManyInput>
+    /**
+     * Filter which Boards to update
+     */
+    where?: BoardWhereInput
+    /**
+     * Limit how many Boards to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Board updateManyAndReturn
+   */
+  export type BoardUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * The data used to update Boards.
+     */
+    data: XOR<BoardUpdateManyMutationInput, BoardUncheckedUpdateManyInput>
+    /**
+     * Filter which Boards to update
+     */
+    where?: BoardWhereInput
+    /**
+     * Limit how many Boards to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Board upsert
+   */
+  export type BoardUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Board to update in case it exists.
+     */
+    where: BoardWhereUniqueInput
+    /**
+     * In case the Board found by the `where` argument doesn't exist, create a new Board with this data.
+     */
+    create: XOR<BoardCreateInput, BoardUncheckedCreateInput>
+    /**
+     * In case the Board was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BoardUpdateInput, BoardUncheckedUpdateInput>
+  }
+
+  /**
+   * Board delete
+   */
+  export type BoardDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    /**
+     * Filter which Board to delete.
+     */
+    where: BoardWhereUniqueInput
+  }
+
+  /**
+   * Board deleteMany
+   */
+  export type BoardDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Boards to delete
+     */
+    where?: BoardWhereInput
+    /**
+     * Limit how many Boards to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Board.team
+   */
+  export type Board$teamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    where?: TeamWhereInput
+  }
+
+  /**
+   * Board.lists
+   */
+  export type Board$listsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    where?: ListWhereInput
+    orderBy?: ListOrderByWithRelationInput | ListOrderByWithRelationInput[]
+    cursor?: ListWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ListScalarFieldEnum | ListScalarFieldEnum[]
+  }
+
+  /**
+   * Board.members
+   */
+  export type Board$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    where?: BoardMemberWhereInput
+    orderBy?: BoardMemberOrderByWithRelationInput | BoardMemberOrderByWithRelationInput[]
+    cursor?: BoardMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BoardMemberScalarFieldEnum | BoardMemberScalarFieldEnum[]
+  }
+
+  /**
+   * Board.starredBy
+   */
+  export type Board$starredByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    where?: BoardStarWhereInput
+    orderBy?: BoardStarOrderByWithRelationInput | BoardStarOrderByWithRelationInput[]
+    cursor?: BoardStarWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BoardStarScalarFieldEnum | BoardStarScalarFieldEnum[]
+  }
+
+  /**
+   * Board without action
+   */
+  export type BoardDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Board
+     */
+    omit?: BoardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BoardMember
+   */
+
+  export type AggregateBoardMember = {
+    _count: BoardMemberCountAggregateOutputType | null
+    _min: BoardMemberMinAggregateOutputType | null
+    _max: BoardMemberMaxAggregateOutputType | null
+  }
+
+  export type BoardMemberMinAggregateOutputType = {
+    id: string | null
+    boardId: string | null
+    userId: string | null
+    role: string | null
+    joinedAt: Date | null
+  }
+
+  export type BoardMemberMaxAggregateOutputType = {
+    id: string | null
+    boardId: string | null
+    userId: string | null
+    role: string | null
+    joinedAt: Date | null
+  }
+
+  export type BoardMemberCountAggregateOutputType = {
+    id: number
+    boardId: number
+    userId: number
+    role: number
+    joinedAt: number
+    _all: number
+  }
+
+
+  export type BoardMemberMinAggregateInputType = {
+    id?: true
+    boardId?: true
+    userId?: true
+    role?: true
+    joinedAt?: true
+  }
+
+  export type BoardMemberMaxAggregateInputType = {
+    id?: true
+    boardId?: true
+    userId?: true
+    role?: true
+    joinedAt?: true
+  }
+
+  export type BoardMemberCountAggregateInputType = {
+    id?: true
+    boardId?: true
+    userId?: true
+    role?: true
+    joinedAt?: true
+    _all?: true
+  }
+
+  export type BoardMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BoardMember to aggregate.
+     */
+    where?: BoardMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BoardMembers to fetch.
+     */
+    orderBy?: BoardMemberOrderByWithRelationInput | BoardMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BoardMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BoardMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BoardMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BoardMembers
+    **/
+    _count?: true | BoardMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BoardMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BoardMemberMaxAggregateInputType
+  }
+
+  export type GetBoardMemberAggregateType<T extends BoardMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateBoardMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBoardMember[P]>
+      : GetScalarType<T[P], AggregateBoardMember[P]>
+  }
+
+
+
+
+  export type BoardMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardMemberWhereInput
+    orderBy?: BoardMemberOrderByWithAggregationInput | BoardMemberOrderByWithAggregationInput[]
+    by: BoardMemberScalarFieldEnum[] | BoardMemberScalarFieldEnum
+    having?: BoardMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BoardMemberCountAggregateInputType | true
+    _min?: BoardMemberMinAggregateInputType
+    _max?: BoardMemberMaxAggregateInputType
+  }
+
+  export type BoardMemberGroupByOutputType = {
+    id: string
+    boardId: string
+    userId: string
+    role: string
+    joinedAt: Date
+    _count: BoardMemberCountAggregateOutputType | null
+    _min: BoardMemberMinAggregateOutputType | null
+    _max: BoardMemberMaxAggregateOutputType | null
+  }
+
+  type GetBoardMemberGroupByPayload<T extends BoardMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BoardMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BoardMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BoardMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], BoardMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BoardMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    boardId?: boolean
+    userId?: boolean
+    role?: boolean
+    joinedAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["boardMember"]>
+
+  export type BoardMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    boardId?: boolean
+    userId?: boolean
+    role?: boolean
+    joinedAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["boardMember"]>
+
+  export type BoardMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    boardId?: boolean
+    userId?: boolean
+    role?: boolean
+    joinedAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["boardMember"]>
+
+  export type BoardMemberSelectScalar = {
+    id?: boolean
+    boardId?: boolean
+    userId?: boolean
+    role?: boolean
+    joinedAt?: boolean
+  }
+
+  export type BoardMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "boardId" | "userId" | "role" | "joinedAt", ExtArgs["result"]["boardMember"]>
+  export type BoardMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BoardMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BoardMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $BoardMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BoardMember"
+    objects: {
+      board: Prisma.$BoardPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      boardId: string
+      userId: string
+      role: string
+      joinedAt: Date
+    }, ExtArgs["result"]["boardMember"]>
+    composites: {}
+  }
+
+  type BoardMemberGetPayload<S extends boolean | null | undefined | BoardMemberDefaultArgs> = $Result.GetResult<Prisma.$BoardMemberPayload, S>
+
+  type BoardMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BoardMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BoardMemberCountAggregateInputType | true
+    }
+
+  export interface BoardMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BoardMember'], meta: { name: 'BoardMember' } }
+    /**
+     * Find zero or one BoardMember that matches the filter.
+     * @param {BoardMemberFindUniqueArgs} args - Arguments to find a BoardMember
+     * @example
+     * // Get one BoardMember
+     * const boardMember = await prisma.boardMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BoardMemberFindUniqueArgs>(args: SelectSubset<T, BoardMemberFindUniqueArgs<ExtArgs>>): Prisma__BoardMemberClient<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BoardMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BoardMemberFindUniqueOrThrowArgs} args - Arguments to find a BoardMember
+     * @example
+     * // Get one BoardMember
+     * const boardMember = await prisma.boardMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BoardMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, BoardMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BoardMemberClient<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BoardMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardMemberFindFirstArgs} args - Arguments to find a BoardMember
+     * @example
+     * // Get one BoardMember
+     * const boardMember = await prisma.boardMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BoardMemberFindFirstArgs>(args?: SelectSubset<T, BoardMemberFindFirstArgs<ExtArgs>>): Prisma__BoardMemberClient<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BoardMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardMemberFindFirstOrThrowArgs} args - Arguments to find a BoardMember
+     * @example
+     * // Get one BoardMember
+     * const boardMember = await prisma.boardMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BoardMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, BoardMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__BoardMemberClient<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BoardMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BoardMembers
+     * const boardMembers = await prisma.boardMember.findMany()
+     * 
+     * // Get first 10 BoardMembers
+     * const boardMembers = await prisma.boardMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const boardMemberWithIdOnly = await prisma.boardMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BoardMemberFindManyArgs>(args?: SelectSubset<T, BoardMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BoardMember.
+     * @param {BoardMemberCreateArgs} args - Arguments to create a BoardMember.
+     * @example
+     * // Create one BoardMember
+     * const BoardMember = await prisma.boardMember.create({
+     *   data: {
+     *     // ... data to create a BoardMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends BoardMemberCreateArgs>(args: SelectSubset<T, BoardMemberCreateArgs<ExtArgs>>): Prisma__BoardMemberClient<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BoardMembers.
+     * @param {BoardMemberCreateManyArgs} args - Arguments to create many BoardMembers.
+     * @example
+     * // Create many BoardMembers
+     * const boardMember = await prisma.boardMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BoardMemberCreateManyArgs>(args?: SelectSubset<T, BoardMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BoardMembers and returns the data saved in the database.
+     * @param {BoardMemberCreateManyAndReturnArgs} args - Arguments to create many BoardMembers.
+     * @example
+     * // Create many BoardMembers
+     * const boardMember = await prisma.boardMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BoardMembers and only return the `id`
+     * const boardMemberWithIdOnly = await prisma.boardMember.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BoardMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, BoardMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BoardMember.
+     * @param {BoardMemberDeleteArgs} args - Arguments to delete one BoardMember.
+     * @example
+     * // Delete one BoardMember
+     * const BoardMember = await prisma.boardMember.delete({
+     *   where: {
+     *     // ... filter to delete one BoardMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BoardMemberDeleteArgs>(args: SelectSubset<T, BoardMemberDeleteArgs<ExtArgs>>): Prisma__BoardMemberClient<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BoardMember.
+     * @param {BoardMemberUpdateArgs} args - Arguments to update one BoardMember.
+     * @example
+     * // Update one BoardMember
+     * const boardMember = await prisma.boardMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BoardMemberUpdateArgs>(args: SelectSubset<T, BoardMemberUpdateArgs<ExtArgs>>): Prisma__BoardMemberClient<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BoardMembers.
+     * @param {BoardMemberDeleteManyArgs} args - Arguments to filter BoardMembers to delete.
+     * @example
+     * // Delete a few BoardMembers
+     * const { count } = await prisma.boardMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BoardMemberDeleteManyArgs>(args?: SelectSubset<T, BoardMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BoardMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BoardMembers
+     * const boardMember = await prisma.boardMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BoardMemberUpdateManyArgs>(args: SelectSubset<T, BoardMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BoardMembers and returns the data updated in the database.
+     * @param {BoardMemberUpdateManyAndReturnArgs} args - Arguments to update many BoardMembers.
+     * @example
+     * // Update many BoardMembers
+     * const boardMember = await prisma.boardMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BoardMembers and only return the `id`
+     * const boardMemberWithIdOnly = await prisma.boardMember.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BoardMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, BoardMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BoardMember.
+     * @param {BoardMemberUpsertArgs} args - Arguments to update or create a BoardMember.
+     * @example
+     * // Update or create a BoardMember
+     * const boardMember = await prisma.boardMember.upsert({
+     *   create: {
+     *     // ... data to create a BoardMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BoardMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BoardMemberUpsertArgs>(args: SelectSubset<T, BoardMemberUpsertArgs<ExtArgs>>): Prisma__BoardMemberClient<$Result.GetResult<Prisma.$BoardMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BoardMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardMemberCountArgs} args - Arguments to filter BoardMembers to count.
+     * @example
+     * // Count the number of BoardMembers
+     * const count = await prisma.boardMember.count({
+     *   where: {
+     *     // ... the filter for the BoardMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends BoardMemberCountArgs>(
+      args?: Subset<T, BoardMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BoardMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BoardMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BoardMemberAggregateArgs>(args: Subset<T, BoardMemberAggregateArgs>): Prisma.PrismaPromise<GetBoardMemberAggregateType<T>>
+
+    /**
+     * Group by BoardMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BoardMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BoardMemberGroupByArgs['orderBy'] }
+        : { orderBy?: BoardMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BoardMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBoardMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BoardMember model
+   */
+  readonly fields: BoardMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BoardMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BoardMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    board<T extends BoardDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BoardDefaultArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BoardMember model
+   */
+  interface BoardMemberFieldRefs {
+    readonly id: FieldRef<"BoardMember", 'String'>
+    readonly boardId: FieldRef<"BoardMember", 'String'>
+    readonly userId: FieldRef<"BoardMember", 'String'>
+    readonly role: FieldRef<"BoardMember", 'String'>
+    readonly joinedAt: FieldRef<"BoardMember", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BoardMember findUnique
+   */
+  export type BoardMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardMember to fetch.
+     */
+    where: BoardMemberWhereUniqueInput
+  }
+
+  /**
+   * BoardMember findUniqueOrThrow
+   */
+  export type BoardMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardMember to fetch.
+     */
+    where: BoardMemberWhereUniqueInput
+  }
+
+  /**
+   * BoardMember findFirst
+   */
+  export type BoardMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardMember to fetch.
+     */
+    where?: BoardMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BoardMembers to fetch.
+     */
+    orderBy?: BoardMemberOrderByWithRelationInput | BoardMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BoardMembers.
+     */
+    cursor?: BoardMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BoardMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BoardMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BoardMembers.
+     */
+    distinct?: BoardMemberScalarFieldEnum | BoardMemberScalarFieldEnum[]
+  }
+
+  /**
+   * BoardMember findFirstOrThrow
+   */
+  export type BoardMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardMember to fetch.
+     */
+    where?: BoardMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BoardMembers to fetch.
+     */
+    orderBy?: BoardMemberOrderByWithRelationInput | BoardMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BoardMembers.
+     */
+    cursor?: BoardMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BoardMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BoardMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BoardMembers.
+     */
+    distinct?: BoardMemberScalarFieldEnum | BoardMemberScalarFieldEnum[]
+  }
+
+  /**
+   * BoardMember findMany
+   */
+  export type BoardMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardMembers to fetch.
+     */
+    where?: BoardMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BoardMembers to fetch.
+     */
+    orderBy?: BoardMemberOrderByWithRelationInput | BoardMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BoardMembers.
+     */
+    cursor?: BoardMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BoardMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BoardMembers.
+     */
+    skip?: number
+    distinct?: BoardMemberScalarFieldEnum | BoardMemberScalarFieldEnum[]
+  }
+
+  /**
+   * BoardMember create
+   */
+  export type BoardMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BoardMember.
+     */
+    data: XOR<BoardMemberCreateInput, BoardMemberUncheckedCreateInput>
+  }
+
+  /**
+   * BoardMember createMany
+   */
+  export type BoardMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BoardMembers.
+     */
+    data: BoardMemberCreateManyInput | BoardMemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BoardMember createManyAndReturn
+   */
+  export type BoardMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many BoardMembers.
+     */
+    data: BoardMemberCreateManyInput | BoardMemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BoardMember update
+   */
+  export type BoardMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BoardMember.
+     */
+    data: XOR<BoardMemberUpdateInput, BoardMemberUncheckedUpdateInput>
+    /**
+     * Choose, which BoardMember to update.
+     */
+    where: BoardMemberWhereUniqueInput
+  }
+
+  /**
+   * BoardMember updateMany
+   */
+  export type BoardMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BoardMembers.
+     */
+    data: XOR<BoardMemberUpdateManyMutationInput, BoardMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which BoardMembers to update
+     */
+    where?: BoardMemberWhereInput
+    /**
+     * Limit how many BoardMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BoardMember updateManyAndReturn
+   */
+  export type BoardMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update BoardMembers.
+     */
+    data: XOR<BoardMemberUpdateManyMutationInput, BoardMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which BoardMembers to update
+     */
+    where?: BoardMemberWhereInput
+    /**
+     * Limit how many BoardMembers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BoardMember upsert
+   */
+  export type BoardMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BoardMember to update in case it exists.
+     */
+    where: BoardMemberWhereUniqueInput
+    /**
+     * In case the BoardMember found by the `where` argument doesn't exist, create a new BoardMember with this data.
+     */
+    create: XOR<BoardMemberCreateInput, BoardMemberUncheckedCreateInput>
+    /**
+     * In case the BoardMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BoardMemberUpdateInput, BoardMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * BoardMember delete
+   */
+  export type BoardMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+    /**
+     * Filter which BoardMember to delete.
+     */
+    where: BoardMemberWhereUniqueInput
+  }
+
+  /**
+   * BoardMember deleteMany
+   */
+  export type BoardMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BoardMembers to delete
+     */
+    where?: BoardMemberWhereInput
+    /**
+     * Limit how many BoardMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BoardMember without action
+   */
+  export type BoardMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardMember
+     */
+    select?: BoardMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardMember
+     */
+    omit?: BoardMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BoardStar
+   */
+
+  export type AggregateBoardStar = {
+    _count: BoardStarCountAggregateOutputType | null
+    _min: BoardStarMinAggregateOutputType | null
+    _max: BoardStarMaxAggregateOutputType | null
+  }
+
+  export type BoardStarMinAggregateOutputType = {
+    id: string | null
+    boardId: string | null
+    userId: string | null
+    starredAt: Date | null
+  }
+
+  export type BoardStarMaxAggregateOutputType = {
+    id: string | null
+    boardId: string | null
+    userId: string | null
+    starredAt: Date | null
+  }
+
+  export type BoardStarCountAggregateOutputType = {
+    id: number
+    boardId: number
+    userId: number
+    starredAt: number
+    _all: number
+  }
+
+
+  export type BoardStarMinAggregateInputType = {
+    id?: true
+    boardId?: true
+    userId?: true
+    starredAt?: true
+  }
+
+  export type BoardStarMaxAggregateInputType = {
+    id?: true
+    boardId?: true
+    userId?: true
+    starredAt?: true
+  }
+
+  export type BoardStarCountAggregateInputType = {
+    id?: true
+    boardId?: true
+    userId?: true
+    starredAt?: true
+    _all?: true
+  }
+
+  export type BoardStarAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BoardStar to aggregate.
+     */
+    where?: BoardStarWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BoardStars to fetch.
+     */
+    orderBy?: BoardStarOrderByWithRelationInput | BoardStarOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BoardStarWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BoardStars from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BoardStars.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BoardStars
+    **/
+    _count?: true | BoardStarCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BoardStarMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BoardStarMaxAggregateInputType
+  }
+
+  export type GetBoardStarAggregateType<T extends BoardStarAggregateArgs> = {
+        [P in keyof T & keyof AggregateBoardStar]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBoardStar[P]>
+      : GetScalarType<T[P], AggregateBoardStar[P]>
+  }
+
+
+
+
+  export type BoardStarGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoardStarWhereInput
+    orderBy?: BoardStarOrderByWithAggregationInput | BoardStarOrderByWithAggregationInput[]
+    by: BoardStarScalarFieldEnum[] | BoardStarScalarFieldEnum
+    having?: BoardStarScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BoardStarCountAggregateInputType | true
+    _min?: BoardStarMinAggregateInputType
+    _max?: BoardStarMaxAggregateInputType
+  }
+
+  export type BoardStarGroupByOutputType = {
+    id: string
+    boardId: string
+    userId: string
+    starredAt: Date
+    _count: BoardStarCountAggregateOutputType | null
+    _min: BoardStarMinAggregateOutputType | null
+    _max: BoardStarMaxAggregateOutputType | null
+  }
+
+  type GetBoardStarGroupByPayload<T extends BoardStarGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BoardStarGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BoardStarGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BoardStarGroupByOutputType[P]>
+            : GetScalarType<T[P], BoardStarGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BoardStarSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    boardId?: boolean
+    userId?: boolean
+    starredAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["boardStar"]>
+
+  export type BoardStarSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    boardId?: boolean
+    userId?: boolean
+    starredAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["boardStar"]>
+
+  export type BoardStarSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    boardId?: boolean
+    userId?: boolean
+    starredAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["boardStar"]>
+
+  export type BoardStarSelectScalar = {
+    id?: boolean
+    boardId?: boolean
+    userId?: boolean
+    starredAt?: boolean
+  }
+
+  export type BoardStarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "boardId" | "userId" | "starredAt", ExtArgs["result"]["boardStar"]>
+  export type BoardStarInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BoardStarIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BoardStarIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $BoardStarPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BoardStar"
+    objects: {
+      board: Prisma.$BoardPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      boardId: string
+      userId: string
+      starredAt: Date
+    }, ExtArgs["result"]["boardStar"]>
+    composites: {}
+  }
+
+  type BoardStarGetPayload<S extends boolean | null | undefined | BoardStarDefaultArgs> = $Result.GetResult<Prisma.$BoardStarPayload, S>
+
+  type BoardStarCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BoardStarFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BoardStarCountAggregateInputType | true
+    }
+
+  export interface BoardStarDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BoardStar'], meta: { name: 'BoardStar' } }
+    /**
+     * Find zero or one BoardStar that matches the filter.
+     * @param {BoardStarFindUniqueArgs} args - Arguments to find a BoardStar
+     * @example
+     * // Get one BoardStar
+     * const boardStar = await prisma.boardStar.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BoardStarFindUniqueArgs>(args: SelectSubset<T, BoardStarFindUniqueArgs<ExtArgs>>): Prisma__BoardStarClient<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BoardStar that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BoardStarFindUniqueOrThrowArgs} args - Arguments to find a BoardStar
+     * @example
+     * // Get one BoardStar
+     * const boardStar = await prisma.boardStar.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BoardStarFindUniqueOrThrowArgs>(args: SelectSubset<T, BoardStarFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BoardStarClient<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BoardStar that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardStarFindFirstArgs} args - Arguments to find a BoardStar
+     * @example
+     * // Get one BoardStar
+     * const boardStar = await prisma.boardStar.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BoardStarFindFirstArgs>(args?: SelectSubset<T, BoardStarFindFirstArgs<ExtArgs>>): Prisma__BoardStarClient<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BoardStar that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardStarFindFirstOrThrowArgs} args - Arguments to find a BoardStar
+     * @example
+     * // Get one BoardStar
+     * const boardStar = await prisma.boardStar.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BoardStarFindFirstOrThrowArgs>(args?: SelectSubset<T, BoardStarFindFirstOrThrowArgs<ExtArgs>>): Prisma__BoardStarClient<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BoardStars that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardStarFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BoardStars
+     * const boardStars = await prisma.boardStar.findMany()
+     * 
+     * // Get first 10 BoardStars
+     * const boardStars = await prisma.boardStar.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const boardStarWithIdOnly = await prisma.boardStar.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BoardStarFindManyArgs>(args?: SelectSubset<T, BoardStarFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BoardStar.
+     * @param {BoardStarCreateArgs} args - Arguments to create a BoardStar.
+     * @example
+     * // Create one BoardStar
+     * const BoardStar = await prisma.boardStar.create({
+     *   data: {
+     *     // ... data to create a BoardStar
+     *   }
+     * })
+     * 
+     */
+    create<T extends BoardStarCreateArgs>(args: SelectSubset<T, BoardStarCreateArgs<ExtArgs>>): Prisma__BoardStarClient<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BoardStars.
+     * @param {BoardStarCreateManyArgs} args - Arguments to create many BoardStars.
+     * @example
+     * // Create many BoardStars
+     * const boardStar = await prisma.boardStar.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BoardStarCreateManyArgs>(args?: SelectSubset<T, BoardStarCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BoardStars and returns the data saved in the database.
+     * @param {BoardStarCreateManyAndReturnArgs} args - Arguments to create many BoardStars.
+     * @example
+     * // Create many BoardStars
+     * const boardStar = await prisma.boardStar.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BoardStars and only return the `id`
+     * const boardStarWithIdOnly = await prisma.boardStar.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BoardStarCreateManyAndReturnArgs>(args?: SelectSubset<T, BoardStarCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BoardStar.
+     * @param {BoardStarDeleteArgs} args - Arguments to delete one BoardStar.
+     * @example
+     * // Delete one BoardStar
+     * const BoardStar = await prisma.boardStar.delete({
+     *   where: {
+     *     // ... filter to delete one BoardStar
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BoardStarDeleteArgs>(args: SelectSubset<T, BoardStarDeleteArgs<ExtArgs>>): Prisma__BoardStarClient<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BoardStar.
+     * @param {BoardStarUpdateArgs} args - Arguments to update one BoardStar.
+     * @example
+     * // Update one BoardStar
+     * const boardStar = await prisma.boardStar.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BoardStarUpdateArgs>(args: SelectSubset<T, BoardStarUpdateArgs<ExtArgs>>): Prisma__BoardStarClient<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BoardStars.
+     * @param {BoardStarDeleteManyArgs} args - Arguments to filter BoardStars to delete.
+     * @example
+     * // Delete a few BoardStars
+     * const { count } = await prisma.boardStar.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BoardStarDeleteManyArgs>(args?: SelectSubset<T, BoardStarDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BoardStars.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardStarUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BoardStars
+     * const boardStar = await prisma.boardStar.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BoardStarUpdateManyArgs>(args: SelectSubset<T, BoardStarUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BoardStars and returns the data updated in the database.
+     * @param {BoardStarUpdateManyAndReturnArgs} args - Arguments to update many BoardStars.
+     * @example
+     * // Update many BoardStars
+     * const boardStar = await prisma.boardStar.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BoardStars and only return the `id`
+     * const boardStarWithIdOnly = await prisma.boardStar.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BoardStarUpdateManyAndReturnArgs>(args: SelectSubset<T, BoardStarUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BoardStar.
+     * @param {BoardStarUpsertArgs} args - Arguments to update or create a BoardStar.
+     * @example
+     * // Update or create a BoardStar
+     * const boardStar = await prisma.boardStar.upsert({
+     *   create: {
+     *     // ... data to create a BoardStar
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BoardStar we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BoardStarUpsertArgs>(args: SelectSubset<T, BoardStarUpsertArgs<ExtArgs>>): Prisma__BoardStarClient<$Result.GetResult<Prisma.$BoardStarPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BoardStars.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardStarCountArgs} args - Arguments to filter BoardStars to count.
+     * @example
+     * // Count the number of BoardStars
+     * const count = await prisma.boardStar.count({
+     *   where: {
+     *     // ... the filter for the BoardStars we want to count
+     *   }
+     * })
+    **/
+    count<T extends BoardStarCountArgs>(
+      args?: Subset<T, BoardStarCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BoardStarCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BoardStar.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardStarAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BoardStarAggregateArgs>(args: Subset<T, BoardStarAggregateArgs>): Prisma.PrismaPromise<GetBoardStarAggregateType<T>>
+
+    /**
+     * Group by BoardStar.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BoardStarGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BoardStarGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BoardStarGroupByArgs['orderBy'] }
+        : { orderBy?: BoardStarGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BoardStarGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBoardStarGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BoardStar model
+   */
+  readonly fields: BoardStarFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BoardStar.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BoardStarClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    board<T extends BoardDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BoardDefaultArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BoardStar model
+   */
+  interface BoardStarFieldRefs {
+    readonly id: FieldRef<"BoardStar", 'String'>
+    readonly boardId: FieldRef<"BoardStar", 'String'>
+    readonly userId: FieldRef<"BoardStar", 'String'>
+    readonly starredAt: FieldRef<"BoardStar", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BoardStar findUnique
+   */
+  export type BoardStarFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardStar to fetch.
+     */
+    where: BoardStarWhereUniqueInput
+  }
+
+  /**
+   * BoardStar findUniqueOrThrow
+   */
+  export type BoardStarFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardStar to fetch.
+     */
+    where: BoardStarWhereUniqueInput
+  }
+
+  /**
+   * BoardStar findFirst
+   */
+  export type BoardStarFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardStar to fetch.
+     */
+    where?: BoardStarWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BoardStars to fetch.
+     */
+    orderBy?: BoardStarOrderByWithRelationInput | BoardStarOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BoardStars.
+     */
+    cursor?: BoardStarWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BoardStars from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BoardStars.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BoardStars.
+     */
+    distinct?: BoardStarScalarFieldEnum | BoardStarScalarFieldEnum[]
+  }
+
+  /**
+   * BoardStar findFirstOrThrow
+   */
+  export type BoardStarFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardStar to fetch.
+     */
+    where?: BoardStarWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BoardStars to fetch.
+     */
+    orderBy?: BoardStarOrderByWithRelationInput | BoardStarOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BoardStars.
+     */
+    cursor?: BoardStarWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BoardStars from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BoardStars.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BoardStars.
+     */
+    distinct?: BoardStarScalarFieldEnum | BoardStarScalarFieldEnum[]
+  }
+
+  /**
+   * BoardStar findMany
+   */
+  export type BoardStarFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * Filter, which BoardStars to fetch.
+     */
+    where?: BoardStarWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BoardStars to fetch.
+     */
+    orderBy?: BoardStarOrderByWithRelationInput | BoardStarOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BoardStars.
+     */
+    cursor?: BoardStarWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BoardStars from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BoardStars.
+     */
+    skip?: number
+    distinct?: BoardStarScalarFieldEnum | BoardStarScalarFieldEnum[]
+  }
+
+  /**
+   * BoardStar create
+   */
+  export type BoardStarCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BoardStar.
+     */
+    data: XOR<BoardStarCreateInput, BoardStarUncheckedCreateInput>
+  }
+
+  /**
+   * BoardStar createMany
+   */
+  export type BoardStarCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BoardStars.
+     */
+    data: BoardStarCreateManyInput | BoardStarCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BoardStar createManyAndReturn
+   */
+  export type BoardStarCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * The data used to create many BoardStars.
+     */
+    data: BoardStarCreateManyInput | BoardStarCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BoardStar update
+   */
+  export type BoardStarUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BoardStar.
+     */
+    data: XOR<BoardStarUpdateInput, BoardStarUncheckedUpdateInput>
+    /**
+     * Choose, which BoardStar to update.
+     */
+    where: BoardStarWhereUniqueInput
+  }
+
+  /**
+   * BoardStar updateMany
+   */
+  export type BoardStarUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BoardStars.
+     */
+    data: XOR<BoardStarUpdateManyMutationInput, BoardStarUncheckedUpdateManyInput>
+    /**
+     * Filter which BoardStars to update
+     */
+    where?: BoardStarWhereInput
+    /**
+     * Limit how many BoardStars to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BoardStar updateManyAndReturn
+   */
+  export type BoardStarUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * The data used to update BoardStars.
+     */
+    data: XOR<BoardStarUpdateManyMutationInput, BoardStarUncheckedUpdateManyInput>
+    /**
+     * Filter which BoardStars to update
+     */
+    where?: BoardStarWhereInput
+    /**
+     * Limit how many BoardStars to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BoardStar upsert
+   */
+  export type BoardStarUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BoardStar to update in case it exists.
+     */
+    where: BoardStarWhereUniqueInput
+    /**
+     * In case the BoardStar found by the `where` argument doesn't exist, create a new BoardStar with this data.
+     */
+    create: XOR<BoardStarCreateInput, BoardStarUncheckedCreateInput>
+    /**
+     * In case the BoardStar was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BoardStarUpdateInput, BoardStarUncheckedUpdateInput>
+  }
+
+  /**
+   * BoardStar delete
+   */
+  export type BoardStarDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+    /**
+     * Filter which BoardStar to delete.
+     */
+    where: BoardStarWhereUniqueInput
+  }
+
+  /**
+   * BoardStar deleteMany
+   */
+  export type BoardStarDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BoardStars to delete
+     */
+    where?: BoardStarWhereInput
+    /**
+     * Limit how many BoardStars to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BoardStar without action
+   */
+  export type BoardStarDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BoardStar
+     */
+    select?: BoardStarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BoardStar
+     */
+    omit?: BoardStarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardStarInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model List
+   */
+
+  export type AggregateList = {
+    _count: ListCountAggregateOutputType | null
+    _avg: ListAvgAggregateOutputType | null
+    _sum: ListSumAggregateOutputType | null
+    _min: ListMinAggregateOutputType | null
+    _max: ListMaxAggregateOutputType | null
+  }
+
+  export type ListAvgAggregateOutputType = {
+    position: number | null
+  }
+
+  export type ListSumAggregateOutputType = {
+    position: number | null
+  }
+
+  export type ListMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    position: number | null
+    boardId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ListMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    position: number | null
+    boardId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ListCountAggregateOutputType = {
+    id: number
+    title: number
+    position: number
+    boardId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ListAvgAggregateInputType = {
+    position?: true
+  }
+
+  export type ListSumAggregateInputType = {
+    position?: true
+  }
+
+  export type ListMinAggregateInputType = {
+    id?: true
+    title?: true
+    position?: true
+    boardId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ListMaxAggregateInputType = {
+    id?: true
+    title?: true
+    position?: true
+    boardId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ListCountAggregateInputType = {
+    id?: true
+    title?: true
+    position?: true
+    boardId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ListAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which List to aggregate.
+     */
+    where?: ListWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Lists to fetch.
+     */
+    orderBy?: ListOrderByWithRelationInput | ListOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ListWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Lists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Lists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Lists
+    **/
+    _count?: true | ListCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ListAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ListSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ListMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ListMaxAggregateInputType
+  }
+
+  export type GetListAggregateType<T extends ListAggregateArgs> = {
+        [P in keyof T & keyof AggregateList]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateList[P]>
+      : GetScalarType<T[P], AggregateList[P]>
+  }
+
+
+
+
+  export type ListGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ListWhereInput
+    orderBy?: ListOrderByWithAggregationInput | ListOrderByWithAggregationInput[]
+    by: ListScalarFieldEnum[] | ListScalarFieldEnum
+    having?: ListScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ListCountAggregateInputType | true
+    _avg?: ListAvgAggregateInputType
+    _sum?: ListSumAggregateInputType
+    _min?: ListMinAggregateInputType
+    _max?: ListMaxAggregateInputType
+  }
+
+  export type ListGroupByOutputType = {
+    id: string
+    title: string
+    position: number
+    boardId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ListCountAggregateOutputType | null
+    _avg: ListAvgAggregateOutputType | null
+    _sum: ListSumAggregateOutputType | null
+    _min: ListMinAggregateOutputType | null
+    _max: ListMaxAggregateOutputType | null
+  }
+
+  type GetListGroupByPayload<T extends ListGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ListGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ListGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ListGroupByOutputType[P]>
+            : GetScalarType<T[P], ListGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ListSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    position?: boolean
+    boardId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    cards?: boolean | List$cardsArgs<ExtArgs>
+    _count?: boolean | ListCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["list"]>
+
+  export type ListSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    position?: boolean
+    boardId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["list"]>
+
+  export type ListSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    position?: boolean
+    boardId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["list"]>
+
+  export type ListSelectScalar = {
+    id?: boolean
+    title?: boolean
+    position?: boolean
+    boardId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "position" | "boardId" | "createdAt" | "updatedAt", ExtArgs["result"]["list"]>
+  export type ListInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+    cards?: boolean | List$cardsArgs<ExtArgs>
+    _count?: boolean | ListCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ListIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+  }
+  export type ListIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    board?: boolean | BoardDefaultArgs<ExtArgs>
+  }
+
+  export type $ListPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "List"
+    objects: {
+      board: Prisma.$BoardPayload<ExtArgs>
+      cards: Prisma.$CardPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      position: number
+      boardId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["list"]>
+    composites: {}
+  }
+
+  type ListGetPayload<S extends boolean | null | undefined | ListDefaultArgs> = $Result.GetResult<Prisma.$ListPayload, S>
+
+  type ListCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ListFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ListCountAggregateInputType | true
+    }
+
+  export interface ListDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['List'], meta: { name: 'List' } }
+    /**
+     * Find zero or one List that matches the filter.
+     * @param {ListFindUniqueArgs} args - Arguments to find a List
+     * @example
+     * // Get one List
+     * const list = await prisma.list.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ListFindUniqueArgs>(args: SelectSubset<T, ListFindUniqueArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one List that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ListFindUniqueOrThrowArgs} args - Arguments to find a List
+     * @example
+     * // Get one List
+     * const list = await prisma.list.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ListFindUniqueOrThrowArgs>(args: SelectSubset<T, ListFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first List that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListFindFirstArgs} args - Arguments to find a List
+     * @example
+     * // Get one List
+     * const list = await prisma.list.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ListFindFirstArgs>(args?: SelectSubset<T, ListFindFirstArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first List that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListFindFirstOrThrowArgs} args - Arguments to find a List
+     * @example
+     * // Get one List
+     * const list = await prisma.list.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ListFindFirstOrThrowArgs>(args?: SelectSubset<T, ListFindFirstOrThrowArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Lists that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Lists
+     * const lists = await prisma.list.findMany()
+     * 
+     * // Get first 10 Lists
+     * const lists = await prisma.list.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const listWithIdOnly = await prisma.list.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ListFindManyArgs>(args?: SelectSubset<T, ListFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a List.
+     * @param {ListCreateArgs} args - Arguments to create a List.
+     * @example
+     * // Create one List
+     * const List = await prisma.list.create({
+     *   data: {
+     *     // ... data to create a List
+     *   }
+     * })
+     * 
+     */
+    create<T extends ListCreateArgs>(args: SelectSubset<T, ListCreateArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Lists.
+     * @param {ListCreateManyArgs} args - Arguments to create many Lists.
+     * @example
+     * // Create many Lists
+     * const list = await prisma.list.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ListCreateManyArgs>(args?: SelectSubset<T, ListCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Lists and returns the data saved in the database.
+     * @param {ListCreateManyAndReturnArgs} args - Arguments to create many Lists.
+     * @example
+     * // Create many Lists
+     * const list = await prisma.list.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Lists and only return the `id`
+     * const listWithIdOnly = await prisma.list.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ListCreateManyAndReturnArgs>(args?: SelectSubset<T, ListCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a List.
+     * @param {ListDeleteArgs} args - Arguments to delete one List.
+     * @example
+     * // Delete one List
+     * const List = await prisma.list.delete({
+     *   where: {
+     *     // ... filter to delete one List
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ListDeleteArgs>(args: SelectSubset<T, ListDeleteArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one List.
+     * @param {ListUpdateArgs} args - Arguments to update one List.
+     * @example
+     * // Update one List
+     * const list = await prisma.list.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ListUpdateArgs>(args: SelectSubset<T, ListUpdateArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Lists.
+     * @param {ListDeleteManyArgs} args - Arguments to filter Lists to delete.
+     * @example
+     * // Delete a few Lists
+     * const { count } = await prisma.list.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ListDeleteManyArgs>(args?: SelectSubset<T, ListDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Lists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Lists
+     * const list = await prisma.list.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ListUpdateManyArgs>(args: SelectSubset<T, ListUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Lists and returns the data updated in the database.
+     * @param {ListUpdateManyAndReturnArgs} args - Arguments to update many Lists.
+     * @example
+     * // Update many Lists
+     * const list = await prisma.list.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Lists and only return the `id`
+     * const listWithIdOnly = await prisma.list.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ListUpdateManyAndReturnArgs>(args: SelectSubset<T, ListUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one List.
+     * @param {ListUpsertArgs} args - Arguments to update or create a List.
+     * @example
+     * // Update or create a List
+     * const list = await prisma.list.upsert({
+     *   create: {
+     *     // ... data to create a List
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the List we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ListUpsertArgs>(args: SelectSubset<T, ListUpsertArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Lists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListCountArgs} args - Arguments to filter Lists to count.
+     * @example
+     * // Count the number of Lists
+     * const count = await prisma.list.count({
+     *   where: {
+     *     // ... the filter for the Lists we want to count
+     *   }
+     * })
+    **/
+    count<T extends ListCountArgs>(
+      args?: Subset<T, ListCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ListCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a List.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ListAggregateArgs>(args: Subset<T, ListAggregateArgs>): Prisma.PrismaPromise<GetListAggregateType<T>>
+
+    /**
+     * Group by List.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ListGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ListGroupByArgs['orderBy'] }
+        : { orderBy?: ListGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ListGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetListGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the List model
+   */
+  readonly fields: ListFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for List.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ListClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    board<T extends BoardDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BoardDefaultArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cards<T extends List$cardsArgs<ExtArgs> = {}>(args?: Subset<T, List$cardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the List model
+   */
+  interface ListFieldRefs {
+    readonly id: FieldRef<"List", 'String'>
+    readonly title: FieldRef<"List", 'String'>
+    readonly position: FieldRef<"List", 'Int'>
+    readonly boardId: FieldRef<"List", 'String'>
+    readonly createdAt: FieldRef<"List", 'DateTime'>
+    readonly updatedAt: FieldRef<"List", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * List findUnique
+   */
+  export type ListFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * Filter, which List to fetch.
+     */
+    where: ListWhereUniqueInput
+  }
+
+  /**
+   * List findUniqueOrThrow
+   */
+  export type ListFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * Filter, which List to fetch.
+     */
+    where: ListWhereUniqueInput
+  }
+
+  /**
+   * List findFirst
+   */
+  export type ListFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * Filter, which List to fetch.
+     */
+    where?: ListWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Lists to fetch.
+     */
+    orderBy?: ListOrderByWithRelationInput | ListOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Lists.
+     */
+    cursor?: ListWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Lists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Lists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Lists.
+     */
+    distinct?: ListScalarFieldEnum | ListScalarFieldEnum[]
+  }
+
+  /**
+   * List findFirstOrThrow
+   */
+  export type ListFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * Filter, which List to fetch.
+     */
+    where?: ListWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Lists to fetch.
+     */
+    orderBy?: ListOrderByWithRelationInput | ListOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Lists.
+     */
+    cursor?: ListWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Lists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Lists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Lists.
+     */
+    distinct?: ListScalarFieldEnum | ListScalarFieldEnum[]
+  }
+
+  /**
+   * List findMany
+   */
+  export type ListFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * Filter, which Lists to fetch.
+     */
+    where?: ListWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Lists to fetch.
+     */
+    orderBy?: ListOrderByWithRelationInput | ListOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Lists.
+     */
+    cursor?: ListWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Lists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Lists.
+     */
+    skip?: number
+    distinct?: ListScalarFieldEnum | ListScalarFieldEnum[]
+  }
+
+  /**
+   * List create
+   */
+  export type ListCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * The data needed to create a List.
+     */
+    data: XOR<ListCreateInput, ListUncheckedCreateInput>
+  }
+
+  /**
+   * List createMany
+   */
+  export type ListCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Lists.
+     */
+    data: ListCreateManyInput | ListCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * List createManyAndReturn
+   */
+  export type ListCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * The data used to create many Lists.
+     */
+    data: ListCreateManyInput | ListCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * List update
+   */
+  export type ListUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * The data needed to update a List.
+     */
+    data: XOR<ListUpdateInput, ListUncheckedUpdateInput>
+    /**
+     * Choose, which List to update.
+     */
+    where: ListWhereUniqueInput
+  }
+
+  /**
+   * List updateMany
+   */
+  export type ListUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Lists.
+     */
+    data: XOR<ListUpdateManyMutationInput, ListUncheckedUpdateManyInput>
+    /**
+     * Filter which Lists to update
+     */
+    where?: ListWhereInput
+    /**
+     * Limit how many Lists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * List updateManyAndReturn
+   */
+  export type ListUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * The data used to update Lists.
+     */
+    data: XOR<ListUpdateManyMutationInput, ListUncheckedUpdateManyInput>
+    /**
+     * Filter which Lists to update
+     */
+    where?: ListWhereInput
+    /**
+     * Limit how many Lists to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * List upsert
+   */
+  export type ListUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * The filter to search for the List to update in case it exists.
+     */
+    where: ListWhereUniqueInput
+    /**
+     * In case the List found by the `where` argument doesn't exist, create a new List with this data.
+     */
+    create: XOR<ListCreateInput, ListUncheckedCreateInput>
+    /**
+     * In case the List was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ListUpdateInput, ListUncheckedUpdateInput>
+  }
+
+  /**
+   * List delete
+   */
+  export type ListDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+    /**
+     * Filter which List to delete.
+     */
+    where: ListWhereUniqueInput
+  }
+
+  /**
+   * List deleteMany
+   */
+  export type ListDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Lists to delete
+     */
+    where?: ListWhereInput
+    /**
+     * Limit how many Lists to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * List.cards
+   */
+  export type List$cardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    where?: CardWhereInput
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    cursor?: CardWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+  /**
+   * List without action
+   */
+  export type ListDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the List
+     */
+    select?: ListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the List
+     */
+    omit?: ListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ListInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Card
+   */
+
+  export type AggregateCard = {
+    _count: CardCountAggregateOutputType | null
+    _avg: CardAvgAggregateOutputType | null
+    _sum: CardSumAggregateOutputType | null
+    _min: CardMinAggregateOutputType | null
+    _max: CardMaxAggregateOutputType | null
+  }
+
+  export type CardAvgAggregateOutputType = {
+    position: number | null
+  }
+
+  export type CardSumAggregateOutputType = {
+    position: number | null
+  }
+
+  export type CardMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    position: number | null
+    priority: $Enums.CardPriority | null
+    dueDate: Date | null
+    listId: string | null
+    assignedToId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CardMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    position: number | null
+    priority: $Enums.CardPriority | null
+    dueDate: Date | null
+    listId: string | null
+    assignedToId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CardCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    position: number
+    priority: number
+    dueDate: number
+    labels: number
+    attachments: number
+    listId: number
+    assignedToId: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CardAvgAggregateInputType = {
+    position?: true
+  }
+
+  export type CardSumAggregateInputType = {
+    position?: true
+  }
+
+  export type CardMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    position?: true
+    priority?: true
+    dueDate?: true
+    listId?: true
+    assignedToId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CardMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    position?: true
+    priority?: true
+    dueDate?: true
+    listId?: true
+    assignedToId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CardCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    position?: true
+    priority?: true
+    dueDate?: true
+    labels?: true
+    attachments?: true
+    listId?: true
+    assignedToId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CardAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Card to aggregate.
+     */
+    where?: CardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cards to fetch.
+     */
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Cards
+    **/
+    _count?: true | CardCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CardAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CardSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CardMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CardMaxAggregateInputType
+  }
+
+  export type GetCardAggregateType<T extends CardAggregateArgs> = {
+        [P in keyof T & keyof AggregateCard]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCard[P]>
+      : GetScalarType<T[P], AggregateCard[P]>
+  }
+
+
+
+
+  export type CardGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardWhereInput
+    orderBy?: CardOrderByWithAggregationInput | CardOrderByWithAggregationInput[]
+    by: CardScalarFieldEnum[] | CardScalarFieldEnum
+    having?: CardScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CardCountAggregateInputType | true
+    _avg?: CardAvgAggregateInputType
+    _sum?: CardSumAggregateInputType
+    _min?: CardMinAggregateInputType
+    _max?: CardMaxAggregateInputType
+  }
+
+  export type CardGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    position: number
+    priority: $Enums.CardPriority
+    dueDate: Date | null
+    labels: string[]
+    attachments: string[]
+    listId: string
+    assignedToId: string | null
+    createdById: string
+    createdAt: Date
+    updatedAt: Date
+    _count: CardCountAggregateOutputType | null
+    _avg: CardAvgAggregateOutputType | null
+    _sum: CardSumAggregateOutputType | null
+    _min: CardMinAggregateOutputType | null
+    _max: CardMaxAggregateOutputType | null
+  }
+
+  type GetCardGroupByPayload<T extends CardGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CardGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CardGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CardGroupByOutputType[P]>
+            : GetScalarType<T[P], CardGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CardSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    position?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    labels?: boolean
+    attachments?: boolean
+    listId?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    list?: boolean | ListDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Card$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    comments?: boolean | Card$commentsArgs<ExtArgs>
+    activities?: boolean | Card$activitiesArgs<ExtArgs>
+    _count?: boolean | CardCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["card"]>
+
+  export type CardSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    position?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    labels?: boolean
+    attachments?: boolean
+    listId?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    list?: boolean | ListDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Card$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["card"]>
+
+  export type CardSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    position?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    labels?: boolean
+    attachments?: boolean
+    listId?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    list?: boolean | ListDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Card$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["card"]>
+
+  export type CardSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    position?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    labels?: boolean
+    attachments?: boolean
+    listId?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "position" | "priority" | "dueDate" | "labels" | "attachments" | "listId" | "assignedToId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["card"]>
+  export type CardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    list?: boolean | ListDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Card$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    comments?: boolean | Card$commentsArgs<ExtArgs>
+    activities?: boolean | Card$activitiesArgs<ExtArgs>
+    _count?: boolean | CardCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CardIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    list?: boolean | ListDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Card$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CardIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    list?: boolean | ListDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Card$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CardPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Card"
+    objects: {
+      list: Prisma.$ListPayload<ExtArgs>
+      assignedTo: Prisma.$UserPayload<ExtArgs> | null
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      comments: Prisma.$CardCommentPayload<ExtArgs>[]
+      activities: Prisma.$CardActivityPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      position: number
+      priority: $Enums.CardPriority
+      dueDate: Date | null
+      labels: string[]
+      attachments: string[]
+      listId: string
+      assignedToId: string | null
+      createdById: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["card"]>
+    composites: {}
+  }
+
+  type CardGetPayload<S extends boolean | null | undefined | CardDefaultArgs> = $Result.GetResult<Prisma.$CardPayload, S>
+
+  type CardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CardFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CardCountAggregateInputType | true
+    }
+
+  export interface CardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Card'], meta: { name: 'Card' } }
+    /**
+     * Find zero or one Card that matches the filter.
+     * @param {CardFindUniqueArgs} args - Arguments to find a Card
+     * @example
+     * // Get one Card
+     * const card = await prisma.card.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CardFindUniqueArgs>(args: SelectSubset<T, CardFindUniqueArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Card that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CardFindUniqueOrThrowArgs} args - Arguments to find a Card
+     * @example
+     * // Get one Card
+     * const card = await prisma.card.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CardFindUniqueOrThrowArgs>(args: SelectSubset<T, CardFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Card that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardFindFirstArgs} args - Arguments to find a Card
+     * @example
+     * // Get one Card
+     * const card = await prisma.card.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CardFindFirstArgs>(args?: SelectSubset<T, CardFindFirstArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Card that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardFindFirstOrThrowArgs} args - Arguments to find a Card
+     * @example
+     * // Get one Card
+     * const card = await prisma.card.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CardFindFirstOrThrowArgs>(args?: SelectSubset<T, CardFindFirstOrThrowArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Cards that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Cards
+     * const cards = await prisma.card.findMany()
+     * 
+     * // Get first 10 Cards
+     * const cards = await prisma.card.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cardWithIdOnly = await prisma.card.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CardFindManyArgs>(args?: SelectSubset<T, CardFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Card.
+     * @param {CardCreateArgs} args - Arguments to create a Card.
+     * @example
+     * // Create one Card
+     * const Card = await prisma.card.create({
+     *   data: {
+     *     // ... data to create a Card
+     *   }
+     * })
+     * 
+     */
+    create<T extends CardCreateArgs>(args: SelectSubset<T, CardCreateArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Cards.
+     * @param {CardCreateManyArgs} args - Arguments to create many Cards.
+     * @example
+     * // Create many Cards
+     * const card = await prisma.card.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CardCreateManyArgs>(args?: SelectSubset<T, CardCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Cards and returns the data saved in the database.
+     * @param {CardCreateManyAndReturnArgs} args - Arguments to create many Cards.
+     * @example
+     * // Create many Cards
+     * const card = await prisma.card.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Cards and only return the `id`
+     * const cardWithIdOnly = await prisma.card.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CardCreateManyAndReturnArgs>(args?: SelectSubset<T, CardCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Card.
+     * @param {CardDeleteArgs} args - Arguments to delete one Card.
+     * @example
+     * // Delete one Card
+     * const Card = await prisma.card.delete({
+     *   where: {
+     *     // ... filter to delete one Card
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CardDeleteArgs>(args: SelectSubset<T, CardDeleteArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Card.
+     * @param {CardUpdateArgs} args - Arguments to update one Card.
+     * @example
+     * // Update one Card
+     * const card = await prisma.card.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CardUpdateArgs>(args: SelectSubset<T, CardUpdateArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Cards.
+     * @param {CardDeleteManyArgs} args - Arguments to filter Cards to delete.
+     * @example
+     * // Delete a few Cards
+     * const { count } = await prisma.card.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CardDeleteManyArgs>(args?: SelectSubset<T, CardDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Cards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Cards
+     * const card = await prisma.card.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CardUpdateManyArgs>(args: SelectSubset<T, CardUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Cards and returns the data updated in the database.
+     * @param {CardUpdateManyAndReturnArgs} args - Arguments to update many Cards.
+     * @example
+     * // Update many Cards
+     * const card = await prisma.card.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Cards and only return the `id`
+     * const cardWithIdOnly = await prisma.card.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CardUpdateManyAndReturnArgs>(args: SelectSubset<T, CardUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Card.
+     * @param {CardUpsertArgs} args - Arguments to update or create a Card.
+     * @example
+     * // Update or create a Card
+     * const card = await prisma.card.upsert({
+     *   create: {
+     *     // ... data to create a Card
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Card we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CardUpsertArgs>(args: SelectSubset<T, CardUpsertArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Cards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCountArgs} args - Arguments to filter Cards to count.
+     * @example
+     * // Count the number of Cards
+     * const count = await prisma.card.count({
+     *   where: {
+     *     // ... the filter for the Cards we want to count
+     *   }
+     * })
+    **/
+    count<T extends CardCountArgs>(
+      args?: Subset<T, CardCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CardCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Card.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CardAggregateArgs>(args: Subset<T, CardAggregateArgs>): Prisma.PrismaPromise<GetCardAggregateType<T>>
+
+    /**
+     * Group by Card.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CardGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CardGroupByArgs['orderBy'] }
+        : { orderBy?: CardGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CardGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCardGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Card model
+   */
+  readonly fields: CardFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Card.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    list<T extends ListDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ListDefaultArgs<ExtArgs>>): Prisma__ListClient<$Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    assignedTo<T extends Card$assignedToArgs<ExtArgs> = {}>(args?: Subset<T, Card$assignedToArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    comments<T extends Card$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Card$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activities<T extends Card$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, Card$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Card model
+   */
+  interface CardFieldRefs {
+    readonly id: FieldRef<"Card", 'String'>
+    readonly title: FieldRef<"Card", 'String'>
+    readonly description: FieldRef<"Card", 'String'>
+    readonly position: FieldRef<"Card", 'Int'>
+    readonly priority: FieldRef<"Card", 'CardPriority'>
+    readonly dueDate: FieldRef<"Card", 'DateTime'>
+    readonly labels: FieldRef<"Card", 'String[]'>
+    readonly attachments: FieldRef<"Card", 'String[]'>
+    readonly listId: FieldRef<"Card", 'String'>
+    readonly assignedToId: FieldRef<"Card", 'String'>
+    readonly createdById: FieldRef<"Card", 'String'>
+    readonly createdAt: FieldRef<"Card", 'DateTime'>
+    readonly updatedAt: FieldRef<"Card", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Card findUnique
+   */
+  export type CardFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * Filter, which Card to fetch.
+     */
+    where: CardWhereUniqueInput
+  }
+
+  /**
+   * Card findUniqueOrThrow
+   */
+  export type CardFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * Filter, which Card to fetch.
+     */
+    where: CardWhereUniqueInput
+  }
+
+  /**
+   * Card findFirst
+   */
+  export type CardFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * Filter, which Card to fetch.
+     */
+    where?: CardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cards to fetch.
+     */
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Cards.
+     */
+    cursor?: CardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Cards.
+     */
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+  /**
+   * Card findFirstOrThrow
+   */
+  export type CardFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * Filter, which Card to fetch.
+     */
+    where?: CardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cards to fetch.
+     */
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Cards.
+     */
+    cursor?: CardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Cards.
+     */
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+  /**
+   * Card findMany
+   */
+  export type CardFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * Filter, which Cards to fetch.
+     */
+    where?: CardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cards to fetch.
+     */
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Cards.
+     */
+    cursor?: CardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cards.
+     */
+    skip?: number
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+  /**
+   * Card create
+   */
+  export type CardCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Card.
+     */
+    data: XOR<CardCreateInput, CardUncheckedCreateInput>
+  }
+
+  /**
+   * Card createMany
+   */
+  export type CardCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Cards.
+     */
+    data: CardCreateManyInput | CardCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Card createManyAndReturn
+   */
+  export type CardCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * The data used to create many Cards.
+     */
+    data: CardCreateManyInput | CardCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Card update
+   */
+  export type CardUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Card.
+     */
+    data: XOR<CardUpdateInput, CardUncheckedUpdateInput>
+    /**
+     * Choose, which Card to update.
+     */
+    where: CardWhereUniqueInput
+  }
+
+  /**
+   * Card updateMany
+   */
+  export type CardUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Cards.
+     */
+    data: XOR<CardUpdateManyMutationInput, CardUncheckedUpdateManyInput>
+    /**
+     * Filter which Cards to update
+     */
+    where?: CardWhereInput
+    /**
+     * Limit how many Cards to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Card updateManyAndReturn
+   */
+  export type CardUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * The data used to update Cards.
+     */
+    data: XOR<CardUpdateManyMutationInput, CardUncheckedUpdateManyInput>
+    /**
+     * Filter which Cards to update
+     */
+    where?: CardWhereInput
+    /**
+     * Limit how many Cards to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Card upsert
+   */
+  export type CardUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Card to update in case it exists.
+     */
+    where: CardWhereUniqueInput
+    /**
+     * In case the Card found by the `where` argument doesn't exist, create a new Card with this data.
+     */
+    create: XOR<CardCreateInput, CardUncheckedCreateInput>
+    /**
+     * In case the Card was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CardUpdateInput, CardUncheckedUpdateInput>
+  }
+
+  /**
+   * Card delete
+   */
+  export type CardDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+    /**
+     * Filter which Card to delete.
+     */
+    where: CardWhereUniqueInput
+  }
+
+  /**
+   * Card deleteMany
+   */
+  export type CardDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Cards to delete
+     */
+    where?: CardWhereInput
+    /**
+     * Limit how many Cards to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Card.assignedTo
+   */
+  export type Card$assignedToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Card.comments
+   */
+  export type Card$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    where?: CardCommentWhereInput
+    orderBy?: CardCommentOrderByWithRelationInput | CardCommentOrderByWithRelationInput[]
+    cursor?: CardCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CardCommentScalarFieldEnum | CardCommentScalarFieldEnum[]
+  }
+
+  /**
+   * Card.activities
+   */
+  export type Card$activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    where?: CardActivityWhereInput
+    orderBy?: CardActivityOrderByWithRelationInput | CardActivityOrderByWithRelationInput[]
+    cursor?: CardActivityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CardActivityScalarFieldEnum | CardActivityScalarFieldEnum[]
+  }
+
+  /**
+   * Card without action
+   */
+  export type CardDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Card
+     */
+    omit?: CardOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CardComment
+   */
+
+  export type AggregateCardComment = {
+    _count: CardCommentCountAggregateOutputType | null
+    _min: CardCommentMinAggregateOutputType | null
+    _max: CardCommentMaxAggregateOutputType | null
+  }
+
+  export type CardCommentMinAggregateOutputType = {
+    id: string | null
+    content: string | null
+    cardId: string | null
+    authorId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CardCommentMaxAggregateOutputType = {
+    id: string | null
+    content: string | null
+    cardId: string | null
+    authorId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CardCommentCountAggregateOutputType = {
+    id: number
+    content: number
+    cardId: number
+    authorId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CardCommentMinAggregateInputType = {
+    id?: true
+    content?: true
+    cardId?: true
+    authorId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CardCommentMaxAggregateInputType = {
+    id?: true
+    content?: true
+    cardId?: true
+    authorId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CardCommentCountAggregateInputType = {
+    id?: true
+    content?: true
+    cardId?: true
+    authorId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CardCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CardComment to aggregate.
+     */
+    where?: CardCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CardComments to fetch.
+     */
+    orderBy?: CardCommentOrderByWithRelationInput | CardCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CardCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CardComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CardComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CardComments
+    **/
+    _count?: true | CardCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CardCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CardCommentMaxAggregateInputType
+  }
+
+  export type GetCardCommentAggregateType<T extends CardCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateCardComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCardComment[P]>
+      : GetScalarType<T[P], AggregateCardComment[P]>
+  }
+
+
+
+
+  export type CardCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardCommentWhereInput
+    orderBy?: CardCommentOrderByWithAggregationInput | CardCommentOrderByWithAggregationInput[]
+    by: CardCommentScalarFieldEnum[] | CardCommentScalarFieldEnum
+    having?: CardCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CardCommentCountAggregateInputType | true
+    _min?: CardCommentMinAggregateInputType
+    _max?: CardCommentMaxAggregateInputType
+  }
+
+  export type CardCommentGroupByOutputType = {
+    id: string
+    content: string
+    cardId: string
+    authorId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: CardCommentCountAggregateOutputType | null
+    _min: CardCommentMinAggregateOutputType | null
+    _max: CardCommentMaxAggregateOutputType | null
+  }
+
+  type GetCardCommentGroupByPayload<T extends CardCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CardCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CardCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CardCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], CardCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CardCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    cardId?: boolean
+    authorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cardComment"]>
+
+  export type CardCommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    cardId?: boolean
+    authorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cardComment"]>
+
+  export type CardCommentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    cardId?: boolean
+    authorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cardComment"]>
+
+  export type CardCommentSelectScalar = {
+    id?: boolean
+    content?: boolean
+    cardId?: boolean
+    authorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CardCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "cardId" | "authorId" | "createdAt" | "updatedAt", ExtArgs["result"]["cardComment"]>
+  export type CardCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CardCommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CardCommentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CardCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CardComment"
+    objects: {
+      card: Prisma.$CardPayload<ExtArgs>
+      author: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      content: string
+      cardId: string
+      authorId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["cardComment"]>
+    composites: {}
+  }
+
+  type CardCommentGetPayload<S extends boolean | null | undefined | CardCommentDefaultArgs> = $Result.GetResult<Prisma.$CardCommentPayload, S>
+
+  type CardCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CardCommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CardCommentCountAggregateInputType | true
+    }
+
+  export interface CardCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CardComment'], meta: { name: 'CardComment' } }
+    /**
+     * Find zero or one CardComment that matches the filter.
+     * @param {CardCommentFindUniqueArgs} args - Arguments to find a CardComment
+     * @example
+     * // Get one CardComment
+     * const cardComment = await prisma.cardComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CardCommentFindUniqueArgs>(args: SelectSubset<T, CardCommentFindUniqueArgs<ExtArgs>>): Prisma__CardCommentClient<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CardComment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CardCommentFindUniqueOrThrowArgs} args - Arguments to find a CardComment
+     * @example
+     * // Get one CardComment
+     * const cardComment = await prisma.cardComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CardCommentFindUniqueOrThrowArgs>(args: SelectSubset<T, CardCommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CardCommentClient<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CardComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCommentFindFirstArgs} args - Arguments to find a CardComment
+     * @example
+     * // Get one CardComment
+     * const cardComment = await prisma.cardComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CardCommentFindFirstArgs>(args?: SelectSubset<T, CardCommentFindFirstArgs<ExtArgs>>): Prisma__CardCommentClient<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CardComment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCommentFindFirstOrThrowArgs} args - Arguments to find a CardComment
+     * @example
+     * // Get one CardComment
+     * const cardComment = await prisma.cardComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CardCommentFindFirstOrThrowArgs>(args?: SelectSubset<T, CardCommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__CardCommentClient<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CardComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CardComments
+     * const cardComments = await prisma.cardComment.findMany()
+     * 
+     * // Get first 10 CardComments
+     * const cardComments = await prisma.cardComment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cardCommentWithIdOnly = await prisma.cardComment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CardCommentFindManyArgs>(args?: SelectSubset<T, CardCommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CardComment.
+     * @param {CardCommentCreateArgs} args - Arguments to create a CardComment.
+     * @example
+     * // Create one CardComment
+     * const CardComment = await prisma.cardComment.create({
+     *   data: {
+     *     // ... data to create a CardComment
+     *   }
+     * })
+     * 
+     */
+    create<T extends CardCommentCreateArgs>(args: SelectSubset<T, CardCommentCreateArgs<ExtArgs>>): Prisma__CardCommentClient<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CardComments.
+     * @param {CardCommentCreateManyArgs} args - Arguments to create many CardComments.
+     * @example
+     * // Create many CardComments
+     * const cardComment = await prisma.cardComment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CardCommentCreateManyArgs>(args?: SelectSubset<T, CardCommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CardComments and returns the data saved in the database.
+     * @param {CardCommentCreateManyAndReturnArgs} args - Arguments to create many CardComments.
+     * @example
+     * // Create many CardComments
+     * const cardComment = await prisma.cardComment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CardComments and only return the `id`
+     * const cardCommentWithIdOnly = await prisma.cardComment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CardCommentCreateManyAndReturnArgs>(args?: SelectSubset<T, CardCommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CardComment.
+     * @param {CardCommentDeleteArgs} args - Arguments to delete one CardComment.
+     * @example
+     * // Delete one CardComment
+     * const CardComment = await prisma.cardComment.delete({
+     *   where: {
+     *     // ... filter to delete one CardComment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CardCommentDeleteArgs>(args: SelectSubset<T, CardCommentDeleteArgs<ExtArgs>>): Prisma__CardCommentClient<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CardComment.
+     * @param {CardCommentUpdateArgs} args - Arguments to update one CardComment.
+     * @example
+     * // Update one CardComment
+     * const cardComment = await prisma.cardComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CardCommentUpdateArgs>(args: SelectSubset<T, CardCommentUpdateArgs<ExtArgs>>): Prisma__CardCommentClient<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CardComments.
+     * @param {CardCommentDeleteManyArgs} args - Arguments to filter CardComments to delete.
+     * @example
+     * // Delete a few CardComments
+     * const { count } = await prisma.cardComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CardCommentDeleteManyArgs>(args?: SelectSubset<T, CardCommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CardComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CardComments
+     * const cardComment = await prisma.cardComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CardCommentUpdateManyArgs>(args: SelectSubset<T, CardCommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CardComments and returns the data updated in the database.
+     * @param {CardCommentUpdateManyAndReturnArgs} args - Arguments to update many CardComments.
+     * @example
+     * // Update many CardComments
+     * const cardComment = await prisma.cardComment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CardComments and only return the `id`
+     * const cardCommentWithIdOnly = await prisma.cardComment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CardCommentUpdateManyAndReturnArgs>(args: SelectSubset<T, CardCommentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CardComment.
+     * @param {CardCommentUpsertArgs} args - Arguments to update or create a CardComment.
+     * @example
+     * // Update or create a CardComment
+     * const cardComment = await prisma.cardComment.upsert({
+     *   create: {
+     *     // ... data to create a CardComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CardComment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CardCommentUpsertArgs>(args: SelectSubset<T, CardCommentUpsertArgs<ExtArgs>>): Prisma__CardCommentClient<$Result.GetResult<Prisma.$CardCommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CardComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCommentCountArgs} args - Arguments to filter CardComments to count.
+     * @example
+     * // Count the number of CardComments
+     * const count = await prisma.cardComment.count({
+     *   where: {
+     *     // ... the filter for the CardComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends CardCommentCountArgs>(
+      args?: Subset<T, CardCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CardCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CardComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CardCommentAggregateArgs>(args: Subset<T, CardCommentAggregateArgs>): Prisma.PrismaPromise<GetCardCommentAggregateType<T>>
+
+    /**
+     * Group by CardComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CardCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CardCommentGroupByArgs['orderBy'] }
+        : { orderBy?: CardCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CardCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCardCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CardComment model
+   */
+  readonly fields: CardCommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CardComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CardCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    card<T extends CardDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CardDefaultArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CardComment model
+   */
+  interface CardCommentFieldRefs {
+    readonly id: FieldRef<"CardComment", 'String'>
+    readonly content: FieldRef<"CardComment", 'String'>
+    readonly cardId: FieldRef<"CardComment", 'String'>
+    readonly authorId: FieldRef<"CardComment", 'String'>
+    readonly createdAt: FieldRef<"CardComment", 'DateTime'>
+    readonly updatedAt: FieldRef<"CardComment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CardComment findUnique
+   */
+  export type CardCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CardComment to fetch.
+     */
+    where: CardCommentWhereUniqueInput
+  }
+
+  /**
+   * CardComment findUniqueOrThrow
+   */
+  export type CardCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CardComment to fetch.
+     */
+    where: CardCommentWhereUniqueInput
+  }
+
+  /**
+   * CardComment findFirst
+   */
+  export type CardCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CardComment to fetch.
+     */
+    where?: CardCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CardComments to fetch.
+     */
+    orderBy?: CardCommentOrderByWithRelationInput | CardCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CardComments.
+     */
+    cursor?: CardCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CardComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CardComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CardComments.
+     */
+    distinct?: CardCommentScalarFieldEnum | CardCommentScalarFieldEnum[]
+  }
+
+  /**
+   * CardComment findFirstOrThrow
+   */
+  export type CardCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CardComment to fetch.
+     */
+    where?: CardCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CardComments to fetch.
+     */
+    orderBy?: CardCommentOrderByWithRelationInput | CardCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CardComments.
+     */
+    cursor?: CardCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CardComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CardComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CardComments.
+     */
+    distinct?: CardCommentScalarFieldEnum | CardCommentScalarFieldEnum[]
+  }
+
+  /**
+   * CardComment findMany
+   */
+  export type CardCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which CardComments to fetch.
+     */
+    where?: CardCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CardComments to fetch.
+     */
+    orderBy?: CardCommentOrderByWithRelationInput | CardCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CardComments.
+     */
+    cursor?: CardCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CardComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CardComments.
+     */
+    skip?: number
+    distinct?: CardCommentScalarFieldEnum | CardCommentScalarFieldEnum[]
+  }
+
+  /**
+   * CardComment create
+   */
+  export type CardCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CardComment.
+     */
+    data: XOR<CardCommentCreateInput, CardCommentUncheckedCreateInput>
+  }
+
+  /**
+   * CardComment createMany
+   */
+  export type CardCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CardComments.
+     */
+    data: CardCommentCreateManyInput | CardCommentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CardComment createManyAndReturn
+   */
+  export type CardCommentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * The data used to create many CardComments.
+     */
+    data: CardCommentCreateManyInput | CardCommentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CardComment update
+   */
+  export type CardCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CardComment.
+     */
+    data: XOR<CardCommentUpdateInput, CardCommentUncheckedUpdateInput>
+    /**
+     * Choose, which CardComment to update.
+     */
+    where: CardCommentWhereUniqueInput
+  }
+
+  /**
+   * CardComment updateMany
+   */
+  export type CardCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CardComments.
+     */
+    data: XOR<CardCommentUpdateManyMutationInput, CardCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which CardComments to update
+     */
+    where?: CardCommentWhereInput
+    /**
+     * Limit how many CardComments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CardComment updateManyAndReturn
+   */
+  export type CardCommentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * The data used to update CardComments.
+     */
+    data: XOR<CardCommentUpdateManyMutationInput, CardCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which CardComments to update
+     */
+    where?: CardCommentWhereInput
+    /**
+     * Limit how many CardComments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CardComment upsert
+   */
+  export type CardCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CardComment to update in case it exists.
+     */
+    where: CardCommentWhereUniqueInput
+    /**
+     * In case the CardComment found by the `where` argument doesn't exist, create a new CardComment with this data.
+     */
+    create: XOR<CardCommentCreateInput, CardCommentUncheckedCreateInput>
+    /**
+     * In case the CardComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CardCommentUpdateInput, CardCommentUncheckedUpdateInput>
+  }
+
+  /**
+   * CardComment delete
+   */
+  export type CardCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+    /**
+     * Filter which CardComment to delete.
+     */
+    where: CardCommentWhereUniqueInput
+  }
+
+  /**
+   * CardComment deleteMany
+   */
+  export type CardCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CardComments to delete
+     */
+    where?: CardCommentWhereInput
+    /**
+     * Limit how many CardComments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CardComment without action
+   */
+  export type CardCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardComment
+     */
+    select?: CardCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardComment
+     */
+    omit?: CardCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardCommentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CardActivity
+   */
+
+  export type AggregateCardActivity = {
+    _count: CardActivityCountAggregateOutputType | null
+    _min: CardActivityMinAggregateOutputType | null
+    _max: CardActivityMaxAggregateOutputType | null
+  }
+
+  export type CardActivityMinAggregateOutputType = {
+    id: string | null
+    cardId: string | null
+    userId: string | null
+    action: string | null
+    description: string | null
+    oldValue: string | null
+    newValue: string | null
+    createdAt: Date | null
+  }
+
+  export type CardActivityMaxAggregateOutputType = {
+    id: string | null
+    cardId: string | null
+    userId: string | null
+    action: string | null
+    description: string | null
+    oldValue: string | null
+    newValue: string | null
+    createdAt: Date | null
+  }
+
+  export type CardActivityCountAggregateOutputType = {
+    id: number
+    cardId: number
+    userId: number
+    action: number
+    description: number
+    oldValue: number
+    newValue: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type CardActivityMinAggregateInputType = {
+    id?: true
+    cardId?: true
+    userId?: true
+    action?: true
+    description?: true
+    oldValue?: true
+    newValue?: true
+    createdAt?: true
+  }
+
+  export type CardActivityMaxAggregateInputType = {
+    id?: true
+    cardId?: true
+    userId?: true
+    action?: true
+    description?: true
+    oldValue?: true
+    newValue?: true
+    createdAt?: true
+  }
+
+  export type CardActivityCountAggregateInputType = {
+    id?: true
+    cardId?: true
+    userId?: true
+    action?: true
+    description?: true
+    oldValue?: true
+    newValue?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type CardActivityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CardActivity to aggregate.
+     */
+    where?: CardActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CardActivities to fetch.
+     */
+    orderBy?: CardActivityOrderByWithRelationInput | CardActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CardActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CardActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CardActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CardActivities
+    **/
+    _count?: true | CardActivityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CardActivityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CardActivityMaxAggregateInputType
+  }
+
+  export type GetCardActivityAggregateType<T extends CardActivityAggregateArgs> = {
+        [P in keyof T & keyof AggregateCardActivity]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCardActivity[P]>
+      : GetScalarType<T[P], AggregateCardActivity[P]>
+  }
+
+
+
+
+  export type CardActivityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardActivityWhereInput
+    orderBy?: CardActivityOrderByWithAggregationInput | CardActivityOrderByWithAggregationInput[]
+    by: CardActivityScalarFieldEnum[] | CardActivityScalarFieldEnum
+    having?: CardActivityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CardActivityCountAggregateInputType | true
+    _min?: CardActivityMinAggregateInputType
+    _max?: CardActivityMaxAggregateInputType
+  }
+
+  export type CardActivityGroupByOutputType = {
+    id: string
+    cardId: string
+    userId: string
+    action: string
+    description: string
+    oldValue: string | null
+    newValue: string | null
+    createdAt: Date
+    _count: CardActivityCountAggregateOutputType | null
+    _min: CardActivityMinAggregateOutputType | null
+    _max: CardActivityMaxAggregateOutputType | null
+  }
+
+  type GetCardActivityGroupByPayload<T extends CardActivityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CardActivityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CardActivityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CardActivityGroupByOutputType[P]>
+            : GetScalarType<T[P], CardActivityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CardActivitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    cardId?: boolean
+    userId?: boolean
+    action?: boolean
+    description?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    createdAt?: boolean
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cardActivity"]>
+
+  export type CardActivitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    cardId?: boolean
+    userId?: boolean
+    action?: boolean
+    description?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    createdAt?: boolean
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cardActivity"]>
+
+  export type CardActivitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    cardId?: boolean
+    userId?: boolean
+    action?: boolean
+    description?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    createdAt?: boolean
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cardActivity"]>
+
+  export type CardActivitySelectScalar = {
+    id?: boolean
+    cardId?: boolean
+    userId?: boolean
+    action?: boolean
+    description?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    createdAt?: boolean
+  }
+
+  export type CardActivityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cardId" | "userId" | "action" | "description" | "oldValue" | "newValue" | "createdAt", ExtArgs["result"]["cardActivity"]>
+  export type CardActivityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CardActivityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CardActivityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    card?: boolean | CardDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CardActivityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CardActivity"
+    objects: {
+      card: Prisma.$CardPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      cardId: string
+      userId: string
+      action: string
+      description: string
+      oldValue: string | null
+      newValue: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["cardActivity"]>
+    composites: {}
+  }
+
+  type CardActivityGetPayload<S extends boolean | null | undefined | CardActivityDefaultArgs> = $Result.GetResult<Prisma.$CardActivityPayload, S>
+
+  type CardActivityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CardActivityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CardActivityCountAggregateInputType | true
+    }
+
+  export interface CardActivityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CardActivity'], meta: { name: 'CardActivity' } }
+    /**
+     * Find zero or one CardActivity that matches the filter.
+     * @param {CardActivityFindUniqueArgs} args - Arguments to find a CardActivity
+     * @example
+     * // Get one CardActivity
+     * const cardActivity = await prisma.cardActivity.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CardActivityFindUniqueArgs>(args: SelectSubset<T, CardActivityFindUniqueArgs<ExtArgs>>): Prisma__CardActivityClient<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CardActivity that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CardActivityFindUniqueOrThrowArgs} args - Arguments to find a CardActivity
+     * @example
+     * // Get one CardActivity
+     * const cardActivity = await prisma.cardActivity.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CardActivityFindUniqueOrThrowArgs>(args: SelectSubset<T, CardActivityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CardActivityClient<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CardActivity that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardActivityFindFirstArgs} args - Arguments to find a CardActivity
+     * @example
+     * // Get one CardActivity
+     * const cardActivity = await prisma.cardActivity.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CardActivityFindFirstArgs>(args?: SelectSubset<T, CardActivityFindFirstArgs<ExtArgs>>): Prisma__CardActivityClient<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CardActivity that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardActivityFindFirstOrThrowArgs} args - Arguments to find a CardActivity
+     * @example
+     * // Get one CardActivity
+     * const cardActivity = await prisma.cardActivity.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CardActivityFindFirstOrThrowArgs>(args?: SelectSubset<T, CardActivityFindFirstOrThrowArgs<ExtArgs>>): Prisma__CardActivityClient<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CardActivities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardActivityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CardActivities
+     * const cardActivities = await prisma.cardActivity.findMany()
+     * 
+     * // Get first 10 CardActivities
+     * const cardActivities = await prisma.cardActivity.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cardActivityWithIdOnly = await prisma.cardActivity.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CardActivityFindManyArgs>(args?: SelectSubset<T, CardActivityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CardActivity.
+     * @param {CardActivityCreateArgs} args - Arguments to create a CardActivity.
+     * @example
+     * // Create one CardActivity
+     * const CardActivity = await prisma.cardActivity.create({
+     *   data: {
+     *     // ... data to create a CardActivity
+     *   }
+     * })
+     * 
+     */
+    create<T extends CardActivityCreateArgs>(args: SelectSubset<T, CardActivityCreateArgs<ExtArgs>>): Prisma__CardActivityClient<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CardActivities.
+     * @param {CardActivityCreateManyArgs} args - Arguments to create many CardActivities.
+     * @example
+     * // Create many CardActivities
+     * const cardActivity = await prisma.cardActivity.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CardActivityCreateManyArgs>(args?: SelectSubset<T, CardActivityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CardActivities and returns the data saved in the database.
+     * @param {CardActivityCreateManyAndReturnArgs} args - Arguments to create many CardActivities.
+     * @example
+     * // Create many CardActivities
+     * const cardActivity = await prisma.cardActivity.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CardActivities and only return the `id`
+     * const cardActivityWithIdOnly = await prisma.cardActivity.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CardActivityCreateManyAndReturnArgs>(args?: SelectSubset<T, CardActivityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CardActivity.
+     * @param {CardActivityDeleteArgs} args - Arguments to delete one CardActivity.
+     * @example
+     * // Delete one CardActivity
+     * const CardActivity = await prisma.cardActivity.delete({
+     *   where: {
+     *     // ... filter to delete one CardActivity
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CardActivityDeleteArgs>(args: SelectSubset<T, CardActivityDeleteArgs<ExtArgs>>): Prisma__CardActivityClient<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CardActivity.
+     * @param {CardActivityUpdateArgs} args - Arguments to update one CardActivity.
+     * @example
+     * // Update one CardActivity
+     * const cardActivity = await prisma.cardActivity.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CardActivityUpdateArgs>(args: SelectSubset<T, CardActivityUpdateArgs<ExtArgs>>): Prisma__CardActivityClient<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CardActivities.
+     * @param {CardActivityDeleteManyArgs} args - Arguments to filter CardActivities to delete.
+     * @example
+     * // Delete a few CardActivities
+     * const { count } = await prisma.cardActivity.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CardActivityDeleteManyArgs>(args?: SelectSubset<T, CardActivityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CardActivities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardActivityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CardActivities
+     * const cardActivity = await prisma.cardActivity.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CardActivityUpdateManyArgs>(args: SelectSubset<T, CardActivityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CardActivities and returns the data updated in the database.
+     * @param {CardActivityUpdateManyAndReturnArgs} args - Arguments to update many CardActivities.
+     * @example
+     * // Update many CardActivities
+     * const cardActivity = await prisma.cardActivity.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CardActivities and only return the `id`
+     * const cardActivityWithIdOnly = await prisma.cardActivity.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CardActivityUpdateManyAndReturnArgs>(args: SelectSubset<T, CardActivityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CardActivity.
+     * @param {CardActivityUpsertArgs} args - Arguments to update or create a CardActivity.
+     * @example
+     * // Update or create a CardActivity
+     * const cardActivity = await prisma.cardActivity.upsert({
+     *   create: {
+     *     // ... data to create a CardActivity
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CardActivity we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CardActivityUpsertArgs>(args: SelectSubset<T, CardActivityUpsertArgs<ExtArgs>>): Prisma__CardActivityClient<$Result.GetResult<Prisma.$CardActivityPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CardActivities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardActivityCountArgs} args - Arguments to filter CardActivities to count.
+     * @example
+     * // Count the number of CardActivities
+     * const count = await prisma.cardActivity.count({
+     *   where: {
+     *     // ... the filter for the CardActivities we want to count
+     *   }
+     * })
+    **/
+    count<T extends CardActivityCountArgs>(
+      args?: Subset<T, CardActivityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CardActivityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CardActivity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardActivityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CardActivityAggregateArgs>(args: Subset<T, CardActivityAggregateArgs>): Prisma.PrismaPromise<GetCardActivityAggregateType<T>>
+
+    /**
+     * Group by CardActivity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardActivityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CardActivityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CardActivityGroupByArgs['orderBy'] }
+        : { orderBy?: CardActivityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CardActivityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCardActivityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CardActivity model
+   */
+  readonly fields: CardActivityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CardActivity.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CardActivityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    card<T extends CardDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CardDefaultArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CardActivity model
+   */
+  interface CardActivityFieldRefs {
+    readonly id: FieldRef<"CardActivity", 'String'>
+    readonly cardId: FieldRef<"CardActivity", 'String'>
+    readonly userId: FieldRef<"CardActivity", 'String'>
+    readonly action: FieldRef<"CardActivity", 'String'>
+    readonly description: FieldRef<"CardActivity", 'String'>
+    readonly oldValue: FieldRef<"CardActivity", 'String'>
+    readonly newValue: FieldRef<"CardActivity", 'String'>
+    readonly createdAt: FieldRef<"CardActivity", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CardActivity findUnique
+   */
+  export type CardActivityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CardActivity to fetch.
+     */
+    where: CardActivityWhereUniqueInput
+  }
+
+  /**
+   * CardActivity findUniqueOrThrow
+   */
+  export type CardActivityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CardActivity to fetch.
+     */
+    where: CardActivityWhereUniqueInput
+  }
+
+  /**
+   * CardActivity findFirst
+   */
+  export type CardActivityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CardActivity to fetch.
+     */
+    where?: CardActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CardActivities to fetch.
+     */
+    orderBy?: CardActivityOrderByWithRelationInput | CardActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CardActivities.
+     */
+    cursor?: CardActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CardActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CardActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CardActivities.
+     */
+    distinct?: CardActivityScalarFieldEnum | CardActivityScalarFieldEnum[]
+  }
+
+  /**
+   * CardActivity findFirstOrThrow
+   */
+  export type CardActivityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CardActivity to fetch.
+     */
+    where?: CardActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CardActivities to fetch.
+     */
+    orderBy?: CardActivityOrderByWithRelationInput | CardActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CardActivities.
+     */
+    cursor?: CardActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CardActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CardActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CardActivities.
+     */
+    distinct?: CardActivityScalarFieldEnum | CardActivityScalarFieldEnum[]
+  }
+
+  /**
+   * CardActivity findMany
+   */
+  export type CardActivityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CardActivities to fetch.
+     */
+    where?: CardActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CardActivities to fetch.
+     */
+    orderBy?: CardActivityOrderByWithRelationInput | CardActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CardActivities.
+     */
+    cursor?: CardActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CardActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CardActivities.
+     */
+    skip?: number
+    distinct?: CardActivityScalarFieldEnum | CardActivityScalarFieldEnum[]
+  }
+
+  /**
+   * CardActivity create
+   */
+  export type CardActivityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CardActivity.
+     */
+    data: XOR<CardActivityCreateInput, CardActivityUncheckedCreateInput>
+  }
+
+  /**
+   * CardActivity createMany
+   */
+  export type CardActivityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CardActivities.
+     */
+    data: CardActivityCreateManyInput | CardActivityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CardActivity createManyAndReturn
+   */
+  export type CardActivityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * The data used to create many CardActivities.
+     */
+    data: CardActivityCreateManyInput | CardActivityCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CardActivity update
+   */
+  export type CardActivityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CardActivity.
+     */
+    data: XOR<CardActivityUpdateInput, CardActivityUncheckedUpdateInput>
+    /**
+     * Choose, which CardActivity to update.
+     */
+    where: CardActivityWhereUniqueInput
+  }
+
+  /**
+   * CardActivity updateMany
+   */
+  export type CardActivityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CardActivities.
+     */
+    data: XOR<CardActivityUpdateManyMutationInput, CardActivityUncheckedUpdateManyInput>
+    /**
+     * Filter which CardActivities to update
+     */
+    where?: CardActivityWhereInput
+    /**
+     * Limit how many CardActivities to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CardActivity updateManyAndReturn
+   */
+  export type CardActivityUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * The data used to update CardActivities.
+     */
+    data: XOR<CardActivityUpdateManyMutationInput, CardActivityUncheckedUpdateManyInput>
+    /**
+     * Filter which CardActivities to update
+     */
+    where?: CardActivityWhereInput
+    /**
+     * Limit how many CardActivities to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CardActivity upsert
+   */
+  export type CardActivityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CardActivity to update in case it exists.
+     */
+    where: CardActivityWhereUniqueInput
+    /**
+     * In case the CardActivity found by the `where` argument doesn't exist, create a new CardActivity with this data.
+     */
+    create: XOR<CardActivityCreateInput, CardActivityUncheckedCreateInput>
+    /**
+     * In case the CardActivity was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CardActivityUpdateInput, CardActivityUncheckedUpdateInput>
+  }
+
+  /**
+   * CardActivity delete
+   */
+  export type CardActivityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+    /**
+     * Filter which CardActivity to delete.
+     */
+    where: CardActivityWhereUniqueInput
+  }
+
+  /**
+   * CardActivity deleteMany
+   */
+  export type CardActivityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CardActivities to delete
+     */
+    where?: CardActivityWhereInput
+    /**
+     * Limit how many CardActivities to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CardActivity without action
+   */
+  export type CardActivityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardActivity
+     */
+    select?: CardActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardActivity
+     */
+    omit?: CardActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardActivityInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -45613,6 +54678,9 @@ export namespace Prisma {
     checkInTime: 'checkInTime',
     checkOutTime: 'checkOutTime',
     totalHours: 'totalHours',
+    breakStartTime: 'breakStartTime',
+    breakEndTime: 'breakEndTime',
+    totalBreakTime: 'totalBreakTime',
     date: 'date',
     status: 'status',
     createdAt: 'createdAt',
@@ -45973,6 +55041,99 @@ export namespace Prisma {
   export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
 
 
+  export const BoardScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    background: 'background',
+    visibility: 'visibility',
+    createdById: 'createdById',
+    teamId: 'teamId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BoardScalarFieldEnum = (typeof BoardScalarFieldEnum)[keyof typeof BoardScalarFieldEnum]
+
+
+  export const BoardMemberScalarFieldEnum: {
+    id: 'id',
+    boardId: 'boardId',
+    userId: 'userId',
+    role: 'role',
+    joinedAt: 'joinedAt'
+  };
+
+  export type BoardMemberScalarFieldEnum = (typeof BoardMemberScalarFieldEnum)[keyof typeof BoardMemberScalarFieldEnum]
+
+
+  export const BoardStarScalarFieldEnum: {
+    id: 'id',
+    boardId: 'boardId',
+    userId: 'userId',
+    starredAt: 'starredAt'
+  };
+
+  export type BoardStarScalarFieldEnum = (typeof BoardStarScalarFieldEnum)[keyof typeof BoardStarScalarFieldEnum]
+
+
+  export const ListScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    position: 'position',
+    boardId: 'boardId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ListScalarFieldEnum = (typeof ListScalarFieldEnum)[keyof typeof ListScalarFieldEnum]
+
+
+  export const CardScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    position: 'position',
+    priority: 'priority',
+    dueDate: 'dueDate',
+    labels: 'labels',
+    attachments: 'attachments',
+    listId: 'listId',
+    assignedToId: 'assignedToId',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof CardScalarFieldEnum]
+
+
+  export const CardCommentScalarFieldEnum: {
+    id: 'id',
+    content: 'content',
+    cardId: 'cardId',
+    authorId: 'authorId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CardCommentScalarFieldEnum = (typeof CardCommentScalarFieldEnum)[keyof typeof CardCommentScalarFieldEnum]
+
+
+  export const CardActivityScalarFieldEnum: {
+    id: 'id',
+    cardId: 'cardId',
+    userId: 'userId',
+    action: 'action',
+    description: 'description',
+    oldValue: 'oldValue',
+    newValue: 'newValue',
+    createdAt: 'createdAt'
+  };
+
+  export type CardActivityScalarFieldEnum = (typeof CardActivityScalarFieldEnum)[keyof typeof CardActivityScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -46290,6 +55451,34 @@ export namespace Prisma {
    */
   export type ListEnumMessageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MessageType[]'>
     
+
+
+  /**
+   * Reference to a field of type 'BoardVisibility'
+   */
+  export type EnumBoardVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BoardVisibility'>
+    
+
+
+  /**
+   * Reference to a field of type 'BoardVisibility[]'
+   */
+  export type ListEnumBoardVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BoardVisibility[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CardPriority'
+   */
+  export type EnumCardPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CardPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'CardPriority[]'
+   */
+  export type ListEnumCardPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CardPriority[]'>
+    
   /**
    * Deep Input Types
    */
@@ -46357,6 +55546,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionListRelationFilter
     userLeads?: LeadListRelationFilter
     assignedLeads?: LeadListRelationFilter
+    createdBoards?: BoardListRelationFilter
+    boardMemberships?: BoardMemberListRelationFilter
+    boardStars?: BoardStarListRelationFilter
+    assignedCards?: CardListRelationFilter
+    createdCards?: CardListRelationFilter
+    cardComments?: CardCommentListRelationFilter
+    cardActivities?: CardActivityListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -46418,6 +55614,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionOrderByRelationAggregateInput
     userLeads?: LeadOrderByRelationAggregateInput
     assignedLeads?: LeadOrderByRelationAggregateInput
+    createdBoards?: BoardOrderByRelationAggregateInput
+    boardMemberships?: BoardMemberOrderByRelationAggregateInput
+    boardStars?: BoardStarOrderByRelationAggregateInput
+    assignedCards?: CardOrderByRelationAggregateInput
+    createdCards?: CardOrderByRelationAggregateInput
+    cardComments?: CardCommentOrderByRelationAggregateInput
+    cardActivities?: CardActivityOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -46482,6 +55685,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionListRelationFilter
     userLeads?: LeadListRelationFilter
     assignedLeads?: LeadListRelationFilter
+    createdBoards?: BoardListRelationFilter
+    boardMemberships?: BoardMemberListRelationFilter
+    boardStars?: BoardStarListRelationFilter
+    assignedCards?: CardListRelationFilter
+    createdCards?: CardListRelationFilter
+    cardComments?: CardCommentListRelationFilter
+    cardActivities?: CardActivityListRelationFilter
   }, "id" | "username" | "email" | "cnic">
 
   export type UserOrderByWithAggregationInput = {
@@ -47167,6 +56377,9 @@ export namespace Prisma {
     checkInTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     checkOutTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     totalHours?: FloatNullableFilter<"Attendance"> | number | null
+    breakStartTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    breakEndTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    totalBreakTime?: FloatNullableFilter<"Attendance"> | number | null
     date?: DateTimeFilter<"Attendance"> | Date | string
     status?: StringFilter<"Attendance"> | string
     createdAt?: DateTimeFilter<"Attendance"> | Date | string
@@ -47180,6 +56393,9 @@ export namespace Prisma {
     checkInTime?: SortOrderInput | SortOrder
     checkOutTime?: SortOrderInput | SortOrder
     totalHours?: SortOrderInput | SortOrder
+    breakStartTime?: SortOrderInput | SortOrder
+    breakEndTime?: SortOrderInput | SortOrder
+    totalBreakTime?: SortOrderInput | SortOrder
     date?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -47197,6 +56413,9 @@ export namespace Prisma {
     checkInTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     checkOutTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     totalHours?: FloatNullableFilter<"Attendance"> | number | null
+    breakStartTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    breakEndTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    totalBreakTime?: FloatNullableFilter<"Attendance"> | number | null
     date?: DateTimeFilter<"Attendance"> | Date | string
     status?: StringFilter<"Attendance"> | string
     createdAt?: DateTimeFilter<"Attendance"> | Date | string
@@ -47210,6 +56429,9 @@ export namespace Prisma {
     checkInTime?: SortOrderInput | SortOrder
     checkOutTime?: SortOrderInput | SortOrder
     totalHours?: SortOrderInput | SortOrder
+    breakStartTime?: SortOrderInput | SortOrder
+    breakEndTime?: SortOrderInput | SortOrder
+    totalBreakTime?: SortOrderInput | SortOrder
     date?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -47230,6 +56452,9 @@ export namespace Prisma {
     checkInTime?: DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
     checkOutTime?: DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
     totalHours?: FloatNullableWithAggregatesFilter<"Attendance"> | number | null
+    breakStartTime?: DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
+    breakEndTime?: DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
+    totalBreakTime?: FloatNullableWithAggregatesFilter<"Attendance"> | number | null
     date?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
     status?: StringWithAggregatesFilter<"Attendance"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
@@ -48309,6 +57534,7 @@ export namespace Prisma {
     leader?: XOR<UserScalarRelationFilter, UserWhereInput>
     members?: TeamMemberListRelationFilter
     chatRooms?: ChatRoomListRelationFilter
+    boards?: BoardListRelationFilter
   }
 
   export type TeamOrderByWithRelationInput = {
@@ -48321,6 +57547,7 @@ export namespace Prisma {
     leader?: UserOrderByWithRelationInput
     members?: TeamMemberOrderByRelationAggregateInput
     chatRooms?: ChatRoomOrderByRelationAggregateInput
+    boards?: BoardOrderByRelationAggregateInput
   }
 
   export type TeamWhereUniqueInput = Prisma.AtLeast<{
@@ -48336,6 +57563,7 @@ export namespace Prisma {
     leader?: XOR<UserScalarRelationFilter, UserWhereInput>
     members?: TeamMemberListRelationFilter
     chatRooms?: ChatRoomListRelationFilter
+    boards?: BoardListRelationFilter
   }, "id">
 
   export type TeamOrderByWithAggregationInput = {
@@ -49094,6 +58322,516 @@ export namespace Prisma {
     status?: StringNullableWithAggregatesFilter<"Lead"> | string | null
   }
 
+  export type BoardWhereInput = {
+    AND?: BoardWhereInput | BoardWhereInput[]
+    OR?: BoardWhereInput[]
+    NOT?: BoardWhereInput | BoardWhereInput[]
+    id?: StringFilter<"Board"> | string
+    title?: StringFilter<"Board"> | string
+    description?: StringNullableFilter<"Board"> | string | null
+    background?: StringNullableFilter<"Board"> | string | null
+    visibility?: EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
+    createdById?: StringFilter<"Board"> | string
+    teamId?: StringNullableFilter<"Board"> | string | null
+    createdAt?: DateTimeFilter<"Board"> | Date | string
+    updatedAt?: DateTimeFilter<"Board"> | Date | string
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    team?: XOR<TeamNullableScalarRelationFilter, TeamWhereInput> | null
+    lists?: ListListRelationFilter
+    members?: BoardMemberListRelationFilter
+    starredBy?: BoardStarListRelationFilter
+  }
+
+  export type BoardOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    background?: SortOrderInput | SortOrder
+    visibility?: SortOrder
+    createdById?: SortOrder
+    teamId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdBy?: UserOrderByWithRelationInput
+    team?: TeamOrderByWithRelationInput
+    lists?: ListOrderByRelationAggregateInput
+    members?: BoardMemberOrderByRelationAggregateInput
+    starredBy?: BoardStarOrderByRelationAggregateInput
+  }
+
+  export type BoardWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: BoardWhereInput | BoardWhereInput[]
+    OR?: BoardWhereInput[]
+    NOT?: BoardWhereInput | BoardWhereInput[]
+    title?: StringFilter<"Board"> | string
+    description?: StringNullableFilter<"Board"> | string | null
+    background?: StringNullableFilter<"Board"> | string | null
+    visibility?: EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
+    createdById?: StringFilter<"Board"> | string
+    teamId?: StringNullableFilter<"Board"> | string | null
+    createdAt?: DateTimeFilter<"Board"> | Date | string
+    updatedAt?: DateTimeFilter<"Board"> | Date | string
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    team?: XOR<TeamNullableScalarRelationFilter, TeamWhereInput> | null
+    lists?: ListListRelationFilter
+    members?: BoardMemberListRelationFilter
+    starredBy?: BoardStarListRelationFilter
+  }, "id">
+
+  export type BoardOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    background?: SortOrderInput | SortOrder
+    visibility?: SortOrder
+    createdById?: SortOrder
+    teamId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BoardCountOrderByAggregateInput
+    _max?: BoardMaxOrderByAggregateInput
+    _min?: BoardMinOrderByAggregateInput
+  }
+
+  export type BoardScalarWhereWithAggregatesInput = {
+    AND?: BoardScalarWhereWithAggregatesInput | BoardScalarWhereWithAggregatesInput[]
+    OR?: BoardScalarWhereWithAggregatesInput[]
+    NOT?: BoardScalarWhereWithAggregatesInput | BoardScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Board"> | string
+    title?: StringWithAggregatesFilter<"Board"> | string
+    description?: StringNullableWithAggregatesFilter<"Board"> | string | null
+    background?: StringNullableWithAggregatesFilter<"Board"> | string | null
+    visibility?: EnumBoardVisibilityWithAggregatesFilter<"Board"> | $Enums.BoardVisibility
+    createdById?: StringWithAggregatesFilter<"Board"> | string
+    teamId?: StringNullableWithAggregatesFilter<"Board"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Board"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Board"> | Date | string
+  }
+
+  export type BoardMemberWhereInput = {
+    AND?: BoardMemberWhereInput | BoardMemberWhereInput[]
+    OR?: BoardMemberWhereInput[]
+    NOT?: BoardMemberWhereInput | BoardMemberWhereInput[]
+    id?: StringFilter<"BoardMember"> | string
+    boardId?: StringFilter<"BoardMember"> | string
+    userId?: StringFilter<"BoardMember"> | string
+    role?: StringFilter<"BoardMember"> | string
+    joinedAt?: DateTimeFilter<"BoardMember"> | Date | string
+    board?: XOR<BoardScalarRelationFilter, BoardWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type BoardMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+    board?: BoardOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type BoardMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    boardId_userId?: BoardMemberBoardIdUserIdCompoundUniqueInput
+    AND?: BoardMemberWhereInput | BoardMemberWhereInput[]
+    OR?: BoardMemberWhereInput[]
+    NOT?: BoardMemberWhereInput | BoardMemberWhereInput[]
+    boardId?: StringFilter<"BoardMember"> | string
+    userId?: StringFilter<"BoardMember"> | string
+    role?: StringFilter<"BoardMember"> | string
+    joinedAt?: DateTimeFilter<"BoardMember"> | Date | string
+    board?: XOR<BoardScalarRelationFilter, BoardWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "boardId_userId">
+
+  export type BoardMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+    _count?: BoardMemberCountOrderByAggregateInput
+    _max?: BoardMemberMaxOrderByAggregateInput
+    _min?: BoardMemberMinOrderByAggregateInput
+  }
+
+  export type BoardMemberScalarWhereWithAggregatesInput = {
+    AND?: BoardMemberScalarWhereWithAggregatesInput | BoardMemberScalarWhereWithAggregatesInput[]
+    OR?: BoardMemberScalarWhereWithAggregatesInput[]
+    NOT?: BoardMemberScalarWhereWithAggregatesInput | BoardMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BoardMember"> | string
+    boardId?: StringWithAggregatesFilter<"BoardMember"> | string
+    userId?: StringWithAggregatesFilter<"BoardMember"> | string
+    role?: StringWithAggregatesFilter<"BoardMember"> | string
+    joinedAt?: DateTimeWithAggregatesFilter<"BoardMember"> | Date | string
+  }
+
+  export type BoardStarWhereInput = {
+    AND?: BoardStarWhereInput | BoardStarWhereInput[]
+    OR?: BoardStarWhereInput[]
+    NOT?: BoardStarWhereInput | BoardStarWhereInput[]
+    id?: StringFilter<"BoardStar"> | string
+    boardId?: StringFilter<"BoardStar"> | string
+    userId?: StringFilter<"BoardStar"> | string
+    starredAt?: DateTimeFilter<"BoardStar"> | Date | string
+    board?: XOR<BoardScalarRelationFilter, BoardWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type BoardStarOrderByWithRelationInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    starredAt?: SortOrder
+    board?: BoardOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type BoardStarWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    boardId_userId?: BoardStarBoardIdUserIdCompoundUniqueInput
+    AND?: BoardStarWhereInput | BoardStarWhereInput[]
+    OR?: BoardStarWhereInput[]
+    NOT?: BoardStarWhereInput | BoardStarWhereInput[]
+    boardId?: StringFilter<"BoardStar"> | string
+    userId?: StringFilter<"BoardStar"> | string
+    starredAt?: DateTimeFilter<"BoardStar"> | Date | string
+    board?: XOR<BoardScalarRelationFilter, BoardWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "boardId_userId">
+
+  export type BoardStarOrderByWithAggregationInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    starredAt?: SortOrder
+    _count?: BoardStarCountOrderByAggregateInput
+    _max?: BoardStarMaxOrderByAggregateInput
+    _min?: BoardStarMinOrderByAggregateInput
+  }
+
+  export type BoardStarScalarWhereWithAggregatesInput = {
+    AND?: BoardStarScalarWhereWithAggregatesInput | BoardStarScalarWhereWithAggregatesInput[]
+    OR?: BoardStarScalarWhereWithAggregatesInput[]
+    NOT?: BoardStarScalarWhereWithAggregatesInput | BoardStarScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BoardStar"> | string
+    boardId?: StringWithAggregatesFilter<"BoardStar"> | string
+    userId?: StringWithAggregatesFilter<"BoardStar"> | string
+    starredAt?: DateTimeWithAggregatesFilter<"BoardStar"> | Date | string
+  }
+
+  export type ListWhereInput = {
+    AND?: ListWhereInput | ListWhereInput[]
+    OR?: ListWhereInput[]
+    NOT?: ListWhereInput | ListWhereInput[]
+    id?: StringFilter<"List"> | string
+    title?: StringFilter<"List"> | string
+    position?: IntFilter<"List"> | number
+    boardId?: StringFilter<"List"> | string
+    createdAt?: DateTimeFilter<"List"> | Date | string
+    updatedAt?: DateTimeFilter<"List"> | Date | string
+    board?: XOR<BoardScalarRelationFilter, BoardWhereInput>
+    cards?: CardListRelationFilter
+  }
+
+  export type ListOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    position?: SortOrder
+    boardId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    board?: BoardOrderByWithRelationInput
+    cards?: CardOrderByRelationAggregateInput
+  }
+
+  export type ListWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ListWhereInput | ListWhereInput[]
+    OR?: ListWhereInput[]
+    NOT?: ListWhereInput | ListWhereInput[]
+    title?: StringFilter<"List"> | string
+    position?: IntFilter<"List"> | number
+    boardId?: StringFilter<"List"> | string
+    createdAt?: DateTimeFilter<"List"> | Date | string
+    updatedAt?: DateTimeFilter<"List"> | Date | string
+    board?: XOR<BoardScalarRelationFilter, BoardWhereInput>
+    cards?: CardListRelationFilter
+  }, "id">
+
+  export type ListOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    position?: SortOrder
+    boardId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ListCountOrderByAggregateInput
+    _avg?: ListAvgOrderByAggregateInput
+    _max?: ListMaxOrderByAggregateInput
+    _min?: ListMinOrderByAggregateInput
+    _sum?: ListSumOrderByAggregateInput
+  }
+
+  export type ListScalarWhereWithAggregatesInput = {
+    AND?: ListScalarWhereWithAggregatesInput | ListScalarWhereWithAggregatesInput[]
+    OR?: ListScalarWhereWithAggregatesInput[]
+    NOT?: ListScalarWhereWithAggregatesInput | ListScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"List"> | string
+    title?: StringWithAggregatesFilter<"List"> | string
+    position?: IntWithAggregatesFilter<"List"> | number
+    boardId?: StringWithAggregatesFilter<"List"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"List"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"List"> | Date | string
+  }
+
+  export type CardWhereInput = {
+    AND?: CardWhereInput | CardWhereInput[]
+    OR?: CardWhereInput[]
+    NOT?: CardWhereInput | CardWhereInput[]
+    id?: StringFilter<"Card"> | string
+    title?: StringFilter<"Card"> | string
+    description?: StringNullableFilter<"Card"> | string | null
+    position?: IntFilter<"Card"> | number
+    priority?: EnumCardPriorityFilter<"Card"> | $Enums.CardPriority
+    dueDate?: DateTimeNullableFilter<"Card"> | Date | string | null
+    labels?: StringNullableListFilter<"Card">
+    attachments?: StringNullableListFilter<"Card">
+    listId?: StringFilter<"Card"> | string
+    assignedToId?: StringNullableFilter<"Card"> | string | null
+    createdById?: StringFilter<"Card"> | string
+    createdAt?: DateTimeFilter<"Card"> | Date | string
+    updatedAt?: DateTimeFilter<"Card"> | Date | string
+    list?: XOR<ListScalarRelationFilter, ListWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    comments?: CardCommentListRelationFilter
+    activities?: CardActivityListRelationFilter
+  }
+
+  export type CardOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    position?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    labels?: SortOrder
+    attachments?: SortOrder
+    listId?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    list?: ListOrderByWithRelationInput
+    assignedTo?: UserOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    comments?: CardCommentOrderByRelationAggregateInput
+    activities?: CardActivityOrderByRelationAggregateInput
+  }
+
+  export type CardWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CardWhereInput | CardWhereInput[]
+    OR?: CardWhereInput[]
+    NOT?: CardWhereInput | CardWhereInput[]
+    title?: StringFilter<"Card"> | string
+    description?: StringNullableFilter<"Card"> | string | null
+    position?: IntFilter<"Card"> | number
+    priority?: EnumCardPriorityFilter<"Card"> | $Enums.CardPriority
+    dueDate?: DateTimeNullableFilter<"Card"> | Date | string | null
+    labels?: StringNullableListFilter<"Card">
+    attachments?: StringNullableListFilter<"Card">
+    listId?: StringFilter<"Card"> | string
+    assignedToId?: StringNullableFilter<"Card"> | string | null
+    createdById?: StringFilter<"Card"> | string
+    createdAt?: DateTimeFilter<"Card"> | Date | string
+    updatedAt?: DateTimeFilter<"Card"> | Date | string
+    list?: XOR<ListScalarRelationFilter, ListWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    comments?: CardCommentListRelationFilter
+    activities?: CardActivityListRelationFilter
+  }, "id">
+
+  export type CardOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    position?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    labels?: SortOrder
+    attachments?: SortOrder
+    listId?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CardCountOrderByAggregateInput
+    _avg?: CardAvgOrderByAggregateInput
+    _max?: CardMaxOrderByAggregateInput
+    _min?: CardMinOrderByAggregateInput
+    _sum?: CardSumOrderByAggregateInput
+  }
+
+  export type CardScalarWhereWithAggregatesInput = {
+    AND?: CardScalarWhereWithAggregatesInput | CardScalarWhereWithAggregatesInput[]
+    OR?: CardScalarWhereWithAggregatesInput[]
+    NOT?: CardScalarWhereWithAggregatesInput | CardScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Card"> | string
+    title?: StringWithAggregatesFilter<"Card"> | string
+    description?: StringNullableWithAggregatesFilter<"Card"> | string | null
+    position?: IntWithAggregatesFilter<"Card"> | number
+    priority?: EnumCardPriorityWithAggregatesFilter<"Card"> | $Enums.CardPriority
+    dueDate?: DateTimeNullableWithAggregatesFilter<"Card"> | Date | string | null
+    labels?: StringNullableListFilter<"Card">
+    attachments?: StringNullableListFilter<"Card">
+    listId?: StringWithAggregatesFilter<"Card"> | string
+    assignedToId?: StringNullableWithAggregatesFilter<"Card"> | string | null
+    createdById?: StringWithAggregatesFilter<"Card"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Card"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Card"> | Date | string
+  }
+
+  export type CardCommentWhereInput = {
+    AND?: CardCommentWhereInput | CardCommentWhereInput[]
+    OR?: CardCommentWhereInput[]
+    NOT?: CardCommentWhereInput | CardCommentWhereInput[]
+    id?: StringFilter<"CardComment"> | string
+    content?: StringFilter<"CardComment"> | string
+    cardId?: StringFilter<"CardComment"> | string
+    authorId?: StringFilter<"CardComment"> | string
+    createdAt?: DateTimeFilter<"CardComment"> | Date | string
+    updatedAt?: DateTimeFilter<"CardComment"> | Date | string
+    card?: XOR<CardScalarRelationFilter, CardWhereInput>
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CardCommentOrderByWithRelationInput = {
+    id?: SortOrder
+    content?: SortOrder
+    cardId?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    card?: CardOrderByWithRelationInput
+    author?: UserOrderByWithRelationInput
+  }
+
+  export type CardCommentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CardCommentWhereInput | CardCommentWhereInput[]
+    OR?: CardCommentWhereInput[]
+    NOT?: CardCommentWhereInput | CardCommentWhereInput[]
+    content?: StringFilter<"CardComment"> | string
+    cardId?: StringFilter<"CardComment"> | string
+    authorId?: StringFilter<"CardComment"> | string
+    createdAt?: DateTimeFilter<"CardComment"> | Date | string
+    updatedAt?: DateTimeFilter<"CardComment"> | Date | string
+    card?: XOR<CardScalarRelationFilter, CardWhereInput>
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type CardCommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    content?: SortOrder
+    cardId?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CardCommentCountOrderByAggregateInput
+    _max?: CardCommentMaxOrderByAggregateInput
+    _min?: CardCommentMinOrderByAggregateInput
+  }
+
+  export type CardCommentScalarWhereWithAggregatesInput = {
+    AND?: CardCommentScalarWhereWithAggregatesInput | CardCommentScalarWhereWithAggregatesInput[]
+    OR?: CardCommentScalarWhereWithAggregatesInput[]
+    NOT?: CardCommentScalarWhereWithAggregatesInput | CardCommentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CardComment"> | string
+    content?: StringWithAggregatesFilter<"CardComment"> | string
+    cardId?: StringWithAggregatesFilter<"CardComment"> | string
+    authorId?: StringWithAggregatesFilter<"CardComment"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"CardComment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CardComment"> | Date | string
+  }
+
+  export type CardActivityWhereInput = {
+    AND?: CardActivityWhereInput | CardActivityWhereInput[]
+    OR?: CardActivityWhereInput[]
+    NOT?: CardActivityWhereInput | CardActivityWhereInput[]
+    id?: StringFilter<"CardActivity"> | string
+    cardId?: StringFilter<"CardActivity"> | string
+    userId?: StringFilter<"CardActivity"> | string
+    action?: StringFilter<"CardActivity"> | string
+    description?: StringFilter<"CardActivity"> | string
+    oldValue?: StringNullableFilter<"CardActivity"> | string | null
+    newValue?: StringNullableFilter<"CardActivity"> | string | null
+    createdAt?: DateTimeFilter<"CardActivity"> | Date | string
+    card?: XOR<CardScalarRelationFilter, CardWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CardActivityOrderByWithRelationInput = {
+    id?: SortOrder
+    cardId?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    description?: SortOrder
+    oldValue?: SortOrderInput | SortOrder
+    newValue?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    card?: CardOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type CardActivityWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CardActivityWhereInput | CardActivityWhereInput[]
+    OR?: CardActivityWhereInput[]
+    NOT?: CardActivityWhereInput | CardActivityWhereInput[]
+    cardId?: StringFilter<"CardActivity"> | string
+    userId?: StringFilter<"CardActivity"> | string
+    action?: StringFilter<"CardActivity"> | string
+    description?: StringFilter<"CardActivity"> | string
+    oldValue?: StringNullableFilter<"CardActivity"> | string | null
+    newValue?: StringNullableFilter<"CardActivity"> | string | null
+    createdAt?: DateTimeFilter<"CardActivity"> | Date | string
+    card?: XOR<CardScalarRelationFilter, CardWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type CardActivityOrderByWithAggregationInput = {
+    id?: SortOrder
+    cardId?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    description?: SortOrder
+    oldValue?: SortOrderInput | SortOrder
+    newValue?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: CardActivityCountOrderByAggregateInput
+    _max?: CardActivityMaxOrderByAggregateInput
+    _min?: CardActivityMinOrderByAggregateInput
+  }
+
+  export type CardActivityScalarWhereWithAggregatesInput = {
+    AND?: CardActivityScalarWhereWithAggregatesInput | CardActivityScalarWhereWithAggregatesInput[]
+    OR?: CardActivityScalarWhereWithAggregatesInput[]
+    NOT?: CardActivityScalarWhereWithAggregatesInput | CardActivityScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CardActivity"> | string
+    cardId?: StringWithAggregatesFilter<"CardActivity"> | string
+    userId?: StringWithAggregatesFilter<"CardActivity"> | string
+    action?: StringWithAggregatesFilter<"CardActivity"> | string
+    description?: StringWithAggregatesFilter<"CardActivity"> | string
+    oldValue?: StringNullableWithAggregatesFilter<"CardActivity"> | string | null
+    newValue?: StringNullableWithAggregatesFilter<"CardActivity"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CardActivity"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -49152,6 +58890,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -49212,6 +58957,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -49272,6 +59024,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -49332,6 +59091,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -50073,6 +59839,9 @@ export namespace Prisma {
     checkInTime?: Date | string | null
     checkOutTime?: Date | string | null
     totalHours?: number | null
+    breakStartTime?: Date | string | null
+    breakEndTime?: Date | string | null
+    totalBreakTime?: number | null
     date?: Date | string
     status?: string
     createdAt?: Date | string
@@ -50086,6 +59855,9 @@ export namespace Prisma {
     checkInTime?: Date | string | null
     checkOutTime?: Date | string | null
     totalHours?: number | null
+    breakStartTime?: Date | string | null
+    breakEndTime?: Date | string | null
+    totalBreakTime?: number | null
     date?: Date | string
     status?: string
     createdAt?: Date | string
@@ -50097,6 +59869,9 @@ export namespace Prisma {
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    breakStartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    breakEndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBreakTime?: NullableFloatFieldUpdateOperationsInput | number | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50110,6 +59885,9 @@ export namespace Prisma {
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    breakStartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    breakEndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBreakTime?: NullableFloatFieldUpdateOperationsInput | number | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50122,6 +59900,9 @@ export namespace Prisma {
     checkInTime?: Date | string | null
     checkOutTime?: Date | string | null
     totalHours?: number | null
+    breakStartTime?: Date | string | null
+    breakEndTime?: Date | string | null
+    totalBreakTime?: number | null
     date?: Date | string
     status?: string
     createdAt?: Date | string
@@ -50133,6 +59914,9 @@ export namespace Prisma {
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    breakStartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    breakEndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBreakTime?: NullableFloatFieldUpdateOperationsInput | number | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50145,6 +59929,9 @@ export namespace Prisma {
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    breakStartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    breakEndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBreakTime?: NullableFloatFieldUpdateOperationsInput | number | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -51300,6 +61087,7 @@ export namespace Prisma {
     leader: UserCreateNestedOneWithoutLeadingTeamsInput
     members?: TeamMemberCreateNestedManyWithoutTeamInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTeamInput
+    boards?: BoardCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateInput = {
@@ -51311,6 +61099,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: TeamMemberUncheckedCreateNestedManyWithoutTeamInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTeamInput
+    boards?: BoardUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUpdateInput = {
@@ -51322,6 +61111,7 @@ export namespace Prisma {
     leader?: UserUpdateOneRequiredWithoutLeadingTeamsNestedInput
     members?: TeamMemberUpdateManyWithoutTeamNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTeamNestedInput
+    boards?: BoardUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateInput = {
@@ -51333,6 +61123,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: TeamMemberUncheckedUpdateManyWithoutTeamNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTeamNestedInput
+    boards?: BoardUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamCreateManyInput = {
@@ -52118,6 +61909,520 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type BoardCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedBoardsInput
+    team?: TeamCreateNestedOneWithoutBoardsInput
+    lists?: ListCreateNestedManyWithoutBoardInput
+    members?: BoardMemberCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdById: string
+    teamId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lists?: ListUncheckedCreateNestedManyWithoutBoardInput
+    members?: BoardMemberUncheckedCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarUncheckedCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedBoardsNestedInput
+    team?: TeamUpdateOneWithoutBoardsNestedInput
+    lists?: ListUpdateManyWithoutBoardNestedInput
+    members?: BoardMemberUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdById?: StringFieldUpdateOperationsInput | string
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lists?: ListUncheckedUpdateManyWithoutBoardNestedInput
+    members?: BoardMemberUncheckedUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUncheckedUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdById: string
+    teamId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BoardUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdById?: StringFieldUpdateOperationsInput | string
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardMemberCreateInput = {
+    id?: string
+    role?: string
+    joinedAt?: Date | string
+    board: BoardCreateNestedOneWithoutMembersInput
+    user: UserCreateNestedOneWithoutBoardMembershipsInput
+  }
+
+  export type BoardMemberUncheckedCreateInput = {
+    id?: string
+    boardId: string
+    userId: string
+    role?: string
+    joinedAt?: Date | string
+  }
+
+  export type BoardMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    board?: BoardUpdateOneRequiredWithoutMembersNestedInput
+    user?: UserUpdateOneRequiredWithoutBoardMembershipsNestedInput
+  }
+
+  export type BoardMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    boardId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardMemberCreateManyInput = {
+    id?: string
+    boardId: string
+    userId: string
+    role?: string
+    joinedAt?: Date | string
+  }
+
+  export type BoardMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    boardId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardStarCreateInput = {
+    id?: string
+    starredAt?: Date | string
+    board: BoardCreateNestedOneWithoutStarredByInput
+    user: UserCreateNestedOneWithoutBoardStarsInput
+  }
+
+  export type BoardStarUncheckedCreateInput = {
+    id?: string
+    boardId: string
+    userId: string
+    starredAt?: Date | string
+  }
+
+  export type BoardStarUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    board?: BoardUpdateOneRequiredWithoutStarredByNestedInput
+    user?: UserUpdateOneRequiredWithoutBoardStarsNestedInput
+  }
+
+  export type BoardStarUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    boardId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardStarCreateManyInput = {
+    id?: string
+    boardId: string
+    userId: string
+    starredAt?: Date | string
+  }
+
+  export type BoardStarUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardStarUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    boardId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ListCreateInput = {
+    id?: string
+    title: string
+    position?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    board: BoardCreateNestedOneWithoutListsInput
+    cards?: CardCreateNestedManyWithoutListInput
+  }
+
+  export type ListUncheckedCreateInput = {
+    id?: string
+    title: string
+    position?: number
+    boardId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cards?: CardUncheckedCreateNestedManyWithoutListInput
+  }
+
+  export type ListUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    board?: BoardUpdateOneRequiredWithoutListsNestedInput
+    cards?: CardUpdateManyWithoutListNestedInput
+  }
+
+  export type ListUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    boardId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cards?: CardUncheckedUpdateManyWithoutListNestedInput
+  }
+
+  export type ListCreateManyInput = {
+    id?: string
+    title: string
+    position?: number
+    boardId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ListUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ListUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    boardId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    list: ListCreateNestedOneWithoutCardsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedCardsInput
+    createdBy: UserCreateNestedOneWithoutCreatedCardsInput
+    comments?: CardCommentCreateNestedManyWithoutCardInput
+    activities?: CardActivityCreateNestedManyWithoutCardInput
+  }
+
+  export type CardUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    listId: string
+    assignedToId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    comments?: CardCommentUncheckedCreateNestedManyWithoutCardInput
+    activities?: CardActivityUncheckedCreateNestedManyWithoutCardInput
+  }
+
+  export type CardUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    list?: ListUpdateOneRequiredWithoutCardsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedCardsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedCardsNestedInput
+    comments?: CardCommentUpdateManyWithoutCardNestedInput
+    activities?: CardActivityUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    listId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    comments?: CardCommentUncheckedUpdateManyWithoutCardNestedInput
+    activities?: CardActivityUncheckedUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    listId: string
+    assignedToId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    listId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCommentCreateInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    card: CardCreateNestedOneWithoutCommentsInput
+    author: UserCreateNestedOneWithoutCardCommentsInput
+  }
+
+  export type CardCommentUncheckedCreateInput = {
+    id?: string
+    content: string
+    cardId: string
+    authorId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardCommentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    card?: CardUpdateOneRequiredWithoutCommentsNestedInput
+    author?: UserUpdateOneRequiredWithoutCardCommentsNestedInput
+  }
+
+  export type CardCommentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCommentCreateManyInput = {
+    id?: string
+    content: string
+    cardId: string
+    authorId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardCommentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCommentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardActivityCreateInput = {
+    id?: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+    card: CardCreateNestedOneWithoutActivitiesInput
+    user: UserCreateNestedOneWithoutCardActivitiesInput
+  }
+
+  export type CardActivityUncheckedCreateInput = {
+    id?: string
+    cardId: string
+    userId: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CardActivityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    card?: CardUpdateOneRequiredWithoutActivitiesNestedInput
+    user?: UserUpdateOneRequiredWithoutCardActivitiesNestedInput
+  }
+
+  export type CardActivityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardActivityCreateManyInput = {
+    id?: string
+    cardId: string
+    userId: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CardActivityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardActivityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -52377,6 +62682,42 @@ export namespace Prisma {
     none?: LeadWhereInput
   }
 
+  export type BoardListRelationFilter = {
+    every?: BoardWhereInput
+    some?: BoardWhereInput
+    none?: BoardWhereInput
+  }
+
+  export type BoardMemberListRelationFilter = {
+    every?: BoardMemberWhereInput
+    some?: BoardMemberWhereInput
+    none?: BoardMemberWhereInput
+  }
+
+  export type BoardStarListRelationFilter = {
+    every?: BoardStarWhereInput
+    some?: BoardStarWhereInput
+    none?: BoardStarWhereInput
+  }
+
+  export type CardListRelationFilter = {
+    every?: CardWhereInput
+    some?: CardWhereInput
+    none?: CardWhereInput
+  }
+
+  export type CardCommentListRelationFilter = {
+    every?: CardCommentWhereInput
+    some?: CardCommentWhereInput
+    none?: CardCommentWhereInput
+  }
+
+  export type CardActivityListRelationFilter = {
+    every?: CardActivityWhereInput
+    some?: CardActivityWhereInput
+    none?: CardActivityWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -52479,6 +62820,30 @@ export namespace Prisma {
   }
 
   export type LeadOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BoardOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BoardMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BoardStarOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CardOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CardCommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CardActivityOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -53047,6 +63412,9 @@ export namespace Prisma {
     checkInTime?: SortOrder
     checkOutTime?: SortOrder
     totalHours?: SortOrder
+    breakStartTime?: SortOrder
+    breakEndTime?: SortOrder
+    totalBreakTime?: SortOrder
     date?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -53055,6 +63423,7 @@ export namespace Prisma {
 
   export type AttendanceAvgOrderByAggregateInput = {
     totalHours?: SortOrder
+    totalBreakTime?: SortOrder
   }
 
   export type AttendanceMaxOrderByAggregateInput = {
@@ -53063,6 +63432,9 @@ export namespace Prisma {
     checkInTime?: SortOrder
     checkOutTime?: SortOrder
     totalHours?: SortOrder
+    breakStartTime?: SortOrder
+    breakEndTime?: SortOrder
+    totalBreakTime?: SortOrder
     date?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -53075,6 +63447,9 @@ export namespace Prisma {
     checkInTime?: SortOrder
     checkOutTime?: SortOrder
     totalHours?: SortOrder
+    breakStartTime?: SortOrder
+    breakEndTime?: SortOrder
+    totalBreakTime?: SortOrder
     date?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -53083,6 +63458,7 @@ export namespace Prisma {
 
   export type AttendanceSumOrderByAggregateInput = {
     totalHours?: SortOrder
+    totalBreakTime?: SortOrder
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -54380,6 +64756,303 @@ export namespace Prisma {
     cost?: SortOrder
   }
 
+  export type EnumBoardVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.BoardVisibility | EnumBoardVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.BoardVisibility[] | ListEnumBoardVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BoardVisibility[] | ListEnumBoardVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumBoardVisibilityFilter<$PrismaModel> | $Enums.BoardVisibility
+  }
+
+  export type ListListRelationFilter = {
+    every?: ListWhereInput
+    some?: ListWhereInput
+    none?: ListWhereInput
+  }
+
+  export type ListOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BoardCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    background?: SortOrder
+    visibility?: SortOrder
+    createdById?: SortOrder
+    teamId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BoardMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    background?: SortOrder
+    visibility?: SortOrder
+    createdById?: SortOrder
+    teamId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BoardMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    background?: SortOrder
+    visibility?: SortOrder
+    createdById?: SortOrder
+    teamId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumBoardVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BoardVisibility | EnumBoardVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.BoardVisibility[] | ListEnumBoardVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BoardVisibility[] | ListEnumBoardVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumBoardVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.BoardVisibility
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBoardVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumBoardVisibilityFilter<$PrismaModel>
+  }
+
+  export type BoardScalarRelationFilter = {
+    is?: BoardWhereInput
+    isNot?: BoardWhereInput
+  }
+
+  export type BoardMemberBoardIdUserIdCompoundUniqueInput = {
+    boardId: string
+    userId: string
+  }
+
+  export type BoardMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type BoardMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type BoardMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type BoardStarBoardIdUserIdCompoundUniqueInput = {
+    boardId: string
+    userId: string
+  }
+
+  export type BoardStarCountOrderByAggregateInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    starredAt?: SortOrder
+  }
+
+  export type BoardStarMaxOrderByAggregateInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    starredAt?: SortOrder
+  }
+
+  export type BoardStarMinOrderByAggregateInput = {
+    id?: SortOrder
+    boardId?: SortOrder
+    userId?: SortOrder
+    starredAt?: SortOrder
+  }
+
+  export type ListCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    position?: SortOrder
+    boardId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ListAvgOrderByAggregateInput = {
+    position?: SortOrder
+  }
+
+  export type ListMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    position?: SortOrder
+    boardId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ListMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    position?: SortOrder
+    boardId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ListSumOrderByAggregateInput = {
+    position?: SortOrder
+  }
+
+  export type EnumCardPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.CardPriority | EnumCardPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.CardPriority[] | ListEnumCardPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CardPriority[] | ListEnumCardPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumCardPriorityFilter<$PrismaModel> | $Enums.CardPriority
+  }
+
+  export type ListScalarRelationFilter = {
+    is?: ListWhereInput
+    isNot?: ListWhereInput
+  }
+
+  export type CardCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    position?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    labels?: SortOrder
+    attachments?: SortOrder
+    listId?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CardAvgOrderByAggregateInput = {
+    position?: SortOrder
+  }
+
+  export type CardMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    position?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    listId?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CardMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    position?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    listId?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CardSumOrderByAggregateInput = {
+    position?: SortOrder
+  }
+
+  export type EnumCardPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CardPriority | EnumCardPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.CardPriority[] | ListEnumCardPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CardPriority[] | ListEnumCardPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumCardPriorityWithAggregatesFilter<$PrismaModel> | $Enums.CardPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCardPriorityFilter<$PrismaModel>
+    _max?: NestedEnumCardPriorityFilter<$PrismaModel>
+  }
+
+  export type CardScalarRelationFilter = {
+    is?: CardWhereInput
+    isNot?: CardWhereInput
+  }
+
+  export type CardCommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    cardId?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CardCommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    cardId?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CardCommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    cardId?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CardActivityCountOrderByAggregateInput = {
+    id?: SortOrder
+    cardId?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    description?: SortOrder
+    oldValue?: SortOrder
+    newValue?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CardActivityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    cardId?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    description?: SortOrder
+    oldValue?: SortOrder
+    newValue?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CardActivityMinOrderByAggregateInput = {
+    id?: SortOrder
+    cardId?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    description?: SortOrder
+    oldValue?: SortOrder
+    newValue?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserRoleCreateNestedManyWithoutUserInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
@@ -54614,6 +65287,55 @@ export namespace Prisma {
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
   }
 
+  export type BoardCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<BoardCreateWithoutCreatedByInput, BoardUncheckedCreateWithoutCreatedByInput> | BoardCreateWithoutCreatedByInput[] | BoardUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: BoardCreateOrConnectWithoutCreatedByInput | BoardCreateOrConnectWithoutCreatedByInput[]
+    createMany?: BoardCreateManyCreatedByInputEnvelope
+    connect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+  }
+
+  export type BoardMemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<BoardMemberCreateWithoutUserInput, BoardMemberUncheckedCreateWithoutUserInput> | BoardMemberCreateWithoutUserInput[] | BoardMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BoardMemberCreateOrConnectWithoutUserInput | BoardMemberCreateOrConnectWithoutUserInput[]
+    createMany?: BoardMemberCreateManyUserInputEnvelope
+    connect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+  }
+
+  export type BoardStarCreateNestedManyWithoutUserInput = {
+    create?: XOR<BoardStarCreateWithoutUserInput, BoardStarUncheckedCreateWithoutUserInput> | BoardStarCreateWithoutUserInput[] | BoardStarUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BoardStarCreateOrConnectWithoutUserInput | BoardStarCreateOrConnectWithoutUserInput[]
+    createMany?: BoardStarCreateManyUserInputEnvelope
+    connect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+  }
+
+  export type CardCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<CardCreateWithoutAssignedToInput, CardUncheckedCreateWithoutAssignedToInput> | CardCreateWithoutAssignedToInput[] | CardUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutAssignedToInput | CardCreateOrConnectWithoutAssignedToInput[]
+    createMany?: CardCreateManyAssignedToInputEnvelope
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+  }
+
+  export type CardCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<CardCreateWithoutCreatedByInput, CardUncheckedCreateWithoutCreatedByInput> | CardCreateWithoutCreatedByInput[] | CardUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutCreatedByInput | CardCreateOrConnectWithoutCreatedByInput[]
+    createMany?: CardCreateManyCreatedByInputEnvelope
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+  }
+
+  export type CardCommentCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<CardCommentCreateWithoutAuthorInput, CardCommentUncheckedCreateWithoutAuthorInput> | CardCommentCreateWithoutAuthorInput[] | CardCommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: CardCommentCreateOrConnectWithoutAuthorInput | CardCommentCreateOrConnectWithoutAuthorInput[]
+    createMany?: CardCommentCreateManyAuthorInputEnvelope
+    connect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+  }
+
+  export type CardActivityCreateNestedManyWithoutUserInput = {
+    create?: XOR<CardActivityCreateWithoutUserInput, CardActivityUncheckedCreateWithoutUserInput> | CardActivityCreateWithoutUserInput[] | CardActivityUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CardActivityCreateOrConnectWithoutUserInput | CardActivityCreateOrConnectWithoutUserInput[]
+    createMany?: CardActivityCreateManyUserInputEnvelope
+    connect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+  }
+
   export type UserRoleUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
@@ -54840,6 +65562,55 @@ export namespace Prisma {
     connectOrCreate?: LeadCreateOrConnectWithoutAssigneeInput | LeadCreateOrConnectWithoutAssigneeInput[]
     createMany?: LeadCreateManyAssigneeInputEnvelope
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type BoardUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<BoardCreateWithoutCreatedByInput, BoardUncheckedCreateWithoutCreatedByInput> | BoardCreateWithoutCreatedByInput[] | BoardUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: BoardCreateOrConnectWithoutCreatedByInput | BoardCreateOrConnectWithoutCreatedByInput[]
+    createMany?: BoardCreateManyCreatedByInputEnvelope
+    connect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+  }
+
+  export type BoardMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<BoardMemberCreateWithoutUserInput, BoardMemberUncheckedCreateWithoutUserInput> | BoardMemberCreateWithoutUserInput[] | BoardMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BoardMemberCreateOrConnectWithoutUserInput | BoardMemberCreateOrConnectWithoutUserInput[]
+    createMany?: BoardMemberCreateManyUserInputEnvelope
+    connect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+  }
+
+  export type BoardStarUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<BoardStarCreateWithoutUserInput, BoardStarUncheckedCreateWithoutUserInput> | BoardStarCreateWithoutUserInput[] | BoardStarUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BoardStarCreateOrConnectWithoutUserInput | BoardStarCreateOrConnectWithoutUserInput[]
+    createMany?: BoardStarCreateManyUserInputEnvelope
+    connect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+  }
+
+  export type CardUncheckedCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<CardCreateWithoutAssignedToInput, CardUncheckedCreateWithoutAssignedToInput> | CardCreateWithoutAssignedToInput[] | CardUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutAssignedToInput | CardCreateOrConnectWithoutAssignedToInput[]
+    createMany?: CardCreateManyAssignedToInputEnvelope
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+  }
+
+  export type CardUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<CardCreateWithoutCreatedByInput, CardUncheckedCreateWithoutCreatedByInput> | CardCreateWithoutCreatedByInput[] | CardUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutCreatedByInput | CardCreateOrConnectWithoutCreatedByInput[]
+    createMany?: CardCreateManyCreatedByInputEnvelope
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+  }
+
+  export type CardCommentUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<CardCommentCreateWithoutAuthorInput, CardCommentUncheckedCreateWithoutAuthorInput> | CardCommentCreateWithoutAuthorInput[] | CardCommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: CardCommentCreateOrConnectWithoutAuthorInput | CardCommentCreateOrConnectWithoutAuthorInput[]
+    createMany?: CardCommentCreateManyAuthorInputEnvelope
+    connect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+  }
+
+  export type CardActivityUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CardActivityCreateWithoutUserInput, CardActivityUncheckedCreateWithoutUserInput> | CardActivityCreateWithoutUserInput[] | CardActivityUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CardActivityCreateOrConnectWithoutUserInput | CardActivityCreateOrConnectWithoutUserInput[]
+    createMany?: CardActivityCreateManyUserInputEnvelope
+    connect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -55342,6 +66113,104 @@ export namespace Prisma {
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
   }
 
+  export type BoardUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<BoardCreateWithoutCreatedByInput, BoardUncheckedCreateWithoutCreatedByInput> | BoardCreateWithoutCreatedByInput[] | BoardUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: BoardCreateOrConnectWithoutCreatedByInput | BoardCreateOrConnectWithoutCreatedByInput[]
+    upsert?: BoardUpsertWithWhereUniqueWithoutCreatedByInput | BoardUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: BoardCreateManyCreatedByInputEnvelope
+    set?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    disconnect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    delete?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    connect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    update?: BoardUpdateWithWhereUniqueWithoutCreatedByInput | BoardUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: BoardUpdateManyWithWhereWithoutCreatedByInput | BoardUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: BoardScalarWhereInput | BoardScalarWhereInput[]
+  }
+
+  export type BoardMemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BoardMemberCreateWithoutUserInput, BoardMemberUncheckedCreateWithoutUserInput> | BoardMemberCreateWithoutUserInput[] | BoardMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BoardMemberCreateOrConnectWithoutUserInput | BoardMemberCreateOrConnectWithoutUserInput[]
+    upsert?: BoardMemberUpsertWithWhereUniqueWithoutUserInput | BoardMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BoardMemberCreateManyUserInputEnvelope
+    set?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    disconnect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    delete?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    connect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    update?: BoardMemberUpdateWithWhereUniqueWithoutUserInput | BoardMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BoardMemberUpdateManyWithWhereWithoutUserInput | BoardMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BoardMemberScalarWhereInput | BoardMemberScalarWhereInput[]
+  }
+
+  export type BoardStarUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BoardStarCreateWithoutUserInput, BoardStarUncheckedCreateWithoutUserInput> | BoardStarCreateWithoutUserInput[] | BoardStarUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BoardStarCreateOrConnectWithoutUserInput | BoardStarCreateOrConnectWithoutUserInput[]
+    upsert?: BoardStarUpsertWithWhereUniqueWithoutUserInput | BoardStarUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BoardStarCreateManyUserInputEnvelope
+    set?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    disconnect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    delete?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    connect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    update?: BoardStarUpdateWithWhereUniqueWithoutUserInput | BoardStarUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BoardStarUpdateManyWithWhereWithoutUserInput | BoardStarUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BoardStarScalarWhereInput | BoardStarScalarWhereInput[]
+  }
+
+  export type CardUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<CardCreateWithoutAssignedToInput, CardUncheckedCreateWithoutAssignedToInput> | CardCreateWithoutAssignedToInput[] | CardUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutAssignedToInput | CardCreateOrConnectWithoutAssignedToInput[]
+    upsert?: CardUpsertWithWhereUniqueWithoutAssignedToInput | CardUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: CardCreateManyAssignedToInputEnvelope
+    set?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    disconnect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    delete?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    update?: CardUpdateWithWhereUniqueWithoutAssignedToInput | CardUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: CardUpdateManyWithWhereWithoutAssignedToInput | CardUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: CardScalarWhereInput | CardScalarWhereInput[]
+  }
+
+  export type CardUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<CardCreateWithoutCreatedByInput, CardUncheckedCreateWithoutCreatedByInput> | CardCreateWithoutCreatedByInput[] | CardUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutCreatedByInput | CardCreateOrConnectWithoutCreatedByInput[]
+    upsert?: CardUpsertWithWhereUniqueWithoutCreatedByInput | CardUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: CardCreateManyCreatedByInputEnvelope
+    set?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    disconnect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    delete?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    update?: CardUpdateWithWhereUniqueWithoutCreatedByInput | CardUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: CardUpdateManyWithWhereWithoutCreatedByInput | CardUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: CardScalarWhereInput | CardScalarWhereInput[]
+  }
+
+  export type CardCommentUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<CardCommentCreateWithoutAuthorInput, CardCommentUncheckedCreateWithoutAuthorInput> | CardCommentCreateWithoutAuthorInput[] | CardCommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: CardCommentCreateOrConnectWithoutAuthorInput | CardCommentCreateOrConnectWithoutAuthorInput[]
+    upsert?: CardCommentUpsertWithWhereUniqueWithoutAuthorInput | CardCommentUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: CardCommentCreateManyAuthorInputEnvelope
+    set?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    disconnect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    delete?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    connect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    update?: CardCommentUpdateWithWhereUniqueWithoutAuthorInput | CardCommentUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: CardCommentUpdateManyWithWhereWithoutAuthorInput | CardCommentUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: CardCommentScalarWhereInput | CardCommentScalarWhereInput[]
+  }
+
+  export type CardActivityUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CardActivityCreateWithoutUserInput, CardActivityUncheckedCreateWithoutUserInput> | CardActivityCreateWithoutUserInput[] | CardActivityUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CardActivityCreateOrConnectWithoutUserInput | CardActivityCreateOrConnectWithoutUserInput[]
+    upsert?: CardActivityUpsertWithWhereUniqueWithoutUserInput | CardActivityUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CardActivityCreateManyUserInputEnvelope
+    set?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    disconnect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    delete?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    connect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    update?: CardActivityUpdateWithWhereUniqueWithoutUserInput | CardActivityUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CardActivityUpdateManyWithWhereWithoutUserInput | CardActivityUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CardActivityScalarWhereInput | CardActivityScalarWhereInput[]
+  }
+
   export type UserRoleUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
@@ -55790,6 +66659,104 @@ export namespace Prisma {
     update?: LeadUpdateWithWhereUniqueWithoutAssigneeInput | LeadUpdateWithWhereUniqueWithoutAssigneeInput[]
     updateMany?: LeadUpdateManyWithWhereWithoutAssigneeInput | LeadUpdateManyWithWhereWithoutAssigneeInput[]
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type BoardUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<BoardCreateWithoutCreatedByInput, BoardUncheckedCreateWithoutCreatedByInput> | BoardCreateWithoutCreatedByInput[] | BoardUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: BoardCreateOrConnectWithoutCreatedByInput | BoardCreateOrConnectWithoutCreatedByInput[]
+    upsert?: BoardUpsertWithWhereUniqueWithoutCreatedByInput | BoardUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: BoardCreateManyCreatedByInputEnvelope
+    set?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    disconnect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    delete?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    connect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    update?: BoardUpdateWithWhereUniqueWithoutCreatedByInput | BoardUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: BoardUpdateManyWithWhereWithoutCreatedByInput | BoardUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: BoardScalarWhereInput | BoardScalarWhereInput[]
+  }
+
+  export type BoardMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BoardMemberCreateWithoutUserInput, BoardMemberUncheckedCreateWithoutUserInput> | BoardMemberCreateWithoutUserInput[] | BoardMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BoardMemberCreateOrConnectWithoutUserInput | BoardMemberCreateOrConnectWithoutUserInput[]
+    upsert?: BoardMemberUpsertWithWhereUniqueWithoutUserInput | BoardMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BoardMemberCreateManyUserInputEnvelope
+    set?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    disconnect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    delete?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    connect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    update?: BoardMemberUpdateWithWhereUniqueWithoutUserInput | BoardMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BoardMemberUpdateManyWithWhereWithoutUserInput | BoardMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BoardMemberScalarWhereInput | BoardMemberScalarWhereInput[]
+  }
+
+  export type BoardStarUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BoardStarCreateWithoutUserInput, BoardStarUncheckedCreateWithoutUserInput> | BoardStarCreateWithoutUserInput[] | BoardStarUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BoardStarCreateOrConnectWithoutUserInput | BoardStarCreateOrConnectWithoutUserInput[]
+    upsert?: BoardStarUpsertWithWhereUniqueWithoutUserInput | BoardStarUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BoardStarCreateManyUserInputEnvelope
+    set?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    disconnect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    delete?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    connect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    update?: BoardStarUpdateWithWhereUniqueWithoutUserInput | BoardStarUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BoardStarUpdateManyWithWhereWithoutUserInput | BoardStarUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BoardStarScalarWhereInput | BoardStarScalarWhereInput[]
+  }
+
+  export type CardUncheckedUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<CardCreateWithoutAssignedToInput, CardUncheckedCreateWithoutAssignedToInput> | CardCreateWithoutAssignedToInput[] | CardUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutAssignedToInput | CardCreateOrConnectWithoutAssignedToInput[]
+    upsert?: CardUpsertWithWhereUniqueWithoutAssignedToInput | CardUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: CardCreateManyAssignedToInputEnvelope
+    set?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    disconnect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    delete?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    update?: CardUpdateWithWhereUniqueWithoutAssignedToInput | CardUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: CardUpdateManyWithWhereWithoutAssignedToInput | CardUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: CardScalarWhereInput | CardScalarWhereInput[]
+  }
+
+  export type CardUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<CardCreateWithoutCreatedByInput, CardUncheckedCreateWithoutCreatedByInput> | CardCreateWithoutCreatedByInput[] | CardUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutCreatedByInput | CardCreateOrConnectWithoutCreatedByInput[]
+    upsert?: CardUpsertWithWhereUniqueWithoutCreatedByInput | CardUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: CardCreateManyCreatedByInputEnvelope
+    set?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    disconnect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    delete?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    update?: CardUpdateWithWhereUniqueWithoutCreatedByInput | CardUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: CardUpdateManyWithWhereWithoutCreatedByInput | CardUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: CardScalarWhereInput | CardScalarWhereInput[]
+  }
+
+  export type CardCommentUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<CardCommentCreateWithoutAuthorInput, CardCommentUncheckedCreateWithoutAuthorInput> | CardCommentCreateWithoutAuthorInput[] | CardCommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: CardCommentCreateOrConnectWithoutAuthorInput | CardCommentCreateOrConnectWithoutAuthorInput[]
+    upsert?: CardCommentUpsertWithWhereUniqueWithoutAuthorInput | CardCommentUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: CardCommentCreateManyAuthorInputEnvelope
+    set?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    disconnect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    delete?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    connect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    update?: CardCommentUpdateWithWhereUniqueWithoutAuthorInput | CardCommentUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: CardCommentUpdateManyWithWhereWithoutAuthorInput | CardCommentUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: CardCommentScalarWhereInput | CardCommentScalarWhereInput[]
+  }
+
+  export type CardActivityUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CardActivityCreateWithoutUserInput, CardActivityUncheckedCreateWithoutUserInput> | CardActivityCreateWithoutUserInput[] | CardActivityUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CardActivityCreateOrConnectWithoutUserInput | CardActivityCreateOrConnectWithoutUserInput[]
+    upsert?: CardActivityUpsertWithWhereUniqueWithoutUserInput | CardActivityUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CardActivityCreateManyUserInputEnvelope
+    set?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    disconnect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    delete?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    connect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    update?: CardActivityUpdateWithWhereUniqueWithoutUserInput | CardActivityUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CardActivityUpdateManyWithWhereWithoutUserInput | CardActivityUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CardActivityScalarWhereInput | CardActivityScalarWhereInput[]
   }
 
   export type UserRoleCreateNestedManyWithoutRoleInput = {
@@ -56665,6 +67632,13 @@ export namespace Prisma {
     connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
   }
 
+  export type BoardCreateNestedManyWithoutTeamInput = {
+    create?: XOR<BoardCreateWithoutTeamInput, BoardUncheckedCreateWithoutTeamInput> | BoardCreateWithoutTeamInput[] | BoardUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: BoardCreateOrConnectWithoutTeamInput | BoardCreateOrConnectWithoutTeamInput[]
+    createMany?: BoardCreateManyTeamInputEnvelope
+    connect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+  }
+
   export type TeamMemberUncheckedCreateNestedManyWithoutTeamInput = {
     create?: XOR<TeamMemberCreateWithoutTeamInput, TeamMemberUncheckedCreateWithoutTeamInput> | TeamMemberCreateWithoutTeamInput[] | TeamMemberUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: TeamMemberCreateOrConnectWithoutTeamInput | TeamMemberCreateOrConnectWithoutTeamInput[]
@@ -56677,6 +67651,13 @@ export namespace Prisma {
     connectOrCreate?: ChatRoomCreateOrConnectWithoutTeamInput | ChatRoomCreateOrConnectWithoutTeamInput[]
     createMany?: ChatRoomCreateManyTeamInputEnvelope
     connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+  }
+
+  export type BoardUncheckedCreateNestedManyWithoutTeamInput = {
+    create?: XOR<BoardCreateWithoutTeamInput, BoardUncheckedCreateWithoutTeamInput> | BoardCreateWithoutTeamInput[] | BoardUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: BoardCreateOrConnectWithoutTeamInput | BoardCreateOrConnectWithoutTeamInput[]
+    createMany?: BoardCreateManyTeamInputEnvelope
+    connect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutLeadingTeamsNestedInput = {
@@ -56715,6 +67696,20 @@ export namespace Prisma {
     deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
   }
 
+  export type BoardUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<BoardCreateWithoutTeamInput, BoardUncheckedCreateWithoutTeamInput> | BoardCreateWithoutTeamInput[] | BoardUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: BoardCreateOrConnectWithoutTeamInput | BoardCreateOrConnectWithoutTeamInput[]
+    upsert?: BoardUpsertWithWhereUniqueWithoutTeamInput | BoardUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: BoardCreateManyTeamInputEnvelope
+    set?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    disconnect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    delete?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    connect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    update?: BoardUpdateWithWhereUniqueWithoutTeamInput | BoardUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: BoardUpdateManyWithWhereWithoutTeamInput | BoardUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: BoardScalarWhereInput | BoardScalarWhereInput[]
+  }
+
   export type TeamMemberUncheckedUpdateManyWithoutTeamNestedInput = {
     create?: XOR<TeamMemberCreateWithoutTeamInput, TeamMemberUncheckedCreateWithoutTeamInput> | TeamMemberCreateWithoutTeamInput[] | TeamMemberUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: TeamMemberCreateOrConnectWithoutTeamInput | TeamMemberCreateOrConnectWithoutTeamInput[]
@@ -56741,6 +67736,20 @@ export namespace Prisma {
     update?: ChatRoomUpdateWithWhereUniqueWithoutTeamInput | ChatRoomUpdateWithWhereUniqueWithoutTeamInput[]
     updateMany?: ChatRoomUpdateManyWithWhereWithoutTeamInput | ChatRoomUpdateManyWithWhereWithoutTeamInput[]
     deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
+  }
+
+  export type BoardUncheckedUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<BoardCreateWithoutTeamInput, BoardUncheckedCreateWithoutTeamInput> | BoardCreateWithoutTeamInput[] | BoardUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: BoardCreateOrConnectWithoutTeamInput | BoardCreateOrConnectWithoutTeamInput[]
+    upsert?: BoardUpsertWithWhereUniqueWithoutTeamInput | BoardUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: BoardCreateManyTeamInputEnvelope
+    set?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    disconnect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    delete?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    connect?: BoardWhereUniqueInput | BoardWhereUniqueInput[]
+    update?: BoardUpdateWithWhereUniqueWithoutTeamInput | BoardUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: BoardUpdateManyWithWhereWithoutTeamInput | BoardUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: BoardScalarWhereInput | BoardScalarWhereInput[]
   }
 
   export type TeamCreateNestedOneWithoutMembersInput = {
@@ -57247,6 +68256,484 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedLeadsInput, UserUpdateWithoutAssignedLeadsInput>, UserUncheckedUpdateWithoutAssignedLeadsInput>
   }
 
+  export type UserCreateNestedOneWithoutCreatedBoardsInput = {
+    create?: XOR<UserCreateWithoutCreatedBoardsInput, UserUncheckedCreateWithoutCreatedBoardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedBoardsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TeamCreateNestedOneWithoutBoardsInput = {
+    create?: XOR<TeamCreateWithoutBoardsInput, TeamUncheckedCreateWithoutBoardsInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutBoardsInput
+    connect?: TeamWhereUniqueInput
+  }
+
+  export type ListCreateNestedManyWithoutBoardInput = {
+    create?: XOR<ListCreateWithoutBoardInput, ListUncheckedCreateWithoutBoardInput> | ListCreateWithoutBoardInput[] | ListUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: ListCreateOrConnectWithoutBoardInput | ListCreateOrConnectWithoutBoardInput[]
+    createMany?: ListCreateManyBoardInputEnvelope
+    connect?: ListWhereUniqueInput | ListWhereUniqueInput[]
+  }
+
+  export type BoardMemberCreateNestedManyWithoutBoardInput = {
+    create?: XOR<BoardMemberCreateWithoutBoardInput, BoardMemberUncheckedCreateWithoutBoardInput> | BoardMemberCreateWithoutBoardInput[] | BoardMemberUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: BoardMemberCreateOrConnectWithoutBoardInput | BoardMemberCreateOrConnectWithoutBoardInput[]
+    createMany?: BoardMemberCreateManyBoardInputEnvelope
+    connect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+  }
+
+  export type BoardStarCreateNestedManyWithoutBoardInput = {
+    create?: XOR<BoardStarCreateWithoutBoardInput, BoardStarUncheckedCreateWithoutBoardInput> | BoardStarCreateWithoutBoardInput[] | BoardStarUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: BoardStarCreateOrConnectWithoutBoardInput | BoardStarCreateOrConnectWithoutBoardInput[]
+    createMany?: BoardStarCreateManyBoardInputEnvelope
+    connect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+  }
+
+  export type ListUncheckedCreateNestedManyWithoutBoardInput = {
+    create?: XOR<ListCreateWithoutBoardInput, ListUncheckedCreateWithoutBoardInput> | ListCreateWithoutBoardInput[] | ListUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: ListCreateOrConnectWithoutBoardInput | ListCreateOrConnectWithoutBoardInput[]
+    createMany?: ListCreateManyBoardInputEnvelope
+    connect?: ListWhereUniqueInput | ListWhereUniqueInput[]
+  }
+
+  export type BoardMemberUncheckedCreateNestedManyWithoutBoardInput = {
+    create?: XOR<BoardMemberCreateWithoutBoardInput, BoardMemberUncheckedCreateWithoutBoardInput> | BoardMemberCreateWithoutBoardInput[] | BoardMemberUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: BoardMemberCreateOrConnectWithoutBoardInput | BoardMemberCreateOrConnectWithoutBoardInput[]
+    createMany?: BoardMemberCreateManyBoardInputEnvelope
+    connect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+  }
+
+  export type BoardStarUncheckedCreateNestedManyWithoutBoardInput = {
+    create?: XOR<BoardStarCreateWithoutBoardInput, BoardStarUncheckedCreateWithoutBoardInput> | BoardStarCreateWithoutBoardInput[] | BoardStarUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: BoardStarCreateOrConnectWithoutBoardInput | BoardStarCreateOrConnectWithoutBoardInput[]
+    createMany?: BoardStarCreateManyBoardInputEnvelope
+    connect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+  }
+
+  export type EnumBoardVisibilityFieldUpdateOperationsInput = {
+    set?: $Enums.BoardVisibility
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedBoardsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedBoardsInput, UserUncheckedCreateWithoutCreatedBoardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedBoardsInput
+    upsert?: UserUpsertWithoutCreatedBoardsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedBoardsInput, UserUpdateWithoutCreatedBoardsInput>, UserUncheckedUpdateWithoutCreatedBoardsInput>
+  }
+
+  export type TeamUpdateOneWithoutBoardsNestedInput = {
+    create?: XOR<TeamCreateWithoutBoardsInput, TeamUncheckedCreateWithoutBoardsInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutBoardsInput
+    upsert?: TeamUpsertWithoutBoardsInput
+    disconnect?: TeamWhereInput | boolean
+    delete?: TeamWhereInput | boolean
+    connect?: TeamWhereUniqueInput
+    update?: XOR<XOR<TeamUpdateToOneWithWhereWithoutBoardsInput, TeamUpdateWithoutBoardsInput>, TeamUncheckedUpdateWithoutBoardsInput>
+  }
+
+  export type ListUpdateManyWithoutBoardNestedInput = {
+    create?: XOR<ListCreateWithoutBoardInput, ListUncheckedCreateWithoutBoardInput> | ListCreateWithoutBoardInput[] | ListUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: ListCreateOrConnectWithoutBoardInput | ListCreateOrConnectWithoutBoardInput[]
+    upsert?: ListUpsertWithWhereUniqueWithoutBoardInput | ListUpsertWithWhereUniqueWithoutBoardInput[]
+    createMany?: ListCreateManyBoardInputEnvelope
+    set?: ListWhereUniqueInput | ListWhereUniqueInput[]
+    disconnect?: ListWhereUniqueInput | ListWhereUniqueInput[]
+    delete?: ListWhereUniqueInput | ListWhereUniqueInput[]
+    connect?: ListWhereUniqueInput | ListWhereUniqueInput[]
+    update?: ListUpdateWithWhereUniqueWithoutBoardInput | ListUpdateWithWhereUniqueWithoutBoardInput[]
+    updateMany?: ListUpdateManyWithWhereWithoutBoardInput | ListUpdateManyWithWhereWithoutBoardInput[]
+    deleteMany?: ListScalarWhereInput | ListScalarWhereInput[]
+  }
+
+  export type BoardMemberUpdateManyWithoutBoardNestedInput = {
+    create?: XOR<BoardMemberCreateWithoutBoardInput, BoardMemberUncheckedCreateWithoutBoardInput> | BoardMemberCreateWithoutBoardInput[] | BoardMemberUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: BoardMemberCreateOrConnectWithoutBoardInput | BoardMemberCreateOrConnectWithoutBoardInput[]
+    upsert?: BoardMemberUpsertWithWhereUniqueWithoutBoardInput | BoardMemberUpsertWithWhereUniqueWithoutBoardInput[]
+    createMany?: BoardMemberCreateManyBoardInputEnvelope
+    set?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    disconnect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    delete?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    connect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    update?: BoardMemberUpdateWithWhereUniqueWithoutBoardInput | BoardMemberUpdateWithWhereUniqueWithoutBoardInput[]
+    updateMany?: BoardMemberUpdateManyWithWhereWithoutBoardInput | BoardMemberUpdateManyWithWhereWithoutBoardInput[]
+    deleteMany?: BoardMemberScalarWhereInput | BoardMemberScalarWhereInput[]
+  }
+
+  export type BoardStarUpdateManyWithoutBoardNestedInput = {
+    create?: XOR<BoardStarCreateWithoutBoardInput, BoardStarUncheckedCreateWithoutBoardInput> | BoardStarCreateWithoutBoardInput[] | BoardStarUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: BoardStarCreateOrConnectWithoutBoardInput | BoardStarCreateOrConnectWithoutBoardInput[]
+    upsert?: BoardStarUpsertWithWhereUniqueWithoutBoardInput | BoardStarUpsertWithWhereUniqueWithoutBoardInput[]
+    createMany?: BoardStarCreateManyBoardInputEnvelope
+    set?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    disconnect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    delete?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    connect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    update?: BoardStarUpdateWithWhereUniqueWithoutBoardInput | BoardStarUpdateWithWhereUniqueWithoutBoardInput[]
+    updateMany?: BoardStarUpdateManyWithWhereWithoutBoardInput | BoardStarUpdateManyWithWhereWithoutBoardInput[]
+    deleteMany?: BoardStarScalarWhereInput | BoardStarScalarWhereInput[]
+  }
+
+  export type ListUncheckedUpdateManyWithoutBoardNestedInput = {
+    create?: XOR<ListCreateWithoutBoardInput, ListUncheckedCreateWithoutBoardInput> | ListCreateWithoutBoardInput[] | ListUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: ListCreateOrConnectWithoutBoardInput | ListCreateOrConnectWithoutBoardInput[]
+    upsert?: ListUpsertWithWhereUniqueWithoutBoardInput | ListUpsertWithWhereUniqueWithoutBoardInput[]
+    createMany?: ListCreateManyBoardInputEnvelope
+    set?: ListWhereUniqueInput | ListWhereUniqueInput[]
+    disconnect?: ListWhereUniqueInput | ListWhereUniqueInput[]
+    delete?: ListWhereUniqueInput | ListWhereUniqueInput[]
+    connect?: ListWhereUniqueInput | ListWhereUniqueInput[]
+    update?: ListUpdateWithWhereUniqueWithoutBoardInput | ListUpdateWithWhereUniqueWithoutBoardInput[]
+    updateMany?: ListUpdateManyWithWhereWithoutBoardInput | ListUpdateManyWithWhereWithoutBoardInput[]
+    deleteMany?: ListScalarWhereInput | ListScalarWhereInput[]
+  }
+
+  export type BoardMemberUncheckedUpdateManyWithoutBoardNestedInput = {
+    create?: XOR<BoardMemberCreateWithoutBoardInput, BoardMemberUncheckedCreateWithoutBoardInput> | BoardMemberCreateWithoutBoardInput[] | BoardMemberUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: BoardMemberCreateOrConnectWithoutBoardInput | BoardMemberCreateOrConnectWithoutBoardInput[]
+    upsert?: BoardMemberUpsertWithWhereUniqueWithoutBoardInput | BoardMemberUpsertWithWhereUniqueWithoutBoardInput[]
+    createMany?: BoardMemberCreateManyBoardInputEnvelope
+    set?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    disconnect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    delete?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    connect?: BoardMemberWhereUniqueInput | BoardMemberWhereUniqueInput[]
+    update?: BoardMemberUpdateWithWhereUniqueWithoutBoardInput | BoardMemberUpdateWithWhereUniqueWithoutBoardInput[]
+    updateMany?: BoardMemberUpdateManyWithWhereWithoutBoardInput | BoardMemberUpdateManyWithWhereWithoutBoardInput[]
+    deleteMany?: BoardMemberScalarWhereInput | BoardMemberScalarWhereInput[]
+  }
+
+  export type BoardStarUncheckedUpdateManyWithoutBoardNestedInput = {
+    create?: XOR<BoardStarCreateWithoutBoardInput, BoardStarUncheckedCreateWithoutBoardInput> | BoardStarCreateWithoutBoardInput[] | BoardStarUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: BoardStarCreateOrConnectWithoutBoardInput | BoardStarCreateOrConnectWithoutBoardInput[]
+    upsert?: BoardStarUpsertWithWhereUniqueWithoutBoardInput | BoardStarUpsertWithWhereUniqueWithoutBoardInput[]
+    createMany?: BoardStarCreateManyBoardInputEnvelope
+    set?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    disconnect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    delete?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    connect?: BoardStarWhereUniqueInput | BoardStarWhereUniqueInput[]
+    update?: BoardStarUpdateWithWhereUniqueWithoutBoardInput | BoardStarUpdateWithWhereUniqueWithoutBoardInput[]
+    updateMany?: BoardStarUpdateManyWithWhereWithoutBoardInput | BoardStarUpdateManyWithWhereWithoutBoardInput[]
+    deleteMany?: BoardStarScalarWhereInput | BoardStarScalarWhereInput[]
+  }
+
+  export type BoardCreateNestedOneWithoutMembersInput = {
+    create?: XOR<BoardCreateWithoutMembersInput, BoardUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: BoardCreateOrConnectWithoutMembersInput
+    connect?: BoardWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutBoardMembershipsInput = {
+    create?: XOR<UserCreateWithoutBoardMembershipsInput, UserUncheckedCreateWithoutBoardMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBoardMembershipsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BoardUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<BoardCreateWithoutMembersInput, BoardUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: BoardCreateOrConnectWithoutMembersInput
+    upsert?: BoardUpsertWithoutMembersInput
+    connect?: BoardWhereUniqueInput
+    update?: XOR<XOR<BoardUpdateToOneWithWhereWithoutMembersInput, BoardUpdateWithoutMembersInput>, BoardUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutBoardMembershipsNestedInput = {
+    create?: XOR<UserCreateWithoutBoardMembershipsInput, UserUncheckedCreateWithoutBoardMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBoardMembershipsInput
+    upsert?: UserUpsertWithoutBoardMembershipsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBoardMembershipsInput, UserUpdateWithoutBoardMembershipsInput>, UserUncheckedUpdateWithoutBoardMembershipsInput>
+  }
+
+  export type BoardCreateNestedOneWithoutStarredByInput = {
+    create?: XOR<BoardCreateWithoutStarredByInput, BoardUncheckedCreateWithoutStarredByInput>
+    connectOrCreate?: BoardCreateOrConnectWithoutStarredByInput
+    connect?: BoardWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutBoardStarsInput = {
+    create?: XOR<UserCreateWithoutBoardStarsInput, UserUncheckedCreateWithoutBoardStarsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBoardStarsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BoardUpdateOneRequiredWithoutStarredByNestedInput = {
+    create?: XOR<BoardCreateWithoutStarredByInput, BoardUncheckedCreateWithoutStarredByInput>
+    connectOrCreate?: BoardCreateOrConnectWithoutStarredByInput
+    upsert?: BoardUpsertWithoutStarredByInput
+    connect?: BoardWhereUniqueInput
+    update?: XOR<XOR<BoardUpdateToOneWithWhereWithoutStarredByInput, BoardUpdateWithoutStarredByInput>, BoardUncheckedUpdateWithoutStarredByInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutBoardStarsNestedInput = {
+    create?: XOR<UserCreateWithoutBoardStarsInput, UserUncheckedCreateWithoutBoardStarsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBoardStarsInput
+    upsert?: UserUpsertWithoutBoardStarsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBoardStarsInput, UserUpdateWithoutBoardStarsInput>, UserUncheckedUpdateWithoutBoardStarsInput>
+  }
+
+  export type BoardCreateNestedOneWithoutListsInput = {
+    create?: XOR<BoardCreateWithoutListsInput, BoardUncheckedCreateWithoutListsInput>
+    connectOrCreate?: BoardCreateOrConnectWithoutListsInput
+    connect?: BoardWhereUniqueInput
+  }
+
+  export type CardCreateNestedManyWithoutListInput = {
+    create?: XOR<CardCreateWithoutListInput, CardUncheckedCreateWithoutListInput> | CardCreateWithoutListInput[] | CardUncheckedCreateWithoutListInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutListInput | CardCreateOrConnectWithoutListInput[]
+    createMany?: CardCreateManyListInputEnvelope
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+  }
+
+  export type CardUncheckedCreateNestedManyWithoutListInput = {
+    create?: XOR<CardCreateWithoutListInput, CardUncheckedCreateWithoutListInput> | CardCreateWithoutListInput[] | CardUncheckedCreateWithoutListInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutListInput | CardCreateOrConnectWithoutListInput[]
+    createMany?: CardCreateManyListInputEnvelope
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+  }
+
+  export type BoardUpdateOneRequiredWithoutListsNestedInput = {
+    create?: XOR<BoardCreateWithoutListsInput, BoardUncheckedCreateWithoutListsInput>
+    connectOrCreate?: BoardCreateOrConnectWithoutListsInput
+    upsert?: BoardUpsertWithoutListsInput
+    connect?: BoardWhereUniqueInput
+    update?: XOR<XOR<BoardUpdateToOneWithWhereWithoutListsInput, BoardUpdateWithoutListsInput>, BoardUncheckedUpdateWithoutListsInput>
+  }
+
+  export type CardUpdateManyWithoutListNestedInput = {
+    create?: XOR<CardCreateWithoutListInput, CardUncheckedCreateWithoutListInput> | CardCreateWithoutListInput[] | CardUncheckedCreateWithoutListInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutListInput | CardCreateOrConnectWithoutListInput[]
+    upsert?: CardUpsertWithWhereUniqueWithoutListInput | CardUpsertWithWhereUniqueWithoutListInput[]
+    createMany?: CardCreateManyListInputEnvelope
+    set?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    disconnect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    delete?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    update?: CardUpdateWithWhereUniqueWithoutListInput | CardUpdateWithWhereUniqueWithoutListInput[]
+    updateMany?: CardUpdateManyWithWhereWithoutListInput | CardUpdateManyWithWhereWithoutListInput[]
+    deleteMany?: CardScalarWhereInput | CardScalarWhereInput[]
+  }
+
+  export type CardUncheckedUpdateManyWithoutListNestedInput = {
+    create?: XOR<CardCreateWithoutListInput, CardUncheckedCreateWithoutListInput> | CardCreateWithoutListInput[] | CardUncheckedCreateWithoutListInput[]
+    connectOrCreate?: CardCreateOrConnectWithoutListInput | CardCreateOrConnectWithoutListInput[]
+    upsert?: CardUpsertWithWhereUniqueWithoutListInput | CardUpsertWithWhereUniqueWithoutListInput[]
+    createMany?: CardCreateManyListInputEnvelope
+    set?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    disconnect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    delete?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    connect?: CardWhereUniqueInput | CardWhereUniqueInput[]
+    update?: CardUpdateWithWhereUniqueWithoutListInput | CardUpdateWithWhereUniqueWithoutListInput[]
+    updateMany?: CardUpdateManyWithWhereWithoutListInput | CardUpdateManyWithWhereWithoutListInput[]
+    deleteMany?: CardScalarWhereInput | CardScalarWhereInput[]
+  }
+
+  export type CardCreatelabelsInput = {
+    set: string[]
+  }
+
+  export type CardCreateattachmentsInput = {
+    set: string[]
+  }
+
+  export type ListCreateNestedOneWithoutCardsInput = {
+    create?: XOR<ListCreateWithoutCardsInput, ListUncheckedCreateWithoutCardsInput>
+    connectOrCreate?: ListCreateOrConnectWithoutCardsInput
+    connect?: ListWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAssignedCardsInput = {
+    create?: XOR<UserCreateWithoutAssignedCardsInput, UserUncheckedCreateWithoutAssignedCardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedCardsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedCardsInput = {
+    create?: XOR<UserCreateWithoutCreatedCardsInput, UserUncheckedCreateWithoutCreatedCardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedCardsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CardCommentCreateNestedManyWithoutCardInput = {
+    create?: XOR<CardCommentCreateWithoutCardInput, CardCommentUncheckedCreateWithoutCardInput> | CardCommentCreateWithoutCardInput[] | CardCommentUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: CardCommentCreateOrConnectWithoutCardInput | CardCommentCreateOrConnectWithoutCardInput[]
+    createMany?: CardCommentCreateManyCardInputEnvelope
+    connect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+  }
+
+  export type CardActivityCreateNestedManyWithoutCardInput = {
+    create?: XOR<CardActivityCreateWithoutCardInput, CardActivityUncheckedCreateWithoutCardInput> | CardActivityCreateWithoutCardInput[] | CardActivityUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: CardActivityCreateOrConnectWithoutCardInput | CardActivityCreateOrConnectWithoutCardInput[]
+    createMany?: CardActivityCreateManyCardInputEnvelope
+    connect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+  }
+
+  export type CardCommentUncheckedCreateNestedManyWithoutCardInput = {
+    create?: XOR<CardCommentCreateWithoutCardInput, CardCommentUncheckedCreateWithoutCardInput> | CardCommentCreateWithoutCardInput[] | CardCommentUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: CardCommentCreateOrConnectWithoutCardInput | CardCommentCreateOrConnectWithoutCardInput[]
+    createMany?: CardCommentCreateManyCardInputEnvelope
+    connect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+  }
+
+  export type CardActivityUncheckedCreateNestedManyWithoutCardInput = {
+    create?: XOR<CardActivityCreateWithoutCardInput, CardActivityUncheckedCreateWithoutCardInput> | CardActivityCreateWithoutCardInput[] | CardActivityUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: CardActivityCreateOrConnectWithoutCardInput | CardActivityCreateOrConnectWithoutCardInput[]
+    createMany?: CardActivityCreateManyCardInputEnvelope
+    connect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+  }
+
+  export type EnumCardPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.CardPriority
+  }
+
+  export type CardUpdatelabelsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type CardUpdateattachmentsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type ListUpdateOneRequiredWithoutCardsNestedInput = {
+    create?: XOR<ListCreateWithoutCardsInput, ListUncheckedCreateWithoutCardsInput>
+    connectOrCreate?: ListCreateOrConnectWithoutCardsInput
+    upsert?: ListUpsertWithoutCardsInput
+    connect?: ListWhereUniqueInput
+    update?: XOR<XOR<ListUpdateToOneWithWhereWithoutCardsInput, ListUpdateWithoutCardsInput>, ListUncheckedUpdateWithoutCardsInput>
+  }
+
+  export type UserUpdateOneWithoutAssignedCardsNestedInput = {
+    create?: XOR<UserCreateWithoutAssignedCardsInput, UserUncheckedCreateWithoutAssignedCardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedCardsInput
+    upsert?: UserUpsertWithoutAssignedCardsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedCardsInput, UserUpdateWithoutAssignedCardsInput>, UserUncheckedUpdateWithoutAssignedCardsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedCardsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedCardsInput, UserUncheckedCreateWithoutCreatedCardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedCardsInput
+    upsert?: UserUpsertWithoutCreatedCardsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedCardsInput, UserUpdateWithoutCreatedCardsInput>, UserUncheckedUpdateWithoutCreatedCardsInput>
+  }
+
+  export type CardCommentUpdateManyWithoutCardNestedInput = {
+    create?: XOR<CardCommentCreateWithoutCardInput, CardCommentUncheckedCreateWithoutCardInput> | CardCommentCreateWithoutCardInput[] | CardCommentUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: CardCommentCreateOrConnectWithoutCardInput | CardCommentCreateOrConnectWithoutCardInput[]
+    upsert?: CardCommentUpsertWithWhereUniqueWithoutCardInput | CardCommentUpsertWithWhereUniqueWithoutCardInput[]
+    createMany?: CardCommentCreateManyCardInputEnvelope
+    set?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    disconnect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    delete?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    connect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    update?: CardCommentUpdateWithWhereUniqueWithoutCardInput | CardCommentUpdateWithWhereUniqueWithoutCardInput[]
+    updateMany?: CardCommentUpdateManyWithWhereWithoutCardInput | CardCommentUpdateManyWithWhereWithoutCardInput[]
+    deleteMany?: CardCommentScalarWhereInput | CardCommentScalarWhereInput[]
+  }
+
+  export type CardActivityUpdateManyWithoutCardNestedInput = {
+    create?: XOR<CardActivityCreateWithoutCardInput, CardActivityUncheckedCreateWithoutCardInput> | CardActivityCreateWithoutCardInput[] | CardActivityUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: CardActivityCreateOrConnectWithoutCardInput | CardActivityCreateOrConnectWithoutCardInput[]
+    upsert?: CardActivityUpsertWithWhereUniqueWithoutCardInput | CardActivityUpsertWithWhereUniqueWithoutCardInput[]
+    createMany?: CardActivityCreateManyCardInputEnvelope
+    set?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    disconnect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    delete?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    connect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    update?: CardActivityUpdateWithWhereUniqueWithoutCardInput | CardActivityUpdateWithWhereUniqueWithoutCardInput[]
+    updateMany?: CardActivityUpdateManyWithWhereWithoutCardInput | CardActivityUpdateManyWithWhereWithoutCardInput[]
+    deleteMany?: CardActivityScalarWhereInput | CardActivityScalarWhereInput[]
+  }
+
+  export type CardCommentUncheckedUpdateManyWithoutCardNestedInput = {
+    create?: XOR<CardCommentCreateWithoutCardInput, CardCommentUncheckedCreateWithoutCardInput> | CardCommentCreateWithoutCardInput[] | CardCommentUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: CardCommentCreateOrConnectWithoutCardInput | CardCommentCreateOrConnectWithoutCardInput[]
+    upsert?: CardCommentUpsertWithWhereUniqueWithoutCardInput | CardCommentUpsertWithWhereUniqueWithoutCardInput[]
+    createMany?: CardCommentCreateManyCardInputEnvelope
+    set?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    disconnect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    delete?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    connect?: CardCommentWhereUniqueInput | CardCommentWhereUniqueInput[]
+    update?: CardCommentUpdateWithWhereUniqueWithoutCardInput | CardCommentUpdateWithWhereUniqueWithoutCardInput[]
+    updateMany?: CardCommentUpdateManyWithWhereWithoutCardInput | CardCommentUpdateManyWithWhereWithoutCardInput[]
+    deleteMany?: CardCommentScalarWhereInput | CardCommentScalarWhereInput[]
+  }
+
+  export type CardActivityUncheckedUpdateManyWithoutCardNestedInput = {
+    create?: XOR<CardActivityCreateWithoutCardInput, CardActivityUncheckedCreateWithoutCardInput> | CardActivityCreateWithoutCardInput[] | CardActivityUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: CardActivityCreateOrConnectWithoutCardInput | CardActivityCreateOrConnectWithoutCardInput[]
+    upsert?: CardActivityUpsertWithWhereUniqueWithoutCardInput | CardActivityUpsertWithWhereUniqueWithoutCardInput[]
+    createMany?: CardActivityCreateManyCardInputEnvelope
+    set?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    disconnect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    delete?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    connect?: CardActivityWhereUniqueInput | CardActivityWhereUniqueInput[]
+    update?: CardActivityUpdateWithWhereUniqueWithoutCardInput | CardActivityUpdateWithWhereUniqueWithoutCardInput[]
+    updateMany?: CardActivityUpdateManyWithWhereWithoutCardInput | CardActivityUpdateManyWithWhereWithoutCardInput[]
+    deleteMany?: CardActivityScalarWhereInput | CardActivityScalarWhereInput[]
+  }
+
+  export type CardCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<CardCreateWithoutCommentsInput, CardUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: CardCreateOrConnectWithoutCommentsInput
+    connect?: CardWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCardCommentsInput = {
+    create?: XOR<UserCreateWithoutCardCommentsInput, UserUncheckedCreateWithoutCardCommentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCardCommentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CardUpdateOneRequiredWithoutCommentsNestedInput = {
+    create?: XOR<CardCreateWithoutCommentsInput, CardUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: CardCreateOrConnectWithoutCommentsInput
+    upsert?: CardUpsertWithoutCommentsInput
+    connect?: CardWhereUniqueInput
+    update?: XOR<XOR<CardUpdateToOneWithWhereWithoutCommentsInput, CardUpdateWithoutCommentsInput>, CardUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCardCommentsNestedInput = {
+    create?: XOR<UserCreateWithoutCardCommentsInput, UserUncheckedCreateWithoutCardCommentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCardCommentsInput
+    upsert?: UserUpsertWithoutCardCommentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCardCommentsInput, UserUpdateWithoutCardCommentsInput>, UserUncheckedUpdateWithoutCardCommentsInput>
+  }
+
+  export type CardCreateNestedOneWithoutActivitiesInput = {
+    create?: XOR<CardCreateWithoutActivitiesInput, CardUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: CardCreateOrConnectWithoutActivitiesInput
+    connect?: CardWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCardActivitiesInput = {
+    create?: XOR<UserCreateWithoutCardActivitiesInput, UserUncheckedCreateWithoutCardActivitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCardActivitiesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CardUpdateOneRequiredWithoutActivitiesNestedInput = {
+    create?: XOR<CardCreateWithoutActivitiesInput, CardUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: CardCreateOrConnectWithoutActivitiesInput
+    upsert?: CardUpsertWithoutActivitiesInput
+    connect?: CardWhereUniqueInput
+    update?: XOR<XOR<CardUpdateToOneWithWhereWithoutActivitiesInput, CardUpdateWithoutActivitiesInput>, CardUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCardActivitiesNestedInput = {
+    create?: XOR<UserCreateWithoutCardActivitiesInput, UserUncheckedCreateWithoutCardActivitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCardActivitiesInput
+    upsert?: UserUpsertWithoutCardActivitiesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCardActivitiesInput, UserUpdateWithoutCardActivitiesInput>, UserUncheckedUpdateWithoutCardActivitiesInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -57741,6 +69228,40 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumBoardVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.BoardVisibility | EnumBoardVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.BoardVisibility[] | ListEnumBoardVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BoardVisibility[] | ListEnumBoardVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumBoardVisibilityFilter<$PrismaModel> | $Enums.BoardVisibility
+  }
+
+  export type NestedEnumBoardVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BoardVisibility | EnumBoardVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.BoardVisibility[] | ListEnumBoardVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BoardVisibility[] | ListEnumBoardVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumBoardVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.BoardVisibility
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBoardVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumBoardVisibilityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCardPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.CardPriority | EnumCardPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.CardPriority[] | ListEnumCardPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CardPriority[] | ListEnumCardPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumCardPriorityFilter<$PrismaModel> | $Enums.CardPriority
+  }
+
+  export type NestedEnumCardPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CardPriority | EnumCardPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.CardPriority[] | ListEnumCardPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CardPriority[] | ListEnumCardPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumCardPriorityWithAggregatesFilter<$PrismaModel> | $Enums.CardPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCardPriorityFilter<$PrismaModel>
+    _max?: NestedEnumCardPriorityFilter<$PrismaModel>
+  }
+
   export type UserRoleCreateWithoutUserInput = {
     id?: string
     createdAt?: Date | string
@@ -57822,6 +69343,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubordinatesInput = {
@@ -57881,6 +69409,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubordinatesInput = {
@@ -57945,6 +69480,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsToInput = {
@@ -58004,6 +69546,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsToInput = {
@@ -58167,6 +69716,9 @@ export namespace Prisma {
     checkInTime?: Date | string | null
     checkOutTime?: Date | string | null
     totalHours?: number | null
+    breakStartTime?: Date | string | null
+    breakEndTime?: Date | string | null
+    totalBreakTime?: number | null
     date?: Date | string
     status?: string
     createdAt?: Date | string
@@ -58178,6 +69730,9 @@ export namespace Prisma {
     checkInTime?: Date | string | null
     checkOutTime?: Date | string | null
     totalHours?: number | null
+    breakStartTime?: Date | string | null
+    breakEndTime?: Date | string | null
+    totalBreakTime?: number | null
     date?: Date | string
     status?: string
     createdAt?: Date | string
@@ -58376,6 +69931,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: TeamMemberCreateNestedManyWithoutTeamInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTeamInput
+    boards?: BoardCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateWithoutLeaderInput = {
@@ -58386,6 +69942,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: TeamMemberUncheckedCreateNestedManyWithoutTeamInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTeamInput
+    boards?: BoardUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamCreateOrConnectWithoutLeaderInput = {
@@ -59075,6 +70632,234 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BoardCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    team?: TeamCreateNestedOneWithoutBoardsInput
+    lists?: ListCreateNestedManyWithoutBoardInput
+    members?: BoardMemberCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    teamId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lists?: ListUncheckedCreateNestedManyWithoutBoardInput
+    members?: BoardMemberUncheckedCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarUncheckedCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardCreateOrConnectWithoutCreatedByInput = {
+    where: BoardWhereUniqueInput
+    create: XOR<BoardCreateWithoutCreatedByInput, BoardUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type BoardCreateManyCreatedByInputEnvelope = {
+    data: BoardCreateManyCreatedByInput | BoardCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BoardMemberCreateWithoutUserInput = {
+    id?: string
+    role?: string
+    joinedAt?: Date | string
+    board: BoardCreateNestedOneWithoutMembersInput
+  }
+
+  export type BoardMemberUncheckedCreateWithoutUserInput = {
+    id?: string
+    boardId: string
+    role?: string
+    joinedAt?: Date | string
+  }
+
+  export type BoardMemberCreateOrConnectWithoutUserInput = {
+    where: BoardMemberWhereUniqueInput
+    create: XOR<BoardMemberCreateWithoutUserInput, BoardMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type BoardMemberCreateManyUserInputEnvelope = {
+    data: BoardMemberCreateManyUserInput | BoardMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BoardStarCreateWithoutUserInput = {
+    id?: string
+    starredAt?: Date | string
+    board: BoardCreateNestedOneWithoutStarredByInput
+  }
+
+  export type BoardStarUncheckedCreateWithoutUserInput = {
+    id?: string
+    boardId: string
+    starredAt?: Date | string
+  }
+
+  export type BoardStarCreateOrConnectWithoutUserInput = {
+    where: BoardStarWhereUniqueInput
+    create: XOR<BoardStarCreateWithoutUserInput, BoardStarUncheckedCreateWithoutUserInput>
+  }
+
+  export type BoardStarCreateManyUserInputEnvelope = {
+    data: BoardStarCreateManyUserInput | BoardStarCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CardCreateWithoutAssignedToInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    list: ListCreateNestedOneWithoutCardsInput
+    createdBy: UserCreateNestedOneWithoutCreatedCardsInput
+    comments?: CardCommentCreateNestedManyWithoutCardInput
+    activities?: CardActivityCreateNestedManyWithoutCardInput
+  }
+
+  export type CardUncheckedCreateWithoutAssignedToInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    listId: string
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    comments?: CardCommentUncheckedCreateNestedManyWithoutCardInput
+    activities?: CardActivityUncheckedCreateNestedManyWithoutCardInput
+  }
+
+  export type CardCreateOrConnectWithoutAssignedToInput = {
+    where: CardWhereUniqueInput
+    create: XOR<CardCreateWithoutAssignedToInput, CardUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type CardCreateManyAssignedToInputEnvelope = {
+    data: CardCreateManyAssignedToInput | CardCreateManyAssignedToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CardCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    list: ListCreateNestedOneWithoutCardsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedCardsInput
+    comments?: CardCommentCreateNestedManyWithoutCardInput
+    activities?: CardActivityCreateNestedManyWithoutCardInput
+  }
+
+  export type CardUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    listId: string
+    assignedToId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    comments?: CardCommentUncheckedCreateNestedManyWithoutCardInput
+    activities?: CardActivityUncheckedCreateNestedManyWithoutCardInput
+  }
+
+  export type CardCreateOrConnectWithoutCreatedByInput = {
+    where: CardWhereUniqueInput
+    create: XOR<CardCreateWithoutCreatedByInput, CardUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type CardCreateManyCreatedByInputEnvelope = {
+    data: CardCreateManyCreatedByInput | CardCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CardCommentCreateWithoutAuthorInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    card: CardCreateNestedOneWithoutCommentsInput
+  }
+
+  export type CardCommentUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    content: string
+    cardId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardCommentCreateOrConnectWithoutAuthorInput = {
+    where: CardCommentWhereUniqueInput
+    create: XOR<CardCommentCreateWithoutAuthorInput, CardCommentUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type CardCommentCreateManyAuthorInputEnvelope = {
+    data: CardCommentCreateManyAuthorInput | CardCommentCreateManyAuthorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CardActivityCreateWithoutUserInput = {
+    id?: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+    card: CardCreateNestedOneWithoutActivitiesInput
+  }
+
+  export type CardActivityUncheckedCreateWithoutUserInput = {
+    id?: string
+    cardId: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CardActivityCreateOrConnectWithoutUserInput = {
+    where: CardActivityWhereUniqueInput
+    create: XOR<CardActivityCreateWithoutUserInput, CardActivityUncheckedCreateWithoutUserInput>
+  }
+
+  export type CardActivityCreateManyUserInputEnvelope = {
+    data: CardActivityCreateManyUserInput | CardActivityCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserRoleUpsertWithWhereUniqueWithoutUserInput = {
     where: UserRoleWhereUniqueInput
     update: XOR<UserRoleUpdateWithoutUserInput, UserRoleUncheckedUpdateWithoutUserInput>
@@ -59170,6 +70955,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubordinatesInput = {
@@ -59229,6 +71021,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutReportsToInput = {
@@ -59457,6 +71256,9 @@ export namespace Prisma {
     checkInTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     checkOutTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     totalHours?: FloatNullableFilter<"Attendance"> | number | null
+    breakStartTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    breakEndTime?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    totalBreakTime?: FloatNullableFilter<"Attendance"> | number | null
     date?: DateTimeFilter<"Attendance"> | Date | string
     status?: StringFilter<"Attendance"> | string
     createdAt?: DateTimeFilter<"Attendance"> | Date | string
@@ -60154,6 +71956,199 @@ export namespace Prisma {
     data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutAssigneeInput>
   }
 
+  export type BoardUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: BoardWhereUniqueInput
+    update: XOR<BoardUpdateWithoutCreatedByInput, BoardUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<BoardCreateWithoutCreatedByInput, BoardUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type BoardUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: BoardWhereUniqueInput
+    data: XOR<BoardUpdateWithoutCreatedByInput, BoardUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type BoardUpdateManyWithWhereWithoutCreatedByInput = {
+    where: BoardScalarWhereInput
+    data: XOR<BoardUpdateManyMutationInput, BoardUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type BoardScalarWhereInput = {
+    AND?: BoardScalarWhereInput | BoardScalarWhereInput[]
+    OR?: BoardScalarWhereInput[]
+    NOT?: BoardScalarWhereInput | BoardScalarWhereInput[]
+    id?: StringFilter<"Board"> | string
+    title?: StringFilter<"Board"> | string
+    description?: StringNullableFilter<"Board"> | string | null
+    background?: StringNullableFilter<"Board"> | string | null
+    visibility?: EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
+    createdById?: StringFilter<"Board"> | string
+    teamId?: StringNullableFilter<"Board"> | string | null
+    createdAt?: DateTimeFilter<"Board"> | Date | string
+    updatedAt?: DateTimeFilter<"Board"> | Date | string
+  }
+
+  export type BoardMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: BoardMemberWhereUniqueInput
+    update: XOR<BoardMemberUpdateWithoutUserInput, BoardMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<BoardMemberCreateWithoutUserInput, BoardMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type BoardMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: BoardMemberWhereUniqueInput
+    data: XOR<BoardMemberUpdateWithoutUserInput, BoardMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type BoardMemberUpdateManyWithWhereWithoutUserInput = {
+    where: BoardMemberScalarWhereInput
+    data: XOR<BoardMemberUpdateManyMutationInput, BoardMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type BoardMemberScalarWhereInput = {
+    AND?: BoardMemberScalarWhereInput | BoardMemberScalarWhereInput[]
+    OR?: BoardMemberScalarWhereInput[]
+    NOT?: BoardMemberScalarWhereInput | BoardMemberScalarWhereInput[]
+    id?: StringFilter<"BoardMember"> | string
+    boardId?: StringFilter<"BoardMember"> | string
+    userId?: StringFilter<"BoardMember"> | string
+    role?: StringFilter<"BoardMember"> | string
+    joinedAt?: DateTimeFilter<"BoardMember"> | Date | string
+  }
+
+  export type BoardStarUpsertWithWhereUniqueWithoutUserInput = {
+    where: BoardStarWhereUniqueInput
+    update: XOR<BoardStarUpdateWithoutUserInput, BoardStarUncheckedUpdateWithoutUserInput>
+    create: XOR<BoardStarCreateWithoutUserInput, BoardStarUncheckedCreateWithoutUserInput>
+  }
+
+  export type BoardStarUpdateWithWhereUniqueWithoutUserInput = {
+    where: BoardStarWhereUniqueInput
+    data: XOR<BoardStarUpdateWithoutUserInput, BoardStarUncheckedUpdateWithoutUserInput>
+  }
+
+  export type BoardStarUpdateManyWithWhereWithoutUserInput = {
+    where: BoardStarScalarWhereInput
+    data: XOR<BoardStarUpdateManyMutationInput, BoardStarUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type BoardStarScalarWhereInput = {
+    AND?: BoardStarScalarWhereInput | BoardStarScalarWhereInput[]
+    OR?: BoardStarScalarWhereInput[]
+    NOT?: BoardStarScalarWhereInput | BoardStarScalarWhereInput[]
+    id?: StringFilter<"BoardStar"> | string
+    boardId?: StringFilter<"BoardStar"> | string
+    userId?: StringFilter<"BoardStar"> | string
+    starredAt?: DateTimeFilter<"BoardStar"> | Date | string
+  }
+
+  export type CardUpsertWithWhereUniqueWithoutAssignedToInput = {
+    where: CardWhereUniqueInput
+    update: XOR<CardUpdateWithoutAssignedToInput, CardUncheckedUpdateWithoutAssignedToInput>
+    create: XOR<CardCreateWithoutAssignedToInput, CardUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type CardUpdateWithWhereUniqueWithoutAssignedToInput = {
+    where: CardWhereUniqueInput
+    data: XOR<CardUpdateWithoutAssignedToInput, CardUncheckedUpdateWithoutAssignedToInput>
+  }
+
+  export type CardUpdateManyWithWhereWithoutAssignedToInput = {
+    where: CardScalarWhereInput
+    data: XOR<CardUpdateManyMutationInput, CardUncheckedUpdateManyWithoutAssignedToInput>
+  }
+
+  export type CardScalarWhereInput = {
+    AND?: CardScalarWhereInput | CardScalarWhereInput[]
+    OR?: CardScalarWhereInput[]
+    NOT?: CardScalarWhereInput | CardScalarWhereInput[]
+    id?: StringFilter<"Card"> | string
+    title?: StringFilter<"Card"> | string
+    description?: StringNullableFilter<"Card"> | string | null
+    position?: IntFilter<"Card"> | number
+    priority?: EnumCardPriorityFilter<"Card"> | $Enums.CardPriority
+    dueDate?: DateTimeNullableFilter<"Card"> | Date | string | null
+    labels?: StringNullableListFilter<"Card">
+    attachments?: StringNullableListFilter<"Card">
+    listId?: StringFilter<"Card"> | string
+    assignedToId?: StringNullableFilter<"Card"> | string | null
+    createdById?: StringFilter<"Card"> | string
+    createdAt?: DateTimeFilter<"Card"> | Date | string
+    updatedAt?: DateTimeFilter<"Card"> | Date | string
+  }
+
+  export type CardUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: CardWhereUniqueInput
+    update: XOR<CardUpdateWithoutCreatedByInput, CardUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<CardCreateWithoutCreatedByInput, CardUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type CardUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: CardWhereUniqueInput
+    data: XOR<CardUpdateWithoutCreatedByInput, CardUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type CardUpdateManyWithWhereWithoutCreatedByInput = {
+    where: CardScalarWhereInput
+    data: XOR<CardUpdateManyMutationInput, CardUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type CardCommentUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: CardCommentWhereUniqueInput
+    update: XOR<CardCommentUpdateWithoutAuthorInput, CardCommentUncheckedUpdateWithoutAuthorInput>
+    create: XOR<CardCommentCreateWithoutAuthorInput, CardCommentUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type CardCommentUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: CardCommentWhereUniqueInput
+    data: XOR<CardCommentUpdateWithoutAuthorInput, CardCommentUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type CardCommentUpdateManyWithWhereWithoutAuthorInput = {
+    where: CardCommentScalarWhereInput
+    data: XOR<CardCommentUpdateManyMutationInput, CardCommentUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type CardCommentScalarWhereInput = {
+    AND?: CardCommentScalarWhereInput | CardCommentScalarWhereInput[]
+    OR?: CardCommentScalarWhereInput[]
+    NOT?: CardCommentScalarWhereInput | CardCommentScalarWhereInput[]
+    id?: StringFilter<"CardComment"> | string
+    content?: StringFilter<"CardComment"> | string
+    cardId?: StringFilter<"CardComment"> | string
+    authorId?: StringFilter<"CardComment"> | string
+    createdAt?: DateTimeFilter<"CardComment"> | Date | string
+    updatedAt?: DateTimeFilter<"CardComment"> | Date | string
+  }
+
+  export type CardActivityUpsertWithWhereUniqueWithoutUserInput = {
+    where: CardActivityWhereUniqueInput
+    update: XOR<CardActivityUpdateWithoutUserInput, CardActivityUncheckedUpdateWithoutUserInput>
+    create: XOR<CardActivityCreateWithoutUserInput, CardActivityUncheckedCreateWithoutUserInput>
+  }
+
+  export type CardActivityUpdateWithWhereUniqueWithoutUserInput = {
+    where: CardActivityWhereUniqueInput
+    data: XOR<CardActivityUpdateWithoutUserInput, CardActivityUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CardActivityUpdateManyWithWhereWithoutUserInput = {
+    where: CardActivityScalarWhereInput
+    data: XOR<CardActivityUpdateManyMutationInput, CardActivityUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CardActivityScalarWhereInput = {
+    AND?: CardActivityScalarWhereInput | CardActivityScalarWhereInput[]
+    OR?: CardActivityScalarWhereInput[]
+    NOT?: CardActivityScalarWhereInput | CardActivityScalarWhereInput[]
+    id?: StringFilter<"CardActivity"> | string
+    cardId?: StringFilter<"CardActivity"> | string
+    userId?: StringFilter<"CardActivity"> | string
+    action?: StringFilter<"CardActivity"> | string
+    description?: StringFilter<"CardActivity"> | string
+    oldValue?: StringNullableFilter<"CardActivity"> | string | null
+    newValue?: StringNullableFilter<"CardActivity"> | string | null
+    createdAt?: DateTimeFilter<"CardActivity"> | Date | string
+  }
+
   export type UserRoleCreateWithoutRoleInput = {
     id?: string
     createdAt?: Date | string
@@ -60302,6 +72297,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserRolesInput = {
@@ -60361,6 +72363,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserRolesInput = {
@@ -60461,6 +72470,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserRolesInput = {
@@ -60520,6 +72536,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoleUpsertWithoutUserRolesInput = {
@@ -60762,6 +72785,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEmergencyContactInput = {
@@ -60821,6 +72851,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEmergencyContactInput = {
@@ -60896,6 +72933,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmergencyContactInput = {
@@ -60955,6 +72999,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutEducationInput = {
@@ -61014,6 +73065,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEducationInput = {
@@ -61073,6 +73131,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEducationInput = {
@@ -61148,6 +73213,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEducationInput = {
@@ -61207,6 +73279,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutExperienceInput = {
@@ -61266,6 +73345,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutExperienceInput = {
@@ -61325,6 +73411,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutExperienceInput = {
@@ -61400,6 +73493,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExperienceInput = {
@@ -61459,6 +73559,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDocumentsInput = {
@@ -61518,6 +73625,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -61577,6 +73691,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -61652,6 +73773,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -61711,6 +73839,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutBankDetailsInput = {
@@ -61770,6 +73905,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBankDetailsInput = {
@@ -61829,6 +73971,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBankDetailsInput = {
@@ -61904,6 +74053,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBankDetailsInput = {
@@ -61963,6 +74119,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAttendanceInput = {
@@ -62022,6 +74185,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAttendanceInput = {
@@ -62081,6 +74251,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAttendanceInput = {
@@ -62156,6 +74333,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAttendanceInput = {
@@ -62215,6 +74399,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLeavesInput = {
@@ -62274,6 +74465,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeavesInput = {
@@ -62333,6 +74531,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeavesInput = {
@@ -62397,6 +74602,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutManagerApprovalsInput = {
@@ -62456,6 +74668,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutManagerApprovalsInput = {
@@ -62520,6 +74739,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAdminApprovalsInput = {
@@ -62579,6 +74805,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAdminApprovalsInput = {
@@ -62654,6 +74887,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeavesInput = {
@@ -62713,6 +74953,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutManagerApprovalsInput = {
@@ -62783,6 +75030,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagerApprovalsInput = {
@@ -62842,6 +75096,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAdminApprovalsInput = {
@@ -62912,6 +75173,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdminApprovalsInput = {
@@ -62971,6 +75239,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTasksInput = {
@@ -63030,6 +75305,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -63089,6 +75371,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -63164,6 +75453,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -63223,6 +75519,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSkillsInput = {
@@ -63282,6 +75585,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSkillsInput = {
@@ -63341,6 +75651,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSkillsInput = {
@@ -63416,6 +75733,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSkillsInput = {
@@ -63475,6 +75799,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPerformanceInput = {
@@ -63534,6 +75865,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPerformanceInput = {
@@ -63593,6 +75931,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPerformanceInput = {
@@ -63668,6 +76013,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPerformanceInput = {
@@ -63727,6 +76079,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectAssignmentCreateWithoutProjectInput = {
@@ -63859,6 +76218,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProjectsInput = {
@@ -63918,6 +76284,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProjectsInput = {
@@ -64034,6 +76407,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -64093,6 +76473,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCreatedNotificationsInput = {
@@ -64152,6 +76539,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedNotificationsInput = {
@@ -64211,6 +76605,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedNotificationsInput = {
@@ -64312,6 +76713,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedNotificationsInput = {
@@ -64371,6 +76779,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type NotificationRecipientUpsertWithWhereUniqueWithoutNotificationInput = {
@@ -64491,6 +76906,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationRecipientsInput = {
@@ -64550,6 +76972,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationRecipientsInput = {
@@ -64676,6 +77105,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationRecipientsInput = {
@@ -64735,6 +77171,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCreatedTicketsInput = {
@@ -64794,6 +77237,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedTicketsInput = {
@@ -64853,6 +77303,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedTicketsInput = {
@@ -64917,6 +77374,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTicketsInput = {
@@ -64976,6 +77440,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTicketsInput = {
@@ -65040,6 +77511,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutResolvedTicketsInput = {
@@ -65099,6 +77577,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutResolvedTicketsInput = {
@@ -65268,6 +77753,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedTicketsInput = {
@@ -65327,6 +77819,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAssignedTicketsInput = {
@@ -65397,6 +77896,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTicketsInput = {
@@ -65456,6 +77962,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutResolvedTicketsInput = {
@@ -65526,6 +78039,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutResolvedTicketsInput = {
@@ -65585,6 +78105,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TicketCommentUpsertWithWhereUniqueWithoutTicketInput = {
@@ -65737,6 +78264,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTicketCommentsInput = {
@@ -65796,6 +78330,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTicketCommentsInput = {
@@ -65922,6 +78463,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTicketCommentsInput = {
@@ -65981,6 +78529,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TicketCreateWithoutAttachmentsInput = {
@@ -66085,6 +78640,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTicketAttachmentsInput = {
@@ -66144,6 +78706,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTicketAttachmentsInput = {
@@ -66270,6 +78839,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTicketAttachmentsInput = {
@@ -66329,6 +78905,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TicketCreateWithoutActivitiesInput = {
@@ -66433,6 +79016,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTicketActivitiesInput = {
@@ -66492,6 +79082,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTicketActivitiesInput = {
@@ -66618,6 +79215,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTicketActivitiesInput = {
@@ -66677,6 +79281,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutMeetingsInput = {
@@ -66736,6 +79347,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMeetingsInput = {
@@ -66795,6 +79413,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMeetingsInput = {
@@ -66870,6 +79495,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMeetingsInput = {
@@ -66929,6 +79561,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLeadingTeamsInput = {
@@ -66988,6 +79627,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeadingTeamsInput = {
@@ -67047,6 +79693,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeadingTeamsInput = {
@@ -67105,6 +79758,44 @@ export namespace Prisma {
 
   export type ChatRoomCreateManyTeamInputEnvelope = {
     data: ChatRoomCreateManyTeamInput | ChatRoomCreateManyTeamInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BoardCreateWithoutTeamInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedBoardsInput
+    lists?: ListCreateNestedManyWithoutBoardInput
+    members?: BoardMemberCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardUncheckedCreateWithoutTeamInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lists?: ListUncheckedCreateNestedManyWithoutBoardInput
+    members?: BoardMemberUncheckedCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarUncheckedCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardCreateOrConnectWithoutTeamInput = {
+    where: BoardWhereUniqueInput
+    create: XOR<BoardCreateWithoutTeamInput, BoardUncheckedCreateWithoutTeamInput>
+  }
+
+  export type BoardCreateManyTeamInputEnvelope = {
+    data: BoardCreateManyTeamInput | BoardCreateManyTeamInput[]
     skipDuplicates?: boolean
   }
 
@@ -67176,6 +79867,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadingTeamsInput = {
@@ -67235,6 +79933,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TeamMemberUpsertWithWhereUniqueWithoutTeamInput = {
@@ -67282,6 +79987,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ChatRoom"> | Date | string
   }
 
+  export type BoardUpsertWithWhereUniqueWithoutTeamInput = {
+    where: BoardWhereUniqueInput
+    update: XOR<BoardUpdateWithoutTeamInput, BoardUncheckedUpdateWithoutTeamInput>
+    create: XOR<BoardCreateWithoutTeamInput, BoardUncheckedCreateWithoutTeamInput>
+  }
+
+  export type BoardUpdateWithWhereUniqueWithoutTeamInput = {
+    where: BoardWhereUniqueInput
+    data: XOR<BoardUpdateWithoutTeamInput, BoardUncheckedUpdateWithoutTeamInput>
+  }
+
+  export type BoardUpdateManyWithWhereWithoutTeamInput = {
+    where: BoardScalarWhereInput
+    data: XOR<BoardUpdateManyMutationInput, BoardUncheckedUpdateManyWithoutTeamInput>
+  }
+
   export type TeamCreateWithoutMembersInput = {
     id?: string
     name: string
@@ -67290,6 +80011,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     leader: UserCreateNestedOneWithoutLeadingTeamsInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTeamInput
+    boards?: BoardCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateWithoutMembersInput = {
@@ -67300,6 +80022,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTeamInput
+    boards?: BoardUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamCreateOrConnectWithoutMembersInput = {
@@ -67364,6 +80087,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTeamsInput = {
@@ -67423,6 +80153,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTeamsInput = {
@@ -67449,6 +80186,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leader?: UserUpdateOneRequiredWithoutLeadingTeamsNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTeamNestedInput
+    boards?: BoardUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateWithoutMembersInput = {
@@ -67459,6 +80197,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTeamNestedInput
+    boards?: BoardUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type UserUpsertWithoutTeamsInput = {
@@ -67529,6 +80268,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamsInput = {
@@ -67588,6 +80334,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TeamCreateWithoutChatRoomsInput = {
@@ -67598,6 +80351,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     leader: UserCreateNestedOneWithoutLeadingTeamsInput
     members?: TeamMemberCreateNestedManyWithoutTeamInput
+    boards?: BoardCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateWithoutChatRoomsInput = {
@@ -67608,6 +80362,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: TeamMemberUncheckedCreateNestedManyWithoutTeamInput
+    boards?: BoardUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamCreateOrConnectWithoutChatRoomsInput = {
@@ -67712,6 +80467,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leader?: UserUpdateOneRequiredWithoutLeadingTeamsNestedInput
     members?: TeamMemberUpdateManyWithoutTeamNestedInput
+    boards?: BoardUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateWithoutChatRoomsInput = {
@@ -67722,6 +80478,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: TeamMemberUncheckedUpdateManyWithoutTeamNestedInput
+    boards?: BoardUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type ChatParticipantUpsertWithWhereUniqueWithoutRoomInput = {
@@ -67840,6 +80597,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatRoomsInput = {
@@ -67899,6 +80663,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatRoomsInput = {
@@ -68007,6 +80778,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatRoomsInput = {
@@ -68066,6 +80844,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ChatMessageCreateWithoutRepliesInput = {
@@ -68251,6 +81036,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -68310,6 +81102,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -68555,6 +81354,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -68614,6 +81420,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MessageReadStatusUpsertWithWhereUniqueWithoutMessageInput = {
@@ -68878,6 +81691,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMessageReactionsInput = {
@@ -68937,6 +81757,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMessageReactionsInput = {
@@ -69065,6 +81892,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMessageReactionsInput = {
@@ -69124,6 +81958,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ChatMessageCreateWithoutMentionsInput = {
@@ -69230,6 +82071,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMessageMentionsInput = {
@@ -69289,6 +82137,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMessageMentionsInput = {
@@ -69417,6 +82272,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMessageMentionsInput = {
@@ -69476,6 +82338,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLastSeenInput = {
@@ -69535,6 +82404,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLastSeenInput = {
@@ -69594,6 +82470,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLastSeenInput = {
@@ -69669,6 +82552,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLastSeenInput = {
@@ -69728,6 +82618,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserLeadsInput = {
@@ -69787,6 +82684,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserLeadsInput = {
@@ -69846,6 +82750,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserLeadsInput = {
@@ -69910,6 +82821,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
     userLeads?: LeadCreateNestedManyWithoutUserInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssignedLeadsInput = {
@@ -69969,6 +82887,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
     messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
     userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssignedLeadsInput = {
@@ -70044,6 +82969,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserLeadsInput = {
@@ -70103,6 +83035,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAssignedLeadsInput = {
@@ -70173,6 +83112,13 @@ export namespace Prisma {
     messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedLeadsInput = {
@@ -70232,6 +83178,2751 @@ export namespace Prisma {
     messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutCreatedBoardsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    teams?: TeamMemberCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientCreateNestedManyWithoutUserInput
+    createdTickets?: TicketCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
+    userLeads?: LeadCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedBoardsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationUncheckedCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientUncheckedCreateNestedManyWithoutUserInput
+    createdTickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketUncheckedCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketUncheckedCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentUncheckedCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
+    userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedBoardsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedBoardsInput, UserUncheckedCreateWithoutCreatedBoardsInput>
+  }
+
+  export type TeamCreateWithoutBoardsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    leader: UserCreateNestedOneWithoutLeadingTeamsInput
+    members?: TeamMemberCreateNestedManyWithoutTeamInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamUncheckedCreateWithoutBoardsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    leaderId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: TeamMemberUncheckedCreateNestedManyWithoutTeamInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamCreateOrConnectWithoutBoardsInput = {
+    where: TeamWhereUniqueInput
+    create: XOR<TeamCreateWithoutBoardsInput, TeamUncheckedCreateWithoutBoardsInput>
+  }
+
+  export type ListCreateWithoutBoardInput = {
+    id?: string
+    title: string
+    position?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cards?: CardCreateNestedManyWithoutListInput
+  }
+
+  export type ListUncheckedCreateWithoutBoardInput = {
+    id?: string
+    title: string
+    position?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cards?: CardUncheckedCreateNestedManyWithoutListInput
+  }
+
+  export type ListCreateOrConnectWithoutBoardInput = {
+    where: ListWhereUniqueInput
+    create: XOR<ListCreateWithoutBoardInput, ListUncheckedCreateWithoutBoardInput>
+  }
+
+  export type ListCreateManyBoardInputEnvelope = {
+    data: ListCreateManyBoardInput | ListCreateManyBoardInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BoardMemberCreateWithoutBoardInput = {
+    id?: string
+    role?: string
+    joinedAt?: Date | string
+    user: UserCreateNestedOneWithoutBoardMembershipsInput
+  }
+
+  export type BoardMemberUncheckedCreateWithoutBoardInput = {
+    id?: string
+    userId: string
+    role?: string
+    joinedAt?: Date | string
+  }
+
+  export type BoardMemberCreateOrConnectWithoutBoardInput = {
+    where: BoardMemberWhereUniqueInput
+    create: XOR<BoardMemberCreateWithoutBoardInput, BoardMemberUncheckedCreateWithoutBoardInput>
+  }
+
+  export type BoardMemberCreateManyBoardInputEnvelope = {
+    data: BoardMemberCreateManyBoardInput | BoardMemberCreateManyBoardInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BoardStarCreateWithoutBoardInput = {
+    id?: string
+    starredAt?: Date | string
+    user: UserCreateNestedOneWithoutBoardStarsInput
+  }
+
+  export type BoardStarUncheckedCreateWithoutBoardInput = {
+    id?: string
+    userId: string
+    starredAt?: Date | string
+  }
+
+  export type BoardStarCreateOrConnectWithoutBoardInput = {
+    where: BoardStarWhereUniqueInput
+    create: XOR<BoardStarCreateWithoutBoardInput, BoardStarUncheckedCreateWithoutBoardInput>
+  }
+
+  export type BoardStarCreateManyBoardInputEnvelope = {
+    data: BoardStarCreateManyBoardInput | BoardStarCreateManyBoardInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutCreatedBoardsInput = {
+    update: XOR<UserUpdateWithoutCreatedBoardsInput, UserUncheckedUpdateWithoutCreatedBoardsInput>
+    create: XOR<UserCreateWithoutCreatedBoardsInput, UserUncheckedCreateWithoutCreatedBoardsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedBoardsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedBoardsInput, UserUncheckedUpdateWithoutCreatedBoardsInput>
+  }
+
+  export type UserUpdateWithoutCreatedBoardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedBoardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUncheckedUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUncheckedUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUncheckedUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUncheckedUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TeamUpsertWithoutBoardsInput = {
+    update: XOR<TeamUpdateWithoutBoardsInput, TeamUncheckedUpdateWithoutBoardsInput>
+    create: XOR<TeamCreateWithoutBoardsInput, TeamUncheckedCreateWithoutBoardsInput>
+    where?: TeamWhereInput
+  }
+
+  export type TeamUpdateToOneWithWhereWithoutBoardsInput = {
+    where?: TeamWhereInput
+    data: XOR<TeamUpdateWithoutBoardsInput, TeamUncheckedUpdateWithoutBoardsInput>
+  }
+
+  export type TeamUpdateWithoutBoardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leader?: UserUpdateOneRequiredWithoutLeadingTeamsNestedInput
+    members?: TeamMemberUpdateManyWithoutTeamNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTeamNestedInput
+  }
+
+  export type TeamUncheckedUpdateWithoutBoardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    leaderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: TeamMemberUncheckedUpdateManyWithoutTeamNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTeamNestedInput
+  }
+
+  export type ListUpsertWithWhereUniqueWithoutBoardInput = {
+    where: ListWhereUniqueInput
+    update: XOR<ListUpdateWithoutBoardInput, ListUncheckedUpdateWithoutBoardInput>
+    create: XOR<ListCreateWithoutBoardInput, ListUncheckedCreateWithoutBoardInput>
+  }
+
+  export type ListUpdateWithWhereUniqueWithoutBoardInput = {
+    where: ListWhereUniqueInput
+    data: XOR<ListUpdateWithoutBoardInput, ListUncheckedUpdateWithoutBoardInput>
+  }
+
+  export type ListUpdateManyWithWhereWithoutBoardInput = {
+    where: ListScalarWhereInput
+    data: XOR<ListUpdateManyMutationInput, ListUncheckedUpdateManyWithoutBoardInput>
+  }
+
+  export type ListScalarWhereInput = {
+    AND?: ListScalarWhereInput | ListScalarWhereInput[]
+    OR?: ListScalarWhereInput[]
+    NOT?: ListScalarWhereInput | ListScalarWhereInput[]
+    id?: StringFilter<"List"> | string
+    title?: StringFilter<"List"> | string
+    position?: IntFilter<"List"> | number
+    boardId?: StringFilter<"List"> | string
+    createdAt?: DateTimeFilter<"List"> | Date | string
+    updatedAt?: DateTimeFilter<"List"> | Date | string
+  }
+
+  export type BoardMemberUpsertWithWhereUniqueWithoutBoardInput = {
+    where: BoardMemberWhereUniqueInput
+    update: XOR<BoardMemberUpdateWithoutBoardInput, BoardMemberUncheckedUpdateWithoutBoardInput>
+    create: XOR<BoardMemberCreateWithoutBoardInput, BoardMemberUncheckedCreateWithoutBoardInput>
+  }
+
+  export type BoardMemberUpdateWithWhereUniqueWithoutBoardInput = {
+    where: BoardMemberWhereUniqueInput
+    data: XOR<BoardMemberUpdateWithoutBoardInput, BoardMemberUncheckedUpdateWithoutBoardInput>
+  }
+
+  export type BoardMemberUpdateManyWithWhereWithoutBoardInput = {
+    where: BoardMemberScalarWhereInput
+    data: XOR<BoardMemberUpdateManyMutationInput, BoardMemberUncheckedUpdateManyWithoutBoardInput>
+  }
+
+  export type BoardStarUpsertWithWhereUniqueWithoutBoardInput = {
+    where: BoardStarWhereUniqueInput
+    update: XOR<BoardStarUpdateWithoutBoardInput, BoardStarUncheckedUpdateWithoutBoardInput>
+    create: XOR<BoardStarCreateWithoutBoardInput, BoardStarUncheckedCreateWithoutBoardInput>
+  }
+
+  export type BoardStarUpdateWithWhereUniqueWithoutBoardInput = {
+    where: BoardStarWhereUniqueInput
+    data: XOR<BoardStarUpdateWithoutBoardInput, BoardStarUncheckedUpdateWithoutBoardInput>
+  }
+
+  export type BoardStarUpdateManyWithWhereWithoutBoardInput = {
+    where: BoardStarScalarWhereInput
+    data: XOR<BoardStarUpdateManyMutationInput, BoardStarUncheckedUpdateManyWithoutBoardInput>
+  }
+
+  export type BoardCreateWithoutMembersInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedBoardsInput
+    team?: TeamCreateNestedOneWithoutBoardsInput
+    lists?: ListCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardUncheckedCreateWithoutMembersInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdById: string
+    teamId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lists?: ListUncheckedCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarUncheckedCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardCreateOrConnectWithoutMembersInput = {
+    where: BoardWhereUniqueInput
+    create: XOR<BoardCreateWithoutMembersInput, BoardUncheckedCreateWithoutMembersInput>
+  }
+
+  export type UserCreateWithoutBoardMembershipsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    teams?: TeamMemberCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientCreateNestedManyWithoutUserInput
+    createdTickets?: TicketCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
+    userLeads?: LeadCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutBoardMembershipsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationUncheckedCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientUncheckedCreateNestedManyWithoutUserInput
+    createdTickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketUncheckedCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketUncheckedCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentUncheckedCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
+    userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutBoardMembershipsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBoardMembershipsInput, UserUncheckedCreateWithoutBoardMembershipsInput>
+  }
+
+  export type BoardUpsertWithoutMembersInput = {
+    update: XOR<BoardUpdateWithoutMembersInput, BoardUncheckedUpdateWithoutMembersInput>
+    create: XOR<BoardCreateWithoutMembersInput, BoardUncheckedCreateWithoutMembersInput>
+    where?: BoardWhereInput
+  }
+
+  export type BoardUpdateToOneWithWhereWithoutMembersInput = {
+    where?: BoardWhereInput
+    data: XOR<BoardUpdateWithoutMembersInput, BoardUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type BoardUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedBoardsNestedInput
+    team?: TeamUpdateOneWithoutBoardsNestedInput
+    lists?: ListUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdById?: StringFieldUpdateOperationsInput | string
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lists?: ListUncheckedUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUncheckedUpdateManyWithoutBoardNestedInput
+  }
+
+  export type UserUpsertWithoutBoardMembershipsInput = {
+    update: XOR<UserUpdateWithoutBoardMembershipsInput, UserUncheckedUpdateWithoutBoardMembershipsInput>
+    create: XOR<UserCreateWithoutBoardMembershipsInput, UserUncheckedCreateWithoutBoardMembershipsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBoardMembershipsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBoardMembershipsInput, UserUncheckedUpdateWithoutBoardMembershipsInput>
+  }
+
+  export type UserUpdateWithoutBoardMembershipsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBoardMembershipsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUncheckedUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUncheckedUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUncheckedUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUncheckedUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type BoardCreateWithoutStarredByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedBoardsInput
+    team?: TeamCreateNestedOneWithoutBoardsInput
+    lists?: ListCreateNestedManyWithoutBoardInput
+    members?: BoardMemberCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardUncheckedCreateWithoutStarredByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdById: string
+    teamId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lists?: ListUncheckedCreateNestedManyWithoutBoardInput
+    members?: BoardMemberUncheckedCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardCreateOrConnectWithoutStarredByInput = {
+    where: BoardWhereUniqueInput
+    create: XOR<BoardCreateWithoutStarredByInput, BoardUncheckedCreateWithoutStarredByInput>
+  }
+
+  export type UserCreateWithoutBoardStarsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    teams?: TeamMemberCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientCreateNestedManyWithoutUserInput
+    createdTickets?: TicketCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
+    userLeads?: LeadCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutBoardStarsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationUncheckedCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientUncheckedCreateNestedManyWithoutUserInput
+    createdTickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketUncheckedCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketUncheckedCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentUncheckedCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
+    userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutBoardStarsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBoardStarsInput, UserUncheckedCreateWithoutBoardStarsInput>
+  }
+
+  export type BoardUpsertWithoutStarredByInput = {
+    update: XOR<BoardUpdateWithoutStarredByInput, BoardUncheckedUpdateWithoutStarredByInput>
+    create: XOR<BoardCreateWithoutStarredByInput, BoardUncheckedCreateWithoutStarredByInput>
+    where?: BoardWhereInput
+  }
+
+  export type BoardUpdateToOneWithWhereWithoutStarredByInput = {
+    where?: BoardWhereInput
+    data: XOR<BoardUpdateWithoutStarredByInput, BoardUncheckedUpdateWithoutStarredByInput>
+  }
+
+  export type BoardUpdateWithoutStarredByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedBoardsNestedInput
+    team?: TeamUpdateOneWithoutBoardsNestedInput
+    lists?: ListUpdateManyWithoutBoardNestedInput
+    members?: BoardMemberUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardUncheckedUpdateWithoutStarredByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdById?: StringFieldUpdateOperationsInput | string
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lists?: ListUncheckedUpdateManyWithoutBoardNestedInput
+    members?: BoardMemberUncheckedUpdateManyWithoutBoardNestedInput
+  }
+
+  export type UserUpsertWithoutBoardStarsInput = {
+    update: XOR<UserUpdateWithoutBoardStarsInput, UserUncheckedUpdateWithoutBoardStarsInput>
+    create: XOR<UserCreateWithoutBoardStarsInput, UserUncheckedCreateWithoutBoardStarsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBoardStarsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBoardStarsInput, UserUncheckedUpdateWithoutBoardStarsInput>
+  }
+
+  export type UserUpdateWithoutBoardStarsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBoardStarsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUncheckedUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUncheckedUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUncheckedUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUncheckedUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type BoardCreateWithoutListsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedBoardsInput
+    team?: TeamCreateNestedOneWithoutBoardsInput
+    members?: BoardMemberCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardUncheckedCreateWithoutListsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdById: string
+    teamId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: BoardMemberUncheckedCreateNestedManyWithoutBoardInput
+    starredBy?: BoardStarUncheckedCreateNestedManyWithoutBoardInput
+  }
+
+  export type BoardCreateOrConnectWithoutListsInput = {
+    where: BoardWhereUniqueInput
+    create: XOR<BoardCreateWithoutListsInput, BoardUncheckedCreateWithoutListsInput>
+  }
+
+  export type CardCreateWithoutListInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedTo?: UserCreateNestedOneWithoutAssignedCardsInput
+    createdBy: UserCreateNestedOneWithoutCreatedCardsInput
+    comments?: CardCommentCreateNestedManyWithoutCardInput
+    activities?: CardActivityCreateNestedManyWithoutCardInput
+  }
+
+  export type CardUncheckedCreateWithoutListInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    assignedToId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    comments?: CardCommentUncheckedCreateNestedManyWithoutCardInput
+    activities?: CardActivityUncheckedCreateNestedManyWithoutCardInput
+  }
+
+  export type CardCreateOrConnectWithoutListInput = {
+    where: CardWhereUniqueInput
+    create: XOR<CardCreateWithoutListInput, CardUncheckedCreateWithoutListInput>
+  }
+
+  export type CardCreateManyListInputEnvelope = {
+    data: CardCreateManyListInput | CardCreateManyListInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BoardUpsertWithoutListsInput = {
+    update: XOR<BoardUpdateWithoutListsInput, BoardUncheckedUpdateWithoutListsInput>
+    create: XOR<BoardCreateWithoutListsInput, BoardUncheckedCreateWithoutListsInput>
+    where?: BoardWhereInput
+  }
+
+  export type BoardUpdateToOneWithWhereWithoutListsInput = {
+    where?: BoardWhereInput
+    data: XOR<BoardUpdateWithoutListsInput, BoardUncheckedUpdateWithoutListsInput>
+  }
+
+  export type BoardUpdateWithoutListsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedBoardsNestedInput
+    team?: TeamUpdateOneWithoutBoardsNestedInput
+    members?: BoardMemberUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardUncheckedUpdateWithoutListsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdById?: StringFieldUpdateOperationsInput | string
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: BoardMemberUncheckedUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUncheckedUpdateManyWithoutBoardNestedInput
+  }
+
+  export type CardUpsertWithWhereUniqueWithoutListInput = {
+    where: CardWhereUniqueInput
+    update: XOR<CardUpdateWithoutListInput, CardUncheckedUpdateWithoutListInput>
+    create: XOR<CardCreateWithoutListInput, CardUncheckedCreateWithoutListInput>
+  }
+
+  export type CardUpdateWithWhereUniqueWithoutListInput = {
+    where: CardWhereUniqueInput
+    data: XOR<CardUpdateWithoutListInput, CardUncheckedUpdateWithoutListInput>
+  }
+
+  export type CardUpdateManyWithWhereWithoutListInput = {
+    where: CardScalarWhereInput
+    data: XOR<CardUpdateManyMutationInput, CardUncheckedUpdateManyWithoutListInput>
+  }
+
+  export type ListCreateWithoutCardsInput = {
+    id?: string
+    title: string
+    position?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    board: BoardCreateNestedOneWithoutListsInput
+  }
+
+  export type ListUncheckedCreateWithoutCardsInput = {
+    id?: string
+    title: string
+    position?: number
+    boardId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ListCreateOrConnectWithoutCardsInput = {
+    where: ListWhereUniqueInput
+    create: XOR<ListCreateWithoutCardsInput, ListUncheckedCreateWithoutCardsInput>
+  }
+
+  export type UserCreateWithoutAssignedCardsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    teams?: TeamMemberCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientCreateNestedManyWithoutUserInput
+    createdTickets?: TicketCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
+    userLeads?: LeadCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAssignedCardsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationUncheckedCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientUncheckedCreateNestedManyWithoutUserInput
+    createdTickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketUncheckedCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketUncheckedCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentUncheckedCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
+    userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAssignedCardsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAssignedCardsInput, UserUncheckedCreateWithoutAssignedCardsInput>
+  }
+
+  export type UserCreateWithoutCreatedCardsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    teams?: TeamMemberCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientCreateNestedManyWithoutUserInput
+    createdTickets?: TicketCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
+    userLeads?: LeadCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedCardsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationUncheckedCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientUncheckedCreateNestedManyWithoutUserInput
+    createdTickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketUncheckedCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketUncheckedCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentUncheckedCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
+    userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedCardsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedCardsInput, UserUncheckedCreateWithoutCreatedCardsInput>
+  }
+
+  export type CardCommentCreateWithoutCardInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    author: UserCreateNestedOneWithoutCardCommentsInput
+  }
+
+  export type CardCommentUncheckedCreateWithoutCardInput = {
+    id?: string
+    content: string
+    authorId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardCommentCreateOrConnectWithoutCardInput = {
+    where: CardCommentWhereUniqueInput
+    create: XOR<CardCommentCreateWithoutCardInput, CardCommentUncheckedCreateWithoutCardInput>
+  }
+
+  export type CardCommentCreateManyCardInputEnvelope = {
+    data: CardCommentCreateManyCardInput | CardCommentCreateManyCardInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CardActivityCreateWithoutCardInput = {
+    id?: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutCardActivitiesInput
+  }
+
+  export type CardActivityUncheckedCreateWithoutCardInput = {
+    id?: string
+    userId: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CardActivityCreateOrConnectWithoutCardInput = {
+    where: CardActivityWhereUniqueInput
+    create: XOR<CardActivityCreateWithoutCardInput, CardActivityUncheckedCreateWithoutCardInput>
+  }
+
+  export type CardActivityCreateManyCardInputEnvelope = {
+    data: CardActivityCreateManyCardInput | CardActivityCreateManyCardInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ListUpsertWithoutCardsInput = {
+    update: XOR<ListUpdateWithoutCardsInput, ListUncheckedUpdateWithoutCardsInput>
+    create: XOR<ListCreateWithoutCardsInput, ListUncheckedCreateWithoutCardsInput>
+    where?: ListWhereInput
+  }
+
+  export type ListUpdateToOneWithWhereWithoutCardsInput = {
+    where?: ListWhereInput
+    data: XOR<ListUpdateWithoutCardsInput, ListUncheckedUpdateWithoutCardsInput>
+  }
+
+  export type ListUpdateWithoutCardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    board?: BoardUpdateOneRequiredWithoutListsNestedInput
+  }
+
+  export type ListUncheckedUpdateWithoutCardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    boardId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutAssignedCardsInput = {
+    update: XOR<UserUpdateWithoutAssignedCardsInput, UserUncheckedUpdateWithoutAssignedCardsInput>
+    create: XOR<UserCreateWithoutAssignedCardsInput, UserUncheckedCreateWithoutAssignedCardsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAssignedCardsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAssignedCardsInput, UserUncheckedUpdateWithoutAssignedCardsInput>
+  }
+
+  export type UserUpdateWithoutAssignedCardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAssignedCardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUncheckedUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUncheckedUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUncheckedUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUncheckedUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedCardsInput = {
+    update: XOR<UserUpdateWithoutCreatedCardsInput, UserUncheckedUpdateWithoutCreatedCardsInput>
+    create: XOR<UserCreateWithoutCreatedCardsInput, UserUncheckedCreateWithoutCreatedCardsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedCardsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedCardsInput, UserUncheckedUpdateWithoutCreatedCardsInput>
+  }
+
+  export type UserUpdateWithoutCreatedCardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedCardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUncheckedUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUncheckedUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUncheckedUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUncheckedUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CardCommentUpsertWithWhereUniqueWithoutCardInput = {
+    where: CardCommentWhereUniqueInput
+    update: XOR<CardCommentUpdateWithoutCardInput, CardCommentUncheckedUpdateWithoutCardInput>
+    create: XOR<CardCommentCreateWithoutCardInput, CardCommentUncheckedCreateWithoutCardInput>
+  }
+
+  export type CardCommentUpdateWithWhereUniqueWithoutCardInput = {
+    where: CardCommentWhereUniqueInput
+    data: XOR<CardCommentUpdateWithoutCardInput, CardCommentUncheckedUpdateWithoutCardInput>
+  }
+
+  export type CardCommentUpdateManyWithWhereWithoutCardInput = {
+    where: CardCommentScalarWhereInput
+    data: XOR<CardCommentUpdateManyMutationInput, CardCommentUncheckedUpdateManyWithoutCardInput>
+  }
+
+  export type CardActivityUpsertWithWhereUniqueWithoutCardInput = {
+    where: CardActivityWhereUniqueInput
+    update: XOR<CardActivityUpdateWithoutCardInput, CardActivityUncheckedUpdateWithoutCardInput>
+    create: XOR<CardActivityCreateWithoutCardInput, CardActivityUncheckedCreateWithoutCardInput>
+  }
+
+  export type CardActivityUpdateWithWhereUniqueWithoutCardInput = {
+    where: CardActivityWhereUniqueInput
+    data: XOR<CardActivityUpdateWithoutCardInput, CardActivityUncheckedUpdateWithoutCardInput>
+  }
+
+  export type CardActivityUpdateManyWithWhereWithoutCardInput = {
+    where: CardActivityScalarWhereInput
+    data: XOR<CardActivityUpdateManyMutationInput, CardActivityUncheckedUpdateManyWithoutCardInput>
+  }
+
+  export type CardCreateWithoutCommentsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    list: ListCreateNestedOneWithoutCardsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedCardsInput
+    createdBy: UserCreateNestedOneWithoutCreatedCardsInput
+    activities?: CardActivityCreateNestedManyWithoutCardInput
+  }
+
+  export type CardUncheckedCreateWithoutCommentsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    listId: string
+    assignedToId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: CardActivityUncheckedCreateNestedManyWithoutCardInput
+  }
+
+  export type CardCreateOrConnectWithoutCommentsInput = {
+    where: CardWhereUniqueInput
+    create: XOR<CardCreateWithoutCommentsInput, CardUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type UserCreateWithoutCardCommentsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    teams?: TeamMemberCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientCreateNestedManyWithoutUserInput
+    createdTickets?: TicketCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
+    userLeads?: LeadCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardActivities?: CardActivityCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCardCommentsInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationUncheckedCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientUncheckedCreateNestedManyWithoutUserInput
+    createdTickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketUncheckedCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketUncheckedCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentUncheckedCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
+    userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardActivities?: CardActivityUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCardCommentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCardCommentsInput, UserUncheckedCreateWithoutCardCommentsInput>
+  }
+
+  export type CardUpsertWithoutCommentsInput = {
+    update: XOR<CardUpdateWithoutCommentsInput, CardUncheckedUpdateWithoutCommentsInput>
+    create: XOR<CardCreateWithoutCommentsInput, CardUncheckedCreateWithoutCommentsInput>
+    where?: CardWhereInput
+  }
+
+  export type CardUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: CardWhereInput
+    data: XOR<CardUpdateWithoutCommentsInput, CardUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type CardUpdateWithoutCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    list?: ListUpdateOneRequiredWithoutCardsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedCardsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedCardsNestedInput
+    activities?: CardActivityUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateWithoutCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    listId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: CardActivityUncheckedUpdateManyWithoutCardNestedInput
+  }
+
+  export type UserUpsertWithoutCardCommentsInput = {
+    update: XOR<UserUpdateWithoutCardCommentsInput, UserUncheckedUpdateWithoutCardCommentsInput>
+    create: XOR<UserCreateWithoutCardCommentsInput, UserUncheckedCreateWithoutCardCommentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCardCommentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCardCommentsInput, UserUncheckedUpdateWithoutCardCommentsInput>
+  }
+
+  export type UserUpdateWithoutCardCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCardCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUncheckedUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUncheckedUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUncheckedUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUncheckedUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CardCreateWithoutActivitiesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    list: ListCreateNestedOneWithoutCardsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedCardsInput
+    createdBy: UserCreateNestedOneWithoutCreatedCardsInput
+    comments?: CardCommentCreateNestedManyWithoutCardInput
+  }
+
+  export type CardUncheckedCreateWithoutActivitiesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    listId: string
+    assignedToId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    comments?: CardCommentUncheckedCreateNestedManyWithoutCardInput
+  }
+
+  export type CardCreateOrConnectWithoutActivitiesInput = {
+    where: CardWhereUniqueInput
+    create: XOR<CardCreateWithoutActivitiesInput, CardUncheckedCreateWithoutActivitiesInput>
+  }
+
+  export type UserCreateWithoutCardActivitiesInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    reportsTo?: UserCreateNestedOneWithoutSubordinatesInput
+    subordinates?: UserCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactCreateNestedOneWithoutUserInput
+    education?: EducationCreateNestedManyWithoutUserInput
+    experience?: ExperienceCreateNestedManyWithoutUserInput
+    documents?: DocumentCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsCreateNestedOneWithoutUserInput
+    attendance?: AttendanceCreateNestedManyWithoutUserInput
+    leaves?: LeaveCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    skills?: SkillCreateNestedManyWithoutUserInput
+    performance?: PerformanceCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentCreateNestedManyWithoutUserInput
+    teams?: TeamMemberCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientCreateNestedManyWithoutUserInput
+    createdTickets?: TicketCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionCreateNestedManyWithoutUserInput
+    userLeads?: LeadCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarCreateNestedManyWithoutUserInput
+    assignedCards?: CardCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserUncheckedCreateWithoutCardActivitiesInput = {
+    id?: string
+    username: string
+    firstName: string
+    lastName: string
+    email: string
+    cnic: string
+    pfp?: string | null
+    password: string
+    salary: number
+    address: string
+    department: string
+    position: string
+    joinDate: Date | string
+    phone?: string | null
+    legacyRole?: $Enums.LegacyRole
+    status?: string
+    dateOfBirth?: Date | string | null
+    gender?: $Enums.Gender | null
+    maritalStatus?: $Enums.MaritalStatus | null
+    reportsToId?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    onboardingCompleted?: boolean
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    subordinates?: UserUncheckedCreateNestedManyWithoutReportsToInput
+    emergencyContact?: EmergencyContactUncheckedCreateNestedOneWithoutUserInput
+    education?: EducationUncheckedCreateNestedManyWithoutUserInput
+    experience?: ExperienceUncheckedCreateNestedManyWithoutUserInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
+    bankDetails?: BankDetailsUncheckedCreateNestedOneWithoutUserInput
+    attendance?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    skills?: SkillUncheckedCreateNestedManyWithoutUserInput
+    performance?: PerformanceUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+    teams?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    leadingTeams?: TeamUncheckedCreateNestedManyWithoutLeaderInput
+    createdNotifications?: NotificationUncheckedCreateNestedManyWithoutCreatedByInput
+    notificationRecipients?: NotificationRecipientUncheckedCreateNestedManyWithoutUserInput
+    createdTickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedTickets?: TicketUncheckedCreateNestedManyWithoutAssignedToInput
+    resolvedTickets?: TicketUncheckedCreateNestedManyWithoutResolvedByInput
+    ticketComments?: TicketCommentUncheckedCreateNestedManyWithoutAuthorInput
+    ticketAttachments?: TicketAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+    ticketActivities?: TicketActivityUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
+    managerApprovals?: LeaveUncheckedCreateNestedManyWithoutManagerInput
+    adminApprovals?: LeaveUncheckedCreateNestedManyWithoutAdminInput
+    sentMessages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    chatRooms?: ChatParticipantUncheckedCreateNestedManyWithoutUserInput
+    lastSeen?: UserLastSeenUncheckedCreateNestedOneWithoutUserInput
+    messageReactions?: MessageReactionUncheckedCreateNestedManyWithoutUserInput
+    messageMentions?: MessageMentionUncheckedCreateNestedManyWithoutUserInput
+    userLeads?: LeadUncheckedCreateNestedManyWithoutUserInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssigneeInput
+    createdBoards?: BoardUncheckedCreateNestedManyWithoutCreatedByInput
+    boardMemberships?: BoardMemberUncheckedCreateNestedManyWithoutUserInput
+    boardStars?: BoardStarUncheckedCreateNestedManyWithoutUserInput
+    assignedCards?: CardUncheckedCreateNestedManyWithoutAssignedToInput
+    createdCards?: CardUncheckedCreateNestedManyWithoutCreatedByInput
+    cardComments?: CardCommentUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutCardActivitiesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCardActivitiesInput, UserUncheckedCreateWithoutCardActivitiesInput>
+  }
+
+  export type CardUpsertWithoutActivitiesInput = {
+    update: XOR<CardUpdateWithoutActivitiesInput, CardUncheckedUpdateWithoutActivitiesInput>
+    create: XOR<CardCreateWithoutActivitiesInput, CardUncheckedCreateWithoutActivitiesInput>
+    where?: CardWhereInput
+  }
+
+  export type CardUpdateToOneWithWhereWithoutActivitiesInput = {
+    where?: CardWhereInput
+    data: XOR<CardUpdateWithoutActivitiesInput, CardUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type CardUpdateWithoutActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    list?: ListUpdateOneRequiredWithoutCardsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedCardsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedCardsNestedInput
+    comments?: CardCommentUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateWithoutActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    listId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    comments?: CardCommentUncheckedUpdateManyWithoutCardNestedInput
+  }
+
+  export type UserUpsertWithoutCardActivitiesInput = {
+    update: XOR<UserUpdateWithoutCardActivitiesInput, UserUncheckedUpdateWithoutCardActivitiesInput>
+    create: XOR<UserCreateWithoutCardActivitiesInput, UserUncheckedCreateWithoutCardActivitiesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCardActivitiesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCardActivitiesInput, UserUncheckedUpdateWithoutCardActivitiesInput>
+  }
+
+  export type UserUpdateWithoutCardActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    reportsTo?: UserUpdateOneWithoutSubordinatesNestedInput
+    subordinates?: UserUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUpdateOneWithoutUserNestedInput
+    education?: EducationUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUpdateManyWithoutUserNestedInput
+    documents?: DocumentUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    skills?: SkillUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCardActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    cnic?: StringFieldUpdateOperationsInput | string
+    pfp?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    salary?: FloatFieldUpdateOperationsInput | number
+    address?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
+    joinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyRole?: EnumLegacyRoleFieldUpdateOperationsInput | $Enums.LegacyRole
+    status?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    maritalStatus?: NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
+    reportsToId?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    subordinates?: UserUncheckedUpdateManyWithoutReportsToNestedInput
+    emergencyContact?: EmergencyContactUncheckedUpdateOneWithoutUserNestedInput
+    education?: EducationUncheckedUpdateManyWithoutUserNestedInput
+    experience?: ExperienceUncheckedUpdateManyWithoutUserNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
+    bankDetails?: BankDetailsUncheckedUpdateOneWithoutUserNestedInput
+    attendance?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    skills?: SkillUncheckedUpdateManyWithoutUserNestedInput
+    performance?: PerformanceUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    teams?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    leadingTeams?: TeamUncheckedUpdateManyWithoutLeaderNestedInput
+    createdNotifications?: NotificationUncheckedUpdateManyWithoutCreatedByNestedInput
+    notificationRecipients?: NotificationRecipientUncheckedUpdateManyWithoutUserNestedInput
+    createdTickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedTickets?: TicketUncheckedUpdateManyWithoutAssignedToNestedInput
+    resolvedTickets?: TicketUncheckedUpdateManyWithoutResolvedByNestedInput
+    ticketComments?: TicketCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    ticketAttachments?: TicketAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+    ticketActivities?: TicketActivityUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+    managerApprovals?: LeaveUncheckedUpdateManyWithoutManagerNestedInput
+    adminApprovals?: LeaveUncheckedUpdateManyWithoutAdminNestedInput
+    sentMessages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    chatRooms?: ChatParticipantUncheckedUpdateManyWithoutUserNestedInput
+    lastSeen?: UserLastSeenUncheckedUpdateOneWithoutUserNestedInput
+    messageReactions?: MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+    messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+    userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserRoleCreateManyUserInput = {
@@ -70305,6 +85996,9 @@ export namespace Prisma {
     checkInTime?: Date | string | null
     checkOutTime?: Date | string | null
     totalHours?: number | null
+    breakStartTime?: Date | string | null
+    breakEndTime?: Date | string | null
+    totalBreakTime?: number | null
     date?: Date | string
     status?: string
     createdAt?: Date | string
@@ -70607,6 +86301,78 @@ export namespace Prisma {
     status?: string | null
   }
 
+  export type BoardCreateManyCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    teamId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BoardMemberCreateManyUserInput = {
+    id?: string
+    boardId: string
+    role?: string
+    joinedAt?: Date | string
+  }
+
+  export type BoardStarCreateManyUserInput = {
+    id?: string
+    boardId: string
+    starredAt?: Date | string
+  }
+
+  export type CardCreateManyAssignedToInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    listId: string
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardCreateManyCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    listId: string
+    assignedToId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardCommentCreateManyAuthorInput = {
+    id?: string
+    content: string
+    cardId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardActivityCreateManyUserInput = {
+    id?: string
+    cardId: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+  }
+
   export type UserRoleUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70685,6 +86451,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUpdateManyWithoutUserNestedInput
     userLeads?: LeadUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsToInput = {
@@ -70744,6 +86517,13 @@ export namespace Prisma {
     messageMentions?: MessageMentionUncheckedUpdateManyWithoutUserNestedInput
     userLeads?: LeadUncheckedUpdateManyWithoutUserNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssigneeNestedInput
+    createdBoards?: BoardUncheckedUpdateManyWithoutCreatedByNestedInput
+    boardMemberships?: BoardMemberUncheckedUpdateManyWithoutUserNestedInput
+    boardStars?: BoardStarUncheckedUpdateManyWithoutUserNestedInput
+    assignedCards?: CardUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdCards?: CardUncheckedUpdateManyWithoutCreatedByNestedInput
+    cardComments?: CardCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    cardActivities?: CardActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutReportsToInput = {
@@ -70876,6 +86656,9 @@ export namespace Prisma {
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    breakStartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    breakEndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBreakTime?: NullableFloatFieldUpdateOperationsInput | number | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70887,6 +86670,9 @@ export namespace Prisma {
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    breakStartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    breakEndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBreakTime?: NullableFloatFieldUpdateOperationsInput | number | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70898,6 +86684,9 @@ export namespace Prisma {
     checkInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    breakStartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    breakEndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBreakTime?: NullableFloatFieldUpdateOperationsInput | number | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71083,6 +86872,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: TeamMemberUpdateManyWithoutTeamNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTeamNestedInput
+    boards?: BoardUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateWithoutLeaderInput = {
@@ -71093,6 +86883,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: TeamMemberUncheckedUpdateManyWithoutTeamNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTeamNestedInput
+    boards?: BoardUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateManyWithoutLeaderInput = {
@@ -71824,6 +87615,236 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type BoardUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamUpdateOneWithoutBoardsNestedInput
+    lists?: ListUpdateManyWithoutBoardNestedInput
+    members?: BoardMemberUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lists?: ListUncheckedUpdateManyWithoutBoardNestedInput
+    members?: BoardMemberUncheckedUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUncheckedUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardMemberUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    board?: BoardUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type BoardMemberUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    boardId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardMemberUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    boardId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardStarUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    board?: BoardUpdateOneRequiredWithoutStarredByNestedInput
+  }
+
+  export type BoardStarUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    boardId?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardStarUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    boardId?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    list?: ListUpdateOneRequiredWithoutCardsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedCardsNestedInput
+    comments?: CardCommentUpdateManyWithoutCardNestedInput
+    activities?: CardActivityUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    listId?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    comments?: CardCommentUncheckedUpdateManyWithoutCardNestedInput
+    activities?: CardActivityUncheckedUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateManyWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    listId?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    list?: ListUpdateOneRequiredWithoutCardsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedCardsNestedInput
+    comments?: CardCommentUpdateManyWithoutCardNestedInput
+    activities?: CardActivityUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    listId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    comments?: CardCommentUncheckedUpdateManyWithoutCardNestedInput
+    activities?: CardActivityUncheckedUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    listId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCommentUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    card?: CardUpdateOneRequiredWithoutCommentsNestedInput
+  }
+
+  export type CardCommentUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCommentUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardActivityUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    card?: CardUpdateOneRequiredWithoutActivitiesNestedInput
+  }
+
+  export type CardActivityUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardActivityUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserRoleCreateManyRoleInput = {
     id?: string
     userId: string
@@ -72107,6 +88128,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type BoardCreateManyTeamInput = {
+    id?: string
+    title: string
+    description?: string | null
+    background?: string | null
+    visibility?: $Enums.BoardVisibility
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type TeamMemberUpdateWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72152,6 +88184,45 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumChatRoomTypeFieldUpdateOperationsInput | $Enums.ChatRoomType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedBoardsNestedInput
+    lists?: ListUpdateManyWithoutBoardNestedInput
+    members?: BoardMemberUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardUncheckedUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lists?: ListUncheckedUpdateManyWithoutBoardNestedInput
+    members?: BoardMemberUncheckedUpdateManyWithoutBoardNestedInput
+    starredBy?: BoardStarUncheckedUpdateManyWithoutBoardNestedInput
+  }
+
+  export type BoardUncheckedUpdateManyWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    background?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+    createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -72413,6 +88484,228 @@ export namespace Prisma {
   export type MessageMentionUncheckedUpdateManyWithoutMessageInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ListCreateManyBoardInput = {
+    id?: string
+    title: string
+    position?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BoardMemberCreateManyBoardInput = {
+    id?: string
+    userId: string
+    role?: string
+    joinedAt?: Date | string
+  }
+
+  export type BoardStarCreateManyBoardInput = {
+    id?: string
+    userId: string
+    starredAt?: Date | string
+  }
+
+  export type ListUpdateWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cards?: CardUpdateManyWithoutListNestedInput
+  }
+
+  export type ListUncheckedUpdateWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cards?: CardUncheckedUpdateManyWithoutListNestedInput
+  }
+
+  export type ListUncheckedUpdateManyWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    position?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardMemberUpdateWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutBoardMembershipsNestedInput
+  }
+
+  export type BoardMemberUncheckedUpdateWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardMemberUncheckedUpdateManyWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardStarUpdateWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutBoardStarsNestedInput
+  }
+
+  export type BoardStarUncheckedUpdateWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BoardStarUncheckedUpdateManyWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    starredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCreateManyListInput = {
+    id?: string
+    title: string
+    description?: string | null
+    position?: number
+    priority?: $Enums.CardPriority
+    dueDate?: Date | string | null
+    labels?: CardCreatelabelsInput | string[]
+    attachments?: CardCreateattachmentsInput | string[]
+    assignedToId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardUpdateWithoutListInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedTo?: UserUpdateOneWithoutAssignedCardsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedCardsNestedInput
+    comments?: CardCommentUpdateManyWithoutCardNestedInput
+    activities?: CardActivityUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateWithoutListInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    comments?: CardCommentUncheckedUpdateManyWithoutCardNestedInput
+    activities?: CardActivityUncheckedUpdateManyWithoutCardNestedInput
+  }
+
+  export type CardUncheckedUpdateManyWithoutListInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    priority?: EnumCardPriorityFieldUpdateOperationsInput | $Enums.CardPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labels?: CardUpdatelabelsInput | string[]
+    attachments?: CardUpdateattachmentsInput | string[]
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCommentCreateManyCardInput = {
+    id?: string
+    content: string
+    authorId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CardActivityCreateManyCardInput = {
+    id?: string
+    userId: string
+    action: string
+    description: string
+    oldValue?: string | null
+    newValue?: string | null
+    createdAt?: Date | string
+  }
+
+  export type CardCommentUpdateWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: UserUpdateOneRequiredWithoutCardCommentsNestedInput
+  }
+
+  export type CardCommentUncheckedUpdateWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCommentUncheckedUpdateManyWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardActivityUpdateWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCardActivitiesNestedInput
+  }
+
+  export type CardActivityUncheckedUpdateWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardActivityUncheckedUpdateManyWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

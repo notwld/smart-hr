@@ -54,8 +54,6 @@ class WebSocketServer {
 
   private setupEventHandlers() {
     this.io.on('connection', async (socket) => {
-      console.log('User connected:', socket.id);
-
       // Authenticate user
       socket.on('authenticate', async (token: string) => {
         try {
@@ -76,7 +74,6 @@ class WebSocketServer {
             this.broadcastUserPresence(user.id, true);
             
             socket.emit('authenticated', { userId: user.id });
-            console.log('User authenticated:', user.id);
           } else {
             socket.emit('authentication_error', 'Invalid token');
           }
@@ -91,8 +88,7 @@ class WebSocketServer {
         const userId = socket.data.userId;
         if (userId) {
           socket.join(roomId);
-          console.log(`User ${userId} joined room ${roomId}`);
-          
+
           // Mark messages as read
           await this.markMessagesAsRead(roomId, userId);
         }
@@ -101,7 +97,6 @@ class WebSocketServer {
       // Leave chat room
       socket.on('leave_room', (roomId: string) => {
         socket.leave(roomId);
-        console.log(`User left room ${roomId}`);
       });
 
       // Send message
@@ -229,7 +224,6 @@ class WebSocketServer {
           // Broadcast user offline status
           this.broadcastUserPresence(userId, false);
         }
-        console.log('User disconnected:', socket.id);
       });
     });
   }

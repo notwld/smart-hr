@@ -108,6 +108,14 @@ model User {
   // Lead relationships
   userLeads              Lead[]                  @relation("UserLeads")
   assignedLeads          Lead[]                  @relation("LeadAssignee")
+  // Kanban relationships
+  createdBoards          Board[]                 @relation("BoardCreator")
+  boardMemberships       BoardMember[]
+  boardStars             BoardStar[]
+  assignedCards          Card[]                  @relation("CardAssignee")
+  createdCards           Card[]                  @relation("CardCreator")
+  cardComments           CardComment[]           @relation("CardCommentAuthor")
+  cardActivities         CardActivity[]          @relation("CardActivityUser")
 }
 
 // New models for the roles and permissions system
@@ -223,16 +231,19 @@ model BankDetails {
 }
 
 model Attendance {
-  id           String    @id @default(cuid())
-  userId       String
-  user         User      @relation(fields: [userId], references: [id])
-  checkInTime  DateTime?
-  checkOutTime DateTime?
-  totalHours   Float?
-  date         DateTime  @default(now())
-  status       String    @default("PRESENT")
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  checkInTime    DateTime?
+  checkOutTime   DateTime?
+  totalHours     Float?
+  breakStartTime DateTime?
+  breakEndTime   DateTime?
+  totalBreakTime Float? // Total break time in minutes
+  date           DateTime  @default(now())
+  status         String    @default("PRESENT")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   @@unique([userId, date])
 }
@@ -437,6 +448,7 @@ model Team {
   leader      User         @relation("TeamLeader", fields: [leaderId], references: [id])
   members     TeamMember[]
   chatRooms   ChatRoom[] // Team chat rooms
+  boards      Board[] // Team Kanban boards
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -660,4 +672,126 @@ model Lead {
   assigneeId String?
   status     String?
   assignee   User?    @relation("LeadAssignee", fields: [assigneeId], references: [id])
+}
+
+// Kanban Board System
+enum BoardVisibility {
+  PRIVATE
+  TEAM
+  PUBLIC
+}
+
+enum CardPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model Board {
+  id          String          @id @default(cuid())
+  title       String
+  description String?
+  background  String? // Background color or image URL
+  visibility  BoardVisibility @default(PRIVATE)
+  createdById String
+  createdBy   User            @relation("BoardCreator", fields: [createdById], references: [id])
+  teamId      String? // Optional: associate with a team
+  team        Team?           @relation(fields: [teamId], references: [id])
+  lists       List[]
+  members     BoardMember[]
+  starredBy   BoardStar[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@map("boards")
+}
+
+model BoardMember {
+  id       String   @id @default(cuid())
+  boardId  String
+  userId   String
+  role     String   @default("MEMBER") // MEMBER, ADMIN
+  board    Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt DateTime @default(now())
+
+  @@unique([boardId, userId])
+  @@map("board_members")
+}
+
+model BoardStar {
+  id        String   @id @default(cuid())
+  boardId   String
+  userId    String
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  starredAt DateTime @default(now())
+
+  @@unique([boardId, userId])
+  @@map("board_stars")
+}
+
+model List {
+  id        String   @id @default(cuid())
+  title     String
+  position  Int      @default(0)
+  boardId   String
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards     Card[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("lists")
+}
+
+model Card {
+  id           String         @id @default(cuid())
+  title        String
+  description  String?
+  position     Int            @default(0)
+  priority     CardPriority   @default(MEDIUM)
+  dueDate      DateTime?
+  labels       String[] // Array of label IDs or color codes
+  attachments  String[] // Array of file URLs
+  listId       String
+  list         List           @relation(fields: [listId], references: [id], onDelete: Cascade)
+  assignedToId String?
+  assignedTo   User?          @relation("CardAssignee", fields: [assignedToId], references: [id])
+  createdById  String
+  createdBy    User           @relation("CardCreator", fields: [createdById], references: [id])
+  comments     CardComment[]
+  activities   CardActivity[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@map("cards")
+}
+
+model CardComment {
+  id        String   @id @default(cuid())
+  content   String
+  cardId    String
+  authorId  String
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  author    User     @relation("CardCommentAuthor", fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("card_comments")
+}
+
+model CardActivity {
+  id          String   @id @default(cuid())
+  cardId      String
+  userId      String
+  action      String // "created", "moved", "assigned", "commented", "due_date_changed", etc.
+  description String
+  oldValue    String?
+  newValue    String?
+  card        Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  user        User     @relation("CardActivityUser", fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@map("card_activities")
 }

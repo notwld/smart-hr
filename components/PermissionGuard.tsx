@@ -23,9 +23,6 @@ const PermissionGuard: React.FC<PermissionGuardProps> = ({
   const { hasPermission, hasAllPermissions, hasAnyPermission, isLoading, userRoles } = usePermissions();
   const { data: session } = useSession();
 
-  // For debugging
-  console.log("PermissionGuard checks:", { permissions, isLoading, userRoles, session });
-
   // If no permissions are specified, render the children
   if (!permissions || (Array.isArray(permissions) && permissions.length === 0)) {
     return <>{children}</>;
@@ -38,7 +35,6 @@ const PermissionGuard: React.FC<PermissionGuardProps> = ({
       userRoles.includes("Admin");     // New admin role
     
     if (isAdmin) {
-      console.log("Admin override active - granting access");
       return <>{children}</>;
     }
   }

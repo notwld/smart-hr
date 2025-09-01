@@ -91,14 +91,6 @@ export const authOptions: NextAuthOptions = {
         // Determine the effective role
         const effectiveRole = isLegacyAdmin || hasAdminRole ? "ADMIN" : user.legacyRole || "EMPLOYEE";
 
-        console.log("User authenticated:", {
-          id: user.id,
-          email: user.email,
-          legacyRole: user.legacyRole,
-          userRoles: user.userRoles?.map(ur => ur.role.name),
-          effectiveRole
-        });
-
         return {
           id: user.id,
           email: user.email,
@@ -114,7 +106,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, trigger }) {
       // Initial sign in
       if (user) {
-        console.log("JWT callback with user:", user);
         token.id = user.id;
         token.role = user.role;
         token.legacyRole = user.legacyRole;
@@ -142,8 +133,7 @@ export const authOptions: NextAuthOptions = {
           token.legacyRole = updatedUser.legacyRole;
         }
       }
-      
-      console.log("JWT callback returning token:", token);
+
       return token;
     },
     async session({ session, token }) {
@@ -176,8 +166,6 @@ export const authOptions: NextAuthOptions = {
             session.user.onboardingCompleted = false;
           }
         }
-        
-        console.log("Session callback returning:", session);
       }
       return session;
     },

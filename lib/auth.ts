@@ -10,10 +10,8 @@ import { prisma } from "./prisma";
 export async function isUserAdmin(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    console.log("Session in isUserAdmin check:", session);
 
     if (!session?.user) {
-      console.log("No session user found");
       return {
         isAdmin: false,
         response: NextResponse.json(
@@ -27,12 +25,10 @@ export async function isUserAdmin(req: Request) {
     const userRole = session.user.role;
     if (userRole === "ADMIN") {
       // User is already verified as admin in the session
-      console.log("User is admin according to session role");
       return { isAdmin: true };
     }
     
     // Fallback: Check the database directly
-    console.log("Role in session is not ADMIN, checking database...");
     const userId = session.user.id;
     
     // Check if user has admin role in the database
@@ -49,7 +45,6 @@ export async function isUserAdmin(req: Request) {
     });
     
     if (!user) {
-      console.log("User not found in database");
       return {
         isAdmin: false,
         response: NextResponse.json(
@@ -64,7 +59,6 @@ export async function isUserAdmin(req: Request) {
       user.userRoles.some(ur => ur.role.name === "Admin");
     
     if (!isAdmin) {
-      console.log("User is not an admin according to database check");
       return {
         isAdmin: false,
         response: NextResponse.json(
@@ -73,8 +67,7 @@ export async function isUserAdmin(req: Request) {
         )
       };
     }
-    
-    console.log("User verified as admin through database check");
+
     return { isAdmin: true };
 
   } catch (error) {

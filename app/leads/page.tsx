@@ -344,8 +344,8 @@ export default function LeadsPage() {
         </div>
       }
     >
-      <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-        <div className="w-full container mx-auto py-8 px-4 space-y-8">
+      <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-6">
+        <div className="w-full space-y-8">
           {/* Header */}
           <div className="w-full">
             <Card className="w-full border-0 shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 mx-auto">
@@ -370,7 +370,7 @@ export default function LeadsPage() {
                     Add Lead
                   </Button>
                 </DialogTrigger>
-                        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+                        <DialogContent className="max-h-[90vh] overflow-y-auto bg-white">
                           <DialogHeader className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg -m-6 mb-6">
                             <DialogTitle className="text-xl flex items-center gap-2">
                               <Plus className="w-5 h-5" />
@@ -688,7 +688,7 @@ export default function LeadsPage() {
       {/* Edit Dialog */}
       <PermissionGuard permissions="leads.edit">
         <Dialog open={!!editingLead} onOpenChange={() => setEditingLead(null)}>
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+              <DialogContent className="max-h-[90vh] overflow-y-auto bg-white">
                 <DialogHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg -m-6 mb-6">
                   <DialogTitle className="text-xl flex items-center gap-2">
                     <Edit className="w-5 h-5" />

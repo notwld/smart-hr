@@ -212,8 +212,8 @@ export default function EditTeamPage({ params }: { params: Promise<{ id: string 
         </div>
       }
     >
-      <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-        <div className="w-full container mx-auto py-8 px-4">
+      <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-6">
+        <div className="w-full">
           {/* Header */}
           <div className="w-full mb-8">
             <Card className="w-full border-0 shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 mx-auto">

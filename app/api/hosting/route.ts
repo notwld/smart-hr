@@ -4,11 +4,6 @@ import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { isUserAdmin } from "@/lib/auth";
 
-// Debug: Ensure prisma is imported correctly
-console.log("Hosting API - Prisma client loaded:", !!prisma);
-console.log("Prisma client properties:", Object.keys(prisma));
-console.log("Has hosting property:", 'hosting' in prisma);
-
 const ITEMS_PER_PAGE = 10;
 
 export async function GET(req: Request) {
@@ -84,9 +79,6 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    console.log("POST /api/hosting - Starting");
-    console.log("Prisma instance:", typeof prisma, !!prisma);
-    
     // Check if user is admin
     const adminCheck = await isUserAdmin(req);
     if (!adminCheck.isAdmin) {
@@ -94,7 +86,6 @@ export async function POST(req: Request) {
     }
 
     const data = await req.json();
-    console.log("Request data:", data);
     
     const {
       clientName,

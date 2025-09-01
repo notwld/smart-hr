@@ -26,14 +26,10 @@ app.prepare().then(() => {
   // Initialize WebSocket server
   try {
     const wsServer = new WebSocketServer(server);
-    console.log('WebSocket server initialized successfully');
   } catch (error) {
     console.error('Failed to initialize WebSocket server:', error);
-    console.log('Continuing without WebSocket support...');
   }
 
   server.listen(port, () => {
-    console.log(`> Ready on http://${hostname}:${port}`);
-    console.log(`> WebSocket server running on ws://${hostname}:${port}`);
   });
 }); 

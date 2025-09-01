@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import PermissionGuard from "@/components/PermissionGuard"
 import EmployeeCalendar from "@/components/EmployeeCalendar"
+import { LiveAlertsContainer } from "@/components/dashboard/cards/LiveAlertsContainer"
 
 // Tab Components
 import LeavesTab from "@/components/admin/LeavesTab"
@@ -57,6 +58,15 @@ export default function AdminDashboard() {
              
             </CardHeader>
           </Card>
+
+          {/* Live Alerts */}
+          <div className="w-full">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+              Live Alerts
+            </h3>
+            <LiveAlertsContainer />
+          </div>
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

@@ -23,12 +23,8 @@ interface WelcomeEmailData {
 export const sendWelcomeEmail = async (data: WelcomeEmailData): Promise<boolean> => {
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
         console.error('❌ Email.js configuration missing. Please set up environment variables.');
-        console.log('Missing:', { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY });
         return false;
     }
-
-    console.log('📧 Preparing to send welcome email to:', data.email);
-    console.log('📋 Email data:', data);
 
     try {
         const templateParams = {
@@ -78,25 +74,15 @@ Best regards,
 Mize Technologies HR Team`
         };
 
-        console.log('📤 Sending email with template params:', templateParams);
-
         const response = await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_TEMPLATE_ID,
             templateParams
         );
 
-        console.log('✅ Welcome email sent successfully!');
-        console.log('📥 Email.js response:', response);
         return true;
     } catch (error: any) {
         console.error('❌ Failed to send welcome email:', error);
-        console.log('🔍 Error details:', {
-            name: error.name,
-            message: error.message,
-            status: error.status,
-            text: error.text
-        });
         return false;
     }
 };

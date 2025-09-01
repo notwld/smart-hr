@@ -33,6 +33,7 @@ import {
     Server,
     Target,
     Ticket,
+    KanbanSquare,
 } from "lucide-react"
 import { Button } from "./ui/button"
 import { signOut, useSession } from "next-auth/react"
@@ -56,6 +57,7 @@ export default function Sidebar() {
         { icon: <Server className="w-5 h-5" />, label: "Hosting", href: "/admin/hosting", permission: "hosting.view" },
         { icon: <Users className="w-5 h-5" />, label: "Teams", href: "/teams", permission: "teams.view" },
         { icon: <MessageSquare className="w-5 h-5" />, label: "Chat", href: "/chat", permission: "chat.view" },
+        { icon: <KanbanSquare className="w-5 h-5" />, label: "Boards", href: "/kanban", permission: "kanban.view" },
         { icon: <FileText className="w-5 h-5" />, label: "Leaves", href: "/leaves", permission: "leaves.view" },
         { icon: <Target className="w-5 h-5" />, label: "Leads", href: "/leads", permission: "leads.view" },
     ];

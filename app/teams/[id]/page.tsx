@@ -225,8 +225,8 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
   }
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-      <div className="w-full container mx-auto py-8 px-4">
+    <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-6">
+      <div className="w-full">
         {/* Header */}
         <div className="w-full mb-8">
           <Card className="w-full border-0 shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 mx-auto">
@@ -269,7 +269,7 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
                         Add Members
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[600px] bg-white">
+                    <DialogContent className="bg-white">
                       <DialogHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg -m-6 mb-6">
                         <DialogTitle className="text-xl flex items-center gap-2">
                           <UserPlus className="w-5 h-5" />

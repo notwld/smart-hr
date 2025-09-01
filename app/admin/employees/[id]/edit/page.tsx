@@ -53,7 +53,7 @@ export default async function EditEmployeePage({
   }
 
   return (
-    <div className="container mx-auto py-6">
+    <div className="w-full p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Edit Employee</h1>
       </div>

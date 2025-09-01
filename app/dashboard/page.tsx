@@ -28,7 +28,7 @@ export default function DashboardPage() {
         </div>
       }
     >
-      <div className="container mx-auto py-12 px-4">
+      <div className="w-full p-6">
         <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
         <p className="mb-4">This page is under construction. Redirecting to home page...</p>
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">

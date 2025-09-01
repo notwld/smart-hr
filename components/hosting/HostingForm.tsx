@@ -160,7 +160,7 @@ export default function HostingForm({ hostingId }: HostingFormProps) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-full">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

@@ -2,8 +2,6 @@ import { prisma } from "./prisma";
 
 // Fetch all permissions for a user
 export async function getUserPermissions(userId: string): Promise<string[]> {
-  console.log("getUserPermissions called for user ID:", userId);
-  
   const userRoles = await prisma.userRole.findMany({
     where: { userId },
     include: {
@@ -18,21 +16,17 @@ export async function getUserPermissions(userId: string): Promise<string[]> {
       },
     },
   });
-  
-  console.log("User roles retrieved:", userRoles.length);
 
   // Extract unique permission names from all roles
   const permissionSet = new Set<string>();
   
   userRoles.forEach((userRole) => {
-    console.log(`Processing role: ${userRole.role.name}, has ${userRole.role.permissions.length} permissions`);
     userRole.role.permissions.forEach((rolePermission) => {
       permissionSet.add(rolePermission.permission.name);
     });
   });
 
   const permissions = Array.from(permissionSet);
-  console.log("Final permissions list:", permissions);
   return permissions;
 }
 
@@ -40,7 +34,6 @@ export async function getUserPermissions(userId: string): Promise<string[]> {
 export async function hasPermission(userId: string, permission: string): Promise<boolean> {
   const permissions = await getUserPermissions(userId);
   const result = permissions.includes(permission);
-  console.log(`hasPermission check for ${userId} - ${permission}: ${result}`);
   return result;
 }
 

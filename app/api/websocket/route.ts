@@ -28,8 +28,6 @@ function setupSocketHandlers(io: SocketIOServer) {
   const onlineUsers = new Set();
 
   io.on('connection', async (socket) => {
-    console.log('User connected:', socket.id);
-
     // Authenticate user
     socket.on('authenticate', async (token: string) => {
       try {
@@ -58,7 +56,6 @@ function setupSocketHandlers(io: SocketIOServer) {
           broadcastUserPresence(io, user.id, true);
           
           socket.emit('authenticated', { userId: user.id });
-          console.log('User authenticated:', user.id);
         } else {
           socket.emit('authentication_error', 'Invalid token');
         }
@@ -73,8 +70,7 @@ function setupSocketHandlers(io: SocketIOServer) {
       const userId = socket.data.userId;
       if (userId) {
         socket.join(roomId);
-        console.log(`User ${userId} joined room ${roomId}`);
-        
+
         // Mark messages as read
         await markMessagesAsRead(roomId, userId);
       }
@@ -83,7 +79,6 @@ function setupSocketHandlers(io: SocketIOServer) {
     // Leave chat room
     socket.on('leave_room', (roomId: string) => {
       socket.leave(roomId);
-      console.log(`User left room ${roomId}`);
     });
 
     // Send message
@@ -211,7 +206,6 @@ function setupSocketHandlers(io: SocketIOServer) {
         // Broadcast user offline status
         broadcastUserPresence(io, userId, false);
       }
-      console.log('User disconnected:', socket.id);
     });
   });
 }

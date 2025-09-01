@@ -106,6 +106,13 @@ async function main() {
     { name: "meetings.create", description: "Create meetings", resource: "meetings", action: "create" },
     { name: "meetings.edit", description: "Edit meetings", resource: "meetings", action: "edit" },
     { name: "meetings.delete", description: "Delete meetings", resource: "meetings", action: "delete" },
+
+    // Kanban boards
+    { name: "kanban.view", description: "View Kanban boards", resource: "kanban", action: "view" },
+    { name: "kanban.create", description: "Create Kanban boards", resource: "kanban", action: "create" },
+    { name: "kanban.edit", description: "Edit Kanban boards", resource: "kanban", action: "edit" },
+    { name: "kanban.delete", description: "Delete Kanban boards", resource: "kanban", action: "delete" },
+    { name: "kanban.manage", description: "Manage board members and permissions", resource: "kanban", action: "manage" },
   ];
 
   for (const permission of permissions) {
@@ -115,8 +122,6 @@ async function main() {
       create: permission,
     });
   }
-
-  console.log("Created default permissions");
 
   // Create default roles
   const adminRole = await prisma.role.upsert({
@@ -148,8 +153,6 @@ async function main() {
       isDefault: true,
     },
   });
-
-  console.log("Created default roles");
 
   // Assign permissions to roles
   // Get all permissions
@@ -205,7 +208,11 @@ async function main() {
     p.name === "meetings.view" ||
     p.name === "meetings.create" ||
     p.name === "performance.view" ||
-    p.name === "performance.create"
+    p.name === "performance.create" ||
+    p.name === "kanban.view" ||
+    p.name === "kanban.create" ||
+    p.name === "kanban.edit" ||
+    p.name === "kanban.manage"
   );
 
   for (const permission of teamLeaderPermissions) {
@@ -240,7 +247,10 @@ async function main() {
     p.name === "meetings.view" ||
     p.name === "notifications.view" ||
     p.name === "onboarding.view" ||
-    p.name === "onboarding.complete"
+    p.name === "onboarding.complete" ||
+    p.name === "kanban.view" ||
+    p.name === "kanban.create" ||
+    p.name === "kanban.edit"
   );
 
   for (const permission of employeePermissions) {
@@ -258,8 +268,6 @@ async function main() {
       },
     });
   }
-
-  console.log("Assigned permissions to roles");
 
   // Create a default admin user if it doesn't exist
   const adminPassword = await hash("admin123", 12);
@@ -298,8 +306,6 @@ async function main() {
     },
   });
 
-  console.log("Created default admin user");
-
   // Migrate existing users based on legacy roles
   const users = await prisma.user.findMany({
     where: {
@@ -335,7 +341,6 @@ async function main() {
     });
   }
 
-  console.log("Migrated existing users to new role system");
 }
 
 main()

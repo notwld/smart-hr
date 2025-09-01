@@ -29,7 +29,6 @@ export const PermissionProvider: React.FC<{ children: ReactNode }> = ({ children
         
         if (response.ok) {
           const data = await response.json();
-          console.log("Fetched permissions:", data);
           setUserPermissions(data.permissions || []);
           setUserRoles(data.roles || []);
         } else {
@@ -52,12 +51,10 @@ export const PermissionProvider: React.FC<{ children: ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    console.log("Session changed:", session);
     fetchPermissions();
   }, [session, status]);
 
   const hasPermission = (permission: string): boolean => {
-    console.log(`Checking permission: ${permission}`, userPermissions.includes(permission));
     return userPermissions.includes(permission);
   };
 

@@ -156,14 +156,10 @@ export function EmployeeTicketsPage() {
         createdBy: "current",
       });
 
-      console.log("Fetching my tickets with params:", params.toString());
-
       const response = await fetch(`/api/tickets?${params}`);
-      console.log("My tickets response status:", response.status);
 
       if (response.ok) {
         const data = await response.json();
-        console.log("My tickets:", data.tickets?.length || 0);
         setTickets(data.tickets || []);
         setTotalPages(data.pagination?.totalPages || 1);
       } else {
@@ -191,14 +187,10 @@ export function EmployeeTicketsPage() {
         assignedTo: "current",
       });
 
-      console.log("Fetching assigned tickets with params:", params.toString());
-
       const response = await fetch(`/api/tickets?${params}`);
-      console.log("Assigned tickets response status:", response.status);
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Assigned tickets:", data.tickets?.length || 0);
         setAssignedTickets(data.tickets || []);
         setAssignedTotalPages(data.pagination?.totalPages || 1);
       } else {

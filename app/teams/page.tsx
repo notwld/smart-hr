@@ -102,8 +102,7 @@ export default function TeamsPage() {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get("/api/teams/employees");
-      console.log("Employees API response:", typeof response.data, Array.isArray(response.data) ? 'is array' : 'not array', response.data);
-      
+
       if (!response.data) {
         setAvailableEmployees([]);
         return;
@@ -202,8 +201,8 @@ export default function TeamsPage() {
   );
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-      <div className="w-full container mx-auto py-8 px-4">
+    <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-6">
+      <div className="w-full">
         {/* Header */}
         <div className="w-full text-center mb-8">
           <Card className="w-full border-0 shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 mx-auto">
@@ -225,7 +224,7 @@ export default function TeamsPage() {
                           Create Team
                         </Button>
                           </DialogTrigger>
-                      <DialogContent className="sm:max-w-[600px] bg-white">
+                      <DialogContent className="bg-white">
                         <DialogHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg -m-6 mb-6">
                           <DialogTitle className="text-xl flex items-center gap-2">
                             <Plus className="w-5 h-5" />

@@ -164,24 +164,17 @@ export default function OnboardingPage() {
   });
 
   const onSubmit = async (data: OnboardingFormData) => {
-    console.log("🚀 Form submission started");
-    console.log("📋 Form data:", data);
-    
     // Clear previous messages
     setSubmitError(null);
     setSubmitSuccess(null);
-    
+
     setLoading(true);
     try {
       // Upload image if exists
       if (imageFile) {
-        console.log("📸 Uploading image...");
         const imageUrl = await uploadImage(imageFile);
         data.image = imageUrl;
-        console.log("✅ Image uploaded:", imageUrl);
       }
-
-      console.log("📤 Sending request to /api/onboarding");
       const response = await fetch("/api/onboarding", {
         method: "POST",
         headers: {
@@ -190,9 +183,7 @@ export default function OnboardingPage() {
         body: JSON.stringify(data),
       });
 
-      console.log("📥 Response status:", response.status);
       const responseData = await response.json();
-      console.log("📥 Response data:", responseData);
 
       if (!response.ok) {
         let errorMessage = responseData.message || "Failed to complete onboarding";
@@ -216,13 +207,10 @@ export default function OnboardingPage() {
       }
 
             setSubmitSuccess("Onboarding completed successfully! Welcome aboard! 🎉\nA welcome email with login instructions has been sent to your email address.");
-      console.log("✅ Onboarding completed, updating session...");
-      
+
       // Update the session with the new user data
       await updateSession();
-      
-      console.log("✅ Session updated, redirecting...");
-      
+
       // Redirect after a delay to allow user to read the success message
       setTimeout(() => {
         router.replace("/");
@@ -337,12 +325,8 @@ export default function OnboardingPage() {
 
   const checkFormValidation = () => {
     const errors = form.formState.errors;
-    console.log("🔍 Checking form validation...");
-    console.log("❌ Form errors:", errors);
-    
+
     if (Object.keys(errors).length > 0) {
-      console.log("⚠️ Form has validation errors, submission blocked");
-      
       const errorMessages: string[] = [];
       
       // Collect error messages with user-friendly field names
@@ -398,8 +382,7 @@ export default function OnboardingPage() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return false;
     }
-    
-    console.log("✅ Form validation passed");
+
     return true;
   };
 
@@ -1317,20 +1300,16 @@ export default function OnboardingPage() {
                   disabled={loading}
                   className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-8"
                   onClick={(e) => {
-                    console.log("🔘 Complete Onboarding button clicked");
-                    console.log("📊 Form validation state:", form.formState);
-                    console.log("🚨 Form errors:", form.formState.errors);
-                    
                     // Clear previous messages
                     setSubmitError(null);
                     setSubmitSuccess(null);
-                    
+
                     // Check if form is valid
                     if (!checkFormValidation()) {
                       e.preventDefault();
                       return;
                     }
-                    
+
                     // Don't prevent default - let form handle the submission
                   }}
                 >

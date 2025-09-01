@@ -97,7 +97,7 @@ export default function PermissionsPage() {
 
   return (
     <PermissionGuard permissions="roles.view" fallback={<div>You don't have permission to view this page.</div>}>
-      <div className="container mx-auto py-8">
+      <div className="w-full p-6">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold">Permissions</h1>

@@ -50,56 +50,94 @@ export async function GET(req: Request) {
       },
     });
 
-    // Calculate total hours
-    const calculateTotalHours = (attendance: any[]) => {
-      return attendance.reduce((total, record) => {
+    // Calculate total hours and break time
+    const calculateStats = (attendance: any[]) => {
+      return attendance.reduce((acc, record) => {
         if (record.checkInTime && record.checkOutTime) {
-          const hours = (record.checkOutTime.getTime() - record.checkInTime.getTime()) / (1000 * 60 * 60);
-          return total + hours;
+          const totalHours = (record.checkOutTime.getTime() - record.checkInTime.getTime()) / (1000 * 60 * 60);
+          const breakHours = (record.totalBreakTime || 0) / 60; // Convert minutes to hours
+          const productiveHours = totalHours - breakHours;
+
+          return {
+            total: acc.total + totalHours,
+            productive: acc.productive + productiveHours,
+            break: acc.break + breakHours,
+          };
         }
-        return total;
-      }, 0);
+        return acc;
+      }, { total: 0, productive: 0, break: 0 });
     };
 
-    // Calculate today's hours
-    const todayHours = todayAttendance?.checkInTime && todayAttendance?.checkOutTime
-      ? (todayAttendance.checkOutTime.getTime() - todayAttendance.checkInTime.getTime()) / (1000 * 60 * 60)
-      : 0;
+    // Calculate today's completed hours (if checked out)
+    const completedTodayStats = todayAttendance?.checkInTime && todayAttendance?.checkOutTime
+      ? (() => {
+          const totalHours = (todayAttendance.checkOutTime.getTime() - todayAttendance.checkInTime.getTime()) / (1000 * 60 * 60);
+          const breakHours = (todayAttendance.totalBreakTime || 0) / 60;
+          return {
+            total: totalHours,
+            productive: totalHours - breakHours,
+            break: breakHours,
+          };
+        })()
+      : { total: 0, productive: 0, break: 0 };
 
     // Calculate current session hours if checked in but not checked out
-    const currentSessionHours = todayAttendance?.checkInTime && !todayAttendance?.checkOutTime
-      ? (now.getTime() - todayAttendance.checkInTime.getTime()) / (1000 * 60 * 60)
-      : 0;
+    const currentSessionStats = todayAttendance?.checkInTime && !todayAttendance?.checkOutTime
+      ? (() => {
+          const sessionTotal = (now.getTime() - todayAttendance.checkInTime.getTime()) / (1000 * 60 * 60);
+          const sessionBreakHours = (todayAttendance.totalBreakTime || 0) / 60;
+          // If currently on break, add current break time
+          const currentBreakTime = todayAttendance.breakStartTime && !todayAttendance.breakEndTime
+            ? (now.getTime() - todayAttendance.breakStartTime.getTime()) / (1000 * 60 * 60)
+            : 0;
+          const totalBreakHours = sessionBreakHours + currentBreakTime;
+          return {
+            total: sessionTotal,
+            productive: sessionTotal - totalBreakHours,
+            break: totalBreakHours,
+          };
+        })()
+      : { total: 0, productive: 0, break: 0 };
 
-    // Calculate remaining hours for today
-    const totalHoursToday = todayHours + currentSessionHours;
-    const remainingHours = Math.max(0, 9 - totalHoursToday); // 9 hours shift
+    // Calculate total hours for today
+    const todayStats = {
+      total: completedTodayStats.total + currentSessionStats.total,
+      productive: completedTodayStats.productive + currentSessionStats.productive,
+      break: completedTodayStats.break + currentSessionStats.break,
+    };
+
+    // Calculate remaining hours for today (8.5 hours minimum)
+    const remainingHours = Math.max(0, 8.5 - todayStats.total);
 
     // Calculate shift progress
-    const shiftProgress = (totalHoursToday / 9) * 100;
+    const shiftProgress = (todayStats.total / 8.5) * 100;
+
+    // Get week and month stats
+    const weekStats = calculateStats(weekAttendance);
+    const monthStats = calculateStats(monthAttendance);
 
     const stats = {
       today: {
-        total: totalHoursToday,
-        productive: totalHoursToday * 0.8, // Assuming 80% productivity
-        break: totalHoursToday * 0.2, // Assuming 20% break time
-        overtime: Math.max(0, totalHoursToday - 9), // 9-hour shift
-        remaining: remainingHours,
-        progress: shiftProgress,
+        total: parseFloat(todayStats.total.toFixed(2)),
+        productive: parseFloat(todayStats.productive.toFixed(2)),
+        break: parseFloat(todayStats.break.toFixed(2)),
+        overtime: Math.max(0, todayStats.total - 8.5), // 8.5-hour shift
+        remaining: parseFloat(remainingHours.toFixed(2)),
+        progress: parseFloat(shiftProgress.toFixed(1)),
       },
       week: {
-        total: calculateTotalHours(weekAttendance),
-        productive: calculateTotalHours(weekAttendance) * 0.8,
-        break: calculateTotalHours(weekAttendance) * 0.2,
-        overtime: Math.max(0, calculateTotalHours(weekAttendance) - 45), // 9 hours * 5 days
-        remaining: Math.max(0, 45 - calculateTotalHours(weekAttendance)),
+        total: parseFloat(weekStats.total.toFixed(2)),
+        productive: parseFloat(weekStats.productive.toFixed(2)),
+        break: parseFloat(weekStats.break.toFixed(2)),
+        overtime: Math.max(0, weekStats.total - 42.5), // 8.5 hours * 5 days
+        remaining: Math.max(0, 42.5 - weekStats.total),
       },
       month: {
-        total: calculateTotalHours(monthAttendance),
-        productive: calculateTotalHours(monthAttendance) * 0.8,
-        break: calculateTotalHours(monthAttendance) * 0.2,
-        overtime: Math.max(0, calculateTotalHours(monthAttendance) - 180), // 9 hours * 20 working days
-        remaining: Math.max(0, 180 - calculateTotalHours(monthAttendance)),
+        total: parseFloat(monthStats.total.toFixed(2)),
+        productive: parseFloat(monthStats.productive.toFixed(2)),
+        break: parseFloat(monthStats.break.toFixed(2)),
+        overtime: Math.max(0, monthStats.total - 170), // 8.5 hours * 20 working days
+        remaining: Math.max(0, 170 - monthStats.total),
       },
     };
 

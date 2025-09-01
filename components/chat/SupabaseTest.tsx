@@ -60,7 +60,7 @@ export default function SupabaseTest() {
               table: 'chat_messages' 
             }, 
             (payload) => {
-              console.log('Real-time test received:', payload)
+              // Real-time test received
             }
           )
           .subscribe((status) => {
@@ -85,7 +85,7 @@ export default function SupabaseTest() {
   }
 
   return (
-    <Card className="p-6 max-w-md mx-auto">
+    <Card className="p-6 w-full">
       <h3 className="text-lg font-medium mb-4">Supabase Connection Test</h3>
       
       <Button 

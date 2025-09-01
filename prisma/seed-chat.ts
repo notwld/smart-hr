@@ -3,8 +3,6 @@ import { PrismaClient } from '@/lib/generated/prisma'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Seeding chat system...')
-
   // 1. Create or update the General chat room
   const generalRoom = await prisma.chatRoom.upsert({
     where: { id: 'general-chat-room' },
@@ -17,8 +15,6 @@ async function main() {
     },
   })
 
-  console.log('✅ General chat room created:', generalRoom.name)
-
   // 2. Add all employees to the general chat
   const allUsers = await prisma.user.findMany({
     where: {
@@ -26,8 +22,6 @@ async function main() {
     },
     select: { id: true, firstName: true, lastName: true }
   })
-
-  console.log(`📋 Found ${allUsers.length} active users`)
 
   // Add all users to general chat if they're not already participants
   for (const user of allUsers) {
@@ -47,8 +41,6 @@ async function main() {
     })
   }
 
-  console.log('✅ All users added to general chat')
-
   // 3. Create team chat rooms for existing teams
   const teams = await prisma.team.findMany({
     include: {
@@ -59,8 +51,6 @@ async function main() {
       }
     }
   })
-
-  console.log(`🏢 Found ${teams.length} teams`)
 
   for (const team of teams) {
     // Check if team chat room already exists
@@ -81,7 +71,6 @@ async function main() {
           teamId: team.id,
         },
       })
-      console.log(`🏢 Team chat created: ${teamRoom.name}`)
     }
 
     // Add all team members to the team chat
@@ -101,8 +90,6 @@ async function main() {
         },
       })
     }
-
-    console.log(`✅ ${team.members.length} members added to ${team.name} team chat`)
   }
 
   // 4. Create welcome messages
@@ -128,11 +115,8 @@ async function main() {
         messageType: 'TEXT',
       },
     })
-
-    console.log('✅ Welcome message added to general chat')
   }
 
-  console.log('🎉 Chat system seeding completed!')
 }
 
 main()

@@ -24,15 +24,20 @@ export async function POST(req: Request) {
     }
 
     const now = new Date();
-    const totalHours =
-      (now.getTime() - new Date(attendance.checkInTime!).getTime()) /
-      (1000 * 60 * 60);
+
+    // Calculate total time from check-in to check-out
+    const totalTimeMs = now.getTime() - new Date(attendance.checkInTime!).getTime();
+    const totalHours = totalTimeMs / (1000 * 60 * 60);
+
+    // Subtract break time if any
+    const breakTimeHours = (attendance.totalBreakTime || 0) / 60; // Convert minutes to hours
+    const productiveHours = totalHours - breakTimeHours;
 
     const updatedAttendance = await prisma.attendance.update({
       where: { id: attendance.id },
       data: {
         checkOutTime: now,
-        totalHours: parseFloat(totalHours.toFixed(2)),
+        totalHours: parseFloat(productiveHours.toFixed(2)),
       },
     });
 

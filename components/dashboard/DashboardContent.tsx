@@ -3,12 +3,15 @@
 import {
   Activity,
   AlertCircle,
+  AlertTriangle,
   Calendar,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   Clock,
+  Coffee,
   Download,
+  Eye,
   FileText,
   Home,
   Layout,
@@ -35,6 +38,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { User } from "@/lib/generated/prisma"
 import { useEffect, useState, useCallback } from "react"
 import axios from "axios"
@@ -118,6 +122,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const [teamLeader, setTeamLeader] = useState<{ firstName: string; lastName: string } | null>(null);
   const [timeLabels, setTimeLabels] = useState<string[]>([]);
   const [assignedTickets, setAssignedTickets] = useState<any[]>([]);
+  const [isOnBreak, setIsOnBreak] = useState(false);
+  const [breakStartTime, setBreakStartTime] = useState<Date | null>(null);
+  const [totalBreakTime, setTotalBreakTime] = useState(0); // in seconds
+  const [currentBreakTime, setCurrentBreakTime] = useState<string>("00:00:00");
+  const [showEarlyCheckoutConfirm, setShowEarlyCheckoutConfirm] = useState(false);
 
   // Function to generate time labels
   const generateTimeLabels = useCallback(() => {
@@ -159,7 +168,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     const now = new Date();
     const checkInTime = new Date(todayAttendance.checkInTime);
     const elapsedHours = (now.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
-    const progress = Math.min((elapsedHours / 9) * 100, 100); // 9 hours shift
+    const progress = Math.min((elapsedHours / 8.5) * 100, 100); // 8.5 hours minimum shift
     return progress;
   }, [todayAttendance?.checkInTime]);
 
@@ -179,7 +188,6 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const debouncedFetchStats = useCallback(
     debounce(async () => {
       try {
-        console.log("Fetching attendance stats...");
         const response = await axios.get("/api/attendance/stats");
         setStats(response.data);
       } catch (error) {
@@ -190,7 +198,6 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   );
 
   useEffect(() => {
-    console.log("Dashboard useEffect triggered - setting up intervals");
     generateTimeLabels();
     debouncedFetchTodayAttendance();
     debouncedFetchStats();
@@ -225,6 +232,28 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       elapsedInterval = setInterval(updateElapsedTime, 7000);
     }
 
+    // Update break time if on break
+    const updateBreakTime = () => {
+      if (isOnBreak && breakStartTime) {
+        const now = new Date();
+        const diff = now.getTime() - breakStartTime.getTime();
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        setCurrentBreakTime(formattedTime);
+      }
+    };
+
+    updateBreakTime();
+
+    let breakInterval: NodeJS.Timeout;
+    if (isOnBreak && breakStartTime) {
+      breakInterval = setInterval(updateBreakTime, 1000); // Update every second for break timer
+    }
+
     // If user doesn't have reportsTo but has a team, fetch team leader
     if (!user.reportsTo && (!user.teams || user.teams.length === 0)) {
       const fetchTeamLeader = async () => {
@@ -244,14 +273,16 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     }
 
     return () => {
-      console.log("Dashboard useEffect cleanup - clearing intervals");
       clearInterval(timeLabelInterval);
       clearInterval(statsInterval);
       if (elapsedInterval) {
         clearInterval(elapsedInterval);
       }
+      if (breakInterval) {
+        clearInterval(breakInterval);
+      }
     };
-  }, [todayAttendance?.checkInTime, user.id, user.reportsTo, user.teams]);
+  }, [todayAttendance?.checkInTime, user.id, user.reportsTo, user.teams, isOnBreak, breakStartTime]);
 
   // Replace the fetchTodayAttendance and fetchStats functions with their debounced versions
   const fetchTodayAttendance = () => debouncedFetchTodayAttendance();
@@ -260,9 +291,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   // Function to fetch tickets assigned to current user
   const fetchAssignedTickets = useCallback(async () => {
     try {
-      console.log('Fetching assigned tickets for dashboard...');
       const response = await axios.get('/api/tickets?assignedTo=current&limit=5');
-      console.log('Assigned tickets response:', response.data);
       setAssignedTickets(response.data.tickets || []);
     } catch (error) {
       console.error('Error fetching assigned tickets:', error);
@@ -288,13 +317,26 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     }
   };
 
-  const handleCheckOut = async () => {
+  const handleCheckOut = async (forceCheckout = false) => {
+    // Check if employee has completed minimum 8.5 hours
+    if (!forceCheckout && todayAttendance?.checkInTime) {
+      const now = new Date();
+      const checkInTime = new Date(todayAttendance.checkInTime);
+      const elapsedHours = (now.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
+
+      if (elapsedHours < 8.5) {
+        setShowEarlyCheckoutConfirm(true);
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       const response = await axios.post("/api/attendance/checkout");
       if (response.status === 200) {
         await fetchTodayAttendance();
         toast.success("Successfully checked out!");
+        setShowEarlyCheckoutConfirm(false);
       }
     } catch (error: any) {
       console.error("Check-out error:", error);
@@ -304,6 +346,69 @@ export default function DashboardContent({ user }: DashboardContentProps) {
       toast.error(errorMessage);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const confirmEarlyCheckout = async () => {
+    await handleCheckOut(true);
+  };
+
+  const cancelEarlyCheckout = () => {
+    setShowEarlyCheckoutConfirm(false);
+  };
+
+  // Break system functions
+  const handleBreakStart = async () => {
+    if (!todayAttendance?.checkInTime) {
+      toast.error("Please check in first before starting a break");
+      return;
+    }
+
+    if (isOnBreak) {
+      toast.error("You are already on break");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/attendance/break-start");
+      if (response.status === 200) {
+        const now = new Date();
+        setIsOnBreak(true);
+        setBreakStartTime(now);
+        toast.success("Break started successfully!");
+      }
+    } catch (error: any) {
+      console.error("Break start error:", error);
+      const errorMessage = error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to start break. Please try again.";
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleBreakEnd = async () => {
+    if (!isOnBreak || !breakStartTime) {
+      toast.error("No active break to end");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/attendance/break-end");
+      if (response.status === 200) {
+        const breakDuration = Math.floor((new Date().getTime() - breakStartTime.getTime()) / 1000);
+        setTotalBreakTime(prev => prev + breakDuration);
+        setIsOnBreak(false);
+        setBreakStartTime(null);
+        setCurrentBreakTime("00:00:00");
+        toast.success("Break ended successfully!");
+        await fetchStats(); // Refresh stats to update break time
+      }
+    } catch (error: any) {
+      console.error("Break end error:", error);
+      const errorMessage = error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to end break. Please try again.";
+      toast.error(errorMessage);
     }
   };
 
@@ -326,7 +431,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
             <Card className="border-0 rounded-lg shadow-sm bg-[#fff7ed]">
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg font-semibold text-gray-800 flex items-center">
-                  <User className="w-5 h-5 mr-2 text-orange-500" />
+                  <Users className="w-5 h-5 mr-2 text-orange-500" />
                   Tickets Assigned to Me
                 </CardTitle>
               </CardHeader>
@@ -574,6 +679,39 @@ export default function DashboardContent({ user }: DashboardContentProps) {
           
 
 
+            {/* Early Checkout Confirmation Modal */}
+            <Dialog open={showEarlyCheckoutConfirm} onOpenChange={setShowEarlyCheckoutConfirm}>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-orange-800">
+                    <AlertTriangle className="w-5 h-5 text-orange-500" />
+                    Early Check-out Warning
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <p className="text-gray-700">
+                    You haven't completed the minimum 8.5 hours for your shift. Are you sure you want to check out early?
+                  </p>
+                  <div className="flex justify-end space-x-3">
+                    <Button
+                      onClick={cancelEarlyCheckout}
+                      variant="outline"
+                      className="border-orange-300 text-orange-700 hover:bg-orange-50"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={confirmEarlyCheckout}
+                      className="bg-orange-500 hover:bg-orange-600 text-white"
+                      disabled={loading}
+                    >
+                      {loading ? <ButtonLoader size="sm" /> : "Yes, Check Out Early"}
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+
             {/* Attendance and Work Hours Side by Side */}
             <div className="col-span-3 grid grid-cols-1 md:grid-cols-4 gap-6">
               {/* Attendance Card */}
@@ -597,8 +735,14 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                   </div>
 
                   <div className="text-center mb-4">
-                    <p className="text-sm text-gray-500">Time Elapsed</p>
-                    <p className="text-xl font-bold">{elapsedTime}</p>
+                    <div className="flex items-center justify-center">
+                      <p className="text-sm text-gray-500">Time Elapsed</p>
+                      {isOnBreak && <span className="ml-2 text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">Break</span>}
+                    </div>
+                    <p className={`text-xl font-bold ${isOnBreak ? 'text-orange-600' : ''}`}>{elapsedTime}</p>
+                    {/* {isOnBreak && (
+                      <p className="text-xs text-orange-600 mt-1">Break time: {currentBreakTime}</p>
+                    )} */}
                   </div>
 
                   {/* <div className="text-center mb-4">
@@ -621,13 +765,49 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                   )}
 
                   {todayAttendance?.checkInTime && !todayAttendance?.checkOutTime && (
-                    <Button
-                      className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-full py-3 font-semibold shadow-md hover:shadow-lg transition-all duration-200"
-                      onClick={handleCheckOut}
-                      disabled={loading}
-                    >
-                      {loading ? <ButtonLoader size="sm" /> : "Punch Out"}
-                    </Button>
+                    <div className="space-y-3">
+                      {/* Break Button */}
+                      <Button
+                        className={`w-full rounded-full py-3 font-semibold shadow-md hover:shadow-lg transition-all duration-200 ${
+                          isOnBreak
+                            ? "bg-orange-500 hover:bg-orange-600 text-white"
+                            : "bg-green-500 hover:bg-green-600 text-white"
+                        }`}
+                        onClick={isOnBreak ? handleBreakEnd : handleBreakStart}
+                        disabled={loading}
+                      >
+                        {loading ? <ButtonLoader size="sm" /> :
+                          isOnBreak ? (
+                            <>
+                              <Coffee className="w-4 h-4 mr-2" />
+                              End Break
+                            </>
+                          ) : (
+                            <>
+                              <Coffee className="w-4 h-4 mr-2" />
+                              Start Break
+                            </>
+                          )
+                        }
+                      </Button>
+
+                      {/* Break Status */}
+                      {isOnBreak && (
+                        <div className="text-center">
+                          <p className="text-sm text-orange-600 font-medium">On Break</p>
+                          <p className="text-lg font-bold text-orange-600">{currentBreakTime}</p>
+                        </div>
+                      )}
+
+                      {/* Check Out Button */}
+                      <Button
+                        className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-full py-3 font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                        onClick={() => handleCheckOut(false)}
+                        disabled={loading}
+                      >
+                        {loading ? <ButtonLoader size="sm" /> : "Punch Out"}
+                      </Button>
+                    </div>
                   )}
 
                   {todayAttendance?.checkInTime && todayAttendance?.checkOutTime && (
@@ -652,7 +832,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                         </div>
                         <div className="flex items-baseline">
                           <span className="text-2xl font-bold">{stats?.today?.total.toFixed(2)}</span>
-                          <span className="text-gray-500 ml-1">/ 9</span>
+                          <span className="text-gray-500 ml-1">/ 8.5</span>
                         </div>
                         <p className="text-sm text-gray-600">Total Hours Today</p>
                         <div className="mt-3 flex items-center">
@@ -765,8 +945,14 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                       <div className="flex items-center">
                         <div className="w-2 h-2 rounded-full bg-yellow-400 mr-2"></div>
                         <span className="text-sm text-gray-600">Break hours</span>
+                        {isOnBreak && <span className="ml-2 text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">Active</span>}
                       </div>
-                      <p className="text-xl font-medium mt-1">{formatHours(stats?.today?.break || 0)}</p>
+                      <p className="text-xl font-medium mt-1">
+                        {isOnBreak ? currentBreakTime : formatHours(stats?.today?.break || 0)}
+                      </p>
+                      {isOnBreak && (
+                        <p className="text-xs text-orange-600 mt-1">Current break time</p>
+                      )}
                     </div>
                     <div>
                       <div className="flex items-center">
@@ -892,7 +1078,7 @@ function AssignedTicketsTable({ tickets }: { tickets: any[] }) {
             <tr>
               <td colSpan={5} className="px-3 py-4 text-center">
                 <div className="flex flex-col items-center">
-                  <User className="w-8 h-8 text-gray-300 mb-2" />
+                  <Users className="w-8 h-8 text-gray-300 mb-2" />
                   <p className="text-gray-500 text-sm">No tickets assigned to you</p>
                 </div>
               </td>

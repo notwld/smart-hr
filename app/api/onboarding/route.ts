@@ -146,11 +146,8 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log('✅ Onboarding completed successfully for user:', updatedUser.email);
-    
     // Send welcome email
     try {
-      console.log('📧 Attempting to send welcome email...');
       const emailSent = await sendWelcomeEmailServer({
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
@@ -162,9 +159,9 @@ export async function POST(req: Request) {
       });
 
       if (emailSent) {
-        console.log('✅ Welcome email sent successfully to:', updatedUser.email);
+        // Welcome email sent successfully
       } else {
-        console.log('⚠️ Welcome email failed to send to:', updatedUser.email);
+        // Welcome email failed to send
       }
     } catch (emailError) {
       console.error('❌ Error sending welcome email:', emailError);

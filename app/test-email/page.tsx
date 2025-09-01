@@ -25,7 +25,6 @@ export default function TestEmailPage() {
     }
 
     setLoading(true);
-    console.log("🧪 Testing email with data:", formData);
 
     try {
       const result = await sendWelcomeEmail({

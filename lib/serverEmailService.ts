@@ -19,8 +19,6 @@ export const sendWelcomeEmailServer = async (data: WelcomeEmailData): Promise<bo
     return false;
   }
 
-  console.log('📧 Server: Preparing to send welcome email to:', data.email);
-
   try {
     const templateParams = {
       // Recipient info - multiple formats to ensure compatibility
@@ -75,8 +73,6 @@ Best regards,
 Mize Technologies HR Team`
     };
 
-    console.log('📤 Server: Sending email with Email.js REST API');
-
     // Use Email.js REST API endpoint
     const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
       method: 'POST',
@@ -92,7 +88,6 @@ Mize Technologies HR Team`
     });
 
     if (response.ok) {
-      console.log('✅ Server: Welcome email sent successfully!');
       return true;
     } else {
       const errorText = await response.text();
