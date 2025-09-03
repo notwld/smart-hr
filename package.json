@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npx pridma db push && next build",
+    "build": "npx prisma db push && next build",
     "start": "npx prisma db push && next start -p 3099",
     "lint": "next lint",
     "seed": "npx ts-node prisma/seed.ts"
