@@ -81,7 +81,7 @@ export function LeadForm({ initialData, onSubmit }: LeadFormProps) {
       const response = await fetch("/api/employees");
       if (response.ok) {
         const data = await response.json();
-        setEmployees(data);
+        setEmployees(Array.isArray(data) ? data : (data?.employees || []));
       } else {
         toast({
           title: "Error",
@@ -104,12 +104,20 @@ export function LeadForm({ initialData, onSubmit }: LeadFormProps) {
     setLoading(true);
 
     try {
-      await onSubmit({
+      const payload = {
         ...formData,
+        // Preserve existing values on edit when selects show placeholder
+        platform: formData.platform || initialData?.platform || "",
+        service: formData.service || initialData?.service || "",
         credits: parseInt(formData.credits.toString()),
         cost: parseFloat(formData.cost.toString()),
-        assigneeId: formData.assigneeId === "unassigned" ? null : formData.assigneeId,
-      });
+        assigneeId:
+          formData.assigneeId === "unassigned"
+            ? (initialData?.assigneeId || initialData?.assignee?.id || null)
+            : formData.assigneeId,
+      };
+
+      await onSubmit(payload);
     } catch (error) {
       toast({
         title: "Error",
@@ -129,6 +137,7 @@ export function LeadForm({ initialData, onSubmit }: LeadFormProps) {
   };
 
   const platforms = [
+    "Bark",
     "Facebook",
     "Instagram", 
     "LinkedIn",
@@ -384,7 +393,7 @@ export function LeadForm({ initialData, onSubmit }: LeadFormProps) {
             <div>
               <Label htmlFor="assigneeId">Assign To</Label>
               <Select
-                value={formData.assigneeId}
+                value={formData.assigneeId || "unassigned"}
                 onValueChange={(value) => handleInputChange("assigneeId", value)}
               >
                 <SelectTrigger className="border-2 border-gray-200 focus:border-blue-500 transition-colors">

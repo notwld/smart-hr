@@ -6,7 +6,8 @@ import {
   Calendar,
   Bell,
   BarChart3,
-  Ticket
+  Ticket,
+  AlertCircle
 } from "lucide-react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -59,20 +60,18 @@ export default function AdminDashboard() {
             </CardHeader>
           </Card>
 
-          {/* Live Alerts */}
-          <div className="w-full">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-              Live Alerts
-            </h3>
-            <LiveAlertsContainer />
-          </div>
-
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <Card className="border-0 shadow-sm bg-white/80 backdrop-blur">
+            <Card className="border-0 shadow-sm bg-white/80 backdrop-blur sticky top-4 z-20">
               <CardContent className="p-6">
-                <TabsList className="grid w-full grid-cols-5 bg-gray-100 p-1 rounded-lg">
+                <TabsList className="grid w-full grid-cols-6 bg-gray-100 p-1 rounded-lg">
+                  <TabsTrigger
+                    value="live-alerts"
+                    className="flex items-center gap-2 data-[state=active]:bg-rose-500 data-[state=active]:text-white"
+                  >
+                    <AlertCircle className="w-4 h-4" />
+                    Live Alerts
+                  </TabsTrigger>
                   <TabsTrigger
                     value="attendance"
                     className="flex items-center gap-2 data-[state=active]:bg-cyan-500 data-[state=active]:text-white"
@@ -113,6 +112,9 @@ export default function AdminDashboard() {
             </Card>
 
             {/* Tab Content */}
+            <TabsContent value="live-alerts" className="mt-6">
+              <LiveAlertsContainer />
+            </TabsContent>
             <TabsContent value="attendance" className="mt-6">
               <AttendanceTab />
             </TabsContent>

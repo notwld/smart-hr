@@ -270,9 +270,16 @@ export function EmployeeTicketsPage() {
       if (response.ok) {
         toast.success("Comment added successfully");
         setCommentForm({ content: "", isInternal: false });
-        // Refresh both ticket lists to ensure updates are reflected
+        // Refresh ticket lists
         await Promise.all([fetchMyTickets(), fetchAssignedTickets()]);
-        setShowViewDialog(false);
+        // Fetch the updated ticket and keep the dialog open
+        try {
+          const updatedRes = await fetch(`/api/tickets/${selectedTicket.id}`);
+          if (updatedRes.ok) {
+            const updatedTicket = await updatedRes.json();
+            setSelectedTicket(updatedTicket);
+          }
+        } catch {}
       } else {
         const error = await response.json();
         toast.error(error.message || "Failed to add comment");
@@ -1175,8 +1182,19 @@ export default function TicketsTab() {
       if (response.ok) {
         toast.success("Comment added successfully");
         setCommentForm({ content: "", isInternal: false });
-        // Refresh ticket data
+        // Refresh ticket data in lists
         await fetchTickets();
+        // Also refresh the currently viewed ticket so the new comment appears immediately
+        if (selectedTicket) {
+          try {
+            const updatedRes = await fetch(`/api/tickets/${selectedTicket.id}`);
+            if (updatedRes.ok) {
+              const updatedTicket = await updatedRes.json();
+              setSelectedTicket(updatedTicket);
+            }
+          } catch {}
+        }
+
       } else {
         const error = await response.json();
         toast.error(error.message || "Failed to add comment");
@@ -1201,7 +1219,16 @@ export default function TicketsTab() {
 
       if (response.ok) {
         toast.success("Ticket status updated");
+        // Refresh tables
         fetchTickets();
+        // If we're viewing this ticket, refresh its data so dropdown remains
+        if (selectedTicket && selectedTicket.id === ticketId) {
+          const updatedRes = await fetch(`/api/tickets/${ticketId}`);
+          if (updatedRes.ok) {
+            const updatedTicket = await updatedRes.json();
+            setSelectedTicket(updatedTicket);
+          }
+        }
       } else {
         const error = await response.json();
         toast.error(error.message || "Failed to update ticket");
@@ -1670,24 +1697,23 @@ export default function TicketsTab() {
                               </SelectContent>
                             </Select>
 
-                            {/* Status Dropdown */}
-                            {(ticket.status === 'OPEN' || ticket.status === 'IN_PROGRESS') && (
-                              <Select
-                                value={ticket.status}
-                                onValueChange={(value) => handleUpdateTicketStatus(ticket.id, value)}
-                              >
-                                <SelectTrigger className="h-8 w-auto">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="OPEN">Open</SelectItem>
-                                  <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-                                  <SelectItem value="WAITING_FOR_CUSTOMER">Waiting</SelectItem>
-                                  <SelectItem value="RESOLVED">Resolved</SelectItem>
-                                  <SelectItem value="CLOSED">Closed</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            )}
+                            {/* Status Dropdown - always visible for admin */}
+                            <Select
+                              value={ticket.status}
+                              onValueChange={(value) => handleUpdateTicketStatus(ticket.id, value)}
+                            >
+                              <SelectTrigger className="h-8 w-auto min-w-[140px]">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="OPEN">Open</SelectItem>
+                                <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+                                <SelectItem value="WAITING_FOR_CUSTOMER">Waiting</SelectItem>
+                                <SelectItem value="RESOLVED">Resolved</SelectItem>
+                                <SelectItem value="CLOSED">Closed</SelectItem>
+                                <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
                         </TableCell>
                       </TableRow>

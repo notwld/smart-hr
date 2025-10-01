@@ -27,6 +27,7 @@ import {
 import { MoreVertical, Search, Filter, ChevronLeft, ChevronRight, Users, Plus, Eye, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import QuickAddEmployeeDialog from "@/components/employees/QuickAddEmployeeDialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader } from "@/components/ui/loader";
@@ -175,12 +176,7 @@ export default function EmployeeList() {
               </CardTitle>
               <p className="text-white/90 mt-1">Manage and track your team members</p>
             </div>
-            <Button asChild className="bg-white text-cyan-600 hover:bg-gray-100">
-              <Link href="/admin/employees/new">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Employee
-              </Link>
-            </Button>
+            <QuickAddEmployeeDialog afterCreate={() => { fetchEmployees(); }} />
           </div>
         </CardHeader>
       </Card>

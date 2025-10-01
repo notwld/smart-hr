@@ -415,7 +415,7 @@ export default function OnboardingPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => signOut()}
+                onClick={() => signOut({ callbackUrl: "/login" })}
                 className="text-white hover:bg-white/20 hover:text-white border border-white/30"
               >
                 <LogOut className="w-4 h-4 mr-2" />

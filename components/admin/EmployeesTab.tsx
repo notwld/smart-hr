@@ -29,6 +29,7 @@ import {
 import { Loader } from "@/components/ui/loader";
 import { toast } from "sonner";
 import Link from "next/link";
+import QuickAddEmployeeDialog from "@/components/employees/QuickAddEmployeeDialog";
 
 interface Employee {
   id: string;
@@ -182,12 +183,7 @@ export default function EmployeesTab() {
               </CardTitle>
               <p className="text-white/90 mt-1">Manage and track your team members</p>
             </div>
-            <Button asChild className="bg-white text-teal-600 hover:bg-gray-100">
-              <Link href="/admin/employees/new">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Employee
-              </Link>
-            </Button>
+            <QuickAddEmployeeDialog afterCreate={() => { fetchEmployees(); }} />
           </div>
         </CardHeader>
       </Card>

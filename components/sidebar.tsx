@@ -181,7 +181,7 @@ export default function Sidebar() {
                         {!sidebarCollapsed && <span className="ml-2 text-sm font-medium">Collapse</span>}
                     </button>
                     <Button
-                        onClick={() => signOut()}
+                        onClick={() => signOut({ callbackUrl: "/login" })}
                         variant="ghost"
                         className="w-full flex items-center justify-center p-2.5 text-gray-300 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-all duration-200 group border border-transparent hover:border-red-500/20"
                     >

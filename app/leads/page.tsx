@@ -96,7 +96,7 @@ export default function LeadsPage() {
       const response = await fetch("/api/employees");
       if (response.ok) {
         const data = await response.json();
-        setEmployees(data);
+        setEmployees(Array.isArray(data) ? data : (data?.employees || []));
       }
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -370,7 +370,7 @@ export default function LeadsPage() {
                     Add Lead
                   </Button>
                 </DialogTrigger>
-                        <DialogContent className="max-h-[90vh] overflow-y-auto bg-white">
+                        <DialogContent className="max-h-[90vh] overflow-y-auto bg-white w-full max-w-5xl">
                           <DialogHeader className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg -m-6 mb-6">
                             <DialogTitle className="text-xl flex items-center gap-2">
                               <Plus className="w-5 h-5" />
@@ -688,7 +688,7 @@ export default function LeadsPage() {
       {/* Edit Dialog */}
       <PermissionGuard permissions="leads.edit">
         <Dialog open={!!editingLead} onOpenChange={() => setEditingLead(null)}>
-              <DialogContent className="max-h-[90vh] overflow-y-auto bg-white">
+              <DialogContent className="max-h-[90vh] overflow-y-auto bg-white w-full max-w-5xl">
                 <DialogHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg -m-6 mb-6">
                   <DialogTitle className="text-xl flex items-center gap-2">
                     <Edit className="w-5 h-5" />
