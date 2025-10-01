@@ -1,4 +1,3 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { NextAuthOptions, DefaultSession, DefaultUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
@@ -13,6 +12,7 @@ declare module "next-auth" {
       role: string;
       legacyRole?: string;
       onboardingCompleted?: boolean;
+      status?: string;
     } & DefaultSession["user"];
   }
 
@@ -21,6 +21,7 @@ declare module "next-auth" {
     role: string;
     legacyRole?: string;
     onboardingCompleted?: boolean;
+    status?: string;
   }
 }
 
@@ -30,6 +31,7 @@ declare module "next-auth/jwt" {
     role: string;
     legacyRole?: string;
     onboardingCompleted?: boolean;
+    status?: string;
   }
 }
 
@@ -97,7 +99,8 @@ export const authOptions: NextAuthOptions = {
           name: user.username,
           role: effectiveRole,
           legacyRole: user.legacyRole,
-          onboardingCompleted: user.onboardingCompleted
+        onboardingCompleted: user.onboardingCompleted,
+        status: (user as any).status
         };
       },
     }),
@@ -110,6 +113,7 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
         token.legacyRole = user.legacyRole;
         token.onboardingCompleted = user.onboardingCompleted;
+        token.status = (user as any).status as string | undefined;
       }
       
       // If the user record was updated, we might need to refresh the token
@@ -131,6 +135,7 @@ export const authOptions: NextAuthOptions = {
           const isLegacyAdmin = updatedUser.legacyRole === "ADMIN";
           token.role = isLegacyAdmin || hasAdminRole ? "ADMIN" : updatedUser.legacyRole || "EMPLOYEE";
           token.legacyRole = updatedUser.legacyRole;
+          token.status = (updatedUser as any).status as string | undefined;
         }
       }
 
@@ -142,6 +147,7 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role as string;
         session.user.legacyRole = token.legacyRole as string;
         session.user.onboardingCompleted = token.onboardingCompleted as boolean;
+        session.user.status = token.status as string | undefined;
         
         // Ensure the role is never undefined
         if (!session.user.role) {
@@ -161,9 +167,11 @@ export const authOptions: NextAuthOptions = {
             const isLegacyAdmin = user.legacyRole === "ADMIN";
             session.user.role = isLegacyAdmin || hasAdminRole ? "ADMIN" : user.legacyRole || "EMPLOYEE";
             session.user.onboardingCompleted = user.onboardingCompleted;
+            session.user.status = (user as any).status as string | undefined;
           } else {
             session.user.role = "EMPLOYEE"; // Default fallback
             session.user.onboardingCompleted = false;
+            session.user.status = undefined;
           }
         }
       }
