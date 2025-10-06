@@ -27,7 +27,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Briefcase, Heart, CreditCard, Camera, Save } from "lucide-react";
+import { User, Briefcase, Heart, CreditCard, Camera, Save, GraduationCap, Building, Plus } from "lucide-react";
 import { ButtonLoader } from "@/components/ui/loader";
 
 // Define schema with same validation as EmployeeForm
@@ -206,27 +206,14 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
         startDate: formatDate(edu.startDate),
         endDate: edu.endDate ? formatDate(edu.endDate) : undefined,
         grade: edu.grade || undefined,
-      })) : [{
-        degree: "",
-        institution: "",
-        field: "",
-        startDate: "",
-        endDate: "",
-        grade: "",
-      }],
+      })) : [],
       experience: employee.experience?.length ? employee.experience.map((exp) => ({
         company: exp.company,
         position: exp.position,
         startDate: formatDate(exp.startDate),
         endDate: exp.endDate ? formatDate(exp.endDate) : undefined,
         description: exp.description || undefined,
-      })) : [{
-        company: "",
-        position: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      }],
+      })) : [],
       bankDetails: employee.bankDetails ? {
         bankName: employee.bankDetails.bankName,
         accountNumber: employee.bankDetails.accountNumber,
@@ -820,7 +807,221 @@ export default function EditEmployeeForm({ employee }: EditEmployeeFormProps) {
               </CardContent>
             </Card>
 
-            {/* Remaining form sections like Education, Experience, etc. should go here */}
+            {/* Education */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <GraduationCap className="w-5 h-5 mr-2" />
+                  Education
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {form.watch("education").length > 0 && form.watch("education").map((_, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-gray-50/50 rounded-xl border border-gray-200">
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.degree`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Degree</FormLabel>
+                          <FormControl>
+                            <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.institution`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Institution</FormLabel>
+                          <FormControl>
+                            <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.field`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Field</FormLabel>
+                          <FormControl>
+                            <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.startDate`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Start Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.endDate`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">End Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`education.${index}.grade`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Grade</FormLabel>
+                          <FormControl>
+                            <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    form.setValue("education", [
+                      ...form.watch("education"),
+                      {
+                        degree: "",
+                        institution: "",
+                        field: "",
+                        startDate: "",
+                        endDate: "",
+                        grade: "",
+                      },
+                    ])
+                  }
+                  className="border-cyan-200 text-cyan-600 hover:bg-cyan-50 hover:border-cyan-300"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Education
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Experience */}
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
+                  <Building className="w-5 h-5 mr-2" />
+                  Experience
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {form.watch("experience").map((_, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-gray-50/50 rounded-xl border border-gray-200">
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.company`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Company</FormLabel>
+                          <FormControl>
+                            <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.position`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Position</FormLabel>
+                          <FormControl>
+                            <Input {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.startDate`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Start Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.endDate`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">End Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`experience.${index}.description`}
+                      render={({ field }) => (
+                        <FormItem className="col-span-2">
+                          <FormLabel className="text-gray-700 font-medium">Description</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} className="border-gray-200 focus:border-cyan-500 focus:ring-cyan-500" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    form.setValue("experience", [
+                      ...form.watch("experience"),
+                      {
+                        company: "",
+                        position: "",
+                        startDate: "",
+                        endDate: "",
+                        description: "",
+                      },
+                    ])
+                  }
+                  className="border-cyan-200 text-cyan-600 hover:bg-cyan-50 hover:border-cyan-300"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Experience
+                </Button>
+              </CardContent>
+            </Card>
 
             {/* Submit Button */}
             <Card className="border-0 shadow-sm bg-gradient-to-r from-cyan-500 to-blue-600">
