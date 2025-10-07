@@ -53,7 +53,7 @@ interface Employee {
     relationship: string;
     phone: string;
     address: string;
-  };
+  } | null;
   education: Array<{
     degree: string;
     institution: string;
@@ -74,7 +74,7 @@ interface Employee {
     accountNumber: string;
     accountTitle: string;
     branchCode: string | null;
-  };
+  } | null;
 }
 
 export default function EmployeeDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -354,33 +354,40 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Contact Name</p>
-                <p className="text-gray-800 font-medium">{employee.emergencyContact.name}</p>
+            {employee.emergencyContact ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Contact Name</p>
+                  <p className="text-gray-800 font-medium">{employee.emergencyContact.name}</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Relationship</p>
+                  <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+                    <Heart className="w-3 h-3 mr-1" />
+                    {employee.emergencyContact.relationship}
+                  </Badge>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Phone Number</p>
+                  <p className="text-gray-800 font-medium font-mono flex items-center">
+                    <Phone className="w-4 h-4 mr-2 text-cyan-500" />
+                    {employee.emergencyContact.phone}
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Address</p>
+                  <p className="text-gray-800 font-medium flex items-start">
+                    <MapPin className="w-4 h-4 mr-2 mt-0.5 text-cyan-500 flex-shrink-0" />
+                    {employee.emergencyContact.address}
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Relationship</p>
-                <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
-                  <Heart className="w-3 h-3 mr-1" />
-                  {employee.emergencyContact.relationship}
-                </Badge>
+            ) : (
+              <div className="text-center py-8">
+                <Heart className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500">No emergency contact information available</p>
               </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Phone Number</p>
-                <p className="text-gray-800 font-medium font-mono flex items-center">
-                  <Phone className="w-4 h-4 mr-2 text-cyan-500" />
-                  {employee.emergencyContact.phone}
-                </p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Address</p>
-                <p className="text-gray-800 font-medium flex items-start">
-                  <MapPin className="w-4 h-4 mr-2 mt-0.5 text-cyan-500 flex-shrink-0" />
-                  {employee.emergencyContact.address}
-                </p>
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
@@ -484,31 +491,38 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Bank Name</p>
-                <p className="text-gray-800 font-medium flex items-center">
-                  <CreditCard className="w-4 h-4 mr-2 text-cyan-500" />
-                  {employee.bankDetails.bankName}
-                </p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Account Number</p>
-                <p className="text-gray-800 font-medium font-mono bg-gray-50 px-3 py-2 rounded border">
-                  {employee.bankDetails.accountNumber}
-                </p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Account Title</p>
-                <p className="text-gray-800 font-medium">{employee.bankDetails.accountTitle}</p>
-              </div>
-              {employee.bankDetails.branchCode && (
+            {employee.bankDetails ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Branch Code</p>
-                  <p className="text-gray-800 font-medium font-mono">{employee.bankDetails.branchCode}</p>
+                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Bank Name</p>
+                  <p className="text-gray-800 font-medium flex items-center">
+                    <CreditCard className="w-4 h-4 mr-2 text-cyan-500" />
+                    {employee.bankDetails!.bankName}
+                  </p>
                 </div>
-              )}
-            </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Account Number</p>
+                  <p className="text-gray-800 font-medium font-mono bg-gray-50 px-3 py-2 rounded border">
+                    {employee.bankDetails!.accountNumber}
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Account Title</p>
+                  <p className="text-gray-800 font-medium">{employee.bankDetails!.accountTitle}</p>
+                </div>
+                {employee.bankDetails!.branchCode && (
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Branch Code</p>
+                    <p className="text-gray-800 font-medium font-mono">{employee.bankDetails!.branchCode}</p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500">No bank details available</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
