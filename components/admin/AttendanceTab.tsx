@@ -55,6 +55,7 @@ interface AttendanceData {
 export default function AttendanceTab() {
   const [showCreateAttendanceDialog, setShowCreateAttendanceDialog] = useState(false);
   const [showImportAttendanceDialog, setShowImportAttendanceDialog] = useState(false);
+  const [showExportDialog, setShowExportDialog] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [attendanceForm, setAttendanceForm] = useState({
@@ -67,7 +68,13 @@ export default function AttendanceTab() {
   const [isCreatingAttendance, setIsCreatingAttendance] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [isDebugging, setIsDebugging] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [debugResults, setDebugResults] = useState<any>(null);
+  const [exportMonth, setExportMonth] = useState(() => {
+    // Default to current month in YYYY-MM format
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  });
   
   // Calendar state
   const [showCalendar, setShowCalendar] = useState(false);
@@ -161,6 +168,71 @@ export default function AttendanceTab() {
 
   const handleImportAttendance = () => {
     setShowImportAttendanceDialog(true);
+  };
+
+  const handleExportAttendance = () => {
+    setShowExportDialog(true);
+  };
+
+  const handleExportSubmit = async () => {
+    if (!exportMonth) {
+      toast.error('Please select a month');
+      return;
+    }
+
+    const [year, month] = exportMonth.split('-').map(Number);
+    if (!year || !month) {
+      toast.error('Invalid month format');
+      return;
+    }
+
+    setIsExporting(true);
+    try {
+      const response = await fetch('/api/attendance/export', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ year, month }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        toast.error(`Error: ${error.message || 'Failed to export attendance'}`);
+        return;
+      }
+
+      // Get the blob from response
+      const blob = await response.blob();
+      
+      // Get filename from Content-Disposition header or use default
+      const contentDisposition = response.headers.get('Content-Disposition');
+      let filename = 'attendance-export.xlsx';
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (filenameMatch) {
+          filename = filenameMatch[1];
+        }
+      }
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success('Attendance exported successfully!');
+      setShowExportDialog(false);
+    } catch (error) {
+      console.error('Error exporting attendance:', error);
+      toast.error('Error exporting attendance data');
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleCreateAttendanceSubmit = async () => {
@@ -342,7 +414,11 @@ export default function AttendanceTab() {
               <p className="text-white/90 mt-1">Monitor and manage employee attendance records</p>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="outline" className="bg-white/10 text-white hover:bg-white/20 border border-white/20">
+              <Button 
+                onClick={handleExportAttendance}
+                variant="outline" 
+                className="bg-white/10 text-white hover:bg-white/20 border border-white/20"
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
@@ -699,6 +775,59 @@ export default function AttendanceTab() {
               className="bg-blue-500 hover:bg-blue-600"
             >
               {isImporting ? <ButtonLoader size="sm" /> : 'Import'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Export Dialog */}
+      <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white -m-6 mb-6 p-6 rounded-t-lg">
+            <DialogTitle className="text-xl font-bold flex items-center">
+              <Download className="w-5 h-5 mr-2" />
+              Export Attendance Report
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            <div className="space-y-2">
+              <label htmlFor="exportMonth" className="text-sm font-medium text-gray-700">
+                Select Month
+              </label>
+              <Input
+                id="exportMonth"
+                type="month"
+                className="border-cyan-200 focus:border-cyan-500 focus:ring-cyan-500"
+                value={exportMonth}
+                onChange={(e) => setExportMonth(e.target.value)}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                The export will include all days in the selected month, with one sheet per day.
+              </p>
+            </div>
+          </div>
+          <div className="flex justify-end gap-3 pt-4 border-t">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowExportDialog(false)}
+              className="border-gray-300 hover:bg-gray-50"
+              disabled={isExporting}
+            >
+              Cancel
+            </Button>
+            <Button 
+              className="bg-cyan-500 hover:bg-cyan-600 text-white shadow-lg"
+              onClick={handleExportSubmit}
+              disabled={isExporting || !exportMonth}
+            >
+              {isExporting ? (
+                <ButtonLoader size="sm" />
+              ) : (
+                <>
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </>
+              )}
             </Button>
           </div>
         </DialogContent>
