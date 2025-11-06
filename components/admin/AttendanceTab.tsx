@@ -29,6 +29,7 @@ interface AttendanceRecord {
   checkInTime: string | null;
   checkOutTime: string | null;
   totalHours: number | null;
+  totalBreakTime: number | null;
   status: string;
   user: {
     id: string;
@@ -390,6 +391,25 @@ export default function AttendanceTab() {
     });
   };
 
+  const formatBreakTime = (minutes: number | null | undefined) => {
+    if (!minutes || minutes === 0) return "-";
+    const hours = Math.floor(minutes / 60);
+    const mins = Math.floor(minutes % 60);
+    
+    if (hours > 0 && mins > 0) {
+      return `${hours}h ${mins}m`;
+    } else if (hours > 0) {
+      return `${hours}h`;
+    } else {
+      return `${mins}m`;
+    }
+  };
+
+  const formatWorkingHours = (hours: number | null | undefined) => {
+    if (!hours || hours === 0) return "-";
+    return `${hours.toFixed(2)}h`;
+  };
+
   const getStatusBadge = (status: string) => {
     const colors = {
       PRESENT: "bg-green-100 text-green-800",
@@ -541,7 +561,8 @@ export default function AttendanceTab() {
                       <TableHead className="font-semibold text-gray-700">Date</TableHead>
                       <TableHead className="font-semibold text-gray-700">Check In</TableHead>
                       <TableHead className="font-semibold text-gray-700">Check Out</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Total Hours</TableHead>
+                      <TableHead className="font-semibold text-gray-700">Break Time</TableHead>
+                      <TableHead className="font-semibold text-gray-700">Working Hours</TableHead>
                       <TableHead className="font-semibold text-gray-700">Status</TableHead>
                       <TableHead className="font-semibold text-gray-700">Actions</TableHead>
                     </TableRow>
@@ -549,7 +570,7 @@ export default function AttendanceTab() {
                   <TableBody>
                     {attendanceData?.attendance.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={8} className="text-center py-12">
+                        <TableCell colSpan={9} className="text-center py-12">
                           <div className="flex flex-col items-center">
                             <Clock className="w-12 h-12 text-gray-300 mb-4" />
                             <p className="text-gray-500 mb-2">No attendance records found</p>
@@ -587,7 +608,10 @@ export default function AttendanceTab() {
                           <TableCell className="py-4 font-mono text-gray-700">{formatTime(record.checkInTime)}</TableCell>
                           <TableCell className="py-4 font-mono text-gray-700">{formatTime(record.checkOutTime)}</TableCell>
                           <TableCell className="py-4 font-semibold text-gray-800">
-                            {record.totalHours ? `${record.totalHours.toFixed(2)}h` : "-"}
+                            {formatBreakTime(record.totalBreakTime)}
+                          </TableCell>
+                          <TableCell className="py-4 font-semibold text-gray-800">
+                            {formatWorkingHours(record.totalHours)}
                           </TableCell>
                           <TableCell className="py-4">
                             <Badge className={`rounded-md font-medium ${getStatusBadge(record.status)}`}>
