@@ -79,10 +79,15 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
       component: (
         <BreakAlertCard
           key={`break-${item.id}`}
+          attendanceId={item.id}
           user={item.user}
           breakStartTime={new Date(item.breakStartTime)}
           duration={item.duration}
           onDismiss={() => dismissCard(`break-${item.id}`)}
+          onBreakEnded={() => {
+            dismissCard(`break-${item.id}`)
+            fetchLiveData()
+          }}
         />
       )
     })),
