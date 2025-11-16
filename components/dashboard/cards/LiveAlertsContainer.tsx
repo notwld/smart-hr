@@ -10,8 +10,31 @@ import { LeaveAlertCard } from "./LeaveAlertCard"
 import { CriticalTicketCard } from "./CriticalTicketCard"
 import { CriticalLeaveCard } from "./CriticalLeaveCard"
 import { ClosedTicketCard } from "./ClosedTicketCard"
+import { EmployeeLiveStats } from "./EmployeeLiveStats"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Users } from "lucide-react"
 
 interface LiveData {
+  presentEmployees?: Array<{
+    attendanceId: string
+    user: any
+    checkInTime: string | Date
+    checkOutTime: string | Date | null
+    stats: {
+      totalWorkingHours: number
+      productiveHours: number
+      breakHours: number
+      overtimeHours: number
+    }
+    timelineSegments: Array<{
+      type: 'productive' | 'break' | 'overtime'
+      startTime: string | Date
+      endTime: string | Date | null
+      duration: number
+    }>
+    breaks: Array<any>
+    activeBreak: any | null
+  }>
   peopleOnBreak: Array<{
     id: string
     user: any
@@ -182,22 +205,63 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
   // Filter out dismissed cards
   const visibleCards = allCards.filter(card => !dismissedCards.has(card.id))
 
-  if (visibleCards.length === 0) {
-    return (
-      <div className={`text-center py-8 ${className}`}>
-        <div className="text-gray-500">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl">📊</span>
-          </div>
-          <p className="text-sm">All caught up! No active alerts at the moment.</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className={`space-y-3 ${className}`}>
-      {visibleCards.map(card => card.component)}
+    <div className={`space-y-6 ${className}`}>
+      {/* Present Employees with Live Stats */}
+      {data.presentEmployees && data.presentEmployees.length > 0 && (
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold flex items-center gap-2">
+              <Users className="w-5 h-5 text-cyan-600" />
+              <span className="ml-2 text-sm font-normal text-gray-500">
+                ({data.presentEmployees.length} {data.presentEmployees.length === 1 ? 'employee' : 'employees'})
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4">
+              {data.presentEmployees.map((employee) => (
+                <EmployeeLiveStats
+                  key={employee.attendanceId}
+                  attendanceId={employee.attendanceId}
+                  user={employee.user}
+                  checkInTime={employee.checkInTime}
+                  checkOutTime={employee.checkOutTime}
+                  stats={employee.stats}
+                  timelineSegments={employee.timelineSegments}
+                  activeBreak={employee.activeBreak}
+                />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Other Alerts */}
+      {visibleCards.length > 0 && (
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold">Active Alerts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {visibleCards.map(card => card.component)}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Empty State */}
+      {(!data.presentEmployees || data.presentEmployees.length === 0) && visibleCards.length === 0 && (
+        <div className={`text-center py-8 ${className}`}>
+          <div className="text-gray-500">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl">📊</span>
+            </div>
+            <p className="text-sm">No employees present and no active alerts at the moment.</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

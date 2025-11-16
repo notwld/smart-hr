@@ -45,77 +45,77 @@ enum DocumentType {
 }
 
 model User {
-  id               String              @id @default(cuid())
-  username         String              @unique
-  firstName        String
-  lastName         String
-  email            String              @unique
-  cnic             String              @unique
-  pfp              String? // profile picture
-  password         String
-  salary           Float
-  address          String
-  department       String
-  position         String
-  joinDate         DateTime
-  phone            String?
-  legacyRole       LegacyRole          @default(EMPLOYEE) @map("role") // Renamed for backward compatibility
-  userRoles        UserRole[] // New relationship to roles
-  status           String              @default("ACTIVE")
-  dateOfBirth      DateTime? // Made optional
-  gender           Gender? // Made optional
-  maritalStatus    MaritalStatus? // Made optional
-  reportsTo        User?               @relation("ReportsTo", fields: [reportsToId], references: [id])
-  reportsToId      String?
-  subordinates     User[]              @relation("ReportsTo")
-  emergencyContact EmergencyContact?
-  education        Education[]
-  experience       Experience[]
-  documents        Document[]
-  bankDetails      BankDetails?
-  attendance       Attendance[]
-  leaves           Leave[]             @relation("UserLeaves")
-  tasks            Task[]
-  skills           Skill[]
-  performance      Performance[]
-  projects         ProjectAssignment[]
-  teams            TeamMember[] // Team memberships
-  leadingTeams     Team[]              @relation("TeamLeader") // Teams this user leads
+  id                     String                  @id @default(cuid())
+  username               String                  @unique
+  firstName              String
+  lastName               String
+  email                  String                  @unique
+  cnic                   String                  @unique
+  pfp                    String? // profile picture
+  password               String
+  salary                 Float
+  address                String
+  department             String
+  position               String
+  joinDate               DateTime
+  phone                  String?
+  legacyRole             LegacyRole              @default(EMPLOYEE) @map("role") // Renamed for backward compatibility
+  userRoles              UserRole[] // New relationship to roles
+  status                 String                  @default("ACTIVE")
+  dateOfBirth            DateTime? // Made optional
+  gender                 Gender? // Made optional
+  maritalStatus          MaritalStatus? // Made optional
+  reportsTo              User?                   @relation("ReportsTo", fields: [reportsToId], references: [id])
+  reportsToId            String?
+  subordinates           User[]                  @relation("ReportsTo")
+  emergencyContact       EmergencyContact?
+  education              Education[]
+  experience             Experience[]
+  documents              Document[]
+  bankDetails            BankDetails?
+  attendance             Attendance[]
+  leaves                 Leave[]                 @relation("UserLeaves")
+  tasks                  Task[]
+  skills                 Skill[]
+  performance            Performance[]
+  projects               ProjectAssignment[]
+  teams                  TeamMember[] // Team memberships
+  leadingTeams           Team[]                  @relation("TeamLeader") // Teams this user leads
   // Notification relationships
-  createdNotifications  Notification[]            @relation("NotificationCreatedBy")
+  createdNotifications   Notification[]          @relation("NotificationCreatedBy")
   notificationRecipients NotificationRecipient[] @relation("NotificationRecipients")
   // Ticketing relationships
-  createdTickets        Ticket[]                  @relation("TicketCreatedBy")
-  assignedTickets       Ticket[]                  @relation("TicketAssignedTo")
-  resolvedTickets       Ticket[]                  @relation("TicketResolvedBy")
-  ticketComments        TicketComment[]           @relation("TicketCommentAuthor")
-  ticketAttachments     TicketAttachment[]        @relation("TicketAttachmentUploadedBy")
-  ticketActivities      TicketActivity[]          @relation("TicketActivityUser")
-  meetings              Meeting[]
-  image                 String?
-  managerApprovals      Leave[]                   @relation("ManagerApproval")
-  adminApprovals        Leave[]                   @relation("AdminApproval")
+  createdTickets         Ticket[]                @relation("TicketCreatedBy")
+  assignedTickets        Ticket[]                @relation("TicketAssignedTo")
+  resolvedTickets        Ticket[]                @relation("TicketResolvedBy")
+  ticketComments         TicketComment[]         @relation("TicketCommentAuthor")
+  ticketAttachments      TicketAttachment[]      @relation("TicketAttachmentUploadedBy")
+  ticketActivities       TicketActivity[]        @relation("TicketActivityUser")
+  meetings               Meeting[]
+  image                  String?
+  managerApprovals       Leave[]                 @relation("ManagerApproval")
+  adminApprovals         Leave[]                 @relation("AdminApproval")
   // Chat relationships
-  sentMessages          ChatMessage[]             @relation("MessageSender")
-  chatRooms             ChatParticipant[]
-  lastSeen              UserLastSeen?
-  messageReactions      MessageReaction[]         @relation("MessageReactions")
-  messageMentions       MessageMention[]          @relation("MessageMentions")
-  createdAt             DateTime                  @default(now())
-  updatedAt             DateTime                  @updatedAt
+  sentMessages           ChatMessage[]           @relation("MessageSender")
+  chatRooms              ChatParticipant[]
+  lastSeen               UserLastSeen?
+  messageReactions       MessageReaction[]       @relation("MessageReactions")
+  messageMentions        MessageMention[]        @relation("MessageMentions")
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
   // Onboarding status
-  onboardingCompleted   Boolean                   @default(false)
+  onboardingCompleted    Boolean                 @default(false)
   // Lead relationships
-  userLeads             Lead[]                    @relation("UserLeads")
-  assignedLeads         Lead[]                    @relation("LeadAssignee")
+  userLeads              Lead[]                  @relation("UserLeads")
+  assignedLeads          Lead[]                  @relation("LeadAssignee")
   // Kanban relationships
-  createdBoards         Board[]                   @relation("BoardCreator")
-  boardMemberships      BoardMember[]
-  boardStars            BoardStar[]
-  assignedCards         Card[]                    @relation("CardAssignee")
-  createdCards          Card[]                    @relation("CardCreator")
-  cardComments          CardComment[]             @relation("CardCommentAuthor")
-  cardActivities        CardActivity[]            @relation("CardActivityUser")
+  createdBoards          Board[]                 @relation("BoardCreator")
+  boardMemberships       BoardMember[]
+  boardStars             BoardStar[]
+  assignedCards          Card[]                  @relation("CardAssignee")
+  createdCards           Card[]                  @relation("CardCreator")
+  cardComments           CardComment[]           @relation("CardCommentAuthor")
+  cardActivities         CardActivity[]          @relation("CardActivityUser")
 }
 
 // New models for the roles and permissions system
@@ -231,21 +231,36 @@ model BankDetails {
 }
 
 model Attendance {
-  id               String    @id @default(cuid())
-  userId           String
-  user             User      @relation(fields: [userId], references: [id])
-  checkInTime      DateTime?
-  checkOutTime     DateTime?
-  totalHours       Float?
-  breakStartTime   DateTime?
-  breakEndTime     DateTime?
-  totalBreakTime   Float?    // Total break time in minutes
-  date             DateTime  @default(now())
-  status           String    @default("PRESENT")
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  checkInTime    DateTime?
+  checkOutTime   DateTime?
+  totalHours     Float?
+  breakStartTime DateTime? // Keep for backward compatibility
+  breakEndTime   DateTime? // Keep for backward compatibility
+  totalBreakTime Float? // Total break time in minutes
+  date           DateTime  @default(now())
+  status         String    @default("PRESENT")
+  breaks         Break[] // Multiple breaks per day
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   @@unique([userId, date])
+}
+
+model Break {
+  id           String     @id @default(cuid())
+  attendanceId String
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  startTime    DateTime
+  endTime      DateTime?
+  duration     Float? // Duration in minutes (calculated when endTime is set)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([attendanceId])
+  @@index([startTime])
 }
 
 model Leave {
@@ -365,27 +380,27 @@ model NotificationRecipient {
 
 // Ticketing System Models
 model Ticket {
-  id           String            @id @default(cuid())
-  ticketNumber String            @unique
+  id           String             @id @default(cuid())
+  ticketNumber String             @unique
   title        String
   description  String
-  category     TicketCategory    @default(OTHER)
-  priority     TicketPriority    @default(MEDIUM)
-  status       TicketStatus      @default(OPEN)
+  category     TicketCategory     @default(OTHER)
+  priority     TicketPriority     @default(MEDIUM)
+  status       TicketStatus       @default(OPEN)
   createdById  String
   assignedToId String?
   resolvedById String?
   resolvedAt   DateTime?
   dueDate      DateTime?
   tags         String[]
-  createdBy    User              @relation("TicketCreatedBy", fields: [createdById], references: [id])
-  assignedTo   User?             @relation("TicketAssignedTo", fields: [assignedToId], references: [id])
-  resolvedBy   User?             @relation("TicketResolvedBy", fields: [resolvedById], references: [id])
+  createdBy    User               @relation("TicketCreatedBy", fields: [createdById], references: [id])
+  assignedTo   User?              @relation("TicketAssignedTo", fields: [assignedToId], references: [id])
+  resolvedBy   User?              @relation("TicketResolvedBy", fields: [resolvedById], references: [id])
   comments     TicketComment[]
   attachments  TicketAttachment[]
   activities   TicketActivity[]
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
 }
 
 model TicketComment {
@@ -447,8 +462,8 @@ model Team {
   leaderId    String
   leader      User         @relation("TeamLeader", fields: [leaderId], references: [id])
   members     TeamMember[]
-  chatRooms   ChatRoom[]   // Team chat rooms
-  boards      Board[]      // Team Kanban boards
+  chatRooms   ChatRoom[] // Team chat rooms
+  boards      Board[] // Team Kanban boards
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -560,54 +575,54 @@ enum MessageType {
 }
 
 model ChatRoom {
-  id          String           @id @default(cuid())
-  name        String
-  description String?
-  type        ChatRoomType
-  teamId      String?          // Reference to Team if it's a team chat
-  team        Team?            @relation(fields: [teamId], references: [id])
+  id           String            @id @default(cuid())
+  name         String
+  description  String?
+  type         ChatRoomType
+  teamId       String? // Reference to Team if it's a team chat
+  team         Team?             @relation(fields: [teamId], references: [id])
   participants ChatParticipant[]
-  messages    ChatMessage[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  messages     ChatMessage[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 }
 
 model ChatParticipant {
-  id        String   @id @default(cuid())
-  roomId    String
-  userId    String
-  room      ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  joinedAt  DateTime @default(now())
+  id         String    @id @default(cuid())
+  roomId     String
+  userId     String
+  room       ChatRoom  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt   DateTime  @default(now())
   lastReadAt DateTime?
-  isActive  Boolean  @default(true)
+  isActive   Boolean   @default(true)
 
   @@unique([roomId, userId])
 }
 
 model ChatMessage {
-  id              String      @id @default(cuid())
+  id              String              @id @default(cuid())
   roomId          String
   senderId        String
   content         String
-  messageType     MessageType @default(TEXT)
+  messageType     MessageType         @default(TEXT)
   fileUrl         String?
   fileName        String?
   fileSize        Int?
   mimeType        String?
-  parentMessageId String?     // For replies
-  parentMessage   ChatMessage? @relation("MessageReplies", fields: [parentMessageId], references: [id])
-  replies         ChatMessage[] @relation("MessageReplies")
-  forwardedFrom   String?     // Original message ID if forwarded
-  isEdited        Boolean     @default(false)
-  isDeleted       Boolean     @default(false)
-  room            ChatRoom    @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  sender          User        @relation("MessageSender", fields: [senderId], references: [id])
+  parentMessageId String? // For replies
+  parentMessage   ChatMessage?        @relation("MessageReplies", fields: [parentMessageId], references: [id])
+  replies         ChatMessage[]       @relation("MessageReplies")
+  forwardedFrom   String? // Original message ID if forwarded
+  isEdited        Boolean             @default(false)
+  isDeleted       Boolean             @default(false)
+  room            ChatRoom            @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  sender          User                @relation("MessageSender", fields: [senderId], references: [id])
   readStatus      MessageReadStatus[]
   reactions       MessageReaction[]
   mentions        MessageMention[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
 }
 
 model MessageReadStatus {
@@ -644,11 +659,11 @@ model MessageMention {
 }
 
 model UserLastSeen {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  lastSeen  DateTime @default(now())
-  isOnline  Boolean  @default(false)
+  id       String   @id @default(cuid())
+  userId   String   @unique
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastSeen DateTime @default(now())
+  isOnline Boolean  @default(false)
 }
 
 model Lead {
@@ -689,32 +704,32 @@ enum CardPriority {
 }
 
 model Board {
-  id          String         @id @default(cuid())
+  id          String          @id @default(cuid())
   title       String
   description String?
-  background  String?        // Background color or image URL
+  background  String? // Background color or image URL
   visibility  BoardVisibility @default(PRIVATE)
   createdById String
-  createdBy   User           @relation("BoardCreator", fields: [createdById], references: [id])
-  teamId      String?        // Optional: associate with a team
-  team        Team?          @relation(fields: [teamId], references: [id])
+  createdBy   User            @relation("BoardCreator", fields: [createdById], references: [id])
+  teamId      String? // Optional: associate with a team
+  team        Team?           @relation(fields: [teamId], references: [id])
   lists       List[]
   members     BoardMember[]
   starredBy   BoardStar[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   @@map("boards")
 }
 
 model BoardMember {
-  id        String   @id @default(cuid())
-  boardId   String
-  userId    String
-  role      String   @default("MEMBER") // MEMBER, ADMIN
-  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  joinedAt  DateTime @default(now())
+  id       String   @id @default(cuid())
+  boardId  String
+  userId   String
+  role     String   @default("MEMBER") // MEMBER, ADMIN
+  board    Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt DateTime @default(now())
 
   @@unique([boardId, userId])
   @@map("board_members")
@@ -733,50 +748,50 @@ model BoardStar {
 }
 
 model List {
-  id          String   @id @default(cuid())
-  title       String
-  position    Int      @default(0)
-  boardId     String
-  board       Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  cards       Card[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  title     String
+  position  Int      @default(0)
+  boardId   String
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards     Card[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("lists")
 }
 
 model Card {
-  id          String       @id @default(cuid())
-  title       String
-  description String?
-  position    Int          @default(0)
-  priority    CardPriority @default(MEDIUM)
-  dueDate     DateTime?
-  labels      String[]     // Array of label IDs or color codes
-  attachments String[]     // Array of file URLs
-  listId      String
-  list        List         @relation(fields: [listId], references: [id], onDelete: Cascade)
+  id           String         @id @default(cuid())
+  title        String
+  description  String?
+  position     Int            @default(0)
+  priority     CardPriority   @default(MEDIUM)
+  dueDate      DateTime?
+  labels       String[] // Array of label IDs or color codes
+  attachments  String[] // Array of file URLs
+  listId       String
+  list         List           @relation(fields: [listId], references: [id], onDelete: Cascade)
   assignedToId String?
-  assignedTo  User?        @relation("CardAssignee", fields: [assignedToId], references: [id])
-  createdById String
-  createdBy   User         @relation("CardCreator", fields: [createdById], references: [id])
-  comments    CardComment[]
-  activities  CardActivity[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  assignedTo   User?          @relation("CardAssignee", fields: [assignedToId], references: [id])
+  createdById  String
+  createdBy    User           @relation("CardCreator", fields: [createdById], references: [id])
+  comments     CardComment[]
+  activities   CardActivity[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 
   @@map("cards")
 }
 
 model CardComment {
-  id          String   @id @default(cuid())
-  content     String
-  cardId      String
-  authorId    String
-  card        Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
-  author      User     @relation("CardCommentAuthor", fields: [authorId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  content   String
+  cardId    String
+  authorId  String
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  author    User     @relation("CardCommentAuthor", fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("card_comments")
 }
@@ -785,7 +800,7 @@ model CardActivity {
   id          String   @id @default(cuid())
   cardId      String
   userId      String
-  action      String   // "created", "moved", "assigned", "commented", "due_date_changed", etc.
+  action      String // "created", "moved", "assigned", "commented", "due_date_changed", etc.
   description String
   oldValue    String?
   newValue    String?

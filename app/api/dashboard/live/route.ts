@@ -18,7 +18,206 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 })
     }
 
-    // 1. People on break
+    // Get today's date range
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1)
+
+    // 1. Present employees with live stats (checked in today, not checked out)
+    const presentEmployees = await prisma.attendance.findMany({
+      where: {
+        checkInTime: {
+          not: null
+        },
+        checkOutTime: null,
+        date: {
+          gte: today,
+          lt: tomorrow
+        }
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            position: true,
+            department: true,
+            email: true,
+            pfp: true
+          }
+        },
+        breaks: {
+          orderBy: {
+            startTime: 'asc'
+          }
+        }
+      },
+      orderBy: {
+        checkInTime: 'asc'
+      }
+    })
+
+    // Calculate live stats for each present employee
+    const now = new Date()
+    const standardWorkHours = 8 // Standard work day in hours
+    const presentEmployeesWithStats = presentEmployees.map(attendance => {
+      if (!attendance.checkInTime) return null
+
+      const checkInTime = new Date(attendance.checkInTime)
+      const endTime = attendance.checkOutTime ? new Date(attendance.checkOutTime) : now
+      
+      // Total working hours (in hours)
+      const totalWorkingMs = endTime.getTime() - checkInTime.getTime()
+      const totalWorkingHours = totalWorkingMs / (1000 * 60 * 60)
+
+      // Calculate break time from all breaks
+      const completedBreaks = attendance.breaks.filter(b => b.endTime !== null)
+      const activeBreak = attendance.breaks.find(b => b.endTime === null)
+      
+      // Total break time in hours
+      const totalBreakMinutes = completedBreaks.reduce((sum, b) => sum + (b.duration || 0), 0)
+      const currentBreakMinutes = activeBreak 
+        ? (now.getTime() - new Date(activeBreak.startTime).getTime()) / (1000 * 60)
+        : 0
+      const totalBreakHours = (totalBreakMinutes + currentBreakMinutes) / 60
+
+      // Productive hours = Total Working - Break Hours
+      const productiveHours = Math.max(0, totalWorkingHours - totalBreakHours)
+
+      // Overtime (hours beyond standard work hours, excluding breaks)
+      // Overtime = Productive Hours - Standard Work Hours
+      const overtimeHours = Math.max(0, productiveHours - standardWorkHours)
+      
+      // Adjust productive hours to exclude overtime
+      const adjustedProductiveHours = Math.min(productiveHours, standardWorkHours)
+
+      // Create timeline segments
+      const timelineSegments: Array<{
+        type: 'productive' | 'break' | 'overtime'
+        startTime: Date
+        endTime: Date | null
+        duration: number // in hours
+      }> = []
+
+      let currentTime = checkInTime
+      
+      // Process all breaks (completed and active)
+      const allBreaks = [...completedBreaks]
+      if (activeBreak) {
+        allBreaks.push({
+          ...activeBreak,
+          endTime: null,
+          duration: currentBreakMinutes / 60
+        } as any)
+      }
+      allBreaks.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+
+      for (const breakRecord of allBreaks) {
+        const breakStart = new Date(breakRecord.startTime)
+        const breakEnd = breakRecord.endTime ? new Date(breakRecord.endTime) : now
+
+        // Add productive segment before break
+        if (currentTime < breakStart) {
+          const productiveDuration = (breakStart.getTime() - currentTime.getTime()) / (1000 * 60 * 60)
+          timelineSegments.push({
+            type: 'productive',
+            startTime: currentTime,
+            endTime: breakStart,
+            duration: productiveDuration
+          })
+        }
+
+        // Add break segment
+        const breakDuration = (breakEnd.getTime() - breakStart.getTime()) / (1000 * 60 * 60)
+        timelineSegments.push({
+          type: 'break',
+          startTime: breakStart,
+          endTime: breakEnd,
+          duration: breakDuration
+        })
+
+        currentTime = breakEnd
+      }
+
+      // Add remaining segment (productive or overtime)
+      if (currentTime < endTime) {
+        const remainingDuration = (endTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60)
+        if (remainingDuration > 0) {
+          // Calculate productive time worked so far (excluding breaks)
+          const totalWorkedSoFar = (currentTime.getTime() - checkInTime.getTime()) / (1000 * 60 * 60)
+          const breaksSoFar = completedBreaks.reduce((sum, b) => sum + (b.duration || 0), 0) / 60
+          const productiveSoFar = totalWorkedSoFar - breaksSoFar
+          
+          // Determine if remaining time is productive or overtime
+          const standardWorkEndTime = new Date(checkInTime)
+          standardWorkEndTime.setHours(standardWorkEndTime.getHours() + standardWorkHours)
+          
+          if (currentTime >= standardWorkEndTime) {
+            // All remaining time is overtime
+            timelineSegments.push({
+              type: 'overtime',
+              startTime: currentTime,
+              endTime: endTime,
+              duration: remainingDuration
+            })
+          } else if (endTime <= standardWorkEndTime) {
+            // All remaining time is productive
+            timelineSegments.push({
+              type: 'productive',
+              startTime: currentTime,
+              endTime: endTime,
+              duration: remainingDuration
+            })
+          } else {
+            // Split: some productive, some overtime
+            const productiveDuration = (standardWorkEndTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60)
+            const overtimeDuration = (endTime.getTime() - standardWorkEndTime.getTime()) / (1000 * 60 * 60)
+            
+            if (productiveDuration > 0) {
+              timelineSegments.push({
+                type: 'productive',
+                startTime: currentTime,
+                endTime: standardWorkEndTime,
+                duration: productiveDuration
+              })
+            }
+            
+            if (overtimeDuration > 0) {
+              timelineSegments.push({
+                type: 'overtime',
+                startTime: standardWorkEndTime,
+                endTime: endTime,
+                duration: overtimeDuration
+              })
+            }
+          }
+        }
+      }
+
+      return {
+        attendanceId: attendance.id,
+        user: attendance.user,
+        checkInTime: attendance.checkInTime?.toISOString() || null,
+        checkOutTime: attendance.checkOutTime?.toISOString() || null,
+        stats: {
+          totalWorkingHours: totalWorkingHours,
+          productiveHours: adjustedProductiveHours,
+          breakHours: totalBreakHours,
+          overtimeHours: overtimeHours
+        },
+        timelineSegments: timelineSegments.map(segment => ({
+          ...segment,
+          startTime: segment.startTime.toISOString(),
+          endTime: segment.endTime?.toISOString() || null
+        })),
+        breaks: attendance.breaks,
+        activeBreak: activeBreak || null
+      }
+    }).filter(Boolean)
+
+    // 2. People on break (for backward compatibility)
     const peopleOnBreak = await prisma.attendance.findMany({
       where: {
         breakStartTime: {
@@ -46,11 +245,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // 2. Absent employees (no check-in today)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    const tomorrow = new Date(today)
-    tomorrow.setDate(tomorrow.getDate() + 1)
+    // 3. Absent employees (no check-in today)
 
     const absentEmployees = await prisma.user.findMany({
       where: {
@@ -74,7 +269,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // 3. Birthdays today
+    // 4. Birthdays today
     const currentMonth = today.getMonth() + 1
     const currentDay = today.getDate()
 
@@ -103,7 +298,7 @@ export async function GET(request: NextRequest) {
       })
     )
 
-    // 4. Expiring hosting (next 30 days)
+    // 5. Expiring hosting (next 30 days)
     const thirtyDaysFromNow = new Date()
     thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
 
@@ -119,7 +314,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // 5. Employees on leave
+    // 6. Employees on leave
     const employeesOnLeave = await prisma.leave.findMany({
       where: {
         status: "APPROVED",
@@ -146,7 +341,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // 6. Critical tickets and leaves
+    // 7. Critical tickets and leaves
     const criticalTickets = await prisma.ticket.findMany({
       where: {
         priority: "CRITICAL",
@@ -196,7 +391,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // 7. Recently closed tickets (last 24 hours)
+    // 8. Recently closed tickets (last 24 hours)
     const last24Hours = new Date()
     last24Hours.setHours(last24Hours.getHours() - 24)
 
@@ -227,6 +422,7 @@ export async function GET(request: NextRequest) {
     })
 
     return NextResponse.json({
+      presentEmployees: presentEmployeesWithStats,
       peopleOnBreak: peopleOnBreak.map(item => ({
         id: item.id,
         user: item.user,

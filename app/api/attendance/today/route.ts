@@ -14,6 +14,13 @@ export async function GET(req: Request) {
 
     const attendance = await prisma.attendance.findFirst({
       where: { userId: session.user.id, date: today },
+      include: {
+        breaks: {
+          orderBy: {
+            startTime: 'desc',
+          },
+        },
+      },
     });
 
     return NextResponse.json(attendance || {}, { status: 200 });

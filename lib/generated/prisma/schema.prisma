@@ -237,15 +237,30 @@ model Attendance {
   checkInTime    DateTime?
   checkOutTime   DateTime?
   totalHours     Float?
-  breakStartTime DateTime?
-  breakEndTime   DateTime?
+  breakStartTime DateTime? // Keep for backward compatibility
+  breakEndTime   DateTime? // Keep for backward compatibility
   totalBreakTime Float? // Total break time in minutes
   date           DateTime  @default(now())
   status         String    @default("PRESENT")
+  breaks         Break[] // Multiple breaks per day
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
   @@unique([userId, date])
+}
+
+model Break {
+  id           String     @id @default(cuid())
+  attendanceId String
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  startTime    DateTime
+  endTime      DateTime?
+  duration     Float? // Duration in minutes (calculated when endTime is set)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([attendanceId])
+  @@index([startTime])
 }
 
 model Leave {

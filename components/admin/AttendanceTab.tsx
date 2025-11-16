@@ -51,6 +51,7 @@ interface AttendanceData {
     totalPages: number;
   };
   departments: string[];
+  availableMonths?: string[];
 }
 
 export default function AttendanceTab() {
@@ -90,6 +91,7 @@ export default function AttendanceTab() {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [availableMonths, setAvailableMonths] = useState<string[]>([]);
 
   const fetchUsers = async () => {
     setLoadingUsers(true);
@@ -142,6 +144,9 @@ export default function AttendanceTab() {
       if (response.ok) {
         const data = await response.json();
         setAttendanceData(data);
+        if (data.availableMonths) {
+          setAvailableMonths(data.availableMonths);
+        }
       } else {
         console.error('Failed to fetch attendance data:', response.statusText);
       }
@@ -420,6 +425,33 @@ export default function AttendanceTab() {
     return colors[status as keyof typeof colors] || "bg-gray-100 text-gray-800";
   };
 
+  const formatMonthLabel = (monthKey: string) => {
+    // monthKey is in format "YYYY-MM"
+    const [year, month] = monthKey.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1, 1);
+    const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+    return `${monthName}-${year}`;
+  };
+
+  const handleMonthSelect = (monthKey: string) => {
+    // monthKey is in format "YYYY-MM"
+    const [year, month] = monthKey.split('-');
+    const yearNum = parseInt(year);
+    const monthNum = parseInt(month);
+    
+    // First day of the month
+    const firstDay = new Date(yearNum, monthNum - 1, 1);
+    const dateFromStr = firstDay.toISOString().split('T')[0];
+    
+    // Last day of the month
+    const lastDay = new Date(yearNum, monthNum, 0);
+    const dateToStr = lastDay.toISOString().split('T')[0];
+    
+    setDateFrom(dateFromStr);
+    setDateTo(dateToStr);
+    setCurrentPage(1); // Reset to first page when filtering
+  };
+
   return (
     <div className="space-y-6">
       {/* Header Card */}
@@ -529,6 +561,31 @@ export default function AttendanceTab() {
               />
             </div>
           </div>
+          
+          {/* Quick Select Months */}
+          {availableMonths.length > 0 && (
+            <div className="space-y-2 pt-2 border-t border-gray-200">
+              <div className="flex flex-wrap gap-2">
+                {availableMonths.map((monthKey) => (
+                  <Button
+                    key={monthKey}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleMonthSelect(monthKey)}
+                    className={`text-sm border-cyan-200 hover:bg-cyan-50 hover:border-cyan-400 ${
+                      dateFrom && dateTo && 
+                      dateFrom.startsWith(monthKey) && 
+                      dateTo.startsWith(monthKey)
+                        ? 'bg-cyan-100 border-cyan-500 text-cyan-700 font-semibold'
+                        : 'bg-white text-gray-700'
+                    }`}
+                  >
+                    {formatMonthLabel(monthKey)}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 

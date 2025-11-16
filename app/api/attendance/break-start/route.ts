@@ -60,6 +60,22 @@ export async function POST(req: Request) {
       );
     }
 
+    // Check if there's an active break (using new Break model)
+    const activeBreak = await prisma.break.findFirst({
+      where: {
+        attendanceId: attendance.id,
+        endTime: null,
+      },
+    });
+
+    if (activeBreak) {
+      return NextResponse.json(
+        { message: "A break is already in progress" },
+        { status: 400 }
+      );
+    }
+
+    // Also check old break fields for backward compatibility
     if (attendance.breakStartTime && !attendance.breakEndTime) {
       return NextResponse.json(
         { message: "A break is already in progress" },
@@ -70,17 +86,36 @@ export async function POST(req: Request) {
     const now = new Date();
 
     try {
+      // Create a new Break record
+      const newBreak = await prisma.break.create({
+        data: {
+          attendanceId: attendance.id,
+          startTime: now,
+        },
+      });
+
+      // Also update old fields for backward compatibility
       const updatedAttendance = await prisma.attendance.update({
         where: { id: attendance.id },
         data: {
           breakStartTime: now,
           breakEndTime: null, // Clear any previous break end time
         },
+        include: {
+          breaks: {
+            orderBy: {
+              startTime: 'desc',
+            },
+          },
+        },
       });
 
       return NextResponse.json({
         message: "Break started successfully",
-        data: updatedAttendance
+        data: {
+          ...updatedAttendance,
+          currentBreak: newBreak,
+        },
       }, { status: 200 });
 
     } catch (error) {

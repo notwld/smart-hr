@@ -7,6 +7,14 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader } from "@/components/ui/loader"
+import { EmployeeLiveStats } from "@/components/dashboard/cards/EmployeeLiveStats"
+
+interface BreakRecord {
+  id: string;
+  startTime: string;
+  endTime: string | null;
+  duration: number | null;
+}
 
 interface AttendanceRecord {
   id: string;
@@ -15,6 +23,7 @@ interface AttendanceRecord {
   checkOutTime: string | null;
   totalHours: number | null;
   status: string;
+  breaks?: BreakRecord[];
 }
 
 interface EmployeeCalendarProps {
@@ -35,6 +44,8 @@ export default function EmployeeCalendar({ isOpen, onClose, employee }: Employee
   const [currentDate, setCurrentDate] = useState(new Date());
   const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showDayStats, setShowDayStats] = useState(false);
 
   // Get current month's first and last day
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -86,6 +97,170 @@ export default function EmployeeCalendar({ isOpen, onClose, employee }: Employee
   const getAttendanceForDate = (date: Date) => {
     const dateString = date.toISOString().split('T')[0];
     return attendanceData.find(record => record.date === dateString);
+  };
+
+  // Calculate stats and timeline for a specific date
+  const calculateDayStats = (attendance: AttendanceRecord) => {
+    if (!attendance.checkInTime) return null;
+
+    const checkInTime = new Date(attendance.checkInTime);
+    const now = new Date();
+    // Use checkout time if available, otherwise use now (for current day)
+    const endTime = attendance.checkOutTime ? new Date(attendance.checkOutTime) : now;
+    
+    // Total working hours (in hours)
+    const totalWorkingMs = endTime.getTime() - checkInTime.getTime();
+    const totalWorkingHours = totalWorkingMs / (1000 * 60 * 60);
+
+    // Calculate break time from all breaks
+    const breaks = attendance.breaks || [];
+    const completedBreaks = breaks.filter(b => b.endTime !== null);
+    const activeBreak = breaks.find(b => b.endTime === null);
+    
+    // Total break time in hours
+    const totalBreakMinutes = completedBreaks.reduce((sum, b) => sum + (b.duration || 0), 0);
+    // For active breaks on past dates, use checkout time or now (whichever is earlier)
+    const activeBreakEndTime = activeBreak 
+      ? (attendance.checkOutTime ? new Date(attendance.checkOutTime) : now)
+      : null;
+    const currentBreakMinutes = activeBreak && activeBreakEndTime
+      ? (activeBreakEndTime.getTime() - new Date(activeBreak.startTime).getTime()) / (1000 * 60)
+      : 0
+    const totalBreakHours = (totalBreakMinutes + currentBreakMinutes) / 60
+
+    // Productive hours = Total Working - Break Hours
+    const productiveHours = Math.max(0, totalWorkingHours - totalBreakHours)
+
+    // Overtime (hours beyond standard work hours, excluding breaks)
+    const standardWorkHours = 8;
+    const overtimeHours = Math.max(0, productiveHours - standardWorkHours)
+    
+    // Adjust productive hours to exclude overtime
+    const adjustedProductiveHours = Math.min(productiveHours, standardWorkHours)
+
+    // Create timeline segments
+    const timelineSegments: Array<{
+      type: 'productive' | 'break' | 'overtime'
+      startTime: Date
+      endTime: Date | null
+      duration: number
+    }> = []
+
+    let currentTime = checkInTime
+    
+    // Process all breaks (completed and active)
+    const allBreaks = [...completedBreaks]
+    if (activeBreak) {
+      allBreaks.push({
+        ...activeBreak,
+        endTime: null,
+        duration: currentBreakMinutes / 60
+      } as any)
+    }
+    allBreaks.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+
+    for (const breakRecord of allBreaks) {
+      const breakStart = new Date(breakRecord.startTime)
+      // For active breaks, use checkout time if available, otherwise use now
+      const breakEnd = breakRecord.endTime 
+        ? new Date(breakRecord.endTime) 
+        : (attendance.checkOutTime ? new Date(attendance.checkOutTime) : now)
+
+      // Add productive segment before break
+      if (currentTime < breakStart) {
+        const productiveDuration = (breakStart.getTime() - currentTime.getTime()) / (1000 * 60 * 60)
+        timelineSegments.push({
+          type: 'productive',
+          startTime: currentTime,
+          endTime: breakStart,
+          duration: productiveDuration
+        })
+      }
+
+      // Add break segment
+      const breakDuration = (breakEnd.getTime() - breakStart.getTime()) / (1000 * 60 * 60)
+      timelineSegments.push({
+        type: 'break',
+        startTime: breakStart,
+        endTime: breakEnd,
+        duration: breakDuration
+      })
+
+      currentTime = breakEnd
+    }
+
+    // Add remaining segment (productive or overtime)
+    if (currentTime < endTime) {
+      const remainingDuration = (endTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60)
+      if (remainingDuration > 0) {
+        const standardWorkEndTime = new Date(checkInTime)
+        standardWorkEndTime.setHours(standardWorkEndTime.getHours() + standardWorkHours)
+        
+        if (currentTime >= standardWorkEndTime) {
+          // All remaining time is overtime
+          timelineSegments.push({
+            type: 'overtime',
+            startTime: currentTime,
+            endTime: endTime,
+            duration: remainingDuration
+          })
+        } else if (endTime <= standardWorkEndTime) {
+          // All remaining time is productive
+          timelineSegments.push({
+            type: 'productive',
+            startTime: currentTime,
+            endTime: endTime,
+            duration: remainingDuration
+          })
+        } else {
+          // Split: some productive, some overtime
+          const productiveDuration = (standardWorkEndTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60)
+          const overtimeDuration = (endTime.getTime() - standardWorkEndTime.getTime()) / (1000 * 60 * 60)
+          
+          if (productiveDuration > 0) {
+            timelineSegments.push({
+              type: 'productive',
+              startTime: currentTime,
+              endTime: standardWorkEndTime,
+              duration: productiveDuration
+            })
+          }
+          
+          if (overtimeDuration > 0) {
+            timelineSegments.push({
+              type: 'overtime',
+              startTime: standardWorkEndTime,
+              endTime: endTime,
+              duration: overtimeDuration
+            })
+          }
+        }
+      }
+    }
+
+    return {
+      stats: {
+        totalWorkingHours: totalWorkingHours,
+        productiveHours: adjustedProductiveHours,
+        breakHours: totalBreakHours,
+        overtimeHours: overtimeHours
+      },
+      timelineSegments: timelineSegments.map(segment => ({
+        ...segment,
+        startTime: segment.startTime.toISOString(),
+        endTime: segment.endTime?.toISOString() || null
+      })),
+      breaks: breaks,
+      activeBreak: activeBreak || null
+    }
+  };
+
+  const handleDayClick = (date: Date) => {
+    const attendance = getAttendanceForDate(date);
+    if (attendance && attendance.checkInTime) {
+      setSelectedDate(date);
+      setShowDayStats(true);
+    }
   };
 
   const formatTime = (timeString: string | null) => {
@@ -270,9 +445,14 @@ export default function EmployeeCalendar({ isOpen, onClose, employee }: Employee
                     return (
                       <div
                         key={index}
-                        className={`min-h-[130px] border-r border-b p-3 transition-colors hover:bg-gray-50 ${
+                        onClick={() => isCurrentMonthDay && attendance && attendance.checkInTime && handleDayClick(date)}
+                        className={`min-h-[130px] border-r border-b p-3 transition-colors ${
                           !isCurrentMonthDay ? 'bg-gray-50/50' : 'bg-white'
-                        } ${isTodayDate ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''}`}
+                        } ${isTodayDate ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''} ${
+                          isCurrentMonthDay && attendance && attendance.checkInTime 
+                            ? 'hover:bg-gray-50 cursor-pointer' 
+                            : ''
+                        }`}
                       >
                         <div className={`text-sm font-bold mb-2 ${
                           !isCurrentMonthDay ? 'text-gray-400' : 
@@ -327,6 +507,63 @@ export default function EmployeeCalendar({ isOpen, onClose, employee }: Employee
           )}
         </div>
       </DialogContent>
+
+      {/* Day Stats Dialog */}
+      <Dialog open={showDayStats} onOpenChange={setShowDayStats}>
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white -m-6 mb-6 p-6 rounded-t-lg">
+            <DialogTitle className="text-xl font-bold text-white">
+              {selectedDate && employee && (
+                <>
+                  {employee.firstName} {employee.lastName} - {selectedDate.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </>
+              )}
+            </DialogTitle>
+          </DialogHeader>
+          {selectedDate && employee && (() => {
+            const attendance = getAttendanceForDate(selectedDate);
+            if (!attendance || !attendance.checkInTime) {
+              return (
+                <div className="text-center py-8 text-gray-500">
+                  No attendance record for this date
+                </div>
+              );
+            }
+            const dayStats = calculateDayStats(attendance);
+            if (!dayStats) {
+              return (
+                <div className="text-center py-8 text-gray-500">
+                  Unable to calculate stats for this date
+                </div>
+              );
+            }
+            return (
+              <EmployeeLiveStats
+                attendanceId={attendance.id}
+                user={{
+                  id: employee.id,
+                  firstName: employee.firstName,
+                  lastName: employee.lastName,
+                  position: employee.position,
+                  department: employee.department,
+                  email: employee.email,
+                  pfp: employee.pfp
+                }}
+                checkInTime={attendance.checkInTime}
+                checkOutTime={attendance.checkOutTime}
+                stats={dayStats.stats}
+                timelineSegments={dayStats.timelineSegments}
+                activeBreak={dayStats.activeBreak}
+              />
+            );
+          })()}
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 } 

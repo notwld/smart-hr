@@ -47,14 +47,26 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!attendance.breakStartTime) {
+    // Find active break using new Break model
+    const activeBreak = await prisma.break.findFirst({
+      where: {
+        attendanceId: attendance.id,
+        endTime: null,
+      },
+      orderBy: {
+        startTime: 'desc',
+      },
+    });
+
+    // Fallback to old fields for backward compatibility
+    if (!activeBreak && !attendance.breakStartTime) {
       return NextResponse.json(
         { message: "No break has been started for this attendance record" },
         { status: 400 }
       );
     }
 
-    if (attendance.breakEndTime) {
+    if (!activeBreak && attendance.breakEndTime) {
       return NextResponse.json(
         { message: "Break has already ended" },
         { status: 400 }
@@ -62,19 +74,67 @@ export async function POST(req: Request) {
     }
 
     const now = new Date();
-    const breakDurationMs = now.getTime() - attendance.breakStartTime.getTime();
-    const breakDurationMinutes = breakDurationMs / (1000 * 60); // Convert to minutes
+    let breakDurationMinutes = 0;
+    let breakToUpdate = activeBreak;
 
-    // Calculate new total break time
-    const currentTotalBreakTime = attendance.totalBreakTime || 0;
-    const newTotalBreakTime = currentTotalBreakTime + breakDurationMinutes;
+    if (activeBreak) {
+      // Use new Break model
+      const breakDurationMs = now.getTime() - activeBreak.startTime.getTime();
+      breakDurationMinutes = breakDurationMs / (1000 * 60);
+    } else if (attendance.breakStartTime) {
+      // Fallback to old fields
+      const breakDurationMs = now.getTime() - attendance.breakStartTime.getTime();
+      breakDurationMinutes = breakDurationMs / (1000 * 60);
+    }
 
     try {
+      // Update or create break record
+      if (activeBreak) {
+        breakToUpdate = await prisma.break.update({
+          where: { id: activeBreak.id },
+          data: {
+            endTime: now,
+            duration: parseFloat(breakDurationMinutes.toFixed(2)),
+          },
+        });
+      } else if (attendance.breakStartTime) {
+        // Create break record from old data for migration
+        breakToUpdate = await prisma.break.create({
+          data: {
+            attendanceId: attendance.id,
+            startTime: attendance.breakStartTime,
+            endTime: now,
+            duration: parseFloat(breakDurationMinutes.toFixed(2)),
+          },
+        });
+      }
+
+      // Recalculate total break time from all breaks
+      const allBreaks = await prisma.break.findMany({
+        where: {
+          attendanceId: attendance.id,
+          endTime: { not: null }, // Only count completed breaks
+        },
+      });
+
+      const totalBreakTime = allBreaks.reduce((sum, b) => {
+        return sum + (b.duration || 0);
+      }, 0);
+
+      // Update attendance record
       const updatedAttendance = await prisma.attendance.update({
         where: { id: attendance.id },
         data: {
-          breakEndTime: now,
-          totalBreakTime: parseFloat(newTotalBreakTime.toFixed(2)),
+          breakStartTime: null, // Clear break start time when break ends
+          breakEndTime: now, // Update old field for backward compatibility
+          totalBreakTime: parseFloat(totalBreakTime.toFixed(2)),
+        },
+        include: {
+          breaks: {
+            orderBy: {
+              startTime: 'desc',
+            },
+          },
         },
       });
 
@@ -82,6 +142,7 @@ export async function POST(req: Request) {
         message: `Break ended successfully for ${attendance.user.firstName} ${attendance.user.lastName}`,
         data: {
           ...updatedAttendance,
+          currentBreak: breakToUpdate,
           breakDuration: parseFloat(breakDurationMinutes.toFixed(2))
         }
       }, { status: 200 });

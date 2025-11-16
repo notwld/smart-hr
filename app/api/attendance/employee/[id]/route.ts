@@ -50,13 +50,12 @@ export async function GET(
       orderBy: {
         date: 'asc'
       },
-      select: {
-        id: true,
-        date: true,
-        checkInTime: true,
-        checkOutTime: true,
-        totalHours: true,
-        status: true
+      include: {
+        breaks: {
+          orderBy: {
+            startTime: 'asc'
+          }
+        }
       }
     });
 
@@ -67,7 +66,13 @@ export async function GET(
       checkInTime: record.checkInTime?.toISOString() || null,
       checkOutTime: record.checkOutTime?.toISOString() || null,
       totalHours: record.totalHours,
-      status: record.status
+      status: record.status,
+      breaks: record.breaks.map(breakRecord => ({
+        id: breakRecord.id,
+        startTime: breakRecord.startTime.toISOString(),
+        endTime: breakRecord.endTime?.toISOString() || null,
+        duration: breakRecord.duration
+      }))
     }));
 
     return NextResponse.json({

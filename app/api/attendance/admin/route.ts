@@ -73,7 +73,7 @@ export async function GET(req: Request) {
       whereConditions.user = userConditions;
     }
 
-    // Get attendance records with user data
+    // Get attendance records with user data and breaks
     const [attendanceRecords, totalCount] = await Promise.all([
       prisma.attendance.findMany({
         where: whereConditions,
@@ -87,6 +87,11 @@ export async function GET(req: Request) {
               department: true,
               position: true,
               pfp: true,
+            },
+          },
+          breaks: {
+            orderBy: {
+              startTime: 'asc',
             },
           },
         },
@@ -111,6 +116,21 @@ export async function GET(req: Request) {
       .map(d => d.department)
       .filter(dept => dept && dept.trim() !== "");
 
+    // Get distinct months where attendance exists
+    // Using raw query to get distinct year-month combinations efficiently
+    const attendanceMonths = await prisma.$queryRaw<Array<{ year: bigint; month: bigint }>>`
+      SELECT DISTINCT 
+        EXTRACT(YEAR FROM date)::int as year,
+        EXTRACT(MONTH FROM date)::int as month
+      FROM "Attendance"
+      ORDER BY year DESC, month DESC
+    `;
+
+    // Convert to array of YYYY-MM format strings
+    const availableMonths = attendanceMonths.map(({ year, month }) => {
+      return `${Number(year)}-${String(Number(month)).padStart(2, '0')}`;
+    });
+
     return NextResponse.json({
       attendance: attendanceRecords,
       pagination: {
@@ -120,6 +140,7 @@ export async function GET(req: Request) {
         totalPages: Math.ceil(totalCount / limit),
       },
       departments: uniqueDepartments,
+      availableMonths: availableMonths,
     });
 
   } catch (error) {

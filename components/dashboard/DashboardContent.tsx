@@ -176,7 +176,35 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     debounce(async () => {
       try {
         const res = await axios.get("/api/attendance/today");
-        setTodayAttendance(res.data);
+        const attendance = res.data;
+        setTodayAttendance(attendance);
+        
+        // Check for active break using new Break model
+        if (attendance?.breaks && Array.isArray(attendance.breaks)) {
+          const activeBreak = attendance.breaks.find((b: any) => !b.endTime);
+          if (activeBreak) {
+            setIsOnBreak(true);
+            setBreakStartTime(new Date(activeBreak.startTime));
+          } else {
+            // Also check old field for backward compatibility
+            if (attendance.breakStartTime && !attendance.breakEndTime) {
+              setIsOnBreak(true);
+              setBreakStartTime(new Date(attendance.breakStartTime));
+            } else {
+              setIsOnBreak(false);
+              setBreakStartTime(null);
+            }
+          }
+        } else {
+          // Fallback to old field-based check
+          if (attendance?.breakStartTime && !attendance?.breakEndTime) {
+            setIsOnBreak(true);
+            setBreakStartTime(new Date(attendance.breakStartTime));
+          } else {
+            setIsOnBreak(false);
+            setBreakStartTime(null);
+          }
+        }
       } catch (error) {
         console.error(error);
       }
@@ -371,9 +399,8 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     try {
       const response = await axios.post("/api/attendance/break-start");
       if (response.status === 200) {
-        const now = new Date();
-        setIsOnBreak(true);
-        setBreakStartTime(now);
+        // Refresh attendance to get updated break status
+        await fetchTodayAttendance();
         toast.success("Break started successfully!");
       }
     } catch (error: any) {
@@ -400,6 +427,8 @@ export default function DashboardContent({ user }: DashboardContentProps) {
         setBreakStartTime(null);
         setCurrentBreakTime("00:00:00");
         toast.success("Break ended successfully!");
+        // Refresh attendance to get updated break status
+        await fetchTodayAttendance();
         await fetchStats(); // Refresh stats to update break time
       }
     } catch (error: any) {
