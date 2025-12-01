@@ -7,7 +7,8 @@ import {
   Bell,
   BarChart3,
   Ticket,
-  AlertCircle
+  AlertCircle,
+  DollarSign
 } from "lucide-react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -22,6 +23,7 @@ import NotificationsTab from "@/components/admin/NotificationsTab"
 import EmployeesTab from "@/components/admin/EmployeesTab"
 import AttendanceTab from "@/components/admin/AttendanceTab"
 import TicketsTab from "@/components/admin/TicketsTab"
+import SalaryTab from "@/components/admin/SalaryTab"
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("attendance");
@@ -64,7 +66,7 @@ export default function AdminDashboard() {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <Card className="border-0 shadow-sm bg-white/80 backdrop-blur sticky top-4 z-20">
               <CardContent className="p-6">
-                <TabsList className="grid w-full grid-cols-6 bg-gray-100 p-1 rounded-lg">
+                <TabsList className="grid w-full grid-cols-7 bg-gray-100 p-1 rounded-lg">
                   <TabsTrigger
                     value="live-alerts"
                     className="flex items-center gap-2 data-[state=active]:bg-rose-500 data-[state=active]:text-white"
@@ -78,6 +80,13 @@ export default function AdminDashboard() {
                   >
                     <Clock className="w-4 h-4" />
                     Attendance
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="salary"
+                    className="flex items-center gap-2 data-[state=active]:bg-green-500 data-[state=active]:text-white"
+                  >
+                    <DollarSign className="w-4 h-4" />
+                    Salary
                   </TabsTrigger>
                   <TabsTrigger
                     value="employees"
@@ -117,6 +126,10 @@ export default function AdminDashboard() {
             </TabsContent>
             <TabsContent value="attendance" className="mt-6">
               <AttendanceTab />
+            </TabsContent>
+
+            <TabsContent value="salary" className="mt-6">
+              <SalaryTab />
             </TabsContent>
 
             <TabsContent value="employees" className="mt-6">

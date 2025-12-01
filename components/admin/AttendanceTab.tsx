@@ -439,13 +439,13 @@ export default function AttendanceTab() {
     const yearNum = parseInt(year);
     const monthNum = parseInt(month);
     
-    // First day of the month
-    const firstDay = new Date(yearNum, monthNum - 1, 1);
-    const dateFromStr = firstDay.toISOString().split('T')[0];
+    // First day of the month (1st)
+    const dateFromStr = `${yearNum}-${String(monthNum).padStart(2, '0')}-01`;
     
     // Last day of the month
     const lastDay = new Date(yearNum, monthNum, 0);
-    const dateToStr = lastDay.toISOString().split('T')[0];
+    const lastDayDate = lastDay.getDate();
+    const dateToStr = `${yearNum}-${String(monthNum).padStart(2, '0')}-${String(lastDayDate).padStart(2, '0')}`;
     
     setDateFrom(dateFromStr);
     setDateTo(dateToStr);

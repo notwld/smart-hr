@@ -50,6 +50,7 @@ export async function GET(req: Request) {
         email: true,
         department: true,
         position: true,
+        salary: true,
         joinDate: true,
         phone: true,
         status: true,
