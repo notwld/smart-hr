@@ -61,6 +61,7 @@ export default function EmployeesTab() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [departments, setDepartments] = useState<string[]>([]);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const fetchRoles = async () => {
     try {
@@ -104,20 +105,26 @@ export default function EmployeesTab() {
   }, [currentPage, search, department, status]);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this employee?")) return;
+    if (!confirm("Are you sure you want to delete this employee? This will permanently remove the employee and all their related data (attendance, leaves, tasks, tickets, etc.).")) return;
 
+    setDeletingId(id);
     try {
       const response = await fetch(`/api/employees/${id}`, {
         method: "DELETE",
       });
+      const data = await response.json().catch(() => ({}));
 
-      if (!response.ok) throw new Error("Failed to delete employee");
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to delete employee");
+      }
 
       toast.success("Employee deleted successfully");
       fetchEmployees();
     } catch (error) {
-      toast.error("Failed to delete employee");
+      toast.error(error instanceof Error ? error.message : "Failed to delete employee");
       console.error(error);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -462,9 +469,14 @@ export default function EmployeesTab() {
                             <DropdownMenuItem
                               className="text-red-600 focus:text-red-600 flex items-center"
                               onClick={() => handleDelete(employee.id)}
+                              disabled={deletingId === employee.id}
                             >
-                              <Trash2 className="w-4 h-4 mr-2" />
-                              Delete Employee
+                              {deletingId === employee.id ? (
+                                <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-gray-200 border-t-red-600" />
+                              ) : (
+                                <Trash2 className="w-4 h-4 mr-2" />
+                              )}
+                              {deletingId === employee.id ? "Deleting..." : "Delete Employee"}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

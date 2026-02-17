@@ -192,7 +192,7 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -204,10 +204,18 @@ export async function DELETE(
       );
     }
 
-    // Fetch the user's role from the database
+    const { id: targetUserId } = await params;
+
+    if (session.user.id === targetUserId) {
+      return NextResponse.json(
+        { message: "You cannot delete your own account" },
+        { status: 400 }
+      );
+    }
+
     const currentUser = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { legacyRole: true }
+      select: { legacyRole: true },
     });
 
     if (!currentUser || currentUser.legacyRole !== "ADMIN") {
@@ -217,26 +225,171 @@ export async function DELETE(
       );
     }
 
-    // Delete all related records first
-    await prisma.emergencyContact.deleteMany({
-      where: { userId: params.id },
-    });
-    await prisma.education.deleteMany({
-      where: { userId: params.id },
-    });
-    await prisma.experience.deleteMany({
-      where: { userId: params.id },
-    });
-    await prisma.document.deleteMany({
-      where: { userId: params.id },
-    });
-    await prisma.bankDetails.deleteMany({
-      where: { userId: params.id },
+    const existing = await prisma.user.findUnique({
+      where: { id: targetUserId },
+      select: { id: true },
     });
 
-    // Delete the employee
-    await prisma.user.delete({
-      where: { id: params.id },
+    if (!existing) {
+      return NextResponse.json(
+        { message: "Employee not found" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.$transaction(async (tx) => {
+      // Phase 1: Clear references from other users/records to this user
+      await tx.user.updateMany({
+        where: { reportsToId: targetUserId },
+        data: { reportsToId: null },
+      });
+      await tx.leave.updateMany({
+        where: {
+          OR: [
+            { managerId: targetUserId },
+            { adminId: targetUserId },
+          ],
+        },
+        data: { managerId: null, adminId: null },
+      });
+      await tx.ticket.updateMany({
+        where: {
+          OR: [
+            { assignedToId: targetUserId },
+            { resolvedById: targetUserId },
+          ],
+        },
+        data: { assignedToId: null, resolvedById: null },
+      });
+      await tx.lead.updateMany({
+        where: {
+          OR: [
+            { userId: targetUserId },
+            { assigneeId: targetUserId },
+          ],
+        },
+        data: { userId: null, assigneeId: null },
+      });
+      await tx.card.updateMany({
+        where: { assignedToId: targetUserId },
+        data: { assignedToId: null },
+      });
+
+      // Teams: remove user from team; if leader, assign another member or delete team if only member
+      const teamsLedByUser = await tx.team.findMany({
+        where: { leaderId: targetUserId },
+        select: { id: true },
+      });
+      for (const team of teamsLedByUser) {
+        const otherMember = await tx.teamMember.findFirst({
+          where: {
+            teamId: team.id,
+            userId: { not: targetUserId },
+          },
+          select: { userId: true },
+        });
+        if (otherMember) {
+          await tx.team.update({
+            where: { id: team.id },
+            data: { leaderId: otherMember.userId },
+          });
+        } else {
+          await tx.team.delete({ where: { id: team.id } });
+        }
+      }
+      await tx.teamMember.deleteMany({ where: { userId: targetUserId } });
+
+      // Phase 2: Delete records owned or authored by this user
+      await tx.ticketComment.deleteMany({
+        where: { authorId: targetUserId },
+      });
+      await tx.ticketAttachment.deleteMany({
+        where: { uploadedById: targetUserId },
+      });
+      await tx.ticketActivity.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.ticket.deleteMany({
+        where: { createdById: targetUserId },
+      });
+      await tx.notification.deleteMany({
+        where: { createdById: targetUserId },
+      });
+      await tx.board.deleteMany({
+        where: { createdById: targetUserId },
+      });
+      await tx.cardComment.deleteMany({
+        where: { authorId: targetUserId },
+      });
+      await tx.cardActivity.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.card.deleteMany({
+        where: { createdById: targetUserId },
+      });
+      await tx.chatMessage.deleteMany({
+        where: { senderId: targetUserId },
+      });
+      await tx.messageReaction.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.messageMention.deleteMany({
+        where: { userId: targetUserId },
+      });
+
+      // Phase 3: Delete user-owned records
+      await tx.userRole.deleteMany({ where: { userId: targetUserId } });
+      await tx.emergencyContact.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.education.deleteMany({ where: { userId: targetUserId } });
+      await tx.experience.deleteMany({ where: { userId: targetUserId } });
+      await tx.document.deleteMany({ where: { userId: targetUserId } });
+      await tx.bankDetails.deleteMany({
+        where: { userId: targetUserId },
+      });
+      const attendances = await tx.attendance.findMany({
+        where: { userId: targetUserId },
+        select: { id: true },
+      });
+      const attendanceIds = attendances.map((a) => a.id);
+      if (attendanceIds.length > 0) {
+        await tx.break.deleteMany({
+          where: { attendanceId: { in: attendanceIds } },
+        });
+      }
+      await tx.attendance.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.leave.deleteMany({ where: { userId: targetUserId } });
+      await tx.task.deleteMany({
+        where: { assignedTo: targetUserId },
+      });
+      await tx.skill.deleteMany({ where: { userId: targetUserId } });
+      await tx.performance.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.projectAssignment.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.notificationRecipient.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.chatParticipant.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.userLastSeen.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.meeting.deleteMany({ where: { userId: targetUserId } });
+      await tx.boardMember.deleteMany({
+        where: { userId: targetUserId },
+      });
+      await tx.boardStar.deleteMany({
+        where: { userId: targetUserId },
+      });
+
+      await tx.user.delete({ where: { id: targetUserId } });
     });
 
     return NextResponse.json({ message: "Employee deleted successfully" });
