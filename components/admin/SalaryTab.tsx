@@ -272,7 +272,10 @@ export default function SalaryTab() {
     if (dayData) {
       if (field === 'checkIn') {
         const checkIn = dayData.attendance?.checkInTime 
-          ? new Date(dayData.attendance.checkInTime).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })
+          ? (() => {
+          const d = new Date(dayData.attendance.checkInTime);
+          return Number.isNaN(d.getTime()) ? "" : d.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
+        })()
           : '';
         // Set edited value
         setDaysData(prev => prev.map(d => 
@@ -280,7 +283,10 @@ export default function SalaryTab() {
         ));
       } else if (field === 'checkOut') {
         const checkOut = dayData.attendance?.checkOutTime 
-          ? new Date(dayData.attendance.checkOutTime).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })
+          ? (() => {
+          const d = new Date(dayData.attendance.checkOutTime);
+          return Number.isNaN(d.getTime()) ? "" : d.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
+        })()
           : '';
         setDaysData(prev => prev.map(d => 
           d.date === day ? { ...d, editedCheckOut: checkOut } : d
@@ -445,10 +451,10 @@ export default function SalaryTab() {
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="font-semibold text-gray-900">
-                        {employee.firstName} {employee.lastName}
+                        {employee?.firstName ?? ""} {employee?.lastName ?? ""}
                       </div>
                       <div className="text-sm text-gray-600">
-                        {employee.department} • {employee.position}
+                        {employee?.department ?? "—"} • {employee?.position ?? "—"}
                       </div>
                     </div>
                     <div className="text-right">
@@ -559,7 +565,7 @@ export default function SalaryTab() {
           <CardHeader>
             <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
               <Calendar className="w-5 h-5 mr-2" />
-              Daily Attendance Details - {selectedEmployee.firstName} {selectedEmployee.lastName}
+              Daily Attendance Details - {selectedEmployee?.firstName ?? ""} {selectedEmployee?.lastName ?? ""}
             </CardTitle>
           </CardHeader>
           <CardContent>

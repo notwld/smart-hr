@@ -84,33 +84,36 @@ export async function GET(req: Request) {
     // Calculate current session hours if checked in but not checked out
     const currentSessionStats = todayAttendance?.checkInTime && !todayAttendance?.checkOutTime
       ? (() => {
-          const sessionTotal = (now.getTime() - todayAttendance.checkInTime.getTime()) / (1000 * 60 * 60);
+          const rawSessionTotal = (now.getTime() - todayAttendance.checkInTime.getTime()) / (1000 * 60 * 60);
+          // Cap at 24h to avoid absurd values from forgotten check-out (e.g. session open for days)
+          const sessionTotal = Math.min(rawSessionTotal, 24);
           const sessionBreakHours = (todayAttendance.totalBreakTime || 0) / 60;
-          // If currently on break, add current break time
           const currentBreakTime = todayAttendance.breakStartTime && !todayAttendance.breakEndTime
             ? (now.getTime() - todayAttendance.breakStartTime.getTime()) / (1000 * 60 * 60)
             : 0;
-          const totalBreakHours = sessionBreakHours + currentBreakTime;
+          const totalBreakHours = Math.min(sessionBreakHours + currentBreakTime, sessionTotal);
           return {
             total: sessionTotal,
-            productive: sessionTotal - totalBreakHours,
+            productive: Math.max(0, sessionTotal - totalBreakHours),
             break: totalBreakHours,
           };
         })()
       : { total: 0, productive: 0, break: 0 };
 
-    // Calculate total hours for today
+    // Calculate total hours for today (cap at 24h to avoid display bugs from stale/corrupt data)
+    const rawTodayTotal = completedTodayStats.total + currentSessionStats.total;
+    const todayTotal = Math.min(rawTodayTotal, 24);
     const todayStats = {
-      total: completedTodayStats.total + currentSessionStats.total,
-      productive: completedTodayStats.productive + currentSessionStats.productive,
-      break: completedTodayStats.break + currentSessionStats.break,
+      total: todayTotal,
+      productive: Math.min(completedTodayStats.productive + currentSessionStats.productive, todayTotal),
+      break: Math.min(completedTodayStats.break + currentSessionStats.break, todayTotal),
     };
 
     // Calculate remaining hours for today (8.5 hours minimum)
     const remainingHours = Math.max(0, 8.5 - todayStats.total);
 
-    // Calculate shift progress
-    const shiftProgress = (todayStats.total / 8.5) * 100;
+    // Calculate shift progress (cap at 100%)
+    const shiftProgress = Math.min(100, (todayStats.total / 8.5) * 100);
 
     // Get week and month stats
     const weekStats = calculateStats(weekAttendance);
@@ -141,7 +144,9 @@ export async function GET(req: Request) {
       },
     };
 
-    return NextResponse.json(stats, { status: 200 });
+    const res = NextResponse.json(stats, { status: 200 });
+    res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    return res;
   } catch (error) {
     console.error("Error fetching attendance stats:", error);
     return NextResponse.json(

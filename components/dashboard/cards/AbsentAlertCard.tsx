@@ -17,14 +17,14 @@ interface AbsentAlertCardProps {
 export function AbsentAlertCard({ user, onDismiss }: AbsentAlertCardProps) {
   return (
     <BaseAlertCard
-      title={`${user.firstName} ${user.lastName} is absent today`}
-      description={`${user.position} • ${user.department}`}
+      title={`${user?.firstName ?? ""} ${user?.lastName ?? ""} is absent today`.trim() || "Absent today"}
+      description={`${user?.position ?? ""} • ${user?.department ?? ""}`.trim() || "-"}
       icon={<UserX className="w-4 h-4" />}
       variant="warning"
       onDismiss={onDismiss}
     >
       <div className="text-xs">
-        <span className="font-medium">{user.email}</span>
+        <span className="font-medium">{user?.email ?? "-"}</span>
       </div>
     </BaseAlertCard>
   )

@@ -95,17 +95,26 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
     )
   }
 
+  const peopleOnBreak = data.peopleOnBreak ?? []
+  const birthdaysToday = data.birthdaysToday ?? []
+  const expiringHosting = data.expiringHosting ?? []
+  const employeesOnLeave = data.employeesOnLeave ?? []
+  const criticalTickets = data.criticalTickets ?? []
+  const criticalLeaves = data.criticalLeaves ?? []
+  const recentlyClosedTickets = data.recentlyClosedTickets ?? []
+  const absentEmployees = data.absentEmployees ?? []
+
   const allCards = [
     // People on break
-    ...data.peopleOnBreak.map(item => ({
+    ...peopleOnBreak.filter((item) => item?.id != null).map((item) => ({
       id: `break-${item.id}`,
       component: (
         <BreakAlertCard
           key={`break-${item.id}`}
           attendanceId={item.id}
-          user={item.user}
-          breakStartTime={new Date(item.breakStartTime)}
-          duration={item.duration}
+          user={item.user ?? {}}
+          breakStartTime={item.breakStartTime ?? new Date()}
+          duration={item.duration ?? 0}
           onDismiss={() => dismissCard(`break-${item.id}`)}
           onBreakEnded={() => {
             dismissCard(`break-${item.id}`)
@@ -116,33 +125,33 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
     })),
 
     // Birthdays
-    ...data.birthdaysToday.map(employee => ({
+    ...birthdaysToday.filter((e) => e?.id != null).map((employee) => ({
       id: `birthday-${employee.id}`,
       component: (
         <BirthdayAlertCard
           key={`birthday-${employee.id}`}
           user={employee}
-          age={employee.age}
+          age={employee.age ?? null}
           onDismiss={() => dismissCard(`birthday-${employee.id}`)}
         />
       )
     })),
 
     // Expiring hosting
-    ...data.expiringHosting.map(hosting => ({
+    ...expiringHosting.filter((h) => h?.id != null).map((hosting) => ({
       id: `hosting-${hosting.id}`,
       component: (
         <HostingExpiryCard
           key={`hosting-${hosting.id}`}
           hosting={hosting}
-          daysUntilExpiry={hosting.daysUntilExpiry}
+          daysUntilExpiry={hosting.daysUntilExpiry ?? 0}
           onDismiss={() => dismissCard(`hosting-${hosting.id}`)}
         />
       )
     })),
 
     // Employees on leave
-    ...data.employeesOnLeave.map(leave => ({
+    ...employeesOnLeave.filter((l) => l?.id != null).map((leave) => ({
       id: `leave-${leave.id}`,
       component: (
         <LeaveAlertCard
@@ -154,7 +163,7 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
     })),
 
     // Critical tickets
-    ...data.criticalTickets.map(ticket => ({
+    ...criticalTickets.filter((t) => t?.id != null).map((ticket) => ({
       id: `critical-ticket-${ticket.id}`,
       component: (
         <CriticalTicketCard
@@ -166,7 +175,7 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
     })),
 
     // Critical leaves
-    ...data.criticalLeaves.map(leave => ({
+    ...criticalLeaves.filter((l) => l?.id != null).map((leave) => ({
       id: `critical-leave-${leave.id}`,
       component: (
         <CriticalLeaveCard
@@ -178,7 +187,7 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
     })),
 
     // Recently closed tickets
-    ...data.recentlyClosedTickets.map(ticket => ({
+    ...recentlyClosedTickets.filter((t) => t?.id != null).map((ticket) => ({
       id: `closed-ticket-${ticket.id}`,
       component: (
         <ClosedTicketCard
@@ -190,7 +199,7 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
     })),
 
     // Absent employees (lowest priority - shown last)
-    ...data.absentEmployees.map(employee => ({
+    ...absentEmployees.filter((e) => e?.id != null).map((employee) => ({
       id: `absent-${employee.id}`,
       component: (
         <AbsentAlertCard
@@ -208,30 +217,32 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Present Employees with Live Stats */}
-      {data.presentEmployees && data.presentEmployees.length > 0 && (
+      {(data.presentEmployees?.length ?? 0) > 0 && (
         <Card className="border-0 shadow-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg font-semibold flex items-center gap-2">
               <Users className="w-5 h-5 text-cyan-600" />
               <span className="ml-2 text-sm font-normal text-gray-500">
-                ({data.presentEmployees.length} {data.presentEmployees.length === 1 ? 'employee' : 'employees'})
+                ({(data.presentEmployees ?? []).length} {(data.presentEmployees ?? []).length === 1 ? "employee" : "employees"})
               </span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4">
-              {data.presentEmployees.map((employee) => (
-                <EmployeeLiveStats
-                  key={employee.attendanceId}
-                  attendanceId={employee.attendanceId}
-                  user={employee.user}
-                  checkInTime={employee.checkInTime}
-                  checkOutTime={employee.checkOutTime}
-                  stats={employee.stats}
-                  timelineSegments={employee.timelineSegments}
-                  activeBreak={employee.activeBreak}
-                />
-              ))}
+              {(data.presentEmployees ?? [])
+                .filter((e) => e?.attendanceId != null)
+                .map((employee) => (
+                  <EmployeeLiveStats
+                    key={employee.attendanceId}
+                    attendanceId={employee.attendanceId}
+                    user={employee.user ?? {}}
+                    checkInTime={employee.checkInTime}
+                    checkOutTime={employee.checkOutTime ?? null}
+                    stats={employee.stats ?? { totalWorkingHours: 0, productiveHours: 0, breakHours: 0, overtimeHours: 0 }}
+                    timelineSegments={employee.timelineSegments ?? []}
+                    activeBreak={employee.activeBreak ?? null}
+                  />
+                ))}
             </div>
           </CardContent>
         </Card>
@@ -252,7 +263,7 @@ export function LiveAlertsContainer({ className }: LiveAlertsContainerProps) {
       )}
 
       {/* Empty State */}
-      {(!data.presentEmployees || data.presentEmployees.length === 0) && visibleCards.length === 0 && (
+      {(data.presentEmployees?.length ?? 0) === 0 && visibleCards.length === 0 && (
         <div className={`text-center py-8 ${className}`}>
           <div className="text-gray-500">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">

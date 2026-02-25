@@ -215,8 +215,20 @@ export default function DashboardContent({ user }: DashboardContentProps) {
   const debouncedFetchStats = useCallback(
     debounce(async () => {
       try {
-        const response = await axios.get("/api/attendance/stats");
-        setStats(response.data);
+        const response = await axios.get("/api/attendance/stats", {
+          params: { _t: Date.now() },
+        });
+        const data = response.data;
+        if (data?.today?.total != null && data.today.total > 24) {
+          data.today = {
+            ...data.today,
+            total: Math.min(24, data.today.total),
+            productive: Math.min(24, data.today.productive ?? 0),
+            break: Math.min(24, data.today.break ?? 0),
+            progress: Math.min(100, data.today.progress ?? 0),
+          };
+        }
+        setStats(data);
       } catch (error) {
         console.error("Error fetching stats:", error);
       }
@@ -229,6 +241,13 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     debouncedFetchTodayAttendance();
     debouncedFetchStats();
     fetchAssignedTickets();
+
+    // Refetch when user returns to tab (helps avoid stale/cached data on some browsers)
+    const onFocus = () => {
+      debouncedFetchTodayAttendance();
+      debouncedFetchStats();
+    };
+    window.addEventListener("focus", onFocus);
 
     // Set up interval to update time labels every minute
     const timeLabelInterval = setInterval(generateTimeLabels, 60000);
@@ -300,6 +319,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
     }
 
     return () => {
+      window.removeEventListener("focus", onFocus);
       clearInterval(timeLabelInterval);
       clearInterval(statsInterval);
       if (elapsedInterval) {
@@ -521,11 +541,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
               <div className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-6">
                 <div className="flex items-center">
                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-cyan-600 text-lg font-bold shadow-sm">
-                    {user.firstName[0]}{user.lastName[0]}
+                    {(user?.firstName ?? "").charAt(0)}{(user?.lastName ?? "").charAt(0) || "?"}
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-xl font-semibold text-white">{user.firstName} {user.lastName}</h3>
-                    <p className="text-sm text-white/90">{user.position} - {user.department}</p>
+                    <h3 className="text-xl font-semibold text-white">{user?.firstName ?? ""} {user?.lastName ?? ""}</h3>
+                    <p className="text-sm text-white/90">{user?.position ?? ""} - {user?.department ?? ""}</p>
                   </div>
                 </div>
               </div>
@@ -542,7 +562,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                     <Mail className="w-4 h-4 text-gray-500 mt-1 mr-3" />
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Email</p>
-                      <p className="text-sm font-medium text-gray-900">{user.email}</p>
+                      <p className="text-sm font-medium text-gray-900">{user?.email ?? "—"}</p>
                     </div>
                   </div>
                   <div className="flex items-start">
@@ -550,10 +570,10 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Report To</p>
                       <p className="text-sm font-medium text-gray-900">
-                        {user.reportsTo
-                          ? `${user.reportsTo.firstName} ${user.reportsTo.lastName}`
+                        {user?.reportsTo
+                          ? `${user.reportsTo?.firstName ?? ""} ${user.reportsTo?.lastName ?? ""}`
                           : teamLeader
-                            ? `${teamLeader.firstName} ${teamLeader.lastName} (Team Leader)`
+                            ? `${teamLeader?.firstName ?? ""} ${teamLeader?.lastName ?? ""} (Team Leader)`
                             : "Not assigned"}
                       </p>
                     </div>
@@ -562,14 +582,14 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                     <Layout className="w-4 h-4 text-gray-500 mt-1 mr-3" />
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Department</p>
-                      <p className="text-sm font-medium text-gray-900">{user.department}</p>
+                      <p className="text-sm font-medium text-gray-900">{user?.department ?? "—"}</p>
                     </div>
                   </div>
                   <div className="flex items-start">
                     <Calendar className="w-4 h-4 text-gray-500 mt-1 mr-3" />
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Join Date</p>
-                      <p className="text-sm font-medium text-gray-900">{new Date(user.joinDate).toLocaleDateString('en-GB')}</p>
+                      <p className="text-sm font-medium text-gray-900">{user?.joinDate != null ? new Date(user.joinDate).toLocaleDateString("en-GB") : "—"}</p>
                     </div>
                   </div>
                 </div>
@@ -859,7 +879,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                           </div>
                         </div>
                         <div className="flex items-baseline">
-                          <span className="text-2xl font-bold">{stats?.today?.total.toFixed(2)}</span>
+                          <span className="text-2xl font-bold">
+                            {typeof stats?.today?.total === "number"
+                              ? Math.min(24, stats.today.total).toFixed(2)
+                              : "0.00"}
+                          </span>
                           <span className="text-gray-500 ml-1">/ 8.5</span>
                         </div>
                         <p className="text-sm text-gray-600">Total Hours Today</p>
@@ -869,7 +893,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                           </div>
                           <span className="text-sm ml-1">5% This Week</span>
                         </div>
-                        {stats?.today?.remaining > 0 && (
+                        {typeof stats?.today?.remaining === "number" && stats.today.remaining > 0 && stats.today.remaining <= 24 && (
                           <div className="mt-2 text-sm text-orange-500">
                             Remaining: {formatHours(stats.today.remaining)}
                           </div>
@@ -886,7 +910,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                           </div>
                         </div>
                         <div className="flex items-baseline">
-                          <span className="text-2xl font-bold">{stats?.week?.total.toFixed(2)}</span>
+                          <span className="text-2xl font-bold">
+                            {typeof stats?.week?.total === "number"
+                              ? Math.min(999, stats.week.total).toFixed(2)
+                              : "0.00"}
+                          </span>
                           <span className="text-gray-500 ml-1">/ 45</span>
                         </div>
                         <p className="text-sm text-gray-600">Total Hours Week</p>
@@ -896,7 +924,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                           </div>
                           <span className="text-sm ml-1">7% Last Week</span>
                         </div>
-                        {stats?.week?.remaining > 0 && (
+                        {typeof stats?.week?.remaining === "number" && stats.week.remaining > 0 && (
                           <div className="mt-2 text-sm text-orange-500">
                             Remaining: {formatHours(stats.week.remaining)}
                           </div>
@@ -913,7 +941,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                           </div>
                         </div>
                         <div className="flex items-baseline">
-                          <span className="text-2xl font-bold">{stats?.month?.total.toFixed(2)}</span>
+                          <span className="text-2xl font-bold">
+                            {typeof stats?.month?.total === "number"
+                              ? Math.min(999, stats.month.total).toFixed(2)
+                              : "0.00"}
+                          </span>
                           <span className="text-gray-500 ml-1">/ 180</span>
                         </div>
                         <p className="text-sm text-gray-600">Total Hours Month</p>
@@ -923,7 +955,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                           </div>
                           <span className="text-sm ml-1">8% Last Month</span>
                         </div>
-                        {stats?.month?.remaining > 0 && (
+                        {typeof stats?.month?.remaining === "number" && stats.month.remaining > 0 && (
                           <div className="mt-2 text-sm text-orange-500">
                             Remaining: {formatHours(stats.month.remaining)}
                           </div>
@@ -940,7 +972,11 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                           </div>
                         </div>
                         <div className="flex items-baseline">
-                          <span className="text-2xl font-bold">{stats?.month?.overtime.toFixed(2)}</span>
+                          <span className="text-2xl font-bold">
+                            {typeof stats?.month?.overtime === "number"
+                              ? stats.month.overtime.toFixed(2)
+                              : "0.00"}
+                          </span>
                           <span className="text-gray-500 ml-1">/ 28</span>
                         </div>
                         <p className="text-sm text-gray-600">Overtime this Month</p>
@@ -960,14 +996,14 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                         <div className="w-2 h-2 rounded-full bg-gray-400 mr-2"></div>
                         <span className="text-sm text-gray-600">Total Working hours</span>
                       </div>
-                      <p className="text-xl font-medium mt-1">{formatHours(stats?.today?.total || 0)}</p>
+                      <p className="text-xl font-medium mt-1">{formatHours(Math.min(24, stats?.today?.total ?? 0))}</p>
                     </div>
                     <div>
                       <div className="flex items-center">
                         <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
                         <span className="text-sm text-gray-600">Productive Hours</span>
                       </div>
-                      <p className="text-xl font-medium mt-1">{formatHours(stats?.today?.productive || 0)}</p>
+                      <p className="text-xl font-medium mt-1">{formatHours(Math.min(24, stats?.today?.productive ?? 0))}</p>
                     </div>
                     <div>
                       <div className="flex items-center">
@@ -976,7 +1012,7 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                         {isOnBreak && <span className="ml-2 text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">Active</span>}
                       </div>
                       <p className="text-xl font-medium mt-1">
-                        {isOnBreak ? currentBreakTime : formatHours(stats?.today?.break || 0)}
+                        {isOnBreak ? currentBreakTime : formatHours(Math.min(24, stats?.today?.break ?? 0))}
                       </p>
                       {isOnBreak && (
                         <p className="text-xs text-orange-600 mt-1">Current break time</p>
@@ -987,24 +1023,24 @@ export default function DashboardContent({ user }: DashboardContentProps) {
                         <div className="w-2 h-2 rounded-full bg-primary mr-2"></div>
                         <span className="text-sm text-gray-600">Overtime</span>
                       </div>
-                      <p className="text-xl font-medium mt-1">{formatHours(stats?.today?.overtime || 0)}</p>
+                      <p className="text-xl font-medium mt-1">{formatHours(stats?.today?.overtime ?? 0)}</p>
                     </div>
                     <div>
                       <div className="flex items-center">
                         <div className="w-2 h-2 rounded-full bg-orange-500 mr-2"></div>
                         <span className="text-sm text-gray-600">Remaining Hours</span>
                       </div>
-                      <p className="text-xl font-medium mt-1">{formatHours(stats?.today?.remaining || 0)}</p>
+                      <p className="text-xl font-medium mt-1">{formatHours(Math.max(0, Math.min(24, stats?.today?.remaining ?? 0)))}</p>
                     </div>
                   </div>
 
                   <div className="relative h-8 w-full mt-6 mb-2">
                     <div
                       className="absolute top-0 left-0 h-full bg-green-500 rounded-l-md transition-all duration-1000"
-                      style={{ width: `${calculateProgress()}%` }}
+                      style={{ width: `${Math.min(100, calculateProgress())}%` }}
                     ></div>
                     <div className="absolute top-0 left-0 h-full w-full flex items-center justify-center text-white font-medium">
-                      {calculateProgress().toFixed(1)}% Complete
+                      {Math.min(100, calculateProgress()).toFixed(1)}% Complete
                     </div>
                   </div>
 

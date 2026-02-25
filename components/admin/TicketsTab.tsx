@@ -35,6 +35,13 @@ import { Loader, ButtonLoader } from "@/components/ui/loader";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 
+function safeFormatDistanceToNow(value: string | Date | null | undefined): string {
+  if (value == null) return "—";
+  const d = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(d.getTime())) return "—";
+  return formatDistanceToNow(d, { addSuffix: true });
+}
+
 interface TicketData {
   id: string;
   ticketNumber: string;
@@ -535,7 +542,7 @@ export function EmployeeTicketsPage() {
                                   <div className="text-sm text-gray-500 truncate max-w-xs">{ticket.title}</div>
                                   <div className="flex items-center gap-2 mt-1">
                                     <MessageSquare className="w-3 h-3 text-gray-400" />
-                                    <span className="text-xs text-gray-500">{ticket._count.comments}</span>
+                                    <span className="text-xs text-gray-500">{ticket._count?.comments ?? 0}</span>
                                   </div>
                                 </div>
                               </div>
@@ -552,17 +559,17 @@ export function EmployeeTicketsPage() {
                             </TableCell>
                             <TableCell className="py-4">
                               <Badge className={getStatusBadge(ticket.status)}>
-                                {ticket.status.replace('_', ' ')}
+                                {(ticket.status ?? "").replace("_", " ")}
                               </Badge>
                             </TableCell>
                             <TableCell className="py-4">
                               {ticket.assignedTo ? (
                                 <div className="flex items-center gap-2">
                                   <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
-                                    {ticket.assignedTo.firstName.charAt(0)}{ticket.assignedTo.lastName.charAt(0)}
+                                    {(ticket.assignedTo?.firstName ?? "").charAt(0)}{(ticket.assignedTo?.lastName ?? "").charAt(0) || "?"}
                                   </div>
                                   <span className="text-sm text-gray-700">
-                                    {ticket.assignedTo.firstName} {ticket.assignedTo.lastName}
+                                    {ticket.assignedTo?.firstName ?? ""} {ticket.assignedTo?.lastName ?? ""}
                                   </span>
                                 </div>
                               ) : (
@@ -571,10 +578,10 @@ export function EmployeeTicketsPage() {
                             </TableCell>
                             <TableCell className="py-4">
                               <div className="text-sm text-gray-700">
-                                {formatDistanceToNow(new Date(ticket.createdAt), { addSuffix: true })}
+                                {safeFormatDistanceToNow(ticket.createdAt)}
                               </div>
                               <div className="text-xs text-gray-500">
-                                by {ticket.createdBy.firstName} {ticket.createdBy.lastName}
+                                by {ticket.createdBy?.firstName ?? ""} {ticket.createdBy?.lastName ?? ""}
                               </div>
                             </TableCell>
                             <TableCell className="py-4">
@@ -737,7 +744,7 @@ export function EmployeeTicketsPage() {
                                   <div className="text-sm text-gray-500 truncate max-w-xs">{ticket.title}</div>
                                   <div className="flex items-center gap-2 mt-1">
                                     <MessageSquare className="w-3 h-3 text-gray-400" />
-                                    <span className="text-xs text-gray-500">{ticket._count.comments}</span>
+                                    <span className="text-xs text-gray-500">{ticket._count?.comments ?? 0}</span>
                                   </div>
                                 </div>
                               </div>
@@ -754,22 +761,22 @@ export function EmployeeTicketsPage() {
                             </TableCell>
                             <TableCell className="py-4">
                               <Badge className={getStatusBadge(ticket.status)}>
-                                {ticket.status.replace('_', ' ')}
+                                {(ticket.status ?? "").replace("_", " ")}
                               </Badge>
                             </TableCell>
                             <TableCell className="py-4">
                               <div className="flex items-center gap-2">
                                 <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
-                                  {ticket.createdBy.firstName.charAt(0)}{ticket.createdBy.lastName.charAt(0)}
+                                  {(ticket.createdBy?.firstName ?? "").charAt(0)}{(ticket.createdBy?.lastName ?? "").charAt(0) || "?"}
                                 </div>
                                 <span className="text-sm text-gray-700">
-                                  {ticket.createdBy.firstName} {ticket.createdBy.lastName}
+                                  {ticket.createdBy?.firstName ?? ""} {ticket.createdBy?.lastName ?? ""}
                                 </span>
                               </div>
                             </TableCell>
                             <TableCell className="py-4">
                               <div className="text-sm text-gray-700">
-                                {formatDistanceToNow(new Date(ticket.createdAt), { addSuffix: true })}
+                                {safeFormatDistanceToNow(ticket.createdAt)}
                               </div>
                             </TableCell>
                             <TableCell className="py-4">
@@ -853,7 +860,7 @@ export function EmployeeTicketsPage() {
               <Tabs defaultValue="details" className="w-full">
                 <TabsList>
                   <TabsTrigger value="details">Details</TabsTrigger>
-                  <TabsTrigger value="comments">Comments ({selectedTicket.comments.length})</TabsTrigger>
+                  <TabsTrigger value="comments">Comments ({(selectedTicket.comments ?? []).length})</TabsTrigger>
                   <TabsTrigger value="activity">Activity</TabsTrigger>
                 </TabsList>
 
@@ -863,7 +870,7 @@ export function EmployeeTicketsPage() {
                       <Label>Status</Label>
                       <div className="mt-1">
                         <Badge className={getStatusBadge(selectedTicket.status)}>
-                          {selectedTicket.status.replace('_', ' ')}
+                          {(selectedTicket.status ?? "").replace("_", " ")}
                         </Badge>
                       </div>
                     </div>
@@ -886,7 +893,7 @@ export function EmployeeTicketsPage() {
                     <div>
                       <Label>Created</Label>
                       <div className="mt-1 text-sm text-gray-600">
-                        {formatDistanceToNow(new Date(selectedTicket.createdAt), { addSuffix: true })}
+                        {safeFormatDistanceToNow(selectedTicket.createdAt)}
                       </div>
                     </div>
                   </div>
@@ -903,10 +910,10 @@ export function EmployeeTicketsPage() {
                       <Label>Created By</Label>
                       <div className="mt-1 flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                          {selectedTicket.createdBy.firstName.charAt(0)}{selectedTicket.createdBy.lastName.charAt(0)}
+                          {(selectedTicket.createdBy?.firstName ?? "").charAt(0)}{(selectedTicket.createdBy?.lastName ?? "").charAt(0) || "?"}
                         </div>
                         <span className="text-sm">
-                          {selectedTicket.createdBy.firstName} {selectedTicket.createdBy.lastName}
+                          {selectedTicket.createdBy?.firstName ?? ""} {selectedTicket.createdBy?.lastName ?? ""}
                         </span>
                       </div>
                     </div>
@@ -916,10 +923,10 @@ export function EmployeeTicketsPage() {
                         {selectedTicket.assignedTo ? (
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                              {selectedTicket.assignedTo.firstName.charAt(0)}{selectedTicket.assignedTo.lastName.charAt(0)}
+                              {(selectedTicket.assignedTo?.firstName ?? "").charAt(0)}{(selectedTicket.assignedTo?.lastName ?? "").charAt(0) || "?"}
                             </div>
                             <span className="text-sm">
-                              {selectedTicket.assignedTo.firstName} {selectedTicket.assignedTo.lastName}
+                              {selectedTicket.assignedTo?.firstName ?? ""} {selectedTicket.assignedTo?.lastName ?? ""}
                             </span>
                           </div>
                         ) : (
@@ -931,20 +938,20 @@ export function EmployeeTicketsPage() {
                 </TabsContent>
 
                 <TabsContent value="comments" className="space-y-4">
-                  {selectedTicket.comments.map((comment) => (
+                  {(selectedTicket.comments ?? []).map((comment) => (
                     <Card key={comment.id} className="border-0 shadow-sm bg-gray-50">
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
                           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                            {comment.author.firstName.charAt(0)}{comment.author.lastName.charAt(0)}
+                            {(comment.author?.firstName ?? "").charAt(0)}{(comment.author?.lastName ?? "").charAt(0) || "?"}
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
                               <span className="font-medium text-sm">
-                                {comment.author.firstName} {comment.author.lastName}
+                                {comment.author?.firstName ?? ""} {comment.author?.lastName ?? ""}
                               </span>
                               <span className="text-xs text-gray-500">
-                                {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+                                {safeFormatDistanceToNow(comment.createdAt)}
                               </span>
                             </div>
                             <p className="text-sm text-gray-700">{comment.content}</p>
@@ -998,15 +1005,15 @@ export function EmployeeTicketsPage() {
                           <CardContent className="p-4">
                             <div className="flex items-start gap-3">
                               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
-                                {activity.user.firstName.charAt(0)}{activity.user.lastName.charAt(0)}
+                                {(activity.user?.firstName ?? "").charAt(0)}{(activity.user?.lastName ?? "").charAt(0) || "?"}
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
                                   <span className="font-medium text-sm">
-                                    {activity.user.firstName} {activity.user.lastName}
+                                    {activity.user?.firstName ?? ""} {activity.user?.lastName ?? ""}
                                   </span>
                                   <span className="text-xs text-gray-500">
-                                    {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
+                                    {safeFormatDistanceToNow(activity.createdAt)}
                                   </span>
                                 </div>
                                 <p className="text-sm text-gray-700">{activity.description}</p>
@@ -1096,19 +1103,19 @@ export default function TicketsTab() {
       const response = await fetch(`/api/tickets?${params}`);
       if (response.ok) {
         const data = await response.json();
-        setTickets(data.tickets);
+        setTickets(data.tickets ?? []);
         setTotalPages(data.pagination.totalPages);
         setAssignees(data.filters.assignees);
 
         // Calculate stats
         const ticketStats = {
           total: data.pagination.total,
-          open: data.tickets.filter((t: TicketData) => t.status === 'OPEN').length,
-          inProgress: data.tickets.filter((t: TicketData) => t.status === 'IN_PROGRESS').length,
-          resolved: data.tickets.filter((t: TicketData) => t.status === 'RESOLVED').length,
-          closed: data.tickets.filter((t: TicketData) => t.status === 'CLOSED').length,
-          overdue: data.tickets.filter((t: TicketData) =>
-            t.dueDate && new Date(t.dueDate) < new Date() && t.status !== 'RESOLVED' && t.status !== 'CLOSED'
+          open: (data.tickets ?? []).filter((t: TicketData) => t.status === "OPEN").length,
+          inProgress: (data.tickets ?? []).filter((t: TicketData) => t.status === "IN_PROGRESS").length,
+          resolved: (data.tickets ?? []).filter((t: TicketData) => t.status === "RESOLVED").length,
+          closed: (data.tickets ?? []).filter((t: TicketData) => t.status === "CLOSED").length,
+          overdue: (data.tickets ?? []).filter((t: TicketData) =>
+            t.dueDate && new Date(t.dueDate) < new Date() && t.status !== "RESOLVED" && t.status !== "CLOSED"
           ).length
         };
         setStats(ticketStats);
@@ -1531,10 +1538,10 @@ export default function TicketsTab() {
                     <SelectItem key={assignee.id} value={assignee.id}>
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
-                          {assignee.firstName.charAt(0)}{assignee.lastName.charAt(0)}
+                          {(assignee?.firstName ?? "").charAt(0)}{(assignee?.lastName ?? "").charAt(0) || "?"}
                         </div>
-                        <span>{assignee.firstName} {assignee.lastName}</span>
-                        <span className="text-xs text-gray-500">({assignee.department})</span>
+                        <span>{assignee?.firstName ?? ""} {assignee?.lastName ?? ""}</span>
+                        <span className="text-xs text-gray-500">({assignee?.department ?? ""})</span>
                       </div>
                     </SelectItem>
                   ))}
@@ -1595,11 +1602,11 @@ export default function TicketsTab() {
                               <div className="text-sm text-gray-500 truncate max-w-xs">{ticket.title}</div>
                               <div className="flex items-center gap-2 mt-1">
                                 <MessageSquare className="w-3 h-3 text-gray-400" />
-                                <span className="text-xs text-gray-500">{ticket._count.comments}</span>
-                                {ticket._count.attachments > 0 && (
+                                <span className="text-xs text-gray-500">{ticket._count?.comments ?? 0}</span>
+                                {(ticket._count?.attachments ?? 0) > 0 && (
                                   <>
                                     <Paperclip className="w-3 h-3 text-gray-400 ml-2" />
-                                    <span className="text-xs text-gray-500">{ticket._count.attachments}</span>
+                                    <span className="text-xs text-gray-500">{ticket._count?.attachments ?? 0}</span>
                                   </>
                                 )}
                               </div>
@@ -1618,17 +1625,17 @@ export default function TicketsTab() {
                         </TableCell>
                         <TableCell className="py-4">
                           <Badge className={getStatusBadge(ticket.status)}>
-                            {ticket.status.replace('_', ' ')}
+                            {(ticket.status ?? "").replace("_", " ")}
                           </Badge>
                         </TableCell>
                         <TableCell className="py-4">
                           {ticket.assignedTo ? (
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
-                                {ticket.assignedTo.firstName.charAt(0)}{ticket.assignedTo.lastName.charAt(0)}
+                                {(ticket.assignedTo?.firstName ?? "").charAt(0)}{(ticket.assignedTo?.lastName ?? "").charAt(0) || "?"}
                               </div>
                               <span className="text-sm text-gray-700">
-                                {ticket.assignedTo.firstName} {ticket.assignedTo.lastName}
+                                {ticket.assignedTo?.firstName ?? ""} {ticket.assignedTo?.lastName ?? ""}
                               </span>
                             </div>
                           ) : (
@@ -1637,10 +1644,10 @@ export default function TicketsTab() {
                         </TableCell>
                         <TableCell className="py-4">
                           <div className="text-sm text-gray-700">
-                            {formatDistanceToNow(new Date(ticket.createdAt), { addSuffix: true })}
+                            {safeFormatDistanceToNow(ticket.createdAt)}
                           </div>
                           <div className="text-xs text-gray-500">
-                            by {ticket.createdBy.firstName} {ticket.createdBy.lastName}
+                            by {ticket.createdBy?.firstName ?? ""} {ticket.createdBy?.lastName ?? ""}
                           </div>
                         </TableCell>
                         <TableCell className="py-4">
@@ -1688,9 +1695,9 @@ export default function TicketsTab() {
                                   <SelectItem key={assignee.id} value={assignee.id}>
                                     <div className="flex items-center gap-2">
                                       <div className="w-5 h-5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
-                                        {assignee.firstName.charAt(0)}{assignee.lastName.charAt(0)}
+                                        {(assignee?.firstName ?? "").charAt(0)}{(assignee?.lastName ?? "").charAt(0) || "?"}
                                       </div>
-                                      <span>{assignee.firstName} {assignee.lastName}</span>
+                                      <span>{assignee?.firstName ?? ""} {assignee?.lastName ?? ""}</span>
                                     </div>
                                   </SelectItem>
                                 ))}
@@ -1770,7 +1777,7 @@ export default function TicketsTab() {
               <Tabs defaultValue="details" className="w-full">
                 <TabsList>
                   <TabsTrigger value="details">Details</TabsTrigger>
-                  <TabsTrigger value="comments">Comments ({selectedTicket.comments.length})</TabsTrigger>
+                  <TabsTrigger value="comments">Comments ({(selectedTicket.comments ?? []).length})</TabsTrigger>
                   <TabsTrigger value="activity">Activity</TabsTrigger>
                 </TabsList>
 
@@ -1780,7 +1787,7 @@ export default function TicketsTab() {
                       <Label>Status</Label>
                       <div className="mt-1">
                         <Badge className={getStatusBadge(selectedTicket.status)}>
-                          {selectedTicket.status.replace('_', ' ')}
+                          {(selectedTicket.status ?? "").replace("_", " ")}
                         </Badge>
                       </div>
                     </div>
@@ -1803,7 +1810,7 @@ export default function TicketsTab() {
                     <div>
                       <Label>Created</Label>
                       <div className="mt-1 text-sm text-gray-600">
-                        {formatDistanceToNow(new Date(selectedTicket.createdAt), { addSuffix: true })}
+                        {safeFormatDistanceToNow(selectedTicket.createdAt)}
                       </div>
                     </div>
                   </div>
@@ -1829,10 +1836,10 @@ export default function TicketsTab() {
                           <SelectItem key={assignee.id} value={assignee.id}>
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
-                                {assignee.firstName.charAt(0)}{assignee.lastName.charAt(0)}
+                                {(assignee?.firstName ?? "").charAt(0)}{(assignee?.lastName ?? "").charAt(0) || "?"}
                               </div>
-                              <span>{assignee.firstName} {assignee.lastName}</span>
-                              <span className="text-xs text-gray-500">({assignee.department})</span>
+<span>{assignee?.firstName ?? ""} {assignee?.lastName ?? ""}</span>
+                                      <span className="text-xs text-gray-500">({assignee?.department ?? ""})</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -1852,10 +1859,10 @@ export default function TicketsTab() {
                       <Label>Created By</Label>
                       <div className="mt-1 flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                          {selectedTicket.createdBy.firstName.charAt(0)}{selectedTicket.createdBy.lastName.charAt(0)}
+                          {(selectedTicket.createdBy?.firstName ?? "").charAt(0)}{(selectedTicket.createdBy?.lastName ?? "").charAt(0) || "?"}
                         </div>
                         <span className="text-sm">
-                          {selectedTicket.createdBy.firstName} {selectedTicket.createdBy.lastName}
+                          {selectedTicket.createdBy?.firstName ?? ""} {selectedTicket.createdBy?.lastName ?? ""}
                         </span>
                       </div>
                     </div>
@@ -1865,10 +1872,10 @@ export default function TicketsTab() {
                         {selectedTicket.assignedTo ? (
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                              {selectedTicket.assignedTo.firstName.charAt(0)}{selectedTicket.assignedTo.lastName.charAt(0)}
+                              {(selectedTicket.assignedTo?.firstName ?? "").charAt(0)}{(selectedTicket.assignedTo?.lastName ?? "").charAt(0) || "?"}
                             </div>
                             <span className="text-sm">
-                              {selectedTicket.assignedTo.firstName} {selectedTicket.assignedTo.lastName}
+                              {selectedTicket.assignedTo?.firstName ?? ""} {selectedTicket.assignedTo?.lastName ?? ""}
                             </span>
                           </div>
                         ) : (
@@ -1880,20 +1887,20 @@ export default function TicketsTab() {
                 </TabsContent>
 
                 <TabsContent value="comments" className="space-y-4">
-                  {selectedTicket.comments.map((comment) => (
+                  {(selectedTicket.comments ?? []).map((comment) => (
                     <Card key={comment.id} className="border-0 shadow-sm bg-gray-50">
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
                           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
-                            {comment.author.firstName.charAt(0)}{comment.author.lastName.charAt(0)}
+                            {(comment.author?.firstName ?? "").charAt(0)}{(comment.author?.lastName ?? "").charAt(0) || "?"}
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
                               <span className="font-medium text-sm">
-                                {comment.author.firstName} {comment.author.lastName}
+                                {comment.author?.firstName ?? ""} {comment.author?.lastName ?? ""}
                               </span>
                               <span className="text-xs text-gray-500">
-                                {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+                                {safeFormatDistanceToNow(comment.createdAt)}
                               </span>
                             </div>
                             <p className="text-sm text-gray-700">{comment.content}</p>
@@ -1947,15 +1954,15 @@ export default function TicketsTab() {
                           <CardContent className="p-4">
                             <div className="flex items-start gap-3">
                               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
-                                {activity.user.firstName.charAt(0)}{activity.user.lastName.charAt(0)}
+                                {(activity.user?.firstName ?? "").charAt(0)}{(activity.user?.lastName ?? "").charAt(0) || "?"}
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
                                   <span className="font-medium text-sm">
-                                    {activity.user.firstName} {activity.user.lastName}
+                                    {activity.user?.firstName ?? ""} {activity.user?.lastName ?? ""}
                                   </span>
                                   <span className="text-xs text-gray-500">
-                                    {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
+                                    {safeFormatDistanceToNow(activity.createdAt)}
                                   </span>
                                 </div>
                                 <p className="text-sm text-gray-700">{activity.description}</p>

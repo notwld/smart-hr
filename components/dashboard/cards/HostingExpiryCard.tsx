@@ -1,13 +1,14 @@
 import React from "react"
 import { BaseAlertCard } from "./BaseAlertCard"
 import { Server, AlertTriangle } from "lucide-react"
+import { safeFormatDate } from "@/lib/utils"
 
 interface HostingExpiryCardProps {
   hosting: {
     id: string
     clientName: string
     domain: string
-    expiryDate: Date
+    expiryDate: Date | string
     cost: number
   }
   daysUntilExpiry: number
@@ -43,7 +44,7 @@ export function HostingExpiryCard({ hosting, daysUntilExpiry, onDismiss }: Hosti
         </span>
       </div>
       <div className="text-xs text-gray-600 mt-1">
-        {hosting.expiryDate.toLocaleDateString()}
+        {safeFormatDate(hosting.expiryDate)}
       </div>
     </BaseAlertCard>
   )

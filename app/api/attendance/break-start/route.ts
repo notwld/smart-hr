@@ -86,13 +86,30 @@ export async function POST(req: Request) {
     const now = new Date();
 
     try {
-      // Create a new Break record
-      const newBreak = await prisma.break.create({
-        data: {
-          attendanceId: attendance.id,
-          startTime: now,
-        },
+      // Use a transaction so double-clicks don't create two breaks: re-check for active
+      // break right before create so the second request fails instead of creating a duplicate.
+      const newBreak = await prisma.$transaction(async (tx) => {
+        const existingActive = await tx.break.findFirst({
+          where: {
+            attendanceId: attendance.id,
+            endTime: null,
+          },
+        });
+        if (existingActive) return null;
+        return tx.break.create({
+          data: {
+            attendanceId: attendance.id,
+            startTime: now,
+          },
+        });
       });
+
+      if (!newBreak) {
+        return NextResponse.json(
+          { message: "A break is already in progress" },
+          { status: 400 }
+        );
+      }
 
       // Also update old fields for backward compatibility
       const updatedAttendance = await prisma.attendance.update({

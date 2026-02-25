@@ -227,10 +227,10 @@ export default function NotificationDropdown() {
                           variant="outline"
                           className={`text-xs ${getPriorityColor(notification.priority)}`}
                         >
-                          {notification.priority.toLowerCase()}
+                          {(notification.priority ?? "").toLowerCase()}
                         </Badge>
                         <span className="text-xs text-gray-500">
-                          by {notification.createdBy.firstName} {notification.createdBy.lastName}
+                          by {notification.createdBy?.firstName ?? ""} {notification.createdBy?.lastName ?? ""}
                         </span>
                       </div>
                     </div>

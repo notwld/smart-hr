@@ -1,12 +1,13 @@
 import React from "react"
 import { BaseAlertCard } from "./BaseAlertCard"
 import { Heart } from "lucide-react"
+import { safeFormatDate } from "@/lib/utils"
 
 interface CriticalLeaveCardProps {
   leave: {
     id: string
     type: string
-    startDate: Date
+    startDate: Date | string
     daysUntilStart: number
     user: {
       id: string
@@ -23,7 +24,7 @@ export function CriticalLeaveCard({ leave, onDismiss }: CriticalLeaveCardProps) 
   return (
     <BaseAlertCard
       title={`👶 ${leave.type} leave pending approval`}
-      description={`${leave.user.firstName} ${leave.user.lastName} • ${leave.user.position}`}
+      description={`${leave.user?.firstName ?? ""} ${leave.user?.lastName ?? ""} • ${leave.user?.position ?? ""}`.trim() || "-"}
       icon={<Heart className="w-4 h-4" />}
       variant="warning"
       onDismiss={onDismiss}
@@ -32,10 +33,10 @@ export function CriticalLeaveCard({ leave, onDismiss }: CriticalLeaveCardProps) 
         <div className="flex items-center gap-2">
           <span className="font-medium">Starts in {leave.daysUntilStart} day{leave.daysUntilStart !== 1 ? 's' : ''}</span>
           <span className="text-gray-500">•</span>
-          <span>{leave.startDate.toLocaleDateString()}</span>
+          <span>{safeFormatDate(leave.startDate)}</span>
         </div>
         <div className="text-gray-600">
-          Department: {leave.user.department}
+          Department: {leave.user?.department ?? "-"}
         </div>
       </div>
     </BaseAlertCard>

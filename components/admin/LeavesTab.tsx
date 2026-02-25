@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Loader } from "@/components/ui/loader";
 import { toast } from "sonner";
+import { safeFormatDate } from "@/lib/utils";
 
 interface LeaveRequest {
   id: string;
@@ -104,20 +105,21 @@ export default function LeavesTab() {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+  const formatDate = (dateString: string | null | undefined) => {
+    return safeFormatDate(dateString, {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
     });
   };
 
-  const calculateDays = (startDate: string, endDate: string) => {
+  const calculateDays = (startDate: string | null | undefined, endDate: string | null | undefined) => {
+    if (startDate == null || endDate == null) return 0;
     const start = new Date(startDate);
     const end = new Date(endDate);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 0;
     const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-    return diffDays;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
   };
 
   if (loading) {
@@ -231,11 +233,11 @@ export default function LeavesTab() {
                       <TableCell className="py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center text-white font-semibold text-sm">
-                            {leave.user.firstName[0]}{leave.user.lastName[0]}
+                            {(leave.user?.firstName ?? "").charAt(0)}{(leave.user?.lastName ?? "").charAt(0) || "?"}
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900">{leave.user.firstName} {leave.user.lastName}</p>
-                            <p className="text-xs text-gray-500">{leave.user.position} - {leave.user.department}</p>
+                            <p className="font-medium text-gray-900">{leave.user?.firstName ?? ""} {leave.user?.lastName ?? ""}</p>
+                            <p className="text-xs text-gray-500">{leave.user?.position ?? ""} - {leave.user?.department ?? ""}</p>
                           </div>
                         </div>
                       </TableCell>
@@ -257,13 +259,13 @@ export default function LeavesTab() {
                         </div>
                       </TableCell>
                       <TableCell className="py-4 max-w-xs">
-                        <p className="text-sm text-gray-700 truncate" title={leave.reason}>
-                          {leave.reason}
+                        <p className="text-sm text-gray-700 truncate" title={leave.reason ?? ""}>
+                          {leave.reason ?? "—"}
                         </p>
                       </TableCell>
                       <TableCell className="py-4">
                         <Badge className={`font-medium ${getStatusColor(leave.status)}`}>
-                          {leave.status}
+                          {leave.status ?? "—"}
                         </Badge>
                       </TableCell>
                       <TableCell className="py-4">

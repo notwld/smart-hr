@@ -22,6 +22,7 @@ import {
 import { Loader, ButtonLoader } from "@/components/ui/loader";
 import { toast } from "sonner";
 import EmployeeCalendar from "@/components/EmployeeCalendar";
+import { safeFormatDate, safeFormatTime } from "@/lib/utils";
 
 interface AttendanceRecord {
   id: string;
@@ -379,17 +380,12 @@ export default function AttendanceTab() {
     setShowCalendar(true);
   };
 
-  const formatTime = (timeString: string | null) => {
-    if (!timeString) return "-";
-    return new Date(timeString).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
+  const formatTime = (timeString: string | null | undefined) => {
+    return safeFormatTime(timeString, { hour12: true }, "-");
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+  const formatDate = (dateString: string | null | undefined) => {
+    return safeFormatDate(dateString, {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -426,9 +422,11 @@ export default function AttendanceTab() {
   };
 
   const formatMonthLabel = (monthKey: string) => {
-    // monthKey is in format "YYYY-MM"
     const [year, month] = monthKey.split('-');
-    const date = new Date(parseInt(year), parseInt(month) - 1, 1);
+    const y = parseInt(year, 10);
+    const m = parseInt(month, 10) - 1;
+    const date = new Date(y, m, 1);
+    if (Number.isNaN(date.getTime())) return monthKey;
     const monthName = date.toLocaleDateString('en-US', { month: 'short' });
     return `${monthName}-${year}`;
   };
@@ -523,7 +521,7 @@ export default function AttendanceTab() {
                 className="w-full rounded-md border border-cyan-200 focus:border-cyan-500 bg-white px-3 py-2 text-sm"
               >
                 <option value="all">All Departments</option>
-                {attendanceData?.departments.map(dept => (
+                {(attendanceData?.departments ?? []).map(dept => (
                   <option key={dept} value={dept}>{dept}</option>
                 ))}
               </select>
@@ -636,29 +634,29 @@ export default function AttendanceTab() {
                         </TableCell>
                       </TableRow>
                     ) : (
-                      attendanceData?.attendance.map((record, index) => (
+                      (attendanceData?.attendance ?? []).map((record, index) => (
                         <TableRow key={record.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
                           <TableCell className="py-4">
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm">
-                                {record.user.firstName.charAt(0)}{record.user.lastName.charAt(0)}
+                                {(record.user?.firstName ?? "").charAt(0)}{(record.user?.lastName ?? "").charAt(0) || "?"}
                               </div>
                               <div>
                                 <button
                                   onClick={() => handleEmployeeClick(record.user)}
                                   className="text-sm font-medium text-gray-900 hover:text-cyan-600 hover:underline cursor-pointer transition-colors"
                                 >
-                                  {record.user.firstName} {record.user.lastName}
+                                  {record.user?.firstName ?? ""} {record.user?.lastName ?? ""}
                                 </button>
                                 <div className="text-xs text-gray-500">
-                                  {record.user.position}
+                                  {record.user?.position ?? "—"}
                                 </div>
                               </div>
                             </div>
                           </TableCell>
                           <TableCell className="py-4">
                             <Badge variant="outline" className="bg-cyan-50 text-cyan-700 border-cyan-200">
-                              {record.user.department}
+                              {record.user?.department ?? "—"}
                             </Badge>
                           </TableCell>
                           <TableCell className="py-4 font-medium text-gray-700">{formatDate(record.date)}</TableCell>
@@ -672,7 +670,7 @@ export default function AttendanceTab() {
                           </TableCell>
                           <TableCell className="py-4">
                             <Badge className={`rounded-md font-medium ${getStatusBadge(record.status)}`}>
-                              {record.status}
+                              {record.status ?? "—"}
                             </Badge>
                           </TableCell>
                           <TableCell className="py-4">
@@ -760,7 +758,7 @@ export default function AttendanceTab() {
                 <option value="">Select Employee</option>
                 {users.map(user => (
                   <option key={user.id} value={user.id}>
-                    {user.firstName} {user.lastName} - {user.department}
+                    {user?.firstName ?? ""} {user?.lastName ?? ""} - {user?.department ?? ""}
                   </option>
                 ))}
               </select>

@@ -1,6 +1,7 @@
 import React from "react"
 import { BaseAlertCard } from "./BaseAlertCard"
 import { CheckCircle } from "lucide-react"
+import { safeFormatDateTime } from "@/lib/utils"
 
 interface ClosedTicketCardProps {
   ticket: {
@@ -8,7 +9,7 @@ interface ClosedTicketCardProps {
     ticketNumber: string
     title: string
     status: string
-    updatedAt: Date
+    updatedAt: Date | string
     createdBy: {
       firstName: string
       lastName: string
@@ -25,7 +26,7 @@ export function ClosedTicketCard({ ticket, onDismiss }: ClosedTicketCardProps) {
   return (
     <BaseAlertCard
       title={`✅ Ticket Closed: ${ticket.title}`}
-      description={`#${ticket.ticketNumber} • ${ticket.createdBy.firstName} ${ticket.createdBy.lastName}`}
+      description={`#${ticket.ticketNumber} • ${ticket.createdBy?.firstName ?? ""} ${ticket.createdBy?.lastName ?? ""}`.trim() || "-"}
       icon={<CheckCircle className="w-4 h-4" />}
       variant="success"
       onDismiss={onDismiss}
@@ -33,11 +34,11 @@ export function ClosedTicketCard({ ticket, onDismiss }: ClosedTicketCardProps) {
       <div className="text-xs space-y-1">
         {ticket.resolvedBy && (
           <div className="font-medium">
-            Resolved by: {ticket.resolvedBy.firstName} {ticket.resolvedBy.lastName}
+            Resolved by: {ticket.resolvedBy?.firstName ?? ""} {ticket.resolvedBy?.lastName ?? ""}
           </div>
         )}
         <div className="text-gray-600">
-          Closed: {ticket.updatedAt.toLocaleDateString()} at {ticket.updatedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          Closed: {safeFormatDateTime(ticket.updatedAt)}
         </div>
       </div>
     </BaseAlertCard>

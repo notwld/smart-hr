@@ -23,7 +23,9 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json(attendance || {}, { status: 200 });
+    const res = NextResponse.json(attendance || {}, { status: 200 });
+    res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    return res;
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Error fetching today's attendance" }, { status: 500 });

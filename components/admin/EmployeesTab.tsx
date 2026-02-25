@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { Loader } from "@/components/ui/loader";
 import { toast } from "sonner";
+import { safeFormatDate } from "@/lib/utils";
 import Link from "next/link";
 import QuickAddEmployeeDialog from "@/components/employees/QuickAddEmployeeDialog";
 
@@ -342,25 +343,25 @@ export default function EmployeesTab() {
                       <TableCell className="py-4">
                         <div className="flex items-center">
                           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-teal-500 to-emerald-600 flex items-center justify-center text-white font-semibold text-sm">
-                            {employee.firstName[0]}{employee.lastName[0]}
+                            {(employee?.firstName ?? "").charAt(0)}{(employee?.lastName ?? "").charAt(0) || "?"}
                           </div>
                           <div className="ml-3">
-                            <p className="font-medium text-gray-900">{employee.firstName} {employee.lastName}</p>
+                            <p className="font-medium text-gray-900">{employee?.firstName ?? ""} {employee?.lastName ?? ""}</p>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell className="py-4">
                         <div>
-                          <p className="text-gray-900">{employee.email}</p>
+                          <p className="text-gray-900">{employee?.email ?? "—"}</p>
                           <p className="text-gray-500 text-sm">{employee.phone}</p>
                         </div>
                       </TableCell>
                       <TableCell className="py-4">
                         <Badge variant="outline" className="bg-teal-50 text-teal-700 border-teal-200">
-                          {employee.department}
+                          {employee?.department ?? "—"}
                         </Badge>
                       </TableCell>
-                      <TableCell className="py-4 font-medium text-gray-700">{employee.position}</TableCell>
+                      <TableCell className="py-4 font-medium text-gray-700">{employee?.position ?? "—"}</TableCell>
                       <TableCell className="py-4">
                         <Badge className={`${
                           employee.legacyRole === "ADMIN" 
@@ -370,12 +371,12 @@ export default function EmployeesTab() {
                             : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                         }`}>
                           {employee.userRoles && employee.userRoles.length > 0 
-                            ? employee.userRoles.map(ur => ur.role.name).join(", ") 
-                            : employee.legacyRole}
+? ((employee.userRoles ?? []).map(ur => ur?.role?.name).filter(Boolean).join(", ") || employee.legacyRole ?? "—")
+                            : employee.legacyRole ?? "—"}
                         </Badge>
                       </TableCell>
                       <TableCell className="py-4 text-gray-600">
-                        {new Date(employee.joinDate).toLocaleDateString('en-US', { 
+                        {safeFormatDate(employee.joinDate, { 
                           year: 'numeric', 
                           month: 'short', 
                           day: 'numeric' 
@@ -457,9 +458,9 @@ export default function EmployeesTab() {
                                     <DropdownMenuItem 
                                       key={role.id}
                                       onClick={() => updateEmployeeRole(employee.id, role.id)}
-                                      disabled={currentRoleName === role.name}
+                                      disabled={currentRoleName === (role?.name ?? "")}
                                     >
-                                      {role.name}
+                                      {role?.name ?? "—"}
                                     </DropdownMenuItem>
                                   );
                                 })}

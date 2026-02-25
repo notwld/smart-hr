@@ -17,12 +17,12 @@ interface EmployeeLiveStatsProps {
   attendanceId: string
   user: {
     id: string
-    firstName: string
-    lastName: string
-    position: string
-    department: string
-    email: string
-    pfp: string | null
+    firstName?: string | null
+    lastName?: string | null
+    position?: string | null
+    department?: string | null
+    email?: string | null
+    pfp?: string | null
   }
   checkInTime: string | Date
   checkOutTime: string | Date | null
@@ -52,11 +52,13 @@ function formatDuration(hours: number): string {
   }
 }
 
-function formatTime(date: string | Date): string {
-  const d = typeof date === 'string' ? new Date(date) : date
-  return d.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
+function formatTime(date: string | Date | null | undefined): string {
+  if (date == null) return "-"
+  const d = typeof date === "string" ? new Date(date) : date
+  if (Number.isNaN(d.getTime())) return "-"
+  return d.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
     hour12: true
   })
 }
@@ -138,14 +140,14 @@ export function EmployeeLiveStats({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={user.pfp || undefined} alt={`${user.firstName} ${user.lastName}`} />
+              <AvatarImage src={user?.pfp || undefined} alt={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() || "User"} />
               <AvatarFallback className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
-                {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                {(user?.firstName ?? "").charAt(0)}{(user?.lastName ?? "").charAt(0) || "?"}
               </AvatarFallback>
             </Avatar>
             <div>
               <CardTitle className="text-lg font-semibold">
-                {user.firstName} {user.lastName}
+                {user?.firstName ?? ""} {user?.lastName ?? ""}
               </CardTitle>
              
             </div>

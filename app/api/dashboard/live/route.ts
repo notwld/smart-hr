@@ -72,16 +72,38 @@ export async function GET(request: NextRequest) {
       const totalWorkingMs = endTime.getTime() - checkInTime.getTime()
       const totalWorkingHours = totalWorkingMs / (1000 * 60 * 60)
 
-      // Calculate break time from all breaks
+      // Build break intervals [startMs, endMs] and merge overlapping ones so duplicate
+      // breaks (e.g. from double-click) are not double-counted.
       const completedBreaks = attendance.breaks.filter(b => b.endTime !== null)
       const activeBreak = attendance.breaks.find(b => b.endTime === null)
-      
-      // Total break time in hours
-      const totalBreakMinutes = completedBreaks.reduce((sum, b) => sum + (b.duration || 0), 0)
-      const currentBreakMinutes = activeBreak 
+      const STALE_BREAK_THRESHOLD_MINUTES = 30
+      const activeBreakElapsedMinutes = activeBreak
         ? (now.getTime() - new Date(activeBreak.startTime).getTime()) / (1000 * 60)
         : 0
-      const totalBreakHours = (totalBreakMinutes + currentBreakMinutes) / 60
+      const currentBreakMinutes =
+        activeBreak && activeBreakElapsedMinutes <= STALE_BREAK_THRESHOLD_MINUTES
+          ? activeBreakElapsedMinutes
+          : 0
+
+      const breakIntervals: Array<[number, number]> = completedBreaks.map(b => [
+        new Date(b.startTime).getTime(),
+        b.endTime ? new Date(b.endTime).getTime() : now.getTime(),
+      ])
+      if (activeBreak && currentBreakMinutes > 0) {
+        const startMs = new Date(activeBreak.startTime).getTime()
+        breakIntervals.push([startMs, startMs + currentBreakMinutes * 60 * 1000])
+      }
+      breakIntervals.sort((a, b) => a[0] - b[0])
+      const merged: Array<[number, number]> = []
+      for (const [s, e] of breakIntervals) {
+        if (merged.length > 0 && s <= merged[merged.length - 1][1]) {
+          merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], e)
+        } else {
+          merged.push([s, e])
+        }
+      }
+      const totalBreakMinutes = merged.reduce((sum, [s, e]) => sum + (e - s) / (1000 * 60), 0)
+      const totalBreakHours = totalBreakMinutes / 60
 
       // Productive hours = Total Working - Break Hours
       const productiveHours = Math.max(0, totalWorkingHours - totalBreakHours)
@@ -102,23 +124,11 @@ export async function GET(request: NextRequest) {
       }> = []
 
       let currentTime = checkInTime
-      
-      // Process all breaks (completed and active)
-      const allBreaks = [...completedBreaks]
-      if (activeBreak) {
-        allBreaks.push({
-          ...activeBreak,
-          endTime: null,
-          duration: currentBreakMinutes / 60
-        } as any)
-      }
-      allBreaks.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
 
-      for (const breakRecord of allBreaks) {
-        const breakStart = new Date(breakRecord.startTime)
-        const breakEnd = breakRecord.endTime ? new Date(breakRecord.endTime) : now
-
-        // Add productive segment before break
+      // Build timeline from merged break intervals so duplicates don't show twice
+      for (const [startMs, endMs] of merged) {
+        const breakStart = new Date(startMs)
+        const breakEnd = new Date(endMs)
         if (currentTime < breakStart) {
           const productiveDuration = (breakStart.getTime() - currentTime.getTime()) / (1000 * 60 * 60)
           timelineSegments.push({
@@ -128,16 +138,13 @@ export async function GET(request: NextRequest) {
             duration: productiveDuration
           })
         }
-
-        // Add break segment
-        const breakDuration = (breakEnd.getTime() - breakStart.getTime()) / (1000 * 60 * 60)
+        const breakDuration = (endMs - startMs) / (1000 * 60 * 60)
         timelineSegments.push({
           type: 'break',
           startTime: breakStart,
           endTime: breakEnd,
           duration: breakDuration
         })
-
         currentTime = breakEnd
       }
 
@@ -147,7 +154,7 @@ export async function GET(request: NextRequest) {
         if (remainingDuration > 0) {
           // Calculate productive time worked so far (excluding breaks)
           const totalWorkedSoFar = (currentTime.getTime() - checkInTime.getTime()) / (1000 * 60 * 60)
-          const breaksSoFar = completedBreaks.reduce((sum, b) => sum + (b.duration || 0), 0) / 60
+          const breaksSoFar = totalBreakMinutes / 60
           const productiveSoFar = totalWorkedSoFar - breaksSoFar
           
           // Determine if remaining time is productive or overtime

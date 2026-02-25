@@ -19,8 +19,8 @@ interface BirthdayAlertCardProps {
 export function BirthdayAlertCard({ user, age, onDismiss }: BirthdayAlertCardProps) {
   return (
     <BaseAlertCard
-      title={`🎉 Happy Birthday ${user.firstName}!`}
-      description={`${user.position} • ${user.department}`}
+      title={`🎉 Happy Birthday ${user?.firstName ?? "Someone"}!`}
+      description={`${user?.position ?? ""} • ${user?.department ?? ""}`.trim() || "-"}
       icon={<Cake className="w-4 h-4" />}
       variant="success"
       onDismiss={onDismiss}
@@ -28,7 +28,7 @@ export function BirthdayAlertCard({ user, age, onDismiss }: BirthdayAlertCardPro
       <div className="flex items-center gap-2 text-xs">
         {age && <span className="font-medium">Turning {age} today</span>}
         <span className="text-gray-500">•</span>
-        <span>{user.email}</span>
+        <span>{user?.email ?? "-"}</span>
       </div>
     </BaseAlertCard>
   )

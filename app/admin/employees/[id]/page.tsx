@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Loader } from "@/components/ui/loader";
 import { toast } from "sonner";
+import { safeFormatDate } from "@/lib/utils";
 import Image from "next/image";
 import {
   User,
@@ -195,45 +196,45 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                 <div className="relative w-40 h-40 rounded-full overflow-hidden ring-4 ring-cyan-100 shadow-lg">
                   {employee.image ? (
                     <Image
-                      src={employee.image}
-                      alt={`${employee.firstName} ${employee.lastName}`}
+                      src={employee?.image ?? ""}
+                      alt={`${employee?.firstName ?? ""} ${employee?.lastName ?? ""}`}
                       fill
                       className="object-cover"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
                       <span className="text-3xl font-bold text-white">
-                        {employee.firstName[0]}{employee.lastName[0]}
+                        {(employee?.firstName ?? "").charAt(0)}{(employee?.lastName ?? "").charAt(0) || "?"}
                       </span>
                     </div>
                   )}
                 </div>
                 <div className="text-center space-y-3">
                   <h2 className="text-2xl font-bold text-gray-800">
-                    {employee.firstName} {employee.lastName}
+                    {employee?.firstName ?? ""} {employee?.lastName ?? ""}
                   </h2>
                   <div className="space-y-2">
                     <Badge className="bg-cyan-50 text-cyan-700 border-cyan-200 font-medium">
                       <Briefcase className="w-3 h-3 mr-1" />
-                      {employee.position}
+                      {employee?.position ?? "—"}
                     </Badge>
                     <Badge className="bg-blue-50 text-blue-700 border-blue-200 font-medium">
                       <Building className="w-3 h-3 mr-1" />
-                      {employee.department}
+                      {employee?.department ?? "—"}
                     </Badge>
                   </div>
                   <div className="pt-4 space-y-3 text-sm">
                     <div className="flex items-center text-gray-600">
                       <Mail className="w-4 h-4 mr-2 text-cyan-500" />
-                      <span className="truncate">{employee.email}</span>
+                      <span className="truncate">{employee?.email ?? "—"}</span>
                     </div>
                     <div className="flex items-center text-gray-600">
                       <Phone className="w-4 h-4 mr-2 text-cyan-500" />
-                      <span>{employee.phone}</span>
+                      <span>{employee?.phone ?? "—"}</span>
                     </div>
                     <div className="flex items-center text-gray-600">
                       <Calendar className="w-4 h-4 mr-2 text-cyan-500" />
-                      <span>Joined {new Date(employee.joinDate).toLocaleDateString()}</span>
+                      <span>Joined {safeFormatDate(employee.joinDate)}</span>
                     </div>
                   </div>
                 </div>
@@ -253,23 +254,23 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Username</p>
-                  <p className="text-gray-800 font-medium">{employee.username}</p>
+                  <p className="text-gray-800 font-medium">{employee?.username ?? "—"}</p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Email Address</p>
-                  <p className="text-gray-800 font-medium">{employee.email}</p>
+                  <p className="text-gray-800 font-medium">{employee?.email ?? "—"}</p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">CNIC</p>
-                  <p className="text-gray-800 font-medium font-mono">{employee.cnic}</p>
+                  <p className="text-gray-800 font-medium font-mono">{employee?.cnic ?? "—"}</p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Phone Number</p>
-                  <p className="text-gray-800 font-medium font-mono">{employee.phone}</p>
+                  <p className="text-gray-800 font-medium font-mono">{employee?.phone ?? "—"}</p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Date of Birth</p>
-                  <p className="text-gray-800 font-medium">{new Date(employee.dateOfBirth).toLocaleDateString('en-US', { 
+                  <p className="text-gray-800 font-medium">{safeFormatDate(employee.dateOfBirth, { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
@@ -278,20 +279,20 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Gender</p>
                   <Badge variant="outline" className="bg-gray-50 text-gray-700">
-                    {employee.gender}
+                    {employee?.gender ?? "—"}
                   </Badge>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Marital Status</p>
                   <Badge variant="outline" className="bg-gray-50 text-gray-700">
-                    {employee.maritalStatus}
+                    {employee?.maritalStatus ?? "—"}
                   </Badge>
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Address</p>
                   <p className="text-gray-800 font-medium flex items-start">
                     <MapPin className="w-4 h-4 mr-2 mt-0.5 text-cyan-500 flex-shrink-0" />
-                    {employee.address}
+                    {employee?.address ?? "—"}
                   </p>
                 </div>
               </div>
@@ -313,21 +314,21 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                 <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Department</p>
                 <Badge className="bg-blue-50 text-blue-700 border-blue-200 font-medium">
                   <Building className="w-3 h-3 mr-1" />
-                  {employee.department}
+                  {employee?.department ?? "—"}
                 </Badge>
               </div>
               <div className="space-y-2">
                 <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Position</p>
                 <Badge className="bg-cyan-50 text-cyan-700 border-cyan-200 font-medium">
                   <Briefcase className="w-3 h-3 mr-1" />
-                  {employee.position}
+                  {employee?.position ?? "—"}
                 </Badge>
               </div>
               <div className="space-y-2">
                 <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Join Date</p>
                 <p className="text-gray-800 font-medium flex items-center">
                   <Calendar className="w-4 h-4 mr-2 text-cyan-500" />
-                  {new Date(employee.joinDate).toLocaleDateString('en-US', { 
+                  {safeFormatDate(employee.joinDate, { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
@@ -400,15 +401,15 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {employee.education.length > 0 ? (
+            {(employee.education ?? []).length > 0 ? (
               <div className="space-y-6">
-                {employee.education.map((edu, index) => (
+                {(employee.education ?? []).map((edu, index) => (
                   <div key={index} className="p-6 bg-gray-50/50 rounded-xl border border-gray-200">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h3 className="font-bold text-lg text-gray-800 mb-1">{edu.degree}</h3>
-                        <p className="text-cyan-600 font-medium mb-1">{edu.institution}</p>
-                        <p className="text-gray-600">{edu.field}</p>
+                        <h3 className="font-bold text-lg text-gray-800 mb-1">{edu?.degree ?? "—"}</h3>
+                        <p className="text-cyan-600 font-medium mb-1">{edu?.institution ?? "—"}</p>
+                        <p className="text-gray-600">{edu?.field ?? "—"}</p>
                       </div>
                       <Badge className="bg-green-50 text-green-700 border-green-200">
                         <GraduationCap className="w-3 h-3 mr-1" />
@@ -418,7 +419,7 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                     <div className="flex items-center text-sm text-gray-500 space-x-4">
                       <div className="flex items-center">
                         <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(edu.startDate).toLocaleDateString()} - {edu.endDate ? new Date(edu.endDate).toLocaleDateString() : "Present"}
+                        {safeFormatDate(edu.startDate)} - {edu.endDate ? safeFormatDate(edu.endDate) : "Present"}
                       </div>
                       {edu.grade && (
                         <div className="flex items-center">
@@ -447,17 +448,17 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {employee.experience.length > 0 ? (
+            {(employee.experience ?? []).length > 0 ? (
               <div className="space-y-6">
-                {employee.experience.map((exp, index) => (
+                {(employee.experience ?? []).map((exp, index) => (
                   <div key={index} className="p-6 bg-gray-50/50 rounded-xl border border-gray-200">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h3 className="font-bold text-lg text-gray-800 mb-1">{exp.position}</h3>
-                        <p className="text-blue-600 font-medium mb-2">{exp.company}</p>
+                        <h3 className="font-bold text-lg text-gray-800 mb-1">{exp?.position ?? "—"}</h3>
+                        <p className="text-blue-600 font-medium mb-2">{exp?.company ?? "—"}</p>
                         <div className="flex items-center text-sm text-gray-500 mb-3">
                           <Calendar className="w-4 h-4 mr-1" />
-                          {new Date(exp.startDate).toLocaleDateString()} - {exp.endDate ? new Date(exp.endDate).toLocaleDateString() : "Present"}
+                          {safeFormatDate(exp.startDate)} - {exp.endDate ? safeFormatDate(exp.endDate) : "Present"}
                         </div>
                       </div>
                       <Badge className="bg-blue-50 text-blue-700 border-blue-200">
@@ -497,23 +498,23 @@ export default function EmployeeDetailPage({ params }: { params: Promise<{ id: s
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Bank Name</p>
                   <p className="text-gray-800 font-medium flex items-center">
                     <CreditCard className="w-4 h-4 mr-2 text-cyan-500" />
-                    {employee.bankDetails!.bankName}
+                    {employee.bankDetails?.bankName ?? "—"}
                   </p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Account Number</p>
                   <p className="text-gray-800 font-medium font-mono bg-gray-50 px-3 py-2 rounded border">
-                    {employee.bankDetails!.accountNumber}
+                    {employee.bankDetails?.accountNumber ?? "—"}
                   </p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Account Title</p>
-                  <p className="text-gray-800 font-medium">{employee.bankDetails!.accountTitle}</p>
+                  <p className="text-gray-800 font-medium">{employee.bankDetails?.accountTitle ?? "—"}</p>
                 </div>
-                {employee.bankDetails!.branchCode && (
+                {employee.bankDetails?.branchCode && (
                   <div className="space-y-2">
                     <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Branch Code</p>
-                    <p className="text-gray-800 font-medium font-mono">{employee.bankDetails!.branchCode}</p>
+                    <p className="text-gray-800 font-medium font-mono">{employee.bankDetails?.branchCode}</p>
                   </div>
                 )}
               </div>

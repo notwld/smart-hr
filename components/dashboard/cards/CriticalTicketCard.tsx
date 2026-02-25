@@ -1,6 +1,7 @@
 import React from "react"
 import { BaseAlertCard } from "./BaseAlertCard"
 import { AlertTriangle } from "lucide-react"
+import { safeFormatDateTime } from "@/lib/utils"
 
 interface CriticalTicketCardProps {
   ticket: {
@@ -9,7 +10,7 @@ interface CriticalTicketCardProps {
     title: string
     priority: string
     status: string
-    createdAt: Date
+    createdAt: Date | string
     createdBy: {
       firstName: string
       lastName: string
@@ -26,7 +27,7 @@ export function CriticalTicketCard({ ticket, onDismiss }: CriticalTicketCardProp
   return (
     <BaseAlertCard
       title={`🚨 Critical Ticket: ${ticket.title}`}
-      description={`#${ticket.ticketNumber} • ${ticket.createdBy.firstName} ${ticket.createdBy.lastName}`}
+      description={`#${ticket.ticketNumber} • ${ticket.createdBy?.firstName ?? ""} ${ticket.createdBy?.lastName ?? ""}`.trim() || "-"}
       icon={<AlertTriangle className="w-4 h-4" />}
       variant="error"
       onDismiss={onDismiss}
@@ -39,11 +40,11 @@ export function CriticalTicketCard({ ticket, onDismiss }: CriticalTicketCardProp
         </div>
         {ticket.assignedTo && (
           <div className="text-gray-600">
-            Assigned to: {ticket.assignedTo.firstName} {ticket.assignedTo.lastName}
+            Assigned to: {ticket.assignedTo?.firstName ?? ""} {ticket.assignedTo?.lastName ?? ""}
           </div>
         )}
         <div className="text-gray-500">
-          Created: {ticket.createdAt.toLocaleDateString()} at {ticket.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          Created: {safeFormatDateTime(ticket.createdAt)}
         </div>
       </div>
     </BaseAlertCard>

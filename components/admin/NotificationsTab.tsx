@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { safeFormatDate } from "@/lib/utils";
 import {
   Bell,
   Send,
@@ -162,8 +163,8 @@ export default function NotificationsTab() {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+  const formatDate = (dateString: string | null | undefined) => {
+    return safeFormatDate(dateString, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -173,11 +174,12 @@ export default function NotificationsTab() {
   };
 
   const getAcknowledgmentStats = (notification: Notification) => {
-    if (!notification.recipients) return { read: 0, unread: 0, total: 0 };
+    const recipients = notification.recipients ?? [];
+    if (recipients.length === 0) return { read: 0, unread: 0, total: 0 };
 
-    const read = notification.recipients.filter(r => r.status === 'READ').length;
-    const unread = notification.recipients.filter(r => r.status === 'SENT').length;
-    const total = notification.recipients.length;
+    const read = recipients.filter(r => r.status === "READ").length;
+    const unread = recipients.filter(r => r.status === "SENT").length;
+    const total = recipients.length;
 
     return { read, unread, total };
   };
@@ -243,7 +245,7 @@ export default function NotificationsTab() {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Total Sent</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {notifications.filter(n => n.status === 'SENT').length}
+                  {(notifications ?? []).filter(n => n.status === "SENT").length}
                 </p>
               </div>
             </div>
@@ -258,7 +260,7 @@ export default function NotificationsTab() {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Drafts</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {notifications.filter(n => n.status === 'DRAFT').length}
+                  {(notifications ?? []).filter(n => n.status === "DRAFT").length}
                 </p>
               </div>
             </div>
@@ -273,7 +275,7 @@ export default function NotificationsTab() {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">High Priority</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {notifications.filter(n => n.priority === 'HIGH').length}
+                  {(notifications ?? []).filter(n => n.priority === "HIGH").length}
                 </p>
               </div>
             </div>
@@ -290,10 +292,9 @@ export default function NotificationsTab() {
                 <p className="text-2xl font-bold text-gray-900">
                   {(() => {
                     let totalRead = 0;
-                    notifications.forEach(n => {
-                      if (n.recipients) {
-                        totalRead += n.recipients.filter(r => r.status === 'READ').length;
-                      }
+                    (notifications ?? []).forEach(n => {
+                      const recipients = n.recipients ?? [];
+                      totalRead += recipients.filter(r => r.status === "READ").length;
                     });
                     return totalRead;
                   })()}
@@ -313,10 +314,9 @@ export default function NotificationsTab() {
                 <p className="text-2xl font-bold text-gray-900">
                   {(() => {
                     let totalUnread = 0;
-                    notifications.forEach(n => {
-                      if (n.recipients) {
-                        totalUnread += n.recipients.filter(r => r.status === 'SENT').length;
-                      }
+                    (notifications ?? []).forEach(n => {
+                      const recipients = n.recipients ?? [];
+                      totalUnread += recipients.filter(r => r.status === "SENT").length;
                     });
                     return totalUnread;
                   })()}
@@ -349,7 +349,7 @@ export default function NotificationsTab() {
             <Bell className="w-5 h-5 mr-2" />
             Recent Notifications
             <Badge className="ml-3 bg-indigo-50 text-indigo-700 border-indigo-200">
-              {notifications.length} total
+              {(notifications ?? []).length} total
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -369,7 +369,7 @@ export default function NotificationsTab() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {notifications.length === 0 ? (
+                {(notifications ?? []).length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={8} className="text-center py-12">
                       <div className="flex flex-col items-center">
@@ -387,14 +387,14 @@ export default function NotificationsTab() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  notifications.map((notification, index) => {
+                  (notifications ?? []).map((notification, index) => {
                     const stats = getAcknowledgmentStats(notification);
                     const readPercentage = stats.total > 0 ? Math.round((stats.read / stats.total) * 100) : 0;
 
                     return (
                       <TableRow key={notification.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
                         <TableCell className="py-4 font-medium text-gray-900 max-w-xs">
-                          <p className="truncate" title={notification.title}>{notification.title}</p>
+                          <p className="truncate" title={notification.title ?? ""}>{notification.title ?? "—"}</p>
                         </TableCell>
                         <TableCell className="py-4 max-w-sm">
                           <p className="text-sm text-gray-700 truncate" title={notification.message}>
@@ -407,8 +407,8 @@ export default function NotificationsTab() {
                           </Badge>
                         </TableCell>
                         <TableCell className="py-4">
-                          <Badge className={`font-medium ${getStatusColor(notification.status)}`}>
-                            {notification.status}
+                          <Badge className={`font-medium ${getStatusColor(notification.status ?? "")}`}>
+                            {notification.status ?? "—"}
                           </Badge>
                         </TableCell>
                         <TableCell className="py-4">
@@ -584,7 +584,7 @@ export default function NotificationsTab() {
                 <CardContent className="pt-5">
                   <ScrollArea className="h-96">
                     <div className="space-y-2">
-                      {selectedNotification.recipients?.map((recipient) => {
+                      {(selectedNotification.recipients ?? []).map((recipient) => {
                         const statusInfo = getAcknowledgmentStatus(recipient.status);
                         const StatusIcon = statusInfo.icon;
 
@@ -599,10 +599,10 @@ export default function NotificationsTab() {
                               </div>
                               <div>
                                 <p className="font-medium text-gray-900">
-                                  {recipient.user.firstName} {recipient.user.lastName}
+                                  {recipient.user?.firstName ?? ""} {recipient.user?.lastName ?? ""}
                                 </p>
-                                <p className="text-sm text-gray-500">{recipient.user.email}</p>
-                                {recipient.user.department && (
+                                <p className="text-sm text-gray-500">{recipient.user?.email ?? "—"}</p>
+                                {recipient.user?.department && (
                                   <p className="text-xs text-gray-400">{recipient.user.department}</p>
                                 )}
                               </div>
