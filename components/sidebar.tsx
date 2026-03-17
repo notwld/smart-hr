@@ -48,9 +48,9 @@ export default function Sidebar() {
     
     // All navigation items with permission-based filtering
     const allNavItems = [
+        { icon: <FileText className="w-5 h-5" />, label: "Admin Dashboard", href: "/admin", permission: "dashboard.admin" },
         { icon: <Activity className="w-5 h-5" />, label: "Your Dashboard", href: "/", adminOnly: false },
         { icon: <Ticket className="w-5 h-5" />, label: "Support Tickets", href: "/tickets", adminOnly: false },
-        { icon: <FileText className="w-5 h-5" />, label: "Admin Dashboard", href: "/admin", permission: "dashboard.admin" },
         { icon: <FileText className="w-5 h-5" />, label: "Employees", href: "/admin/employees", permission: "users.view" },
         { icon: <Shield className="w-5 h-5" />, label: "Roles", href: "/admin/roles", permission: "roles.view" },
         { icon: <Key className="w-5 h-5" />, label: "Permissions", href: "/admin/permissions", permission: "permissions.view" },

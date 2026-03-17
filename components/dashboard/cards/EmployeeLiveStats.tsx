@@ -24,6 +24,9 @@ interface EmployeeLiveStatsProps {
     email?: string | null
     pfp?: string | null
   }
+  title?: string
+  subtitle?: string | null
+  avatarInitials?: string | null
   checkInTime: string | Date
   checkOutTime: string | Date | null
   stats: {
@@ -65,6 +68,9 @@ function formatTime(date: string | Date | null | undefined): string {
 
 export function EmployeeLiveStats({
   user,
+  title,
+  subtitle,
+  avatarInitials,
   stats,
   timelineSegments,
   checkInTime
@@ -134,6 +140,19 @@ export function EmployeeLiveStats({
     )
   }
 
+  const displayTitle =
+    title ??
+    (`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() || "Employee")
+
+  const initialsSource =
+    avatarInitials ??
+    `${user?.firstName ?? ""}${user?.lastName ?? ""}`.trim()
+
+  const initials =
+    initialsSource && initialsSource.length > 0
+      ? `${initialsSource.charAt(0)}${initialsSource.charAt(1) ?? ""}`.toUpperCase()
+      : "?"
+
   return (
     <Card className="w-full border-0 shadow-sm hover:shadow-md transition-shadow">
       <CardHeader className="pb-4">
@@ -142,14 +161,18 @@ export function EmployeeLiveStats({
             <Avatar className="h-10 w-10">
               <AvatarImage src={user?.pfp || undefined} alt={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() || "User"} />
               <AvatarFallback className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
-                {(user?.firstName ?? "").charAt(0)}{(user?.lastName ?? "").charAt(0) || "?"}
+                {initials}
               </AvatarFallback>
             </Avatar>
             <div>
               <CardTitle className="text-lg font-semibold">
-                {user?.firstName ?? ""} {user?.lastName ?? ""}
+                {displayTitle}
               </CardTitle>
-             
+              {subtitle && (
+                <div className="text-xs text-gray-400 mt-0.5">
+                  {subtitle}
+                </div>
+              )}
             </div>
           </div>
         </div>

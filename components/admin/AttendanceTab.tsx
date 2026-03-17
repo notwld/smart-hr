@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
   Clock, 
@@ -14,14 +14,11 @@ import {
   Plus,
   FileText,
   Download,
-  Eye,
   ChevronLeft,
-  ChevronRight,
-  RefreshCw
+  ChevronRight
 } from "lucide-react";
 import { Loader, ButtonLoader } from "@/components/ui/loader";
 import { toast } from "sonner";
-import EmployeeCalendar from "@/components/EmployeeCalendar";
 import { safeFormatDate, safeFormatTime } from "@/lib/utils";
 
 interface AttendanceRecord {
@@ -56,6 +53,7 @@ interface AttendanceData {
 }
 
 export default function AttendanceTab() {
+  const router = useRouter();
   const [showCreateAttendanceDialog, setShowCreateAttendanceDialog] = useState(false);
   const [showImportAttendanceDialog, setShowImportAttendanceDialog] = useState(false);
   const [showExportDialog, setShowExportDialog] = useState(false);
@@ -79,11 +77,7 @@ export default function AttendanceTab() {
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
   
-  // Calendar state
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
-  
-  // Attendance table state
+  // Attendance state
   const [attendanceData, setAttendanceData] = useState<AttendanceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -376,8 +370,8 @@ export default function AttendanceTab() {
   };
 
   const handleEmployeeClick = (employee: any) => {
-    setSelectedEmployee(employee);
-    setShowCalendar(true);
+    if (!employee || !employee.id) return;
+    router.push(`/admin/attendance/${employee.id}`);
   };
 
   const formatTime = (timeString: string | null | undefined) => {
@@ -587,13 +581,13 @@ export default function AttendanceTab() {
         </CardContent>
       </Card>
 
-      {/* Attendance Table */}
+      {/* Employee Cards */}
       <Card className="border-0 shadow-sm bg-white">
         <CardHeader className="pb-4">
           <CardTitle className="text-lg font-semibold flex items-center text-gray-800">
             <Clock className="w-5 h-5 mr-2" />
-            Employee Attendance Records
-            {attendanceData && (
+            Employees
+            {attendanceData && attendanceData.pagination && (
               <Badge className="ml-3 bg-cyan-50 text-cyan-700 border-cyan-200">
                 {attendanceData.pagination.total} total records
               </Badge>
@@ -607,91 +601,71 @@ export default function AttendanceTab() {
             </div>
           ) : (
             <>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-gray-50 border-b">
-                      <TableHead className="font-semibold text-gray-700">Employee</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Department</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Date</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Check In</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Check Out</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Break Time</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Working Hours</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Status</TableHead>
-                      <TableHead className="font-semibold text-gray-700">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {attendanceData?.attendance.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={9} className="text-center py-12">
-                          <div className="flex flex-col items-center">
-                            <Clock className="w-12 h-12 text-gray-300 mb-4" />
-                            <p className="text-gray-500 mb-2">No attendance records found</p>
-                            <p className="text-gray-400 text-sm">Try adjusting your search or filters</p>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      (attendanceData?.attendance ?? []).map((record, index) => (
-                        <TableRow key={record.id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                          <TableCell className="py-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm">
-                                {(record.user?.firstName ?? "").charAt(0)}{(record.user?.lastName ?? "").charAt(0) || "?"}
+              {(!attendanceData || (attendanceData.attendance ?? []).length === 0) ? (
+                <div className="text-center py-12">
+                  <Clock className="w-12 h-12 text-gray-300 mb-4" />
+                  <p className="text-gray-500 mb-2">No attendance records found</p>
+                  <p className="text-gray-400 text-sm">Try adjusting your search or filters</p>
+                </div>
+              ) : (
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {Array.from(
+                    (attendanceData?.attendance ?? []).reduce<Map<string, { user: AttendanceRecord["user"]; lastRecord: AttendanceRecord }>>(
+                      (map, record) => {
+                        const userId = record.user?.id;
+                        if (!userId) return map;
+                        const existing = map.get(userId);
+                        if (!existing || new Date(record.date) > new Date(existing.lastRecord.date)) {
+                          map.set(userId, { user: record.user, lastRecord: record });
+                        }
+                        return map;
+                      },
+                      new Map()
+                    ).values()
+                  ).map(({ user, lastRecord }) => (
+                    <button
+                      key={user.id}
+                      type="button"
+                      onClick={() => handleEmployeeClick(user)}
+                      className="text-left"
+                    >
+                      <Card className="border border-cyan-100 hover:border-cyan-400 hover:shadow-md transition-all h-full">
+                        <CardContent className="p-4 space-y-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+                              {(user?.firstName ?? "").charAt(0)}{(user?.lastName ?? "").charAt(0) || "?"}
+                            </div>
+                            <div>
+                              <div className="text-sm font-semibold text-gray-900">
+                                {(user?.firstName ?? "") || (user?.lastName ?? "") ? `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() : "Unknown Employee"}
                               </div>
-                              <div>
-                                <button
-                                  onClick={() => handleEmployeeClick(record.user)}
-                                  className="text-sm font-medium text-gray-900 hover:text-cyan-600 hover:underline cursor-pointer transition-colors"
-                                >
-                                  {record.user?.firstName ?? ""} {record.user?.lastName ?? ""}
-                                </button>
-                                <div className="text-xs text-gray-500">
-                                  {record.user?.position ?? "—"}
-                                </div>
+                              <div className="text-xs text-gray-500">
+                                {user?.position ?? "—"}
                               </div>
                             </div>
-                          </TableCell>
-                          <TableCell className="py-4">
-                            <Badge variant="outline" className="bg-cyan-50 text-cyan-700 border-cyan-200">
-                              {record.user?.department ?? "—"}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="py-4 font-medium text-gray-700">{formatDate(record.date)}</TableCell>
-                          <TableCell className="py-4 font-mono text-gray-700">{formatTime(record.checkInTime)}</TableCell>
-                          <TableCell className="py-4 font-mono text-gray-700">{formatTime(record.checkOutTime)}</TableCell>
-                          <TableCell className="py-4 font-semibold text-gray-800">
-                            {formatBreakTime(record.totalBreakTime)}
-                          </TableCell>
-                          <TableCell className="py-4 font-semibold text-gray-800">
-                            {formatWorkingHours(record.totalHours)}
-                          </TableCell>
-                          <TableCell className="py-4">
-                            <Badge className={`rounded-md font-medium ${getStatusBadge(record.status)}`}>
-                              {record.status ?? "—"}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="py-4">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleEmployeeClick(record.user)}
-                              className="h-8 w-8 p-0 hover:bg-cyan-50 border-cyan-200"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
+                          </div>
+                          <div className="flex items-center justify-between text-xs text-gray-600">
+                            <div>
+                              <div className="font-medium text-gray-700">Last Attendance</div>
+                              <div>{formatDate(lastRecord?.date)}</div>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-medium text-gray-700">Department</div>
+                              <div>{user?.department ?? "—"}</div>
+                            </div>
+                          </div>
+                          <div className="mt-2 inline-flex items-center justify-center px-3 py-1 text-xs font-medium rounded-full bg-cyan-50 text-cyan-700 border border-cyan-100">
+                            View full attendance history
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {/* Pagination */}
-              {attendanceData && attendanceData.pagination.totalPages > 1 && (
+              {attendanceData && attendanceData.pagination && attendanceData.pagination.totalPages > 1 && (
                 <div className="mt-6 p-4 bg-[#dff9ff] rounded-lg border border-cyan-200">
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-gray-600">
@@ -911,16 +885,6 @@ export default function AttendanceTab() {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Employee Calendar */}
-      <EmployeeCalendar
-        isOpen={showCalendar}
-        onClose={() => {
-          setShowCalendar(false);
-          setSelectedEmployee(null);
-        }}
-        employee={selectedEmployee}
-      />
     </div>
   );
 }
